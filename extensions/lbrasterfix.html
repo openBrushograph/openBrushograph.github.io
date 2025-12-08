@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raster S→Z Converter (Scan Lift)</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
+        .container { max-width: 720px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #0056b3; margin-top: 0; }
+        .form-row { display: flex; flex-wrap: wrap; gap: 10px; }
+        .form-group { margin-bottom: 15px; flex: 1 1 150px; min-width: 150px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="number"], input[type="file"], input[type="text"] { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        input[type="checkbox"] { margin-right: 5px; }
+        button { background: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; }
+        button:hover { background: #004494; }
+        #status { margin-top: 15px; padding: 10px; background: #e9ecef; border-radius: 4px; white-space: pre-wrap; display: none; max-height: 200px; overflow-y: auto; font-size: 13px; }
+        .success { color: #008000; }
+        .error { color: #c00000; }
+        .small { font-size: 12px; color: #555; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Raster S→Z Converter (Scan Lift for Brushograph)</h2>
+    <p>
+        Takes a LightBurn raster G-code (with laser power in <code>S</code>) and converts it to
+        Z up / down moves inside <code>Scan</code> sections.
+        Outside <code>Scan</code> (e.g. <code>Offset</code> / <code>Cut</code> comments) the file is left unchanged.
+    </p>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="zUp">Z up amount (mm):</label>
+            <input type="number" id="zUp" value="5" step="0.1">
+            <div class="small">How far to lift when S=0 inside Scan.</div>
+        </div>
+        <div class="form-group">
+            <label for="zFeed">Z feedrate (F):</label>
+            <input type="number" id="zFeed" value="500" step="10">
+            <div class="small">Feedrate for Z moves (0 = no explicit F).</div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="scanFeed">Scan feed override (mm/min):</label>
+            <input type="number" id="scanFeed" placeholder="auto from ';Scan @ <n> mm/min'" step="10">
+            <div class="small">Leave empty to auto-detect from header comment if present.</div>
+        </div>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="useG0" checked>
+                Use G0 for Z moves (otherwise G1)
+            </label>
+            <div class="small">Matches Python script default (G0 Z...).</div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="removeS">
+                Remove S commands from output
+            </label>
+            <div class="small">Equivalent to <code>--remove-s</code> in the Python script.</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="fileInput">Select raster G-code:</label>
+        <input type="file" id="fileInput" accept=".gcode,.nc,.txt">
+    </div>
+
+    <button onclick="runRasterS2Z()">Convert and Download</button>
+
+    <div id="status"></div>
+</div>
+
+<script>
+function _fmt(val) {
+    try {
+        const f = parseFloat(val);
+        if (!Number.isFinite(f)) return String(val);
+        let s = f.toFixed(3);
+        s = s.replace(/0+$/, "").replace(/\.$/, "");
+        return s === "" ? "0" : s;
+    } catch (e) {
+        return String(val);
+    }
+}
+
+function zcmd(value, useG0, zFeed) {
+    const cmd_g = useG0 ? "G0" : "G1";
+    let cmd = `${cmd_g} Z${_fmt(value)}`;
+    if (zFeed && Number(zFeed) !== 0) {
+        cmd += ` F${_fmt(zFeed)}`;
+    }
+    return cmd;
+}
+
+function getSValue(line) {
+    const code = line.split(";", 1)[0];
+    if (!code.trim()) return null;
+    const m = code.match(/S\s*(-?\d+(?:\.\d+)?)/i);
+    if (!m) return null;
+    const v = parseFloat(m[1]);
+    return Number.isFinite(v) ? v : null;
+}
+
+function replaceFeed(line, scanFeed) {
+    if (scanFeed == null || scanFeed === "") return line;
+    const fStr = _fmt(scanFeed);
+    return line.replace(/F\s*[-+]?\d+(?:\.\d+)?/g, () => `F${fStr}`);
+}
+
+function detectScanFeedFromHeader(lines) {
+    for (let i = 0; i < Math.min(50, lines.length); i++) {
+        const ln = lines[i];
+        const m = ln.match(/;\s*Scan\s*@\s*(\d+(?:\.\d+)?)\s*mm\s*\/?\s*min/i);
+        if (m) {
+            const v = parseFloat(m[1]);
+            if (Number.isFinite(v)) return v;
+        }
+    }
+    return null;
+}
+
+function processRasterS2Z(lines, opts) {
+    const { zUp, zFeed, useG0, keepS, scanFeed } = opts;
+
+    const out = [];
+    let isRaised = false;
+    let inScanSection = false;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const lstripped = line.replace(/^\s+/, "");
+
+        if (lstripped.startsWith(";")) {
+            if (/\bScan\b/i.test(lstripped)) {
+                inScanSection = true;
+                isRaised = false;
+            }
+            if (/(?:\bOffset\b|\bCut\b)/i.test(lstripped)) {
+                inScanSection = false;
+                isRaised = false;
+            }
+        }
+
+        const sVal = getSValue(lstripped);
+        const needsUp = (sVal === 0);
+        const needsDown = (sVal != null && sVal > 0);
+
+        if (inScanSection && needsUp) {
+            if (!isRaised) {
+                out.push(zcmd(zUp, useG0, zFeed) + "\n");
+                isRaised = true;
+            }
+        }
+        if (inScanSection && needsDown) {
+            if (isRaised) {
+                out.push(zcmd(-zUp, useG0, zFeed) + "\n");
+                isRaised = false;
+            }
+        }
+
+        let toWrite = line;
+        if (!keepS) {
+            toWrite = toWrite.replace(/S(?:0|900)(?!\d)/gi, "");
+        }
+        toWrite = replaceFeed(toWrite, scanFeed);
+        out.push(toWrite);
+    }
+
+    return out;
+}
+
+function runRasterS2Z() {
+    const fileInput = document.getElementById('fileInput');
+    const statusDiv = document.getElementById('status');
+    const zUp = parseFloat(document.getElementById('zUp').value || '5');
+    const zFeed = parseFloat(document.getElementById('zFeed').value || '500');
+    const scanFeedInput = document.getElementById('scanFeed').value;
+    const useG0 = document.getElementById('useG0').checked;
+    const removeS = document.getElementById('removeS').checked;
+
+    if (!fileInput.files.length) {
+        alert('Please select a G-code file.');
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    statusDiv.style.display = 'block';
+    statusDiv.textContent = 'Reading file...';
+
+    reader.onload = function(e) {
+        try {
+            const content = e.target.result;
+            const rawLines = content.split(/\r?\n/);
+            const lines = rawLines.map(l => l + '\n');
+
+            let scanFeed = null;
+            if (scanFeedInput && scanFeedInput.trim() !== '') {
+                const v = parseFloat(scanFeedInput);
+                if (Number.isFinite(v)) scanFeed = v;
+            } else {
+                scanFeed = detectScanFeedFromHeader(lines);
+            }
+
+            const resultLines = processRasterS2Z(lines, {
+                zUp: Number.isFinite(zUp) ? zUp : 5,
+                zFeed: Number.isFinite(zFeed) ? zFeed : 500,
+                useG0: useG0,
+                keepS: !removeS,
+                scanFeed: scanFeed,
+            });
+
+            const outText = resultLines.join('');
+
+            let report = [];
+            report.push('Raster S→Z conversion done.');
+            report.push(`  zUp: ${_fmt(zUp)} mm, zFeed: ${_fmt(zFeed)} F`);
+            report.push(`  useG0 for Z: ${useG0 ? 'yes' : 'no'}`);
+            report.push(`  scanFeed: ${scanFeed != null ? _fmt(scanFeed) + ' mm/min' : 'unchanged'}`);
+            report.push(`  remove S: ${removeS ? 'yes' : 'no'}`);
+
+            const blob = new Blob([outText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'rasterZ_' + file.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            statusDiv.innerHTML = `<span class="success">Done. Downloading '${a.download}'.</span>\n\n` + report.join('\n');
+        } catch (err) {
+            console.error(err);
+            statusDiv.innerHTML = `<span class="error">Error: ${err.message}</span>`;
+        }
+    };
+
+    reader.onerror = function() {
+        statusDiv.innerHTML = `<span class="error">Error reading file.</span>`;
+    };
+
+    reader.readAsText(file);
+}
+</script>
+
+</body>
+</html>
