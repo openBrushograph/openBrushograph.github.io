@@ -1,12 +1,656 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>openBrushograph</title>
-</head>
-<body>
-  <h1>openBrushograph</h1>
-  <p>Open tools for the Brushograph / miniPenzlograf CNC painting machine.</p>
-  <p>GitHub: <a href="https://github.com/openBrushograph">github.com/openBrushograph</a></p>
-</body>
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>openBrushograph</title>
+   <style>
+     :root {
+       /* Palette roughly aligned with brushograph-lb2gcode web API */
+       --bg: #0b0f19;
+       --bg-alt: #0c1222;
+       --accent: #ff2dac; /* neon pink */
+       --accent-soft: rgba(255, 45, 172, 0.2);
+       --accent-2: #29e0ff; /* neon cyan */
+       --text: #e5e7eb;
+       --muted: #94a3b8;
+       --border: #1f2a44;
+       --card-bg: #0a0f1a;
+       --radius-lg: 18px;
+       --radius-md: 12px;
+       --radius-pill: 999px;
+       --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.85);
+       --shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.45);
+       --transition-fast: 180ms ease-out;
+       --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+     }
+
+     * {
+       box-sizing: border-box;
+       margin: 0;
+       padding: 0;
+     }
+
+     body {
+       min-height: 100vh;
+       margin: 0;
+       font-family: var(--font-sans);
+       background:
+         radial-gradient(1200px 800px at 5% -10%, rgba(41, 224, 255, 0.24), transparent 60%),
+         radial-gradient(1200px 800px at 110% 10%, rgba(255, 45, 172, 0.26), transparent 60%),
+         linear-gradient(180deg, var(--bg), var(--bg-alt));
+       color: var(--text);
+       -webkit-font-smoothing: antialiased;
+       display: flex;
+       align-items: stretch;
+       justify-content: center;
+     }
+
+     .page-shell {
+       width: 100%;
+       max-width: 1120px;
+       padding: 24px 20px 32px;
+       display: flex;
+       flex-direction: column;
+       gap: 24px;
+     }
+
+     header {
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       gap: 16px;
+     }
+
+     .brand {
+       display: flex;
+       align-items: center;
+       gap: 12px;
+     }
+
+     .logo-orbit {
+       position: relative;
+       width: 44px;
+       height: 44px;
+       border-radius: 50%;
+       background: radial-gradient(circle at 30% 20%, #fbbf24, #f97316 45%, #7c2d12 100%);
+       box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.45), 0 18px 40px rgba(0, 0, 0, 0.85);
+       overflow: hidden;
+     }
+
+     .logo-orbit::before {
+       content: "";
+       position: absolute;
+       inset: 24%;
+       border-radius: 999px;
+       border: 2px solid rgba(15, 23, 42, 0.9);
+       border-left-color: rgba(15, 23, 42, 0.2);
+       border-right-color: rgba(15, 23, 42, 0.2);
+       transform: rotate(-18deg);
+     }
+
+     .logo-orbit::after {
+       content: "";
+       position: absolute;
+       width: 7px;
+       height: 7px;
+       border-radius: 999px;
+       background: #fef9c3;
+       box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.4);
+       right: 6px;
+       top: 10px;
+     }
+
+     .brand-text {
+       display: flex;
+       flex-direction: column;
+       gap: 2px;
+     }
+
+     .brand-title {
+       font-size: 1.25rem;
+       letter-spacing: 0.03em;
+       text-transform: uppercase;
+       font-weight: 650;
+     }
+
+     .brand-subtitle {
+       font-size: 0.8rem;
+       text-transform: uppercase;
+       letter-spacing: 0.12em;
+       color: var(--muted);
+     }
+
+     .chip {
+       padding: 6px 12px;
+       border-radius: var(--radius-pill);
+       border: 1px solid rgba(148, 163, 184, 0.4);
+       background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.32), rgba(15, 23, 42, 0.6));
+       display: inline-flex;
+       align-items: center;
+       gap: 6px;
+       font-size: 0.72rem;
+       text-transform: uppercase;
+       letter-spacing: 0.14em;
+       color: var(--muted);
+       backdrop-filter: blur(12px);
+     }
+
+     .chip-dot {
+       width: 8px;
+       height: 8px;
+       border-radius: 50%;
+       background: radial-gradient(circle at 40% 30%, #bbf7d0, #22c55e);
+       box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+     }
+
+     main {
+       display: grid;
+       grid-template-columns: minmax(0, 3fr) minmax(0, 2.3fr);
+       gap: 24px;
+       align-items: stretch;
+     }
+
+     .hero-card {
+       background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
+       border-radius: 26px;
+       border: 1px solid rgba(148, 163, 184, 0.4);
+       padding: 24px 22px 22px;
+       box-shadow: var(--shadow-soft);
+       position: relative;
+       overflow: hidden;
+     }
+
+     .hero-card::before {
+       content: "";
+       position: absolute;
+       inset: -120px;
+       background: radial-gradient(circle at 10% 10%, rgba(253, 224, 71, 0.2), transparent 55%), radial-gradient(circle at 80% 10%, rgba(59, 130, 246, 0.34), transparent 55%);
+       opacity: 0.9;
+       pointer-events: none;
+     }
+
+     .hero-inner {
+       position: relative;
+       z-index: 1;
+       display: flex;
+       flex-direction: column;
+       gap: 22px;
+     }
+
+     .pill-row {
+       display: flex;
+       flex-wrap: wrap;
+       gap: 10px;
+       font-size: 0.78rem;
+     }
+
+     .pill {
+       border-radius: var(--radius-pill);
+       padding: 6px 11px;
+       background: rgba(15, 23, 42, 0.72);
+       border: 1px solid rgba(148, 163, 184, 0.4);
+       color: var(--muted);
+       display: inline-flex;
+       align-items: center;
+       gap: 6px;
+       backdrop-filter: blur(10px);
+     }
+
+     .pill span {
+       font-size: 0.7rem;
+       text-transform: uppercase;
+       letter-spacing: 0.13em;
+     }
+
+     .pill-badge {
+       padding: 3px 7px;
+       border-radius: var(--radius-pill);
+       background: rgba(15, 23, 42, 0.75);
+       border: 1px solid rgba(251, 191, 36, 0.7);
+       color: #facc15;
+       font-size: 0.7rem;
+       text-transform: uppercase;
+       letter-spacing: 0.15em;
+     }
+
+     .hero-title {
+       font-size: clamp(2.2rem, 3vw, 2.7rem);
+       line-height: 1.08;
+       letter-spacing: 0.02em;
+     }
+
+     .hero-title span {
+       background: linear-gradient(135deg, var(--accent), var(--accent-2));
+       -webkit-background-clip: text;
+       background-clip: text;
+       color: transparent;
+     }
+
+     .hero-lead {
+       max-width: 34rem;
+       color: var(--muted);
+       font-size: 0.96rem;
+       line-height: 1.6;
+     }
+
+     .hero-cta-row {
+       display: flex;
+       flex-wrap: wrap;
+       gap: 12px;
+       margin-top: 4px;
+     }
+
+     .button {
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       gap: 8px;
+       padding: 9px 15px;
+       border-radius: var(--radius-pill);
+       border: 1px solid transparent;
+       font-size: 0.88rem;
+       font-weight: 500;
+       text-decoration: none;
+       cursor: pointer;
+       transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+       white-space: nowrap;
+     }
+
+     .button-primary {
+       background: linear-gradient(135deg, var(--accent), var(--accent-2));
+       color: #0b1220;
+       box-shadow: 0 12px 30px var(--accent-soft);
+     }
+
+     .button-primary:hover {
+       transform: translateY(-1px);
+       box-shadow: 0 18px 40px rgba(251, 146, 60, 0.55);
+     }
+
+     .button-ghost {
+       background: rgba(15, 23, 42, 0.64);
+       border-color: rgba(148, 163, 184, 0.55);
+       color: var(--text);
+     }
+
+     .button-ghost:hover {
+       background: rgba(15, 23, 42, 0.88);
+       border-color: rgba(248, 250, 252, 0.8);
+       box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+       transform: translateY(-1px);
+     }
+
+     .button-icon {
+       width: 16px;
+       height: 16px;
+       border-radius: 999px;
+       border: 1px solid rgba(15, 23, 42, 0.5);
+       background: rgba(15, 23, 42, 0.06);
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       font-size: 0.7rem;
+     }
+
+     .meta-row {
+       display: flex;
+       flex-wrap: wrap;
+       gap: 8px 16px;
+       align-items: center;
+       font-size: 0.78rem;
+       color: var(--muted);
+       margin-top: 10px;
+     }
+
+     .meta-label {
+       text-transform: uppercase;
+       letter-spacing: 0.13em;
+       font-size: 0.7rem;
+       color: rgba(209, 213, 219, 0.9);
+     }
+
+     .meta-dot {
+       width: 3px;
+       height: 3px;
+       border-radius: 999px;
+       background: rgba(148, 163, 184, 0.8);
+     }
+
+     .meta-tag {
+       padding: 4px 9px;
+       border-radius: var(--radius-pill);
+       border: 1px solid rgba(148, 163, 184, 0.5);
+       background: rgba(15, 23, 42, 0.8);
+     }
+
+     .side-panel {
+       display: flex;
+       flex-direction: column;
+       gap: 14px;
+     }
+
+     .card {
+       background: radial-gradient(circle at top right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
+       border-radius: var(--radius-lg);
+       border: 1px solid rgba(148, 163, 184, 0.45);
+       box-shadow: var(--shadow-subtle);
+       padding: 14px 14px 13px;
+     }
+
+     .card-header {
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       gap: 10px;
+       margin-bottom: 8px;
+     }
+
+     .card-header-main {
+       display: flex;
+       align-items: center;
+       gap: 8px;
+     }
+
+     .card-logo {
+       width: 26px;
+       height: 26px;
+       border-radius: 8px;
+       object-fit: cover;
+       box-shadow: 0 0 10px var(--accent-soft);
+     }
+
+     .brand-logo {
+       width: 72px;
+       height: 72px;
+       border-radius: 16px;
+       object-fit: cover;
+       box-shadow: 0 0 18px rgba(255, 45, 172, 0.4), 0 0 18px rgba(41, 224, 255, 0.4);
+     }
+
+     .card-title {
+       font-size: 0.86rem;
+       text-transform: uppercase;
+       letter-spacing: 0.16em;
+       color: rgba(209, 213, 219, 0.95);
+     }
+
+     .card-kicker {
+       font-size: 0.68rem;
+       text-transform: uppercase;
+       letter-spacing: 0.14em;
+       color: var(--muted);
+     }
+
+     .card-body {
+       font-size: 0.84rem;
+       color: var(--muted);
+       line-height: 1.6;
+     }
+
+     .link-list {
+       list-style: none;
+       margin: 8px 0 0;
+       padding: 0;
+       display: grid;
+       gap: 4px;
+     }
+
+     .link-list a {
+       color: #e5e7eb;
+       text-decoration: none;
+       font-size: 0.82rem;
+       display: inline-flex;
+       align-items: center;
+       gap: 6px;
+       padding: 3px 0;
+     }
+
+     .link-list a span {
+       font-size: 0.76rem;
+       color: rgba(148, 163, 184, 0.9);
+     }
+
+     .link-list a:hover {
+       color: #fef3c7;
+     }
+
+     .link-chevron {
+       font-size: 0.8rem;
+       opacity: 0.7;
+     }
+
+     .badge-row {
+       display: flex;
+       flex-wrap: wrap;
+       gap: 6px;
+       margin-top: 8px;
+     }
+
+     .badge {
+       border-radius: var(--radius-pill);
+       padding: 3px 8px;
+       border: 1px solid rgba(148, 163, 184, 0.55);
+       font-size: 0.72rem;
+       color: #e5e7eb;
+       background: rgba(15, 23, 42, 0.85);
+     }
+
+     footer {
+       margin-top: 2px;
+       font-size: 0.78rem;
+       color: rgba(148, 163, 184, 0.85);
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       gap: 10px;
+       flex-wrap: wrap;
+     }
+
+     .footer-links {
+       display: flex;
+       flex-wrap: wrap;
+       gap: 10px;
+       align-items: center;
+     }
+
+     .footer-links a {
+       color: rgba(209, 213, 219, 0.96);
+       text-decoration: none;
+     }
+
+     .footer-links a:hover {
+       color: #fef3c7;
+     }
+
+     @media (max-width: 880px) {
+       main {
+         grid-template-columns: minmax(0, 1fr);
+       }
+
+       .hero-card {
+         padding: 22px 18px 20px;
+       }
+     }
+
+     @media (max-width: 600px) {
+       .page-shell {
+         padding-inline: 16px;
+       }
+
+       header {
+         flex-direction: column;
+         align-items: flex-start;
+       }
+
+       .brand-title {
+         font-size: 1.15rem;
+       }
+     }
+   </style>
+ </head>
+ <body>
+   <div class="page-shell">
+     <header>
+       <div class="brand">
+         <img class="brand-logo" src="img/logo.png" alt="openBrushograph logo" />
+         <div class="brand-text">
+           <div class="brand-title">openBrushograph</div>
+           <div class="brand-subtitle">CNC painting · open hardware</div>
+         </div>
+       </div>
+       <div class="chip">
+         <span class="chip-dot"></span>
+         <span>Open tools for playful machine painting</span>
+       </div>
+     </header>
+
+     <main>
+       <section class="hero-card" aria-labelledby="hero-heading">
+         <div class="hero-inner">
+           <div class="pill-row">
+             <div class="pill">
+               <span>Open hardware</span>
+             </div>
+             <div class="pill">
+               <span>G-code painting</span>
+             </div>
+             <div class="pill">
+               <span>Workshops & tinkering</span>
+             </div>
+             <div class="pill-badge">Community project</div>
+           </div>
+
+           <h1 id="hero-heading" class="hero-title">
+             CNC painting tools for
+             <span>brushes, inks & improvised machines.</span>
+           </h1>
+
+           <p class="hero-lead">
+             openBrushograph grows out of the Brushograph experiments in "brushology" – playful ways of
+             painting with a mechatronic brush. It brings together low-cost CNC mechanics, brush heads,
+             inks and hacked-together controllers. Here you will find firmware extensions, workshop files
+             and documentation for openBrushograph machines and related experiments.
+           </p>
+
+           <div class="hero-cta-row">
+             <a class="button button-primary" href="https://github.com/openBrushograph" target="_blank" rel="noreferrer">
+               <span class="button-icon">★</span>
+               <span>Browse projects on GitHub</span>
+             </a>
+             <a class="button button-ghost" href="https://github.com/openBrushograph/openBrushograph.github.io" target="_blank" rel="noreferrer">
+               <span>Source of this site</span>
+             </a>
+           </div>
+
+           <div class="meta-row">
+             <div class="meta-label">Repos</div>
+             <div class="meta-dot"></div>
+             <div class="meta-tag">Hardware design</div>
+             <div class="meta-tag">FluidNC extensions</div>
+             <div class="meta-tag">Workshop examples</div>
+           </div>
+         </div>
+       </section>
+
+       <aside class="side-panel" aria-label="Project links and resources">
+         <article class="card">
+           <div class="card-header">
+             <div class="card-header-main">
+               <img class="card-logo" src="img/logo.png" alt="Brushograph icon" />
+               <div>
+                 <div class="card-title">Repositories</div>
+                 <div class="card-kicker">Code · configs · documentation</div>
+               </div>
+             </div>
+           </div>
+           <div class="card-body">
+             <ul class="link-list">
+               <li>
+                 <a href="https://wiki.sgmk-ssam.ch/wiki/Brushograph" target="_blank" rel="noreferrer">
+                   <span>Brushograph wiki – context & build notes</span>
+                   <span class="link-chevron">↗</span>
+                 </a>
+               </li>
+               <li>
+                 <a href="https://brushograph.pro/" target="_blank" rel="noreferrer">
+                   <span>brushograph.pro – main web UI</span>
+                   <span class="link-chevron">↗</span>
+                 </a>
+               </li>
+               <li>
+                 <a href="https://brushograph.pro/webui/" target="_blank" rel="noreferrer">
+                   <span>brushograph.pro/webui – SVG → G-code</span>
+                   <span class="link-chevron">↗</span>
+                 </a>
+               </li>
+               <li>
+                 <a href="https://github.com/openBrushograph/fluidNC_extensions" target="_blank" rel="noreferrer">
+                   <span>fluidNC_extensions – ESP32 / FluidNC tweaks</span>
+                   <span class="link-chevron">↗</span>
+                 </a>
+               </li>
+               <li>
+                 <a href="https://github.com/openBrushograph/Brushograph_workshop_examples" target="_blank" rel="noreferrer">
+                   <span>Brushograph_workshop_examples – labs & files</span>
+                   <span class="link-chevron">↗</span>
+                 </a>
+               </li>
+               <li>
+                 <a href="https://github.com/openBrushograph/openBrushograph_hardware" target="_blank" rel="noreferrer">
+                   <span>openBrushograph_hardware – mechanics & parts</span>
+                   <span class="link-chevron">↗</span>
+                 </a>
+               </li>
+             </ul>
+             <div class="badge-row">
+               <div class="badge">Hackable CNC painting setups</div>
+               <div class="badge">Low-cost materials</div>
+               <div class="badge">Work-in-progress labs</div>
+             </div>
+           </div>
+         </article>
+
+         <article class="card">
+           <div class="card-header">
+             <div>
+               <div class="card-title">How to get started</div>
+               <div class="card-kicker">Mini guide</div>
+             </div>
+           </div>
+           <div class="card-body">
+             <p>
+               1. Read the <a href="https://wiki.sgmk-ssam.ch/wiki/Brushograph" target="_blank" rel="noreferrer">Brushograph wiki</a>
+               for background, construction notes and links to earlier machines.
+             </p>
+             <p>
+               2. Use <a href="https://brushograph.pro/" target="_blank" rel="noreferrer">brushograph.pro</a>
+               or the <a href="https://brushograph.pro/webui/" target="_blank" rel="noreferrer">SVG → G-code WebUI</a>
+               to generate and tweak brush-friendly toolpaths.
+             </p>
+             <p>
+               3. Explore the openBrushograph repositories for FluidNC extensions, hardware and workshop
+               examples, then adapt them to your own DIY CNC painting setup.
+             </p>
+             <p>
+               4. Experiment with different brushes, inks, papers, ceramics or glass – and feed your findings
+               back into the wiki, issues and forks.
+             </p>
+           </div>
+         </article>
+       </aside>
+     </main>
+
+     <footer>
+       <div>
+         Maintained under the <strong>openBrushograph</strong> umbrella · experiments may break, fork freely.
+       </div>
+       <div class="footer-links">
+         <a href="https://github.com/openBrushograph" target="_blank" rel="noreferrer">GitHub org</a>
+         <a href="https://wiki.sgmk-ssam.ch/wiki/Brushograph" target="_blank" rel="noreferrer">Wiki</a>
+         <a href="https://brushograph.pro/" target="_blank" rel="noreferrer">brushograph.pro</a>
+       </div>
+     </footer>
+   </div>
+ </body>
 </html>
