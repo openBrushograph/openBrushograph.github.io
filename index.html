@@ -565,74 +565,81 @@
              </div>
            </div>
            <div class="card-body">
-             <ul class="link-list">
-               <li>
-                 <a href="https://wiki.sgmk-ssam.ch/wiki/Brushograph" target="_blank" rel="noreferrer">
-                   <span>Brushograph wiki – context & build notes</span>
-                   <span class="link-chevron">↗</span>
-                 </a>
-               </li>
-               <li>
-                 <a href="https://brushograph.pro/" target="_blank" rel="noreferrer">
-                   <span>brushograph.pro – main web UI</span>
-                   <span class="link-chevron">↗</span>
-                 </a>
-               </li>
-               <li>
-                 <a href="https://brushograph.pro/webui/" target="_blank" rel="noreferrer">
-                   <span>brushograph.pro/webui – SVG → G-code</span>
-                   <span class="link-chevron">↗</span>
-                 </a>
-               </li>
-               <li>
-                 <a href="https://github.com/openBrushograph/fluidNC_extensions" target="_blank" rel="noreferrer">
-                   <span>fluidNC_extensions – ESP32 / FluidNC tweaks</span>
-                   <span class="link-chevron">↗</span>
-                 </a>
-               </li>
-               <li>
-                 <a href="https://github.com/openBrushograph/Brushograph_workshop_examples" target="_blank" rel="noreferrer">
-                   <span>Brushograph_workshop_examples – labs & files</span>
-                   <span class="link-chevron">↗</span>
-                 </a>
-               </li>
-               <li>
-                 <a href="https://github.com/openBrushograph/openBrushograph_hardware" target="_blank" rel="noreferrer">
-                   <span>openBrushograph_hardware – mechanics & parts</span>
-                   <span class="link-chevron">↗</span>
-                 </a>
-               </li>
-                 <li>
-    <a href="extensions/Raster-painter.html">
-      <span>Raster-painter – raster painting helper</span>
-      <span class="link-chevron">↗</span>
-    </a>
-  </li>
-  <li>
-    <a href="extensions/backlash_fix.html">
-      <span>backlash_fix – compensate axis backlash</span>
-      <span class="link-chevron">↗</span>
-    </a>
-  </li>
-  <li>
-    <a href="extensions/lb2gcode.html">
-      <span>lb2gcode – post-process LightBurn G-code</span>
-      <span class="link-chevron">↗</span>
-    </a>
-  </li>
-  <li>
-    <a href="extensions/lbrasterfix.html">
-      <span>lbrasterfix – raster G-code fixer</span>
-      <span class="link-chevron">↗</span>
-    </a>
-  </li>
-             </ul>
-             <div class="badge-row">
-               <div class="badge">Hackable CNC painting setups</div>
-               <div class="badge">Low-cost materials</div>
-               <div class="badge">Work-in-progress labs</div>
-             </div>
-           </div>
+            <ul class="link-list">
+              <li>
+                <a href="https://wiki.sgmk-ssam.ch/wiki/Brushograph" target="_blank" rel="noreferrer">
+                  <span>Brushograph wiki – context & build notes</span>
+                  <span class="link-chevron">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://brushograph.pro/" target="_blank" rel="noreferrer">
+                  <span>brushograph.pro – main web UI</span>
+                  <span class="link-chevron">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://brushograph.pro/webui/" target="_blank" rel="noreferrer">
+                  <span>brushograph.pro/webui – SVG → G-code</span>
+                  <span class="link-chevron">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/openBrushograph/fluidNC_extensions" target="_blank" rel="noreferrer">
+                  <span>fluidNC_extensions – ESP32 / FluidNC tweaks</span>
+                  <span class="link-chevron">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/openBrushograph/Brushograph_workshop_examples" target="_blank" rel="noreferrer">
+                  <span>Brushograph_workshop_examples – labs & files</span>
+                  <span class="link-chevron">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/openBrushograph/openBrushograph_hardware" target="_blank" rel="noreferrer">
+                  <span>openBrushograph_hardware – mechanics & parts</span>
+                  <span class="link-chevron">↗</span>
+                </a>
+              </li>
+            </ul>
+
+            <div class="badge-row" style="margin-top: 10px;">
+              <div class="badge">Extensions – client-side G-code helpers</div>
+            </div>
+            <ul class="link-list" style="margin-top: 4px;">
+              <li>
+                <a href="extensions/Raster-painter.html">
+                  <span>Raster-painter – upload an image and generate FluidNC‑friendly raster G-code, including brush dipping, wiping and optional X/Y backlash compensation.</span>
+                  <span class="link-chevron">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="extensions/backlash_fix.html">
+                  <span>backlash_fix – take an existing G-code file and insert safe correction moves whenever X/Y direction changes, to compensate mechanical backlash.</span>
+                  <span class="link-chevron">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="extensions/lb2gcode.html">
+                  <span>lb2gcode – post-process LightBurn G-code to add color pick-ups, washing sequences and path‑length based brush refreshes using layer names.</span>
+                  <span class="link-chevron">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="extensions/lbrasterfix.html">
+                  <span>lbrasterfix – convert LightBurn raster S power values into Z up/down moves inside Scan sections, with optional scan feed override and S removal.</span>
+                  <span class="link-chevron">↗</span>
+                </a>
+              </li>
+            </ul>
+
+            <div class="badge-row">
+              <div class="badge">Hackable CNC painting setups</div>
+              <div class="badge">Low-cost materials</div>
+              <div class="badge">Work-in-progress labs</div>
+            </div>
+          </div>
          </article>
 
          <article class="card">
