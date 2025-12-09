@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raster S→Z Converter (Scan Lift)</title>
+    <title>Raster S→Z + Backlash Fix (Brushograph)</title>
     <style>
         body { font-family: sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
-        .container { max-width: 720px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         h2 { color: #0056b3; margin-top: 0; }
         .form-row { display: flex; flex-wrap: wrap; gap: 10px; }
         .form-group { margin-bottom: 15px; flex: 1 1 150px; min-width: 150px; }
@@ -15,22 +15,36 @@
         input[type="checkbox"] { margin-right: 5px; }
         button { background: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; }
         button:hover { background: #004494; }
-        #status { margin-top: 15px; padding: 10px; background: #e9ecef; border-radius: 4px; white-space: pre-wrap; display: none; max-height: 200px; overflow-y: auto; font-size: 13px; }
-        .success { color: #008000; }
-        .error { color: #c00000; }
+        #status {
+            margin-top: 15px;
+            padding: 10px;
+            background: #000;
+            color: #00ff66;
+            border-radius: 4px;
+            border: 1px solid #333;
+            white-space: pre-wrap;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+            font-size: 12px;
+            font-family: "Fira Mono", "Consolas", "Menlo", monospace;
+        }
+        .success { color: #00ff66; }
+        .error { color: #ff5555; }
         .small { font-size: 12px; color: #555; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Raster S→Z Converter (Scan Lift for Brushograph)</h2>
+    <h2>Raster S→Z Converter + Optional Backlash Fix</h2>
     <p>
-        Takes a LightBurn raster G-code (with laser power in <code>S</code>) and converts it to
-        Z up / down moves inside <code>Scan</code> sections.
-        Outside <code>Scan</code> (e.g. <code>Offset</code> / <code>Cut</code> comments) the file is left unchanged.
+        This tool:
+        <br>1. Converts LightBurn raster G-code (laser power in <code>S</code>) into Z up/down moves inside <code>Scan</code> sections.
+        <br>2. Optionally applies FluidNC-safe backlash compensation (absolute + relative G90/G91), preserving raster patterns.
     </p>
 
+    <h3>Step 1: Raster S→Z settings</h3>
     <div class="form-row">
         <div class="form-group">
             <label for="zUp">Z up amount (mm):</label>
@@ -69,17 +83,45 @@
         </div>
     </div>
 
+    <h3>Step 2: Optional Backlash Fix (FluidNC)</h3>
+    <div class="form-row">
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="applyBacklash" checked>
+                Apply backlash compensation after S→Z
+            </label>
+            <div class="small">Uncheck if you only want S→Z conversion.</div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="bx">X Axis Backlash (mm):</label>
+            <input type="number" id="bx" value="1.4" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="by">Y Axis Backlash (mm):</label>
+            <input type="number" id="by" value="1.5" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="safeFeed">Safe Feed Rate (F):</label>
+            <input type="number" id="safeFeed" value="1200" step="10">
+            <div class="small">Feed for backlash G0 moves.</div>
+        </div>
+    </div>
+
     <div class="form-group">
         <label for="fileInput">Select raster G-code:</label>
         <input type="file" id="fileInput" accept=".gcode,.nc,.txt">
     </div>
 
-    <button onclick="runRasterS2Z()">Convert and Download</button>
+    <button onclick="runRasterS2ZBacklash()">Convert (S→Z) and Download (with optional Backlash)</button>
 
     <div id="status"></div>
 </div>
 
 <script>
+// --- Shared helpers (copied from raster_s_to_z_en.html) ---
 function _fmt(val) {
     try {
         const f = parseFloat(val);
@@ -119,7 +161,7 @@ function replaceFeed(line, scanFeed) {
 function detectScanFeedFromHeader(lines) {
     for (let i = 0; i < Math.min(50, lines.length); i++) {
         const ln = lines[i];
-        const m = ln.match(/;\s*Scan\s*@\s*(\d+(?:\.\d+)?)\s*mm\s*\/?\s*min/i);
+        const m = ln.match(/;\s*Scan\s*@\s*(\d+(?:\.\d+)?)\s*mm\s*\/?.*min/i);
         if (m) {
             const v = parseFloat(m[1]);
             if (Number.isFinite(v)) return v;
@@ -178,14 +220,206 @@ function processRasterS2Z(lines, opts) {
     return out;
 }
 
-function runRasterS2Z() {
+// --- FluidNC Backlash class (adapted from baclash_fix_en.html) ---
+class FluidNCSafeBacklash {
+    constructor(bx, by, threshold = 0.05, safeFeed = 200) {
+        this.bx = bx;
+        this.by = by;
+        this.threshold = threshold;
+        this.safeFeed = safeFeed;
+        
+        // Logical position tracking
+        this.current_x = 0.0;
+        this.current_y = 0.0;
+        
+        // Offset tracking
+        this.offset_x = 0.0;
+        this.offset_y = 0.0;
+        
+        // Directions: 0=Unknown, 1=Positive, -1=Negative
+        this.dir_x = 0;
+        this.dir_y = 0;
+
+        // Motion mode tracking: false = G90 (absolute), true = G91 (relative)
+        this.inRelativeMode = false;
+    }
+
+    processLine(originalLine, currentFeed) {
+        let newLines = [];
+        let line = originalLine.trim();
+        
+        if (!line || line.startsWith(';')) {
+            return { lines: [originalLine], newFeed: currentFeed };
+        }
+
+        const upper = line.toUpperCase();
+
+        // Detect G90/G91 mode switches and pass those lines through
+        if (upper.includes('G91')) {
+            this.inRelativeMode = true;
+            return { lines: [originalLine], newFeed: currentFeed };
+        }
+
+        if (upper.includes('G90')) {
+            this.inRelativeMode = false;
+            return { lines: [originalLine], newFeed: currentFeed };
+        }
+
+        // 1. Parsing
+        let target_x = this.current_x;
+        let target_y = this.current_y;
+        let target_z = null;
+        let has_move = false;
+        let nextFeed = currentFeed;
+
+        // Regex for parsing values
+        const rx = /X([-\d\.]+)/;
+        const ry = /Y([-\d\.]+)/;
+        const rz = /Z([-\d\.]+)/;
+        const rf = /F([-\d\.]+)/;
+
+        // dx_move/dy_move: actual movement in this line (relative or absolute)
+        let dx_move = 0.0;
+        let dy_move = 0.0;
+
+        let mx = line.match(rx);
+        if (mx) {
+            const valX = parseFloat(mx[1]);
+            if (this.inRelativeMode) {
+                dx_move = valX;
+                target_x = this.current_x + valX;
+            } else {
+                target_x = valX;
+                dx_move = target_x - this.current_x;
+            }
+            has_move = true;
+        }
+
+        let my = line.match(ry);
+        if (my) {
+            const valY = parseFloat(my[1]);
+            if (this.inRelativeMode) {
+                dy_move = valY;
+                target_y = this.current_y + valY;
+            } else {
+                target_y = valY;
+                dy_move = target_y - this.current_y;
+            }
+            has_move = true;
+        }
+
+        let mz = line.match(rz);
+        if (mz) { target_z = parseFloat(mz[1]); }
+
+        let mf = line.match(rf);
+        if (mf) { nextFeed = parseFloat(mf[1]); }
+
+        if (!has_move) {
+            return { lines: [originalLine], newFeed: nextFeed };
+        }
+
+        // 2. X Axis Logic
+        let dx = target_x - this.current_x;
+        if (Math.abs(dx) > this.threshold) {
+            let new_dir_x = dx > 0 ? 1 : -1;
+            if (this.dir_x !== 0 && new_dir_x !== this.dir_x) {
+                let change = new_dir_x === 1 ? this.bx : -this.bx;
+                this.offset_x += change;
+
+                if (this.inRelativeMode) {
+                    // In G91, inject a small relative G0 only on X
+                    newLines.push(`; --- FIX X Backlash (relative): ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 X${change.toFixed(3)} F${this.safeFeed}`);
+                } else {
+                    let phys_x = this.current_x + this.offset_x;
+                    let phys_y = this.current_y + this.offset_y;
+                    
+                    // Prevent negative coordinates (Soft Limit safety)
+                    if (phys_x < 0) phys_x = 0;
+                    if (phys_y < 0) phys_y = 0;
+
+                    newLines.push(`; --- FIX X Backlash: ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 X${phys_x.toFixed(3)} Y${phys_y.toFixed(3)} F${this.safeFeed}`);
+                }
+            }
+            this.dir_x = new_dir_x;
+        }
+
+        // 3. Y Axis Logic
+        let dy = target_y - this.current_y;
+        if (Math.abs(dy) > this.threshold) {
+            let new_dir_y = dy > 0 ? 1 : -1;
+            if (this.dir_y !== 0 && new_dir_y !== this.dir_y) {
+                let change = new_dir_y === 1 ? this.by : -this.by;
+                this.offset_y += change;
+
+                if (this.inRelativeMode) {
+                    newLines.push(`; --- FIX Y Backlash (relative): ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 Y${change.toFixed(3)} F${this.safeFeed}`);
+                } else {
+                    let phys_x = this.current_x + this.offset_x;
+                    let phys_y = this.current_y + this.offset_y;
+
+                    // Prevent negative coordinates
+                    if (phys_x < 0) phys_x = 0;
+                    if (phys_y < 0) phys_y = 0;
+
+                    newLines.push(`; --- FIX Y Backlash: ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 X${phys_x.toFixed(3)} Y${phys_y.toFixed(3)} F${this.safeFeed}`);
+                }
+            }
+            this.dir_y = new_dir_y;
+        }
+
+        // 4. Output move
+        if (this.inRelativeMode) {
+            // In G91 mode we keep the original raster move line unchanged:
+            // compensation is done only via the extra G0 lines above.
+            newLines.push(originalLine);
+
+            // Update logical position using the parsed target
+            this.current_x = target_x;
+            this.current_y = target_y;
+            return { lines: newLines, newFeed: nextFeed };
+        }
+
+        // Absolute G90: output move with offset applied
+        let final_x = target_x + this.offset_x;
+        let final_y = target_y + this.offset_y;
+
+        if (final_x < 0) final_x = 0;
+        if (final_y < 0) final_y = 0;
+
+        let cmd = line.toUpperCase().includes("G0") ? "G0" : "G1";
+        let out = `${cmd} X${final_x.toFixed(3)} Y${final_y.toFixed(3)}`;
+        
+        if (target_z !== null) out += ` Z${target_z.toFixed(3)}`;
+        if (cmd === "G1") out += ` F${parseInt(nextFeed)}`;
+
+        newLines.push(out);
+
+        this.current_x = target_x;
+        this.current_y = target_y;
+
+        return { lines: newLines, newFeed: nextFeed };
+    }
+}
+
+// --- Main combined pipeline ---
+function runRasterS2ZBacklash() {
     const fileInput = document.getElementById('fileInput');
     const statusDiv = document.getElementById('status');
+
     const zUp = parseFloat(document.getElementById('zUp').value || '5');
     const zFeed = parseFloat(document.getElementById('zFeed').value || '500');
     const scanFeedInput = document.getElementById('scanFeed').value;
     const useG0 = document.getElementById('useG0').checked;
     const removeS = document.getElementById('removeS').checked;
+
+    const applyBacklash = document.getElementById('applyBacklash').checked;
+    const bx = parseFloat(document.getElementById('bx').value || '1.4');
+    const by = parseFloat(document.getElementById('by').value || '1.5');
+    const safeFeed = parseFloat(document.getElementById('safeFeed').value || '1200');
 
     if (!fileInput.files.length) {
         alert('Please select a G-code file.');
@@ -204,6 +438,7 @@ function runRasterS2Z() {
             const rawLines = content.split(/\r?\n/);
             const lines = rawLines.map(l => l + '\n');
 
+            // Step 1: Raster S→Z
             let scanFeed = null;
             if (scanFeedInput && scanFeedInput.trim() !== '') {
                 const v = parseFloat(scanFeedInput);
@@ -212,7 +447,7 @@ function runRasterS2Z() {
                 scanFeed = detectScanFeedFromHeader(lines);
             }
 
-            const resultLines = processRasterS2Z(lines, {
+            const rasterLines = processRasterS2Z(lines, {
                 zUp: Number.isFinite(zUp) ? zUp : 5,
                 zFeed: Number.isFinite(zFeed) ? zFeed : 500,
                 useG0: useG0,
@@ -220,7 +455,39 @@ function runRasterS2Z() {
                 scanFeed: scanFeed,
             });
 
-            const outText = resultLines.join('');
+            let finalLines = rasterLines;
+            let backlashReport = [];
+
+            if (applyBacklash) {
+                // Step 2: Backlash compensation on the raster-converted code
+                const fixer = new FluidNCSafeBacklash(
+                    Number.isFinite(bx) ? bx : 1.4,
+                    Number.isFinite(by) ? by : 1.5,
+                    0.05,
+                    Number.isFinite(safeFeed) ? safeFeed : 1200
+                );
+
+                let currentFeed = 500;
+                let outLines = [];
+
+                // Process each line without trailing newline
+                rasterLines.forEach(l => {
+                    const noNl = l.replace(/\n$/, '');
+                    const result = fixer.processLine(noNl, currentFeed);
+                    currentFeed = result.newFeed;
+                    result.lines.forEach(x => outLines.push(x));
+                });
+
+                finalLines = outLines.map(x => x + '\n');
+
+                backlashReport.push('Backlash compensation applied:');
+                backlashReport.push(`  bx: ${_fmt(bx)} mm, by: ${_fmt(by)} mm`);
+                backlashReport.push(`  safeFeed: ${_fmt(safeFeed)} F`);
+            } else {
+                backlashReport.push('Backlash compensation: disabled');
+            }
+
+            const outText = finalLines.join('');
 
             let report = [];
             report.push('Raster S→Z conversion done.');
@@ -228,12 +495,14 @@ function runRasterS2Z() {
             report.push(`  useG0 for Z: ${useG0 ? 'yes' : 'no'}`);
             report.push(`  scanFeed: ${scanFeed != null ? _fmt(scanFeed) + ' mm/min' : 'unchanged'}`);
             report.push(`  remove S: ${removeS ? 'yes' : 'no'}`);
+            report.push('');
+            report.push(...backlashReport);
 
             const blob = new Blob([outText], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'rasterZ_' + file.name;
+            a.download = 'rasterZ_backlash_' + file.name;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);

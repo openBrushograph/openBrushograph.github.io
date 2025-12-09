@@ -68,6 +68,9 @@ class FluidNCSafeBacklash {
         // Directions: 0=Unknown, 1=Positive, -1=Negative
         this.dir_x = 0;
         this.dir_y = 0;
+
+        // Motion mode tracking: false = G90 (absolute), true = G91 (relative)
+        this.inRelativeMode = false;
     }
 
     processLine(originalLine, currentFeed) {
@@ -75,6 +78,19 @@ class FluidNCSafeBacklash {
         let line = originalLine.trim();
         
         if (!line || line.startsWith(';')) {
+            return { lines: [originalLine], newFeed: currentFeed };
+        }
+
+        const upper = line.toUpperCase();
+
+        // Detect G90/G91 mode switches and pass those lines through
+        if (upper.includes('G91')) {
+            this.inRelativeMode = true;
+            return { lines: [originalLine], newFeed: currentFeed };
+        }
+
+        if (upper.includes('G90')) {
+            this.inRelativeMode = false;
             return { lines: [originalLine], newFeed: currentFeed };
         }
 
@@ -91,11 +107,35 @@ class FluidNCSafeBacklash {
         const rz = /Z([-\d\.]+)/;
         const rf = /F([-\d\.]+)/;
 
+        // dx_move/dy_move: actual movement in this line (relative or absolute)
+        let dx_move = 0.0;
+        let dy_move = 0.0;
+
         let mx = line.match(rx);
-        if (mx) { target_x = parseFloat(mx[1]); has_move = true; }
+        if (mx) {
+            const valX = parseFloat(mx[1]);
+            if (this.inRelativeMode) {
+                dx_move = valX;
+                target_x = this.current_x + valX;
+            } else {
+                target_x = valX;
+                dx_move = target_x - this.current_x;
+            }
+            has_move = true;
+        }
 
         let my = line.match(ry);
-        if (my) { target_y = parseFloat(my[1]); has_move = true; }
+        if (my) {
+            const valY = parseFloat(my[1]);
+            if (this.inRelativeMode) {
+                dy_move = valY;
+                target_y = this.current_y + valY;
+            } else {
+                target_y = valY;
+                dy_move = target_y - this.current_y;
+            }
+            has_move = true;
+        }
 
         let mz = line.match(rz);
         if (mz) { target_z = parseFloat(mz[1]); }
@@ -115,15 +155,21 @@ class FluidNCSafeBacklash {
                 let change = new_dir_x === 1 ? this.bx : -this.bx;
                 this.offset_x += change;
 
-                let phys_x = this.current_x + this.offset_x;
-                let phys_y = this.current_y + this.offset_y;
-                
-                // Prevent negative coordinates (Soft Limit safety)
-                if (phys_x < 0) phys_x = 0;
-                if (phys_y < 0) phys_y = 0;
+                if (this.inRelativeMode) {
+                    // In G91, inject a small relative G0 only on X
+                    newLines.push(`; --- FIX X Backlash (relative): ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 X${change.toFixed(3)} F${this.safeFeed}`);
+                } else {
+                    let phys_x = this.current_x + this.offset_x;
+                    let phys_y = this.current_y + this.offset_y;
+                    
+                    // Prevent negative coordinates (Soft Limit safety)
+                    if (phys_x < 0) phys_x = 0;
+                    if (phys_y < 0) phys_y = 0;
 
-                newLines.push(`; --- FIX X Backlash: ${change.toFixed(3)}mm ---`);
-                newLines.push(`G0 X${phys_x.toFixed(3)} Y${phys_y.toFixed(3)} F${this.safeFeed}`);
+                    newLines.push(`; --- FIX X Backlash: ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 X${phys_x.toFixed(3)} Y${phys_y.toFixed(3)} F${this.safeFeed}`);
+                }
             }
             this.dir_x = new_dir_x;
         }
@@ -136,20 +182,37 @@ class FluidNCSafeBacklash {
                 let change = new_dir_y === 1 ? this.by : -this.by;
                 this.offset_y += change;
 
-                let phys_x = this.current_x + this.offset_x;
-                let phys_y = this.current_y + this.offset_y;
+                if (this.inRelativeMode) {
+                    newLines.push(`; --- FIX Y Backlash (relative): ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 Y${change.toFixed(3)} F${this.safeFeed}`);
+                } else {
+                    let phys_x = this.current_x + this.offset_x;
+                    let phys_y = this.current_y + this.offset_y;
 
-                // Prevent negative coordinates
-                if (phys_x < 0) phys_x = 0;
-                if (phys_y < 0) phys_y = 0;
+                    // Prevent negative coordinates
+                    if (phys_x < 0) phys_x = 0;
+                    if (phys_y < 0) phys_y = 0;
 
-                newLines.push(`; --- FIX Y Backlash: ${change.toFixed(3)}mm ---`);
-                newLines.push(`G0 X${phys_x.toFixed(3)} Y${phys_y.toFixed(3)} F${this.safeFeed}`);
+                    newLines.push(`; --- FIX Y Backlash: ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 X${phys_x.toFixed(3)} Y${phys_y.toFixed(3)} F${this.safeFeed}`);
+                }
             }
             this.dir_y = new_dir_y;
         }
 
-        // 4. Output original move with offset applied
+        // 4. Output move
+        if (this.inRelativeMode) {
+            // In G91 mode we keep the original raster move line unchanged:
+            // compensation is done only via the extra G0 lines above.
+            newLines.push(originalLine);
+
+            // Update logical position using the parsed target
+            this.current_x = target_x;
+            this.current_y = target_y;
+            return { lines: newLines, newFeed: nextFeed };
+        }
+
+        // Absolute G90: output move with offset applied
         let final_x = target_x + this.offset_x;
         let final_y = target_y + this.offset_y;
 

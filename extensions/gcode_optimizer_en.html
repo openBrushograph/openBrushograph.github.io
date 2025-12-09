@@ -15,9 +15,22 @@
         input[type="checkbox"] { margin-right: 5px; }
         button { background: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; }
         button:hover { background: #004494; }
-        #status { margin-top: 15px; padding: 10px; background: #e9ecef; border-radius: 4px; white-space: pre-wrap; display: none; max-height: 200px; overflow-y: auto; font-size: 13px; }
-        .success { color: #008000; }
-        .error { color: #c00000; }
+        #status {
+            margin-top: 15px;
+            padding: 10px;
+            background: #000;
+            color: #00ff66;
+            border-radius: 4px;
+            border: 1px solid #333;
+            white-space: pre-wrap;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+            font-size: 12px;
+            font-family: "Fira Mono", "Consolas", "Menlo", monospace;
+        }
+        .success { color: #00ff66; }
+        .error { color: #ff5555; }
         .small { font-size: 12px; color: #555; }
     </style>
 </head>
@@ -360,12 +373,16 @@ function optimizeGcodeText(text, options) {
     let current_color_name = "Washing";
     let last_color_name = null;
 
-    const coord_regex = /G[01]\s*X([\d.-]+)Y([\d.-]+)Z[\d.-]+F/;
+    // Flexible coordinate parsing: handle LightBurn styles like
+    //   G1 X34.312 Y40.025 Z0 S800 F1600
+    // where an S parameter may appear between Z and F, and spacing can vary.
+    const coordXRegex = /X([\d.-]+)/;
+    const coordYRegex = /Y([\d.-]+)/;
     const layer_regex = /;Layer\s+(\w+)/;
     const m8_regex = /M8/;
     const path_regex = /; Path\s+(\d+)/;
-    const plunge_regex = /Z0F/;
-    const retract_regex = /Z[2-9]F/;
+    const plunge_regex = /Z0(?:\.0+)?\s*F/;
+    const retract_regex = /Z[2-9](?:\.\d+)?\s*F/;
     const cut_header_regex = /;\s*Cut\s*@\s*(\d+)\s*mm\/min/i;
 
     let output_lines = [];
@@ -502,15 +519,22 @@ function optimizeGcodeText(text, options) {
             path_lengths[current_path] = 0;
         }
 
-        if (retract_regex.test(line)) is_drawing = false;
-        if (plunge_regex.test(line)) is_drawing = true;
+        // Drawing state: retract on any G0 with Z>0, plunge on any G1 with Z0
+        if (line.includes('G0') && /Z[1-9]/.test(line)) {
+            is_drawing = false;
+        }
+        if (line.includes('G1') && /Z0\b/.test(line)) {
+            is_drawing = true;
+        }
 
-        const coord_match = line.match(coord_regex);
-        if (coord_match) {
+        // Extract coordinates using flexible X/Y parsing
+        const coordXMatch = line.match(coordXRegex);
+        const coordYMatch = line.match(coordYRegex);
+        if (coordXMatch && coordYMatch) {
             prev_x = current_x;
             prev_y = current_y;
-            current_x = parseFloat(coord_match[1]);
-            current_y = parseFloat(coord_match[2]);
+            current_x = parseFloat(coordXMatch[1]);
+            current_y = parseFloat(coordYMatch[1]);
 
             if ((prev_x !== 0 || prev_y !== 0) && is_drawing && line.includes("G1")) {
                 const dx = current_x - prev_x;
