@@ -385,6 +385,7 @@
        border-radius: 16px;
        object-fit: cover;
        box-shadow: 0 0 18px rgba(255, 45, 172, 0.4), 0 0 18px rgba(41, 224, 255, 0.4);
+       cursor: pointer;
      }
 
      .card-title {
@@ -838,6 +839,7 @@
      const root = document.documentElement;
      const key = 'obg-theme';
      const btn = document.getElementById('themeToggle');
+     const logo = document.querySelector('.brand-logo');
 
      function apply(theme) {
        if (theme === 'light') {
@@ -855,12 +857,15 @@
      }
      apply(saved);
 
-     btn?.addEventListener('click', () => {
+     function toggleTheme() {
        const isLight = root.getAttribute('data-theme') === 'light';
        const next = isLight ? 'dark' : 'light';
        apply(next);
        localStorage.setItem(key, next);
-     });
+     }
+
+     btn?.addEventListener('click', toggleTheme);
+     logo?.addEventListener('click', toggleTheme);
    })();
  </script>
 
