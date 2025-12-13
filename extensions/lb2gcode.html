@@ -373,6 +373,9 @@ function optimizeGcodeText(text, options) {
     let current_color_name = "Washing";
     let last_color_name = null;
 
+    // Track coordinate mode: true if in relative mode (G91), false for absolute (G90)
+    let inRelativeMode = false;
+
     // Flexible coordinate parsing: handle LightBurn styles like
     //   G1 X34.312 Y40.025 Z0 S800 F1600
     // where an S parameter may appear between Z and F, and spacing can vary.
@@ -386,6 +389,19 @@ function optimizeGcodeText(text, options) {
     const cut_header_regex = /;\s*Cut\s*@\s*(\d+)\s*mm\/min/i;
 
     let output_lines = [];
+
+    // Helper: wrap an inserted sequence so it runs in absolute mode when
+    // we are currently in relative mode (G91). This prevents the absolute
+    // coordinates inside the sequence from being misinterpreted as large
+    // relative moves by the controller.
+    function wrapSequenceForMode(seq) {
+        if (inRelativeMode) {
+            return "G90\n" + seq + "\nG91";
+        }
+        return seq;
+    }
+
+    // Add homing sequence (always safe at the very beginning; assume G90)
     output_lines.push(HOMING_SEQUENCE);
 
     let line_index = 0;
@@ -453,11 +469,11 @@ function optimizeGcodeText(text, options) {
                     current_color_name = LAYER_COLOR_MAP[current_layer].name;
 
                     if (previous_color_name !== "None" && previous_color_name !== current_color_name) {
-                        output_lines.push(WASHING_SEQUENCE);
+                        output_lines.push(wrapSequenceForMode(WASHING_SEQUENCE));
                         color_pickup_count["Washing"]++;
                     }
 
-                    output_lines.push(current_color_sequence);
+                    output_lines.push(wrapSequenceForMode(current_color_sequence));
                     color_pickup_count[current_color_name]++;
                     previous_layer = current_layer;
                     last_color_name = current_color_name;
@@ -484,11 +500,11 @@ function optimizeGcodeText(text, options) {
 
                 const previous_color_name = last_color_name || "None";
                 if (previous_color_name !== "None" && previous_color_name !== current_color_name) {
-                    output_lines.push(WASHING_SEQUENCE);
+                    output_lines.push(wrapSequenceForMode(WASHING_SEQUENCE));
                     color_pickup_count["Washing"]++;
                 }
 
-                output_lines.push(current_color_sequence);
+                output_lines.push(wrapSequenceForMode(current_color_sequence));
                 color_pickup_count[current_color_name]++;
                 previous_layer = current_layer;
                 last_color_name = current_color_name;
@@ -513,6 +529,13 @@ function optimizeGcodeText(text, options) {
             pending_original_lines.push(line);
         }
 
+        // Track positioning mode (absolute/relative)
+        if (line.includes("G90")) {
+            inRelativeMode = false;
+        } else if (line.includes("G91")) {
+            inRelativeMode = true;
+        }
+
         const path_match = line.match(path_regex);
         if (path_match) {
             current_path = path_match[1];
@@ -527,18 +550,27 @@ function optimizeGcodeText(text, options) {
             is_drawing = true;
         }
 
-        // Extract coordinates using flexible X/Y parsing
+        // Extract coordinates using flexible X/Y parsing and handle G90/G91
         const coordXMatch = line.match(coordXRegex);
         const coordYMatch = line.match(coordYRegex);
-        if (coordXMatch && coordYMatch) {
-            prev_x = current_x;
-            prev_y = current_y;
-            current_x = parseFloat(coordXMatch[1]);
-            current_y = parseFloat(coordYMatch[1]);
+        if (coordXMatch || coordYMatch) {
+            const prevX = current_x;
+            const prevY = current_y;
 
-            if ((prev_x !== 0 || prev_y !== 0) && is_drawing && line.includes("G1")) {
-                const dx = current_x - prev_x;
-                const dy = current_y - prev_y;
+            if (inRelativeMode) {
+                // Relative mode: treat parsed values as deltas
+                if (coordXMatch) current_x += parseFloat(coordXMatch[1]);
+                if (coordYMatch) current_y += parseFloat(coordYMatch[1]);
+            } else {
+                // Absolute mode: treat parsed values as positions; leave axis
+                // unchanged if it is not present on this line.
+                if (coordXMatch) current_x = parseFloat(coordXMatch[1]);
+                if (coordYMatch) current_y = parseFloat(coordYMatch[1]);
+            }
+
+            if ((prevX !== 0 || prevY !== 0) && is_drawing && line.includes("G1")) {
+                const dx = current_x - prevX;
+                const dy = current_y - prevY;
                 const segment_length = Math.sqrt(dx*dx + dy*dy);
                 total_length += segment_length;
                 accumulated_length += segment_length;
@@ -599,12 +631,12 @@ function optimizeGcodeText(text, options) {
                         }
 
                         if (last_color_name && last_color_name !== current_color_name) {
-                            output_lines.push(WASHING_SEQUENCE);
+                            output_lines.push(wrapSequenceForMode(WASHING_SEQUENCE));
                             color_pickup_count["Washing"]++;
                         }
 
                         color_pickup_count[current_color_name]++;
-                        output_lines.push(current_color_sequence);
+                        output_lines.push(wrapSequenceForMode(current_color_sequence));
                         last_color_name = current_color_name;
 
                         pickup_segments.push([current_layer, current_color_name, accumulated_length]);
@@ -621,7 +653,8 @@ function optimizeGcodeText(text, options) {
     }
 
     flush_pending(current_cut_feedrate);
-    output_lines.push(ENDING_SEQUENCE);
+    // Ensure ending sequence runs in absolute mode if we end in G91
+    output_lines.push(wrapSequenceForMode(ENDING_SEQUENCE));
 
     let optimized_g_code = "";
     for (const l of output_lines) {
