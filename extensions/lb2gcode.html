@@ -42,70 +42,124 @@
         Select a G-code file exported from LightBurn. The optimizer will insert color-picks and washing sequences, reformat G-code, and enforce distance-based color pick-ups.
     </p>
 
-    <div class="form-row">
-        <div class="form-group">
-            <label for="distance">Distance threshold (mm):</label>
-            <input type="number" id="distance" value="100" step="1" min="1">
-            <div class="small">Path length before suggesting a color pickup.</div>
+    <div style="display: flex; gap: 20px; align-items: flex-start; margin-top: 10px;">
+        <!-- Left column: optimizer controls -->
+        <div style="flex: 1 1 55%; min-width: 0;">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="distance">Distance threshold (mm):</label>
+                    <input type="number" id="distance" value="100" step="1" min="1">
+                    <div class="small">Path length before suggesting a color pickup.</div>
+                </div>
+                <div class="form-group">
+                    <label for="forceMultiplier">Force multiplier:</label>
+                    <input type="number" id="forceMultiplier" value="2.0" step="0.1" min="1.0">
+                    <div class="small">Only force pickups when path &gt;= multiplier × threshold.</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="aggressive">
+                        Aggressive mode
+                    </label>
+                    <div class="small">Insert pickups at any G0/G1 once threshold is exceeded.</div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="analyzeOnly">
+                        Analyze only (no optimization)
+                    </label>
+                    <div class="small">Print structure statistics, keep original G-code.</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="color1Layers">Layer names for Color 1 (comma-separated):</label>
+                    <input type="text" id="color1Layers" value="Green, C00, C1">
+                    <div class="small">Example: Green, C00, C1</div>
+                </div>
+                <div class="form-group">
+                    <label for="color2Layers">Layer names for Color 2 (comma-separated):</label>
+                    <input type="text" id="color2Layers" value="Blue, C2">
+                    <div class="small">Example: Blue, C2</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="color3Layers">Layer names for Color 3 (comma-separated):</label>
+                    <input type="text" id="color3Layers" value="Red, C03, C3">
+                    <div class="small">Example: Red, C03, C3</div>
+                </div>
+                <div class="form-group">
+                    <label for="washLayers">Layer names for Washing / no color (comma-separated):</label>
+                    <input type="text" id="washLayers" value="Wash">
+                    <div class="small">These layers trigger a washing sequence instead of color pickup.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fileInput">Select G-code:</label>
+                <input type="file" id="fileInput" accept=".gcode,.nc,.txt" onchange="onFileSelected()">
+            </div>
+
+            <button onclick="runOptimizer()">Optimize (update preview)</button>
+
+            <div id="status"></div>
         </div>
-        <div class="form-group">
-            <label for="forceMultiplier">Force multiplier:</label>
-            <input type="number" id="forceMultiplier" value="2.0" step="0.1" min="1.0">
-            <div class="small">Only force pickups when path &gt;= multiplier × threshold.</div>
+
+        <!-- Right column: preview controls + canvas -->
+        <div style="flex: 0 0 40%; min-width: 260px; border-left: 1px solid #ddd; padding-left: 15px;">
+            <h3>🖼️ G-code Painting Preview</h3>
+            <p class="small">
+                Preview the painted paths using the same logic as the Python <code>gcode_to_png.py</code> tool.
+                Uses a fixed coordinate system with origin (0,0) at the bottom-left.
+            </p>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="canvasWidth">Canvas width (px)</label>
+                    <input type="number" id="canvasWidth" value="300" min="10">
+                </div>
+                <div class="form-group">
+                    <label for="canvasHeight">Canvas height (px)</label>
+                    <input type="number" id="canvasHeight" value="280" min="10">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="zThreshold">Z paint threshold</label>
+                    <input type="number" id="zThreshold" value="1.0" step="0.1">
+                    <div class="small">Any move with Z ≤ threshold is treated as painting.</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="xRange">X range (mm)</label>
+                    <input type="number" id="xRange" value="150" step="1" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="yRange">Y range (mm)</label>
+                    <input type="number" id="yRange" value="140" step="1" min="1">
+                </div>
+            </div>
+
+            <button onclick="renderPreview()">Render Preview</button>
+
+            <div style="margin-top: 10px;">
+                <button onclick="downloadOptimized()">Download Optimized G-code</button>
+            </div>
+
+            <div style="margin-top: 15px; text-align: center;">
+                <canvas id="previewCanvas" width="300" height="280" style="border:1px solid #ccc; background:#fff; image-rendering: pixelated;"></canvas>
+            </div>
         </div>
     </div>
-
-    <div class="form-row">
-        <div class="form-group">
-            <label>
-                <input type="checkbox" id="aggressive">
-                Aggressive mode
-            </label>
-            <div class="small">Insert pickups at any G0/G1 once threshold is exceeded.</div>
-        </div>
-        <div class="form-group">
-            <label>
-                <input type="checkbox" id="analyzeOnly">
-                Analyze only (no optimization)
-            </label>
-            <div class="small">Print structure statistics, keep original G-code.</div>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group">
-            <label for="color1Layers">Layer names for Color 1 (comma-separated):</label>
-            <input type="text" id="color1Layers" value="Green, C00, C1">
-            <div class="small">Example: Green, C00, C1</div>
-        </div>
-        <div class="form-group">
-            <label for="color2Layers">Layer names for Color 2 (comma-separated):</label>
-            <input type="text" id="color2Layers" value="Blue, C2">
-            <div class="small">Example: Blue, C2</div>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group">
-            <label for="color3Layers">Layer names for Color 3 (comma-separated):</label>
-            <input type="text" id="color3Layers" value="Red, C03, C3">
-            <div class="small">Example: Red, C03, C3</div>
-        </div>
-        <div class="form-group">
-            <label for="washLayers">Layer names for Washing / no color (comma-separated):</label>
-            <input type="text" id="washLayers" value="Wash">
-            <div class="small">These layers trigger a washing sequence instead of color pickup.</div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="fileInput">Select G-code:</label>
-        <input type="file" id="fileInput" accept=".gcode,.nc,.txt">
-    </div>
-
-    <button onclick="runOptimizer()">Optimize and Download</button>
-
-    <div id="status"></div>
 </div>
 
 <script>
@@ -122,71 +176,73 @@ const COLOR1_SEQUENCE = `
 ; Color picking sequence
 G1 Z10 F1000;         ; Raise brush to safe height
 G0 X41 Y5 F1200;    ; Rapid move to color 1 position
+G1 Z10 F1000;         ; Raise brush to safe height
+G0 X41 Y5 F1200;    ; Rapid move to color 1 position
 G1 Z0 F1000;         ; Lower into color - controlled movement
-G1 X40.102Y7.295Z0S800F1200
-G1 X40.026Y7.642Z0F1200
-G1 X40Y8Z0F1200
-G1 X40.026Y8.358Z0F1200
-G1 X40.102Y8.705Z0F1200
-G1 X40.225Y9.041Z0F1200
-G1 X40.393Y9.362Z0F1200
-G1 X40.603Y9.668Z0F1200
-G1 X40.854Y9.957Z0F1200
-G1 X41.142Y10.226Z0F1200
-G1 X41.464Y10.475Z0F1200
-G1 X41.82Y10.701Z0F1200
-G1 X42.204Y10.902Z0F1200
-G1 X42.617Y11.078Z0F1200
-G1 X43.054Y11.225Z0F1200
-G1 X43.513Y11.343Z0F1200
-G1 X43.992Y11.429Z0F1200
-G1 X44.489Y11.482Z0F1200
-G1 X45Y11.5Z0F1200
-G1 X45.511Y11.482Z0F1200
-G1 X46.008Y11.429Z0F1200
-G1 X46.487Y11.343Z0F1200
-G1 X46.946Y11.225Z0F1200
-G1 X47.383Y11.078Z0F1200
-G1 X47.796Y10.902Z0F1200
-G1 X48.18Y10.701Z0F1200
-G1 X48.536Y10.475Z0F1200
-G1 X48.858Y10.226Z0F1200
-G1 X49.146Y9.957Z0F1200
-G1 X49.397Y9.668Z0F1200
-G1 X49.607Y9.362Z0F1200
-G1 X49.775Y9.041Z0F1200
-G1 X49.898Y8.705Z0F1200
-G1 X49.974Y8.358Z0F1200
-G1 X50Y8Z0F1200
-G1 X49.974Y7.642Z0F1200
-G1 X49.898Y7.295Z0F1200
-G1 X49.775Y6.959Z0F1200
-G1 X49.607Y6.638Z0F1200
-G1 X49.397Y6.332Z0F1200
-G1 X49.146Y6.043Z0F1200
-G1 X48.858Y5.774Z0F1200
-G1 X48.536Y5.525Z0F1200
-G1 X48.18Y5.299Z0F1200
-G1 X47.796Y5.098Z0F1200
-G1 X47.383Y4.922Z0F1200
-G1 X46.946Y4.775Z0F1200
-G1 X46.487Y4.657Z0F1200
-G1 X46.008Y4.571Z0F1200
-G1 X45.511Y4.518Z0F1200
-G1 X45Y4.5Z0F1200
-G1 X44.489Y4.518Z0F1200
-G1 X43.992Y4.571Z0F1200
-G1 X43.513Y4.657Z0F1200
-G1 X43.054Y4.775Z0F1200
-G1 X42.617Y4.922Z0F1200
-G1 X42.204Y5.098Z0F1200
-G1 X41.82Y5.299Z0F1200
-G1 X41.464Y5.525Z0F1200
-G1 X41.142Y5.774Z0F1200
-G1 X40.854Y6.043Z0F1200
-G1 X40.603Y6.332Z0F1200
-G1 X40.393Y6.638Z0F1200
-G1 X40.225Y6.959Z0F1200
+G1 X40.102 Y7.295 Z0 S800 F1200
+G1 X40.026 Y7.642 Z0 F1200
+G1 X40 Y8 Z0 F1200
+G1 X40.026 Y8.358 Z0 F1200
+G1 X40.102 Y8.705 Z0 F1200
+G1 X40.225 Y9.041 Z0 F1200
+G1 X40.393 Y9.362 Z0 F1200
+G1 X40.603 Y9.668 Z0 F1200
+G1 X40.854 Y9.957 Z0 F1200
+G1 X41.142 Y10.226 Z0 F1200
+G1 X41.464 Y10.475 Z0 F1200
+G1 X41.82 Y10.701 Z0 F1200
+G1 X42.204 Y10.902 Z0 F1200
+G1 X42.617 Y11.078 Z0 F1200
+G1 X43.054 Y11.225 Z0 F1200
+G1 X43.513 Y11.343 Z0 F1200
+G1 X43.992 Y11.429 Z0 F1200
+G1 X44.489 Y11.482 Z0 F1200
+G1 X45 Y11.5 Z0 F1200
+G1 X45.511 Y11.482 Z0 F1200
+G1 X46.008 Y11.429 Z0 F1200
+G1 X46.487 Y11.343 Z0 F1200
+G1 X46.946 Y11.225 Z0 F1200
+G1 X47.383 Y11.078 Z0 F1200
+G1 X47.796 Y10.902 Z0 F1200
+G1 X48.18 Y10.701 Z0 F1200
+G1 X48.536 Y10.475 Z0 F1200
+G1 X48.858 Y10.226 Z0 F1200
+G1 X49.146 Y9.957 Z0 F1200
+G1 X49.397 Y9.668 Z0 F1200
+G1 X49.607 Y9.362 Z0 F1200
+G1 X49.775 Y9.041 Z0 F1200
+G1 X49.898 Y8.705 Z0 F1200
+G1 X49.974 Y8.358 Z0 F1200
+G1 X50 Y8 Z0 F1200
+G1 X49.974 Y7.642 Z0 F1200
+G1 X49.898 Y7.295 Z0 F1200
+G1 X49.775 Y6.959 Z0 F1200
+G1 X49.607 Y6.638 Z0 F1200
+G1 X49.397 Y6.332 Z0 F1200
+G1 X49.146 Y6.043 Z0 F1200
+G1 X48.858 Y5.774 Z0 F1200
+G1 X48.536 Y5.525 Z0 F1200
+G1 X48.18 Y5.299 Z0 F1200
+G1 X47.796 Y5.098 Z0 F1200
+G1 X47.383 Y4.922 Z0 F1200
+G1 X46.946 Y4.775 Z0 F1200
+G1 X46.487 Y4.657 Z0 F1200
+G1 X46.008 Y4.571 Z0 F1200
+G1 X45.511 Y4.518 Z0 F1200
+G1 X45 Y4.5 Z0 F1200
+G1 X44.489 Y4.518 Z0 F1200
+G1 X43.992 Y4.571 Z0 F1200
+G1 X43.513 Y4.657 Z0 F1200
+G1 X43.054 Y4.775 Z0 F1200
+G1 X42.617 Y4.922 Z0 F1200
+G1 X42.204 Y5.098 Z0 F1200
+G1 X41.82 Y5.299 Z0 F1200
+G1 X41.464 Y5.525 Z0 F1200
+G1 X41.142 Y5.774 Z0 F1200
+G1 X40.854 Y6.043 Z0 F1200
+G1 X40.603 Y6.332 Z0 F1200
+G1 X40.393 Y6.638 Z0 F1200
+G1 X40.225 Y6.959 Z0 F1200
 G1 Z7 F800;         ; Raise from color - controlled movement
 G1 X34 Y8 Z1 F1200;     ; Movement in paint - controlled movement
 G1 X24 Y18 Z8 F500;     ; Move in paint - controlled movement
@@ -683,6 +739,290 @@ function optimizeGcodeText(text, options) {
     return { optimizedText: optimized_g_code, report: report.join("\n") };
 }
 
+// Global buffers for UI flow: generate -> preview -> download
+let LAST_OPTIMIZED_TEXT = null;
+let LAST_OPTIMIZED_FILENAME = null;
+let LAST_ORIGINAL_TEXT = null;
+
+// === Inline G-code previewer (mirrors gcode_to_png.py) ===
+
+const PREVIEW_COLOR_PICK_COMMENT = 'Color picking sequence';
+const PREVIEW_WASH_COMMENT = 'Washing sequence (no color)';
+
+const PREVIEW_DEFAULT_Z_THRESHOLD = 1.0;
+const PREVIEW_DEFAULT_X_RANGE = 150.0;
+const PREVIEW_DEFAULT_Y_RANGE = 140.0;
+
+const PREVIEW_PALETTE = [
+    '#0066ff', // strong blue
+    '#ff00aa', // magenta/pink
+    '#00c800', // bright green
+];
+
+function previewParseXY(line, currentX, currentY, relative) {
+    const xMatch = line.match(/X(-?\d+\.?\d*)/);
+    const yMatch = line.match(/Y(-?\d+\.?\d*)/);
+    let x = currentX;
+    let y = currentY;
+    if (xMatch) {
+        const val = parseFloat(xMatch[1]);
+        x = relative ? currentX + val : val;
+    }
+    if (yMatch) {
+        const val = parseFloat(yMatch[1]);
+        y = relative ? currentY + val : val;
+    }
+    return { x, y };
+}
+
+function previewParseZ(line, currentZ, relative) {
+    const zMatch = line.match(/Z(-?\d+\.?\d*)/);
+    if (!zMatch) return currentZ;
+    const val = parseFloat(zMatch[1]);
+    return relative ? currentZ + val : val;
+}
+
+function previewExtractSegments(text, zThreshold, xRangeMm, yRangeMm) {
+    const lines = text.split(/\r?\n/);
+    const segments = []; // [x1,y1,x2,y2,colorIndex]
+
+    let currentX = 0.0;
+    let currentY = 0.0;
+    let currentZ = 10.0;
+    let relative = false;
+    let painting = false;
+    let currentColor = null;
+    let awaitingColorPick = false;
+    let sawColorPickComment = false;
+
+    for (let raw of lines) {
+        const line = raw.trim();
+
+        if (!line || line.startsWith(';')) {
+            if (line.includes(PREVIEW_COLOR_PICK_COMMENT)) {
+                sawColorPickComment = true;
+                awaitingColorPick = true;
+                painting = false;
+            } else if (line.includes(PREVIEW_WASH_COMMENT)) {
+                currentColor = null;
+                painting = false;
+                awaitingColorPick = false;
+            }
+            continue;
+        }
+
+        if (line.startsWith('G90')) {
+            relative = false;
+            continue;
+        }
+        if (line.startsWith('G91')) {
+            relative = true;
+            continue;
+        }
+
+        let newZ = currentZ;
+        if (line.includes('Z')) {
+            newZ = previewParseZ(line, currentZ, relative);
+        }
+
+        if ((line.startsWith('G0') || line.startsWith('G1')) && (line.includes('X') || line.includes('Y'))) {
+            const { x: newX, y: newY } = previewParseXY(line, currentX, currentY, relative);
+
+            // Color well detection near bottom palette area (Y small)
+            if (awaitingColorPick && line.includes('G1') && newZ <= zThreshold && newY <= 20) {
+                // Approximate well centers from lb2colour: X≈45, 90, 135
+                if (newX < 67.5) {
+                    currentColor = 0; // left well
+                } else if (newX < 112.5) {
+                    currentColor = 1; // middle well
+                } else {
+                    currentColor = 2; // right well
+                }
+                awaitingColorPick = false;
+            }
+
+            // Single-color files without explicit color-pick comments
+            if (!sawColorPickComment && currentColor === null && newZ <= zThreshold) {
+                currentColor = 0;
+            }
+
+            painting = currentColor !== null && newZ <= zThreshold;
+
+            if (painting) {
+                segments.push([currentX, currentY, newX, newY, currentColor]);
+            }
+
+            currentX = newX;
+            currentY = newY;
+            currentZ = newZ;
+            continue;
+        }
+
+        if (line.includes('Z') && !(line.includes('X') || line.includes('Y'))) {
+            currentZ = newZ;
+        }
+    }
+
+    return segments;
+}
+
+function previewMapToPixels(x, y, widthPx, heightPx, xRangeMm, yRangeMm) {
+    const xr = xRangeMm || PREVIEW_DEFAULT_X_RANGE;
+    const yr = yRangeMm || PREVIEW_DEFAULT_Y_RANGE;
+
+    const xClamped = Math.max(0, Math.min(xr, x));
+    const yClamped = Math.max(0, Math.min(yr, y));
+
+    const u = xClamped / xr;  // 0..1
+    const v = yClamped / yr;  // 0..1 (bottom to top)
+
+    const px = u * (widthPx - 1);
+    const py = (1 - v) * (heightPx - 1); // invert Y for canvas
+    return { px: Math.round(px), py: Math.round(py) };
+}
+
+function previewDrawSegments(segments, canvas, xRangeMm, yRangeMm) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.lineWidth = 1;
+    ctx.lineCap = 'round';
+
+    for (const [x1, y1, x2, y2, cIdx] of segments) {
+        const color = PREVIEW_PALETTE[cIdx % PREVIEW_PALETTE.length];
+        const p1 = previewMapToPixels(x1, y1, canvas.width, canvas.height, xRangeMm, yRangeMm);
+        const p2 = previewMapToPixels(x2, y2, canvas.width, canvas.height, xRangeMm, yRangeMm);
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(p1.px, p1.py);
+        ctx.lineTo(p2.px, p2.py);
+        ctx.stroke();
+    }
+}
+
+function renderPreview() {
+    const fileInput = document.getElementById('fileInput');
+    const canvas = document.getElementById('previewCanvas');
+    const statusDiv = document.getElementById('status');
+
+    const width = parseInt(document.getElementById('canvasWidth').value, 10) || 300;
+    const height = parseInt(document.getElementById('canvasHeight').value, 10) || 280;
+    const zThreshold = parseFloat(document.getElementById('zThreshold').value) || PREVIEW_DEFAULT_Z_THRESHOLD;
+    const xRangeMm = parseFloat(document.getElementById('xRange').value) || PREVIEW_DEFAULT_X_RANGE;
+    const yRangeMm = parseFloat(document.getElementById('yRange').value) || PREVIEW_DEFAULT_Y_RANGE;
+
+    if (!fileInput.files.length && !LAST_ORIGINAL_TEXT) {
+        alert('Please select a G-code file first.');
+        return;
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+
+    // If we already have an optimized result, prefer previewing that
+    const sourceText = LAST_OPTIMIZED_TEXT || LAST_ORIGINAL_TEXT;
+    if (sourceText) {
+        statusDiv.style.display = 'block';
+        statusDiv.textContent = 'Rendering preview...';
+        try {
+            const segments = previewExtractSegments(sourceText, zThreshold, xRangeMm, yRangeMm);
+            previewDrawSegments(segments, canvas, xRangeMm, yRangeMm);
+            statusDiv.textContent = `Rendered ${segments.length} segments.\n` +
+                `Z threshold: ${zThreshold}, X range: ${xRangeMm} mm, Y range: ${yRangeMm} mm.`;
+        } catch (err) {
+            console.error(err);
+            statusDiv.textContent = 'Preview error: ' + err.message;
+        }
+        return;
+    }
+
+    // Fallback: read original file (should only happen before first optimization)
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    statusDiv.style.display = 'block';
+    statusDiv.textContent = 'Rendering preview from original file...';
+
+    reader.onload = function(e) {
+        try {
+            const content = e.target.result;
+            LAST_ORIGINAL_TEXT = content;
+            const segments = previewExtractSegments(content, zThreshold, xRangeMm, yRangeMm);
+            previewDrawSegments(segments, canvas, xRangeMm, yRangeMm);
+            statusDiv.textContent = `Rendered ${segments.length} segments (original).\n` +
+                `Z threshold: ${zThreshold}, X range: ${xRangeMm} mm, Y range: ${yRangeMm} mm.`;
+        } catch (err) {
+            console.error(err);
+            statusDiv.textContent = 'Preview error: ' + err.message;
+        }
+    };
+
+    reader.onerror = function() {
+        statusDiv.textContent = 'Error reading file for preview.';
+    };
+
+    reader.readAsText(file);
+}
+
+function onFileSelected() {
+    const fileInput = document.getElementById('fileInput');
+    const statusDiv = document.getElementById('status');
+    const canvas = document.getElementById('previewCanvas');
+
+    LAST_OPTIMIZED_TEXT = null;
+    LAST_OPTIMIZED_FILENAME = null;
+    LAST_ORIGINAL_TEXT = null;
+
+    if (!fileInput.files.length) {
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    statusDiv.style.display = 'block';
+    statusDiv.textContent = 'Loading file for initial preview...';
+
+    reader.onload = function(e) {
+        try {
+            LAST_ORIGINAL_TEXT = e.target.result;
+            // Ensure canvas exists and has a size before rendering
+            if (canvas && canvas.width > 0 && canvas.height > 0) {
+                renderPreview();
+            }
+        } catch (err) {
+            console.error(err);
+            statusDiv.textContent = 'Error loading file for preview: ' + err.message;
+        }
+    };
+
+    reader.onerror = function() {
+        statusDiv.textContent = 'Error reading file.';
+    };
+
+    reader.readAsText(file);
+}
+
+function downloadOptimized() {
+    if (!LAST_OPTIMIZED_TEXT) {
+        alert('No optimized G-code available yet. Please click "Optimize and Download" (generate) first.');
+        return;
+    }
+
+    const filename = LAST_OPTIMIZED_FILENAME || 'optimized.gcode';
+    const blob = new Blob([LAST_OPTIMIZED_TEXT], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
 function runOptimizer() {
     const fileInput = document.getElementById('fileInput');
     const statusDiv = document.getElementById('status');
@@ -700,11 +1040,13 @@ function runOptimizer() {
     const reader = new FileReader();
 
     statusDiv.style.display = 'block';
-    statusDiv.textContent = "Reading file...";
+    statusDiv.textContent = "Reading file and optimizing (no download yet)...";
 
     reader.onload = function(e) {
         try {
             const content = e.target.result;
+            LAST_ORIGINAL_TEXT = content;
+
             const layerColorMap = buildLayerColorMapFromUI();
             const { optimizedText, report } = optimizeGcodeText(content, {
                 distanceThreshold: distance,
@@ -715,19 +1057,13 @@ function runOptimizer() {
                 layerColorMap: layerColorMap
             });
 
-            statusDiv.textContent = report;
+            LAST_OPTIMIZED_TEXT = optimizedText;
+            LAST_OPTIMIZED_FILENAME = (analyzeOnly ? "analyzed_" : "optimized_") + file.name;
 
-            const blob = new Blob([optimizedText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = (analyzeOnly ? "analyzed_" : "optimized_") + file.name;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            statusDiv.innerHTML = `<span class="success">Optimization done. You can now use Render Preview and Download Optimized G-code.</span>\n\n` + report;
 
-            statusDiv.innerHTML = `<span class="success">Done. Downloading '${a.download}'.</span>\n\n` + report;
+            // Automatically update the preview to show optimized result
+            renderPreview();
         } catch (err) {
             console.error(err);
             statusDiv.innerHTML = `<span class="error">Error: ${err.message}</span>`;
