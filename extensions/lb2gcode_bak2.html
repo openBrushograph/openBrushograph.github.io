@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>openBrushograph LightBurn G-code Optimizer</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #0056b3; margin-top: 0; }
+        .form-row { display: flex; flex-wrap: wrap; gap: 10px; }
+        .form-group { margin-bottom: 15px; flex: 1 1 150px; min-width: 150px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="number"], input[type="file"] { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        input[type="checkbox"] { margin-right: 5px; }
+        button { background: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; }
+        button:hover { background: #004494; }
+        #status {
+            margin-top: 15px;
+            padding: 10px;
+            background: #000;
+            color: #00ff66;
+            border-radius: 4px;
+            border: 1px solid #333;
+            white-space: pre-wrap;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+            font-size: 12px;
+            font-family: "Fira Mono", "Consolas", "Menlo", monospace;
+        }
+        .success { color: #00ff66; }
+        .error { color: #ff5555; }
+        .small { font-size: 12px; color: #555; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🎨 lb2gcode</h2>
+    <!-- Original G-code preview at the top -->
+    <div style="margin-top: 10px;">
+        <h3>🖼️ Original G-code Preview</h3>
+        <p class="small">
+            Preview of the unmodified G-code. Uses the same logic as the Python <code>gcode_to_png.py</code> tool,
+            with a fixed coordinate system and origin (0,0) at the bottom-left.
+        </p>
+
+        <div class="form-group">
+            <label for="fileInput">Select G-code:</label>
+            <input type="file" id="fileInput" accept=".gcode,.nc,.txt" onchange="onFileSelected()">
+        </div>
+
+        <!-- Collapsible preview settings -->
+        <details style="margin-top: 5px;">
+            <summary class="small" style="cursor: pointer;">Preview settings</summary>
+            <div style="margin-top: 10px;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="canvasWidth">Canvas width (px)</label>
+                        <input type="number" id="canvasWidth" value="300" min="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="canvasHeight">Canvas height (px)</label>
+                        <input type="number" id="canvasHeight" value="280" min="10">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="zThreshold">Z paint threshold</label>
+                        <input type="number" id="zThreshold" value="1.0" step="0.1">
+                        <div class="small">Any move with Z ≤ threshold is treated as painting.</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="xRange">X range (mm)</label>
+                        <input type="number" id="xRange" value="150" step="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="yRange">Y range (mm)</label>
+                        <input type="number" id="yRange" value="140" step="1" min="1">
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <div style="margin-top: 10px; text-align: center;">
+            <canvas id="previewCanvasOriginal" width="300" height="280" style="border:1px solid #ccc; background:#fff; image-rendering: pixelated;"></canvas>
+        </div>
+    </div>
+
+    <!-- Optimizer description, controls & report -->
+    <div style="margin-top: 20px;">
+        <p>
+            The optimizer will insert color-picks and washing sequences, reformat G-code, and enforce distance-based color pick-ups.
+        </p>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="distance">Distance threshold (mm):</label>
+                <input type="number" id="distance" value="100" step="1" min="1">
+                <div class="small">Path length before suggesting a color pickup.</div>
+            </div>
+            <div class="form-group">
+                <label for="forceMultiplier">Force multiplier:</label>
+                <input type="number" id="forceMultiplier" value="2.0" step="0.1" min="1.0">
+                <div class="small">Only force pickups when path &gt;= multiplier × threshold.</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="aggressive">
+                    Aggressive mode
+                </label>
+                <div class="small">Insert pickups at any G0/G1 once threshold is exceeded.</div>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="analyzeOnly">
+                    Analyze only (no optimization)
+                </label>
+                <div class="small">Print structure statistics, keep original G-code.</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="color1Layers">Layer names for Color 1 (comma-separated):</label>
+                <input type="text" id="color1Layers" value="Green, C00, C1">
+                <div class="small">Example: Green, C00, C1</div>
+            </div>
+            <div class="form-group">
+                <label for="color2Layers">Layer names for Color 2 (comma-separated):</label>
+                <input type="text" id="color2Layers" value="Blue, C2">
+                <div class="small">Example: Blue, C2</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="color3Layers">Layer names for Color 3 (comma-separated):</label>
+                <input type="text" id="color3Layers" value="Red, C03, C3">
+                <div class="small">Example: Red, C03, C3</div>
+            </div>
+            <div class="form-group">
+                <label for="washLayers">Layer names for Washing / no color (comma-separated):</label>
+                <input type="text" id="washLayers" value="Wash">
+                <div class="small">These layers trigger a washing sequence instead of color pickup.</div>
+            </div>
+        </div>
+
+        <button onclick="runOptimizer()">Optimize (update optimized preview)</button>
+        <div id="status"></div>
+    </div>
+
+    <!-- Optimized G-code preview at the bottom -->
+    <div style="margin-top: 20px;">
+        <h3>🖼️ Optimized G-code Preview</h3>
+        <p class="small">
+            Preview of the optimized G-code produced by the optimizer above. This uses the same canvas settings
+            as the original preview.
+        </p>
+
+        <div style="margin-top: 10px; text-align: center;">
+            <canvas id="previewCanvasOptimized" width="300" height="280" style="border:1px solid #ccc; background:#fff; image-rendering: pixelated;"></canvas>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <button onclick="downloadOptimized()">Download Optimized G-code</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// --- Sequences copied/translated from Python optimizer ---
+const HOMING_SEQUENCE = `
+G0 Z10 F500;      ; Move to clearance level - Z motion limited to 500
+; G0 X-10 Y-10 F1200; Homing
+; G0 X-5 Y-5 F1200; go in
+; G10 P0 L20 X0 Y0; set to zero
+G1 F1200;           ; Set feed rate to 1000
+`;
+
+const COLOR1_SEQUENCE = `
+; Color picking sequence
+G1 Z10 F1000;         ; Raise brush to safe height
+G0 X41 Y5 F1200;    ; Rapid move to color 1 position
+G1 Z10 F1000;         ; Raise brush to safe height
+G0 X41 Y5 F1200;    ; Rapid move to color 1 position
+G1 Z0 F1000;         ; Lower into color - controlled movement
+G1 X40.102 Y7.295 Z0 S800 F1200
+G1 X40.026 Y7.642 Z0 F1200
+G1 X40 Y8 Z0 F1200
+G1 X40.026 Y8.358 Z0 F1200
+G1 X40.102 Y8.705 Z0 F1200
+G1 X40.225 Y9.041 Z0 F1200
+G1 X40.393 Y9.362 Z0 F1200
+G1 X40.603 Y9.668 Z0 F1200
+G1 X40.854 Y9.957 Z0 F1200
+G1 X41.142 Y10.226 Z0 F1200
+G1 X41.464 Y10.475 Z0 F1200
+G1 X41.82 Y10.701 Z0 F1200
+G1 X42.204 Y10.902 Z0 F1200
+G1 X42.617 Y11.078 Z0 F1200
+G1 X43.054 Y11.225 Z0 F1200
+G1 X43.513 Y11.343 Z0 F1200
+G1 X43.992 Y11.429 Z0 F1200
+G1 X44.489 Y11.482 Z0 F1200
+G1 X45 Y11.5 Z0 F1200
+G1 X45.511 Y11.482 Z0 F1200
+G1 X46.008 Y11.429 Z0 F1200
+G1 X46.487 Y11.343 Z0 F1200
+G1 X46.946 Y11.225 Z0 F1200
+G1 X47.383 Y11.078 Z0 F1200
+G1 X47.796 Y10.902 Z0 F1200
+G1 X48.18 Y10.701 Z0 F1200
+G1 X48.536 Y10.475 Z0 F1200
+G1 X48.858 Y10.226 Z0 F1200
+G1 X49.146 Y9.957 Z0 F1200
+G1 X49.397 Y9.668 Z0 F1200
+G1 X49.607 Y9.362 Z0 F1200
+G1 X49.775 Y9.041 Z0 F1200
+G1 X49.898 Y8.705 Z0 F1200
+G1 X49.974 Y8.358 Z0 F1200
+G1 X50 Y8 Z0 F1200
+G1 X49.974 Y7.642 Z0 F1200
+G1 X49.898 Y7.295 Z0 F1200
+G1 X49.775 Y6.959 Z0 F1200
+G1 X49.607 Y6.638 Z0 F1200
+G1 X49.397 Y6.332 Z0 F1200
+G1 X49.146 Y6.043 Z0 F1200
+G1 X48.858 Y5.774 Z0 F1200
+G1 X48.536 Y5.525 Z0 F1200
+G1 X48.18 Y5.299 Z0 F1200
+G1 X47.796 Y5.098 Z0 F1200
+G1 X47.383 Y4.922 Z0 F1200
+G1 X46.946 Y4.775 Z0 F1200
+G1 X46.487 Y4.657 Z0 F1200
+G1 X46.008 Y4.571 Z0 F1200
+G1 X45.511 Y4.518 Z0 F1200
+G1 X45 Y4.5 Z0 F1200
+G1 X44.489 Y4.518 Z0 F1200
+G1 X43.992 Y4.571 Z0 F1200
+G1 X43.513 Y4.657 Z0 F1200
+G1 X43.054 Y4.775 Z0 F1200
+G1 X42.617 Y4.922 Z0 F1200
+G1 X42.204 Y5.098 Z0 F1200
+G1 X41.82 Y5.299 Z0 F1200
+G1 X41.464 Y5.525 Z0 F1200
+G1 X41.142 Y5.774 Z0 F1200
+G1 X40.854 Y6.043 Z0 F1200
+G1 X40.603 Y6.332 Z0 F1200
+G1 X40.393 Y6.638 Z0 F1200
+G1 X40.225 Y6.959 Z0 F1200
+G1 Z7 F800;         ; Raise from color - controlled movement
+G1 X34 Y8 Z1 F1200;     ; Movement in paint - controlled movement
+G1 X24 Y18 Z8 F500;     ; Move in paint - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+`;
+
+function offsetXInGcodeBlock(block, dx) {
+    const pattern = /X(\s*)(-?\d+(?:\.\d+)?)/g;
+    return block.replace(pattern, (match, space, orig) => {
+        let decimals = 0;
+        if (orig.includes('.')) {
+            decimals = orig.split('.')[1].length;
+        }
+        let newVal = parseFloat(orig) + dx;
+        if (Number.isNaN(newVal)) return match;
+        if (decimals > 0) {
+            return `X${space}${newVal.toFixed(decimals)}`;
+        } else {
+            return `X${space}${Math.round(newVal)}`;
+        }
+    });
+}
+
+const COLOR2_SEQUENCE = offsetXInGcodeBlock(COLOR1_SEQUENCE, 45);
+const COLOR3_SEQUENCE = offsetXInGcodeBlock(COLOR1_SEQUENCE, 90);
+
+const WASHING_SEQUENCE = `
+; Washing sequence (no color)
+G1 Z10 F1000;        ; Raise brush to safe height
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X10 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G1 Z8 F800;         ; Maintain brush height - controlled movement
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X15 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G1 Z10 F800;         ; Maintain brush height - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+`;
+
+const ENDING_SEQUENCE = `
+; Return to 2,0 wash and park
+G1 Z10 F1000;        ; Raise brush to safe height
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X10 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X15 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G1 Z10 F800;         ; Maintain brush height - controlled movement
+G0 X20 Y130 Z10 F500;; Move to parking position with Z at safe height
+M2;                 ; End program
+`;
+
+// Default mapping from layer names to color sequences
+const DEFAULT_LAYER_COLOR_MAP = {
+    "Green": { sequence: COLOR1_SEQUENCE, name: "Color 1" },
+    "Blue":  { sequence: COLOR2_SEQUENCE, name: "Color 2" },
+    "Red":   { sequence: COLOR3_SEQUENCE, name: "Color 3" },
+    "C03":   { sequence: COLOR3_SEQUENCE, name: "Color 3" },
+    "C00":   { sequence: COLOR1_SEQUENCE, name: "Color 1" },
+    "C1":    { sequence: COLOR1_SEQUENCE, name: "Color 1" },
+    "C2":    { sequence: COLOR2_SEQUENCE, name: "Color 2" },
+    "C3":    { sequence: COLOR3_SEQUENCE, name: "Color 3" },
+    "Wash":  { sequence: WASHING_SEQUENCE, name: "Washing" },
+    "default": { sequence: WASHING_SEQUENCE, name: "Washing" }
+};
+
+function parseLayerList(text) {
+    if (!text) return [];
+    return text
+        .split(',')
+        .map(s => s.trim())
+        .filter(s => s.length > 0);
+}
+
+function buildLayerColorMapFromUI() {
+    // Start from defaults so we always have sane behavior
+    const map = { ...DEFAULT_LAYER_COLOR_MAP };
+
+    const color1Layers = parseLayerList(document.getElementById('color1Layers')?.value || "");
+    const color2Layers = parseLayerList(document.getElementById('color2Layers')?.value || "");
+    const color3Layers = parseLayerList(document.getElementById('color3Layers')?.value || "");
+    const washLayers   = parseLayerList(document.getElementById('washLayers')?.value   || "");
+
+    // Helper to register all names for a given color
+    function assignLayers(layerNames, sequence, name) {
+        for (const ln of layerNames) {
+            map[ln] = { sequence, name };
+        }
+    }
+
+    if (color1Layers.length) assignLayers(color1Layers, COLOR1_SEQUENCE, "Color 1");
+    if (color2Layers.length) assignLayers(color2Layers, COLOR2_SEQUENCE, "Color 2");
+    if (color3Layers.length) assignLayers(color3Layers, COLOR3_SEQUENCE, "Color 3");
+    if (washLayers.length)   assignLayers(washLayers,   WASHING_SEQUENCE, "Washing");
+
+    return map;
+}
+
+function nextZLiftInRange(lines, startIndex, maxLookahead) {
+    const re = /G0\s*Z[1-9]|G0.*Z[1-9]/;
+    const endIndex = Math.min(startIndex + maxLookahead, lines.length);
+    for (let i = startIndex; i < endIndex; i++) {
+        if (re.test(lines[i])) return i - startIndex;
+    }
+    return null;
+}
+
+function analyzeGcode(lines) {
+    let drawing_areas = 0;
+    let z_moves = 0;
+    let z0_moves = 0;
+    let g0_moves = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (/G0\s*Z[0-9.]+/.test(line)) {
+            z_moves++;
+            if (i + 2 < lines.length) {
+                if (/G0\s*X[0-9.]+Y[0-9.]+/.test(lines[i+1]) && /G1\s*Z0/.test(lines[i+2])) {
+                    drawing_areas++;
+                }
+            }
+        }
+        if (/G1\s*Z0/.test(line)) z0_moves++;
+        if (/G0\s*X|G0\s*Y/.test(line)) g0_moves++;
+    }
+
+    return {
+        totalLines: lines.length,
+        drawingAreas: drawing_areas,
+        zMoves: z_moves,
+        z0Moves: z0_moves,
+        g0Moves: g0_moves,
+    };
+}
+
+function optimizeGcodeText(text, options) {
+    const { distanceThreshold, forceMultiplier, debug, aggressive, layerColorMap } = options;
+
+    const rawLines = text.split(/\r?\n/);
+    const lines = rawLines.map(l => l.endsWith("\n") ? l : l + "\n");
+
+    // Analysis-only path
+    if (options.analyzeOnly) {
+        const stats = analyzeGcode(lines);
+        let report = [];
+        report.push(`G-code Analysis:`);
+        report.push(`  Total lines: ${stats.totalLines}`);
+        report.push(`  Detected drawing areas: ${stats.drawingAreas}`);
+        report.push(`  Z movements (lifts): ${stats.zMoves}`);
+        report.push(`  Z0 movements (drawing): ${stats.z0Moves}`);
+        report.push(`  G0 positioning moves: ${stats.g0Moves}`);
+        return { optimizedText: text, report: report.join("\n") };
+    }
+
+    // Use provided map or fall back to defaults
+    const LAYER_COLOR_MAP = layerColorMap || DEFAULT_LAYER_COLOR_MAP;
+
+    let total_length = 0;
+    let accumulated_length = 0;
+    let current_x = 0, current_y = 0;
+    let prev_x = 0, prev_y = 0;
+    let is_drawing = false;
+    let current_segment_length = 0;
+    let layer_lengths = {};
+    let path_lengths = {};
+    let current_path = "None";
+    let current_layer = "default";
+    let previous_layer = null;
+    let pickup_segments = [];
+    let color_pickup_count = { "Color 1": 0, "Color 2": 0, "Color 3": 0, "Washing": 0 };
+
+    let current_color_sequence = WASHING_SEQUENCE;
+    let current_color_name = "Washing";
+    let last_color_name = null;
+
+    // Track coordinate mode: true if in relative mode (G91), false for absolute (G90)
+    let inRelativeMode = false;
+
+    // Flexible coordinate parsing: handle LightBurn styles like
+    //   G1 X34.312 Y40.025 Z0 S800 F1600
+    // where an S parameter may appear between Z and F, and spacing can vary.
+    const coordXRegex = /X([\d.-]+)/;
+    const coordYRegex = /Y([\d.-]+)/;
+    const layer_regex = /;Layer\s+(\w+)/;
+    const m8_regex = /M8/;
+    const path_regex = /; Path\s+(\d+)/;
+    const plunge_regex = /Z0(?:\.0+)?\s*F/;
+    const retract_regex = /Z[2-9](?:\.\d+)?\s*F/;
+    const cut_header_regex = /;\s*Cut\s*@\s*(\d+)\s*mm\/min/i;
+
+    let output_lines = [];
+
+    // Helper: wrap an inserted sequence so it runs in absolute mode when
+    // we are currently in relative mode (G91). This prevents the absolute
+    // coordinates inside the sequence from being misinterpreted as large
+    // relative moves by the controller.
+    function wrapSequenceForMode(seq) {
+        if (inRelativeMode) {
+            return "G90\n" + seq + "\nG91";
+        }
+        return seq;
+    }
+
+    // Add homing sequence (always safe at the very beginning; assume G90)
+    output_lines.push(HOMING_SEQUENCE);
+
+    let line_index = 0;
+    let processed_count = 0;
+    let found_m8 = false;
+    let current_cut_feedrate = null;
+    let pending_original_lines = [];
+
+    function flush_pending(buffer_feedrate) {
+        if (!pending_original_lines.length) return;
+        if (buffer_feedrate != null) {
+            const rep = String(buffer_feedrate);
+            const re = /(?<=F)1800\b/;
+            for (const pl of pending_original_lines) {
+                output_lines.push(pl.replace(re, rep));
+            }
+        } else {
+            output_lines.push(...pending_original_lines);
+        }
+        pending_original_lines = [];
+    }
+
+    while (line_index < lines.length) {
+        let line = lines[line_index];
+
+        const cut_match = line.match(cut_header_regex);
+        if (cut_match) {
+            flush_pending(current_cut_feedrate);
+            let parsed = parseInt(cut_match[1], 10);
+            if (!Number.isFinite(parsed)) parsed = null;
+            current_cut_feedrate = parsed;
+        }
+
+        if (m8_regex.test(line)) {
+            flush_pending(current_cut_feedrate);
+            found_m8 = true;
+            output_lines.push(line);
+            line_index++;
+
+            const look_ahead_limit = 6;
+            let next_layer = null;
+            let look_ahead_index = line_index;
+
+            for (let i = 0; i < look_ahead_limit; i++) {
+                if (look_ahead_index < lines.length) {
+                    const ahead_line = lines[look_ahead_index];
+                    const lm = ahead_line.match(layer_regex);
+                    if (lm) {
+                        next_layer = lm[1];
+                        break;
+                    }
+                    look_ahead_index++;
+                }
+            }
+
+            if (next_layer && LAYER_COLOR_MAP[next_layer]) {
+                current_layer = next_layer;
+                if (current_layer !== previous_layer) {
+                    if (!layer_lengths[current_layer]) layer_lengths[current_layer] = 0;
+                    accumulated_length = 0;
+                    current_segment_length = 0;
+
+                    const previous_color_name = current_color_name || "None";
+                    current_color_sequence = LAYER_COLOR_MAP[current_layer].sequence;
+                    current_color_name = LAYER_COLOR_MAP[current_layer].name;
+
+                    if (previous_color_name !== "None" && previous_color_name !== current_color_name) {
+                        output_lines.push(wrapSequenceForMode(WASHING_SEQUENCE));
+                        color_pickup_count["Washing"]++;
+                    }
+
+                    output_lines.push(wrapSequenceForMode(current_color_sequence));
+                    color_pickup_count[current_color_name]++;
+                    previous_layer = current_layer;
+                    last_color_name = current_color_name;
+                }
+            }
+            continue;
+        }
+
+        let layer_match = line.match(layer_regex);
+        if (layer_match && !found_m8) {
+            flush_pending(current_cut_feedrate);
+            current_layer = layer_match[1];
+            if (current_layer !== previous_layer && previous_layer == null) {
+                if (!layer_lengths[current_layer]) layer_lengths[current_layer] = 0;
+                accumulated_length = 0;
+
+                if (LAYER_COLOR_MAP[current_layer]) {
+                    current_color_sequence = LAYER_COLOR_MAP[current_layer].sequence;
+                    current_color_name = LAYER_COLOR_MAP[current_layer].name;
+                } else {
+                    current_color_sequence = LAYER_COLOR_MAP["default"].sequence;
+                    current_color_name = LAYER_COLOR_MAP["default"].name;
+                }
+
+                const previous_color_name = last_color_name || "None";
+                if (previous_color_name !== "None" && previous_color_name !== current_color_name) {
+                    output_lines.push(wrapSequenceForMode(WASHING_SEQUENCE));
+                    color_pickup_count["Washing"]++;
+                }
+
+                output_lines.push(wrapSequenceForMode(current_color_sequence));
+                color_pickup_count[current_color_name]++;
+                previous_layer = current_layer;
+                last_color_name = current_color_name;
+            }
+        }
+
+        if (layer_match) {
+            found_m8 = false;
+            if (current_layer !== previous_layer) {
+                accumulated_length = 0;
+                current_segment_length = 0;
+            }
+        }
+
+        if (/G1 Z3\.0000/.test(line)) {
+            output_lines.push("G1 Z3 F1000;         ; Raise brush\n");
+        } else if (/G1 Z0\.0000/.test(line)) {
+            output_lines.push("G1 Z0 F1000;         ; Position at surface\n");
+        } else if (/G1 Z-0\.1000 F500/.test(line)) {
+            output_lines.push("G1 Z-0.1 F1000;      ; Plunge brush to painting depth\n");
+        } else {
+            pending_original_lines.push(line);
+        }
+
+        // Track positioning mode (absolute/relative)
+        if (line.includes("G90")) {
+            inRelativeMode = false;
+        } else if (line.includes("G91")) {
+            inRelativeMode = true;
+        }
+
+        const path_match = line.match(path_regex);
+        if (path_match) {
+            current_path = path_match[1];
+            path_lengths[current_path] = 0;
+        }
+
+        // Drawing state: retract on any G0 with Z>0, plunge on any G1 with Z0
+        if (line.includes('G0') && /Z[1-9]/.test(line)) {
+            is_drawing = false;
+        }
+        if (line.includes('G1') && /Z0\b/.test(line)) {
+            is_drawing = true;
+        }
+
+        // Extract coordinates using flexible X/Y parsing and handle G90/G91
+        const coordXMatch = line.match(coordXRegex);
+        const coordYMatch = line.match(coordYRegex);
+        if (coordXMatch || coordYMatch) {
+            const prevX = current_x;
+            const prevY = current_y;
+
+            if (inRelativeMode) {
+                // Relative mode: treat parsed values as deltas
+                if (coordXMatch) current_x += parseFloat(coordXMatch[1]);
+                if (coordYMatch) current_y += parseFloat(coordYMatch[1]);
+            } else {
+                // Absolute mode: treat parsed values as positions; leave axis
+                // unchanged if it is not present on this line.
+                if (coordXMatch) current_x = parseFloat(coordXMatch[1]);
+                if (coordYMatch) current_y = parseFloat(coordYMatch[1]);
+            }
+
+            if ((prevX !== 0 || prevY !== 0) && is_drawing && line.includes("G1")) {
+                const dx = current_x - prevX;
+                const dy = current_y - prevY;
+                const segment_length = Math.sqrt(dx*dx + dy*dy);
+                total_length += segment_length;
+                accumulated_length += segment_length;
+
+                layer_lengths[current_layer] = (layer_lengths[current_layer] || 0) + segment_length;
+                path_lengths[current_path] = (path_lengths[current_path] || 0) + segment_length;
+                current_segment_length += segment_length;
+
+                if (accumulated_length > distanceThreshold) {
+                    let is_clean_transition = false;
+                    let force_pickup = false;
+
+                    if (aggressive) {
+                        if (/G[01]/.test(line)) {
+                            is_clean_transition = true;
+                        }
+                    } else {
+                        if (/G0\s*Z[1-9]|G0.*Z[1-9]/.test(line)) {
+                            is_clean_transition = true;
+                        } else if (line_index > 0 && line_index + 1 < lines.length) {
+                            const prev_is_g1 = /G1\s*X|G1\s*Y/.test(lines[line_index - 1]);
+                            const next_is_g0 = /G0\s*/.test(lines[line_index + 1]);
+                            if (prev_is_g1 && next_is_g0) {
+                                is_clean_transition = true;
+                            }
+                        }
+                    }
+
+                    if (!aggressive && !is_clean_transition) {
+                        force_pickup = accumulated_length >= (forceMultiplier * distanceThreshold);
+                        if (force_pickup) {
+                            const z_lift_distance = nextZLiftInRange(lines, line_index, 20);
+                            if (z_lift_distance != null && z_lift_distance < 10) {
+                                force_pickup = false;
+                            } else if (/G[01]/.test(line)) {
+                                is_clean_transition = true;
+                            }
+                        }
+                    } else if (aggressive && !is_clean_transition) {
+                        force_pickup = accumulated_length >= (forceMultiplier * distanceThreshold);
+                        if (force_pickup && /G[01]/.test(line)) {
+                            is_clean_transition = true;
+                        }
+                    }
+
+                    if (accumulated_length >= (3.0 * distanceThreshold) && !is_clean_transition) {
+                        is_clean_transition = true;
+                    }
+
+                    if (is_clean_transition) {
+                        flush_pending(current_cut_feedrate);
+                        if (LAYER_COLOR_MAP[current_layer]) {
+                            current_color_name = LAYER_COLOR_MAP[current_layer].name;
+                            current_color_sequence = LAYER_COLOR_MAP[current_layer].sequence;
+                        } else {
+                            current_color_name = LAYER_COLOR_MAP["default"].name;
+                            current_color_sequence = LAYER_COLOR_MAP["default"].sequence;
+                        }
+
+                        if (last_color_name && last_color_name !== current_color_name) {
+                            output_lines.push(wrapSequenceForMode(WASHING_SEQUENCE));
+                            color_pickup_count["Washing"]++;
+                        }
+
+                        color_pickup_count[current_color_name]++;
+                        output_lines.push(wrapSequenceForMode(current_color_sequence));
+                        last_color_name = current_color_name;
+
+                        pickup_segments.push([current_layer, current_color_name, accumulated_length]);
+
+                        accumulated_length = 0;
+                        current_segment_length = 0;
+                    }
+                }
+            }
+        }
+
+        line_index++;
+        processed_count++;
+    }
+
+    flush_pending(current_cut_feedrate);
+    // Ensure ending sequence runs in absolute mode if we end in G91
+    output_lines.push(wrapSequenceForMode(ENDING_SEQUENCE));
+
+    let optimized_g_code = "";
+    for (const l of output_lines) {
+        if (!l.endsWith("\n")) optimized_g_code += l + "\n";
+        else optimized_g_code += l;
+    }
+
+    let report = [];
+    report.push(`Total drawing path length: ${total_length.toFixed(2)} mm (${(total_length/1000).toFixed(2)} m)`);
+    report.push("");
+    report.push("Layer Lengths:");
+    for (const [layer, length] of Object.entries(layer_lengths)) {
+        report.push(`  Layer ${layer}: ${length.toFixed(2)} mm`);
+    }
+    report.push("");
+    report.push("Path Segments Between Color Pickups:");
+    for (const seg of pickup_segments) {
+        report.push(`  Layer ${seg[0]}, Color ${seg[1]}: ${seg[2].toFixed(2)} mm`);
+    }
+    report.push("");
+    report.push("Color Pickup Insertions:");
+    for (const [color, count] of Object.entries(color_pickup_count)) {
+        if (count > 0) report.push(`  ${color}: ${count} pickups added`);
+    }
+
+    return { optimizedText: optimized_g_code, report: report.join("\n") };
+}
+
+// Global buffers for UI flow: generate -> preview -> download
+let LAST_OPTIMIZED_TEXT = null;
+let LAST_OPTIMIZED_FILENAME = null;
+let LAST_ORIGINAL_TEXT = null;
+
+// === Inline G-code previewer (mirrors gcode_to_png.py) ===
+
+const PREVIEW_COLOR_PICK_COMMENT = 'Color picking sequence';
+const PREVIEW_WASH_COMMENT = 'Washing sequence (no color)';
+
+const PREVIEW_DEFAULT_Z_THRESHOLD = 1.0;
+const PREVIEW_DEFAULT_X_RANGE = 150.0;
+const PREVIEW_DEFAULT_Y_RANGE = 140.0;
+
+const PREVIEW_PALETTE = [
+    '#0066ff', // strong blue
+    '#ff00aa', // magenta/pink
+    '#00c800', // bright green
+];
+
+function previewParseXY(line, currentX, currentY, relative) {
+    const xMatch = line.match(/X(-?\d+\.?\d*)/);
+    const yMatch = line.match(/Y(-?\d+\.?\d*)/);
+    let x = currentX;
+    let y = currentY;
+    if (xMatch) {
+        const val = parseFloat(xMatch[1]);
+        x = relative ? currentX + val : val;
+    }
+    if (yMatch) {
+        const val = parseFloat(yMatch[1]);
+        y = relative ? currentY + val : val;
+    }
+    return { x, y };
+}
+
+function previewParseZ(line, currentZ, relative) {
+    const zMatch = line.match(/Z(-?\d+\.?\d*)/);
+    if (!zMatch) return currentZ;
+    const val = parseFloat(zMatch[1]);
+    return relative ? currentZ + val : val;
+}
+
+function previewExtractSegments(text, zThreshold, xRangeMm, yRangeMm) {
+    const lines = text.split(/\r?\n/);
+    const segments = []; // [x1,y1,x2,y2,colorIndex]
+
+    let currentX = 0.0;
+    let currentY = 0.0;
+    let currentZ = 10.0;
+    let relative = false;
+    let painting = false;
+    let currentColor = null;
+    let awaitingColorPick = false;
+    let sawColorPickComment = false;
+
+    for (let raw of lines) {
+        const line = raw.trim();
+
+        if (!line || line.startsWith(';')) {
+            if (line.includes(PREVIEW_COLOR_PICK_COMMENT)) {
+                sawColorPickComment = true;
+                awaitingColorPick = true;
+                painting = false;
+            } else if (line.includes(PREVIEW_WASH_COMMENT)) {
+                currentColor = null;
+                painting = false;
+                awaitingColorPick = false;
+            }
+            continue;
+        }
+
+        if (line.startsWith('G90')) {
+            relative = false;
+            continue;
+        }
+        if (line.startsWith('G91')) {
+            relative = true;
+            continue;
+        }
+
+        let newZ = currentZ;
+        if (line.includes('Z')) {
+            newZ = previewParseZ(line, currentZ, relative);
+        }
+
+        if ((line.startsWith('G0') || line.startsWith('G1')) && (line.includes('X') || line.includes('Y'))) {
+            const { x: newX, y: newY } = previewParseXY(line, currentX, currentY, relative);
+
+            // Color well detection near bottom palette area (Y small)
+            if (awaitingColorPick && line.includes('G1') && newZ <= zThreshold && newY <= 20) {
+                // Approximate well centers from lb2colour: X≈45, 90, 135
+                if (newX < 67.5) {
+                    currentColor = 0; // left well
+                } else if (newX < 112.5) {
+                    currentColor = 1; // middle well
+                } else {
+                    currentColor = 2; // right well
+                }
+                awaitingColorPick = false;
+            }
+
+            // Single-color files without explicit color-pick comments
+            if (!sawColorPickComment && currentColor === null && newZ <= zThreshold) {
+                currentColor = 0;
+            }
+
+            painting = currentColor !== null && newZ <= zThreshold;
+
+            if (painting) {
+                segments.push([currentX, currentY, newX, newY, currentColor]);
+            }
+
+            currentX = newX;
+            currentY = newY;
+            currentZ = newZ;
+            continue;
+        }
+
+        if (line.includes('Z') && !(line.includes('X') || line.includes('Y'))) {
+            currentZ = newZ;
+        }
+    }
+
+    return segments;
+}
+
+function previewMapToPixels(x, y, widthPx, heightPx, xRangeMm, yRangeMm) {
+    const xr = xRangeMm || PREVIEW_DEFAULT_X_RANGE;
+    const yr = yRangeMm || PREVIEW_DEFAULT_Y_RANGE;
+
+    const xClamped = Math.max(0, Math.min(xr, x));
+    const yClamped = Math.max(0, Math.min(yr, y));
+
+    const u = xClamped / xr;  // 0..1
+    const v = yClamped / yr;  // 0..1 (bottom to top)
+
+    const px = u * (widthPx - 1);
+    const py = (1 - v) * (heightPx - 1); // invert Y for canvas
+    return { px: Math.round(px), py: Math.round(py) };
+}
+
+function previewDrawSegments(segments, canvas, xRangeMm, yRangeMm) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.lineWidth = 1;
+    ctx.lineCap = 'round';
+
+    for (const [x1, y1, x2, y2, cIdx] of segments) {
+        const color = PREVIEW_PALETTE[cIdx % PREVIEW_PALETTE.length];
+        const p1 = previewMapToPixels(x1, y1, canvas.width, canvas.height, xRangeMm, yRangeMm);
+        const p2 = previewMapToPixels(x2, y2, canvas.width, canvas.height, xRangeMm, yRangeMm);
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(p1.px, p1.py);
+        ctx.lineTo(p2.px, p2.py);
+        ctx.stroke();
+    }
+}
+
+// Render helper used for both original and optimized previews.
+// Important: this function ONLY draws on the canvas and does not touch the
+// #status terminal area, so the optimizer report stays visible there.
+function renderPreviewFor(sourceText, canvas, label) {
+    const width = parseInt(document.getElementById('canvasWidth').value, 10) || 300;
+    const height = parseInt(document.getElementById('canvasHeight').value, 10) || 280;
+    const zThreshold = parseFloat(document.getElementById('zThreshold').value) || PREVIEW_DEFAULT_Z_THRESHOLD;
+    const xRangeMm = parseFloat(document.getElementById('xRange').value) || PREVIEW_DEFAULT_X_RANGE;
+    const yRangeMm = parseFloat(document.getElementById('yRange').value) || PREVIEW_DEFAULT_Y_RANGE;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    if (!sourceText) {
+        // Nothing to draw yet; leave existing canvas contents and status text alone.
+        return;
+    }
+
+    try {
+        const segments = previewExtractSegments(sourceText, zThreshold, xRangeMm, yRangeMm);
+        previewDrawSegments(segments, canvas, xRangeMm, yRangeMm);
+    } catch (err) {
+        // Log errors to console but do not overwrite the optimizer report.
+        console.error(`Preview error for ${label}:`, err);
+    }
+}
+
+function onFileSelected() {
+    const fileInput = document.getElementById('fileInput');
+    const statusDiv = document.getElementById('status');
+    const canvasOriginal = document.getElementById('previewCanvasOriginal');
+
+    LAST_OPTIMIZED_TEXT = null;
+    LAST_OPTIMIZED_FILENAME = null;
+    LAST_ORIGINAL_TEXT = null;
+
+    if (!fileInput.files.length) {
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    statusDiv.style.display = 'block';
+    statusDiv.textContent = 'Loading file for initial preview...';
+
+    reader.onload = function(e) {
+        try {
+            LAST_ORIGINAL_TEXT = e.target.result;
+            if (canvasOriginal) {
+                renderPreviewFor(LAST_ORIGINAL_TEXT, canvasOriginal, 'original');
+            }
+        } catch (err) {
+            console.error(err);
+            statusDiv.textContent = 'Error loading file for preview: ' + err.message;
+        }
+    };
+
+    reader.onerror = function() {
+        statusDiv.textContent = 'Error reading file.';
+    };
+
+    reader.readAsText(file);
+}
+
+function downloadOptimized() {
+    if (!LAST_OPTIMIZED_TEXT) {
+        alert('No optimized G-code available yet. Please run the optimizer first.');
+        return;
+    }
+
+    const filename = LAST_OPTIMIZED_FILENAME || 'optimized.gcode';
+    const blob = new Blob([LAST_OPTIMIZED_TEXT], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function runOptimizer() {
+    const fileInput = document.getElementById('fileInput');
+    const statusDiv = document.getElementById('status');
+    const distance = parseFloat(document.getElementById('distance').value);
+    const forceMultiplier = parseFloat(document.getElementById('forceMultiplier').value);
+    const aggressive = document.getElementById('aggressive').checked;
+    const analyzeOnly = document.getElementById('analyzeOnly').checked;
+
+    if (!fileInput.files.length) {
+        alert("Please select a G-code file.");
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    statusDiv.style.display = 'block';
+    statusDiv.textContent = "Reading file and optimizing (no download yet)...";
+
+    reader.onload = function(e) {
+        try {
+            const content = e.target.result;
+            LAST_ORIGINAL_TEXT = content;
+
+            const layerColorMap = buildLayerColorMapFromUI();
+            const { optimizedText, report } = optimizeGcodeText(content, {
+                distanceThreshold: distance,
+                forceMultiplier: forceMultiplier,
+                aggressive: aggressive,
+                analyzeOnly: analyzeOnly,
+                debug: false,
+                layerColorMap: layerColorMap
+            });
+
+            LAST_OPTIMIZED_TEXT = optimizedText;
+            LAST_OPTIMIZED_FILENAME = (analyzeOnly ? "analyzed_" : "optimized_") + file.name;
+
+            statusDiv.innerHTML = `<span class="success">Optimization done. Original and optimized previews updated.</span>\n\n` + report;
+
+            // Update both previews: original (from LAST_ORIGINAL_TEXT) and optimized
+            const canvasOriginal = document.getElementById('previewCanvasOriginal');
+            const canvasOptimized = document.getElementById('previewCanvasOptimized');
+            if (canvasOriginal && LAST_ORIGINAL_TEXT) {
+                renderPreviewFor(LAST_ORIGINAL_TEXT, canvasOriginal, 'original');
+            }
+            if (canvasOptimized && LAST_OPTIMIZED_TEXT) {
+                renderPreviewFor(LAST_OPTIMIZED_TEXT, canvasOptimized, 'optimized');
+            }
+        } catch (err) {
+            console.error(err);
+            statusDiv.innerHTML = `<span class="error">Error: ${err.message}</span>`;
+        }
+    };
+
+    reader.onerror = function() {
+        statusDiv.innerHTML = `<span class="error">Error reading file.</span>`;
+    };
+
+    reader.readAsText(file);
+}
+</script>
+
+</body>
+</html>

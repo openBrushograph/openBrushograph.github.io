@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>openBrushograph LightBurn G-code Optimizer</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #0056b3; margin-top: 0; }
+        .form-row { display: flex; flex-wrap: wrap; gap: 10px; }
+        .form-group { margin-bottom: 15px; flex: 1 1 150px; min-width: 150px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="number"], input[type="file"] { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        input[type="checkbox"] { margin-right: 5px; }
+        button { background: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; }
+        button:hover { background: #004494; }
+        #status {
+            margin-top: 15px;
+            padding: 10px;
+            background: #000;
+            color: #00ff66;
+            border-radius: 4px;
+            border: 1px solid #333;
+            white-space: pre-wrap;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+            font-size: 12px;
+            font-family: "Fira Mono", "Consolas", "Menlo", monospace;
+        }
+        .success { color: #00ff66; }
+        .error { color: #ff5555; }
+        .small { font-size: 12px; color: #555; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🎨 lb2gcode</h2>
+    <!-- Original G-code preview at the top -->
+    <div style="margin-top: 10px;">
+        <h3>🖼️ Original G-code Preview v3</h3>
+        <p class="small">
+            Preview of the unmodified G-code. Uses the same logic as the Python <code>gcode_to_png.py</code> tool,
+            with a fixed coordinate system and origin (0,0) at the bottom-left.
+        </p>
+
+        <div class="form-group">
+            <label for="fileInput">Select G-code:</label>
+            <input type="file" id="fileInput" accept=".gcode,.nc,.txt" onchange="onFileSelected()">
+        </div>
+
+        <!-- Collapsible preview settings -->
+        <details style="margin-top: 5px;">
+            <summary class="small" style="cursor: pointer;">Preview settings</summary>
+            <div style="margin-top: 10px;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="canvasWidth">Canvas width (px)</label>
+                        <input type="number" id="canvasWidth" value="300" min="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="canvasHeight">Canvas height (px)</label>
+                        <input type="number" id="canvasHeight" value="280" min="10">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="zThreshold">Z paint threshold</label>
+                        <input type="number" id="zThreshold" value="1.0" step="0.1">
+                        <div class="small">Any move with Z ≤ threshold is treated as painting.</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="xRange">X range (mm)</label>
+                        <input type="number" id="xRange" value="150" step="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="yRange">Y range (mm)</label>
+                        <input type="number" id="yRange" value="140" step="1" min="1">
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <div style="margin-top: 10px; text-align: center;">
+            <canvas id="previewCanvasOriginal" width="300" height="280" style="border:1px solid #ccc; background:#fff; image-rendering: pixelated;"></canvas>
+        </div>
+    </div>
+
+    <!-- Optimizer description, rasterfix + color optimizer settings, & report -->
+    <div style="margin-top: 20px;">
+        <p>
+            The optimizer will first apply an optional raster S→Z + backlash fix (for raster jobs), then insert color-picks and washing sequences,
+            reformat G-code, and enforce distance-based color pick-ups.
+        </p>
+
+        <!-- Raster S→Z + Backlash Fix settings (always visible) -->
+        <h3>Step 1: Raster S→Z Converter + Optional Backlash Fix</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="zUp">Z up amount (mm):</label>
+                <input type="number" id="zUp" value="5" step="0.1">
+                <div class="small">How far to lift when S=0 inside Scan.</div>
+            </div>
+            <div class="form-group">
+                <label for="zFeed">Z feedrate (F):</label>
+                <input type="number" id="zFeed" value="500" step="10">
+                <div class="small">Feedrate for Z moves (0 = no explicit F).</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="scanFeed">Scan feed override (mm/min):</label>
+                <input type="number" id="scanFeed" placeholder="auto from ';Scan @ &lt;n&gt; mm/min'" step="10">
+                <div class="small">Leave empty to auto-detect from header comment if present.</div>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="useG0" checked>
+                    Use G0 for Z moves (otherwise G1)
+                </label>
+                <div class="small">Matches Python script default (G0 Z...).</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="removeS">
+                    Remove S commands from output
+                </label>
+                <div class="small">Equivalent to <code>--remove-s</code> in the Python script.</div>
+            </div>
+        </div>
+
+        <h4>Backlash Fix (FluidNC)</h4>
+        <div class="form-row">
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="applyBacklash" checked>
+                    Apply backlash compensation after S→Z
+                </label>
+                <div class="small">Uncheck if you only want S→Z conversion.</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="bx">X Axis Backlash (mm):</label>
+                <input type="number" id="bx" value="1.4" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="by">Y Axis Backlash (mm):</label>
+                <input type="number" id="by" value="1.5" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="safeFeed">Safe Feed Rate (F):</label>
+                <input type="number" id="safeFeed" value="1200" step="10">
+                <div class="small">Feed for backlash G0 moves.</div>
+            </div>
+        </div>
+
+        <div class="form-row" style="margin-top: 10px;">
+            <div class="form-group">
+                <button onclick="runRasterfixOnly()">Apply Rasterfix only (update optimized preview)</button>
+                <div class="small">Runs S→Z + optional backlash on the original file and updates only the optimized preview.</div>
+            </div>
+        </div>
+
+        <h3>Step 2: Color Optimizer</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="distance">Distance threshold (mm):</label>
+                <input type="number" id="distance" value="100" step="1" min="1">
+                <div class="small">Path length before suggesting a color pickup.</div>
+            </div>
+            <div class="form-group">
+                <label for="forceMultiplier">Force multiplier:</label>
+                <input type="number" id="forceMultiplier" value="2.0" step="0.1" min="1.0">
+                <div class="small">Only force pickups when path &gt;= multiplier × threshold.</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="aggressive">
+                    Aggressive mode
+                </label>
+                <div class="small">Insert pickups at any G0/G1 once threshold is exceeded.</div>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="analyzeOnly">
+                    Analyze only (no optimization)
+                </label>
+                <div class="small">Print structure statistics, keep original G-code.</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="color1Layers">Layer names for Color 1 (comma-separated):</label>
+                <input type="text" id="color1Layers" value="Green, C00, C1">
+                <div class="small">Example: Green, C00, C1</div>
+            </div>
+            <div class="form-group">
+                <label for="color2Layers">Layer names for Color 2 (comma-separated):</label>
+                <input type="text" id="color2Layers" value="Blue, C2">
+                <div class="small">Example: Blue, C2</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="color3Layers">Layer names for Color 3 (comma-separated):</label>
+                <input type="text" id="color3Layers" value="Red, C03, C3">
+                <div class="small">Example: Red, C03, C3</div>
+            </div>
+            <div class="form-group">
+                <label for="washLayers">Layer names for Washing / no color (comma-separated):</label>
+                <input type="text" id="washLayers" value="Wash">
+                <div class="small">These layers trigger a washing sequence instead of color pickup.</div>
+            </div>
+        </div>
+
+        <button onclick="runOptimizer()">Optimize (update optimized preview)</button>
+        <div id="status"></div>
+    </div>
+
+    <!-- Optimized G-code preview at the bottom -->
+    <div style="margin-top: 20px;">
+        <h3>🖼️ Optimized G-code Preview</h3>
+        <p class="small">
+            Preview of the optimized G-code produced by the optimizer above. This uses the same canvas settings
+            as the original preview.
+        </p>
+
+        <div style="margin-top: 10px; text-align: center;">
+            <canvas id="previewCanvasOptimized" width="300" height="280" style="border:1px solid #ccc; background:#fff; image-rendering: pixelated;"></canvas>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <button onclick="downloadOptimized()">Download Optimized G-code</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// --- Sequences copied/translated from Python optimizer ---
+const HOMING_SEQUENCE = `
+G0 Z10 F500;      ; Move to clearance level - Z motion limited to 500
+; G0 X-10 Y-10 F1200; Homing
+; G0 X-5 Y-5 F1200; go in
+; G10 P0 L20 X0 Y0; set to zero
+G1 F1200;           ; Set feed rate to 1000
+`;
+
+const COLOR1_SEQUENCE = `
+; Color picking sequence
+G1 Z10 F1000;         ; Raise brush to safe height
+G0 X41 Y5 F1200;    ; Rapid move to color 1 position
+G1 Z10 F1000;         ; Raise brush to safe height
+G0 X41 Y5 F1200;    ; Rapid move to color 1 position
+G1 Z0 F1000;         ; Lower into color - controlled movement
+G1 X40.102 Y7.295 Z0 S800 F1200
+G1 X40.026 Y7.642 Z0 F1200
+G1 X40 Y8 Z0 F1200
+G1 X40.026 Y8.358 Z0 F1200
+G1 X40.102 Y8.705 Z0 F1200
+G1 X40.225 Y9.041 Z0 F1200
+G1 X40.393 Y9.362 Z0 F1200
+G1 X40.603 Y9.668 Z0 F1200
+G1 X40.854 Y9.957 Z0 F1200
+G1 X41.142 Y10.226 Z0 F1200
+G1 X41.464 Y10.475 Z0 F1200
+G1 X41.82 Y10.701 Z0 F1200
+G1 X42.204 Y10.902 Z0 F1200
+G1 X42.617 Y11.078 Z0 F1200
+G1 X43.054 Y11.225 Z0 F1200
+G1 X43.513 Y11.343 Z0 F1200
+G1 X43.992 Y11.429 Z0 F1200
+G1 X44.489 Y11.482 Z0 F1200
+G1 X45 Y11.5 Z0 F1200
+G1 X45.511 Y11.482 Z0 F1200
+G1 X46.008 Y11.429 Z0 F1200
+G1 X46.487 Y11.343 Z0 F1200
+G1 X46.946 Y11.225 Z0 F1200
+G1 X47.383 Y11.078 Z0 F1200
+G1 X47.796 Y10.902 Z0 F1200
+G1 X48.18 Y10.701 Z0 F1200
+G1 X48.536 Y10.475 Z0 F1200
+G1 X48.858 Y10.226 Z0 F1200
+G1 X49.146 Y9.957 Z0 F1200
+G1 X49.397 Y9.668 Z0 F1200
+G1 X49.607 Y9.362 Z0 F1200
+G1 X49.775 Y9.041 Z0 F1200
+G1 X49.898 Y8.705 Z0 F1200
+G1 X49.974 Y8.358 Z0 F1200
+G1 X50 Y8 Z0 F1200
+G1 X49.974 Y7.642 Z0 F1200
+G1 X49.898 Y7.295 Z0 F1200
+G1 X49.775 Y6.959 Z0 F1200
+G1 X49.607 Y6.638 Z0 F1200
+G1 X49.397 Y6.332 Z0 F1200
+G1 X49.146 Y6.043 Z0 F1200
+G1 X48.858 Y5.774 Z0 F1200
+G1 X48.536 Y5.525 Z0 F1200
+G1 X48.18 Y5.299 Z0 F1200
+G1 X47.796 Y5.098 Z0 F1200
+G1 X47.383 Y4.922 Z0 F1200
+G1 X46.946 Y4.775 Z0 F1200
+G1 X46.487 Y4.657 Z0 F1200
+G1 X46.008 Y4.571 Z0 F1200
+G1 X45.511 Y4.518 Z0 F1200
+G1 X45 Y4.5 Z0 F1200
+G1 X44.489 Y4.518 Z0 F1200
+G1 X43.992 Y4.571 Z0 F1200
+G1 X43.513 Y4.657 Z0 F1200
+G1 X43.054 Y4.775 Z0 F1200
+G1 X42.617 Y4.922 Z0 F1200
+G1 X42.204 Y5.098 Z0 F1200
+G1 X41.82 Y5.299 Z0 F1200
+G1 X41.464 Y5.525 Z0 F1200
+G1 X41.142 Y5.774 Z0 F1200
+G1 X40.854 Y6.043 Z0 F1200
+G1 X40.603 Y6.332 Z0 F1200
+G1 X40.393 Y6.638 Z0 F1200
+G1 X40.225 Y6.959 Z0 F1200
+G1 Z7 F800;         ; Raise from color - controlled movement
+G1 X34 Y8 Z1 F1200;     ; Movement in paint - controlled movement
+G1 X24 Y18 Z8 F500;     ; Move in paint - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+`;
+
+function offsetXInGcodeBlock(block, dx) {
+    const pattern = /X(\s*)(-?\d+(?:\.\d+)?)/g;
+    return block.replace(pattern, (match, space, orig) => {
+        let decimals = 0;
+        if (orig.includes('.')) {
+            decimals = orig.split('.')[1].length;
+        }
+        let newVal = parseFloat(orig) + dx;
+        if (Number.isNaN(newVal)) return match;
+        if (decimals > 0) {
+            return `X${space}${newVal.toFixed(decimals)}`;
+        } else {
+            return `X${space}${Math.round(newVal)}`;
+        }
+    });
+}
+
+const COLOR2_SEQUENCE = offsetXInGcodeBlock(COLOR1_SEQUENCE, 45);
+const COLOR3_SEQUENCE = offsetXInGcodeBlock(COLOR1_SEQUENCE, 90);
+
+const WASHING_SEQUENCE = `
+; Washing sequence (no color)
+G1 Z10 F1000;        ; Raise brush to safe height
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X10 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G1 Z8 F800;         ; Maintain brush height - controlled movement
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X15 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G1 Z10 F800;         ; Maintain brush height - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+`;
+
+const ENDING_SEQUENCE = `
+; Return to 2,0 wash and park
+G1 Z10 F1000;        ; Raise brush to safe height
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X10 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X15 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G1 Z10 F800;         ; Maintain brush height - controlled movement
+G0 X20 Y130 Z10 F500;; Move to parking position with Z at safe height
+M2;                 ; End program
+`;
+
+// Default mapping from layer names to color sequences
+const DEFAULT_LAYER_COLOR_MAP = {
+    "Green": { sequence: COLOR1_SEQUENCE, name: "Color 1" },
+    "Blue":  { sequence: COLOR2_SEQUENCE, name: "Color 2" },
+    "Red":   { sequence: COLOR3_SEQUENCE, name: "Color 3" },
+    "C03":   { sequence: COLOR3_SEQUENCE, name: "Color 3" },
+    "C00":   { sequence: COLOR1_SEQUENCE, name: "Color 1" },
+    "C1":    { sequence: COLOR1_SEQUENCE, name: "Color 1" },
+    "C2":    { sequence: COLOR2_SEQUENCE, name: "Color 2" },
+    "C3":    { sequence: COLOR3_SEQUENCE, name: "Color 3" },
+    "Wash":  { sequence: WASHING_SEQUENCE, name: "Washing" },
+    "default": { sequence: WASHING_SEQUENCE, name: "Washing" }
+};
+
+function parseLayerList(text) {
+    if (!text) return [];
+    return text
+        .split(',')
+        .map(s => s.trim())
+        .filter(s => s.length > 0);
+}
+
+function buildLayerColorMapFromUI() {
+    // Start from defaults so we always have sane behavior
+    const map = { ...DEFAULT_LAYER_COLOR_MAP };
+
+    const color1Layers = parseLayerList(document.getElementById('color1Layers')?.value || "");
+    const color2Layers = parseLayerList(document.getElementById('color2Layers')?.value || "");
+    const color3Layers = parseLayerList(document.getElementById('color3Layers')?.value || "");
+    const washLayers   = parseLayerList(document.getElementById('washLayers')?.value   || "");
+
+    // Helper to register all names for a given color
+    function assignLayers(layerNames, sequence, name) {
+        for (const ln of layerNames) {
+            map[ln] = { sequence, name };
+        }
+    }
+
+    if (color1Layers.length) assignLayers(color1Layers, COLOR1_SEQUENCE, "Color 1");
+    if (color2Layers.length) assignLayers(color2Layers, COLOR2_SEQUENCE, "Color 2");
+    if (color3Layers.length) assignLayers(color3Layers, COLOR3_SEQUENCE, "Color 3");
+    if (washLayers.length)   assignLayers(washLayers,   WASHING_SEQUENCE, "Washing");
+
+    return map;
+}
+
+function nextZLiftInRange(lines, startIndex, maxLookahead) {
+    const re = /G0\s*Z[1-9]|G0.*Z[1-9]/;
+    const endIndex = Math.min(startIndex + maxLookahead, lines.length);
+    for (let i = startIndex; i < endIndex; i++) {
+        if (re.test(lines[i])) return i - startIndex;
+    }
+    return null;
+}
+
+function analyzeGcode(lines) {
+    let drawing_areas = 0;
+    let z_moves = 0;
+    let z0_moves = 0;
+    let g0_moves = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (/G0\s*Z[0-9.]+/.test(line)) {
+            z_moves++;
+            if (i + 2 < lines.length) {
+                if (/G0\s*X[0-9.]+Y[0-9.]+/.test(lines[i+1]) && /G1\s*Z0/.test(lines[i+2])) {
+                    drawing_areas++;
+                }
+            }
+        }
+        if (/G1\s*Z0/.test(line)) z0_moves++;
+        if (/G0\s*X|G0\s*Y/.test(line)) g0_moves++;
+    }
+
+    return {
+        totalLines: lines.length,
+        drawingAreas: drawing_areas,
+        zMoves: z_moves,
+        z0Moves: z0_moves,
+        g0Moves: g0_moves,
+    };
+}
+
+function optimizeGcodeText(text, options) {
+    const { distanceThreshold, forceMultiplier, debug, aggressive, layerColorMap } = options;
+
+    const rawLines = text.split(/\r?\n/);
+    const lines = rawLines.map(l => l.endsWith("\n") ? l : l + "\n");
+
+    // Analysis-only path
+    if (options.analyzeOnly) {
+        const stats = analyzeGcode(lines);
+        let report = [];
+        report.push(`G-code Analysis:`);
+        report.push(`  Total lines: ${stats.totalLines}`);
+        report.push(`  Detected drawing areas: ${stats.drawingAreas}`);
+        report.push(`  Z movements (lifts): ${stats.zMoves}`);
+        report.push(`  Z0 movements (drawing): ${stats.z0Moves}`);
+        report.push(`  G0 positioning moves: ${stats.g0Moves}`);
+        return { optimizedText: text, report: report.join("\n") };
+    }
+
+    // Use provided map or fall back to defaults
+    const LAYER_COLOR_MAP = layerColorMap || DEFAULT_LAYER_COLOR_MAP;
+
+    let total_length = 0;
+    let accumulated_length = 0;
+    let current_x = 0, current_y = 0;
+    let prev_x = 0, prev_y = 0;
+    let is_drawing = false;
+    let current_segment_length = 0;
+    let layer_lengths = {};
+    let path_lengths = {};
+    let current_path = "None";
+    let current_layer = "default";
+    let previous_layer = null;
+    let pickup_segments = [];
+    let color_pickup_count = { "Color 1": 0, "Color 2": 0, "Color 3": 0, "Washing": 0 };
+
+    let current_color_sequence = WASHING_SEQUENCE;
+    let current_color_name = "Washing";
+    let last_color_name = null;
+
+    // Track coordinate mode: true if in relative mode (G91), false for absolute (G90)
+    let inRelativeMode = false;
+
+    // Flexible coordinate parsing: handle LightBurn styles like
+    //   G1 X34.312 Y40.025 Z0 S800 F1600
+    // where an S parameter may appear between Z and F, and spacing can vary.
+    const coordXRegex = /X([\d.-]+)/;
+    const coordYRegex = /Y([\d.-]+)/;
+    const layer_regex = /;Layer\s+(\w+)/;
+    const m8_regex = /M8/;
+    const path_regex = /; Path\s+(\d+)/;
+    const plunge_regex = /Z0(?:\.0+)?\s*F/;
+    const retract_regex = /Z[2-9](?:\.\d+)?\s*F/;
+    const cut_header_regex = /;\s*Cut\s*@\s*(\d+)\s*mm\/min/i;
+
+    let output_lines = [];
+
+    // Track when we are in a raster-style Scan section. In those blocks, LightBurn
+    // uses G91 relative moves (with S values) for rastering. We still allow the
+    // optimizer to see these moves for distance calculations, but we keep G90/G91
+    // handling correct so relative coordinates are interpreted properly.
+    let inRasterSection = false;
+
+    // Helper: wrap an inserted sequence so it runs in absolute mode when
+    // we are currently in relative mode (G91). This prevents the absolute
+    // coordinates inside the sequence from being misinterpreted as large
+    // relative moves by the controller.
+    function wrapSequenceForMode(seq) {
+        if (inRelativeMode) {
+            return "G90\n" + seq + "\nG91";
+        }
+        return seq;
+    }
+
+    // Add homing sequence (always safe at the very beginning; assume G90)
+    output_lines.push(HOMING_SEQUENCE);
+
+    let line_index = 0;
+    let processed_count = 0;
+    let found_m8 = false;
+    let current_cut_feedrate = null;
+    let pending_original_lines = [];
+
+    function flush_pending(buffer_feedrate) {
+        if (!pending_original_lines.length) return;
+        if (buffer_feedrate != null) {
+            const rep = String(buffer_feedrate);
+            const re = /(?<=F)1800\b/;
+            for (const pl of pending_original_lines) {
+                output_lines.push(pl.replace(re, rep));
+            }
+        } else {
+            output_lines.push(...pending_original_lines);
+        }
+        pending_original_lines = [];
+    }
+
+    while (line_index < lines.length) {
+        let line = lines[line_index];
+
+        const cut_match = line.match(cut_header_regex);
+        if (cut_match) {
+            flush_pending(current_cut_feedrate);
+            let parsed = parseInt(cut_match[1], 10);
+            if (!Number.isFinite(parsed)) parsed = null;
+            current_cut_feedrate = parsed;
+        }
+
+        // Detect entering/exiting raster Scan sections based on comments
+        if (/;\s*Scan\b/i.test(line)) {
+            inRasterSection = true;
+        } else if (/;\s*(Offset|Cut)\b/i.test(line)) {
+            inRasterSection = false;
+        }
+
+        if (m8_regex.test(line)) {
+            flush_pending(current_cut_feedrate);
+            found_m8 = true;
+            output_lines.push(line);
+            line_index++;
+
+            const look_ahead_limit = 6;
+            let next_layer = null;
+            let look_ahead_index = line_index;
+
+            for (let i = 0; i < look_ahead_limit; i++) {
+                if (look_ahead_index < lines.length) {
+                    const ahead_line = lines[look_ahead_index];
+                    const lm = ahead_line.match(layer_regex);
+                    if (lm) {
+                        next_layer = lm[1];
+                        break;
+                    }
+                    look_ahead_index++;
+                }
+            }
+
+            if (next_layer && LAYER_COLOR_MAP[next_layer]) {
+                current_layer = next_layer;
+                if (current_layer !== previous_layer) {
+                    if (!layer_lengths[current_layer]) layer_lengths[current_layer] = 0;
+                    accumulated_length = 0;
+                    current_segment_length = 0;
+
+                    const previous_color_name = current_color_name || "None";
+                    current_color_sequence = LAYER_COLOR_MAP[current_layer].sequence;
+                    current_color_name = LAYER_COLOR_MAP[current_layer].name;
+
+                    if (previous_color_name !== "None" && previous_color_name !== current_color_name) {
+                        output_lines.push(wrapSequenceForMode(WASHING_SEQUENCE));
+                        color_pickup_count["Washing"]++;
+                    }
+
+                    output_lines.push(wrapSequenceForMode(current_color_sequence));
+                    color_pickup_count[current_color_name]++;
+                    previous_layer = current_layer;
+                    last_color_name = current_color_name;
+                }
+            }
+            continue;
+        }
+
+        let layer_match = line.match(layer_regex);
+        if (layer_match && !found_m8) {
+            flush_pending(current_cut_feedrate);
+            current_layer = layer_match[1];
+            if (current_layer !== previous_layer && previous_layer == null) {
+                if (!layer_lengths[current_layer]) layer_lengths[current_layer] = 0;
+                accumulated_length = 0;
+
+                if (LAYER_COLOR_MAP[current_layer]) {
+                    current_color_sequence = LAYER_COLOR_MAP[current_layer].sequence;
+                    current_color_name = LAYER_COLOR_MAP[current_layer].name;
+                } else {
+                    current_color_sequence = LAYER_COLOR_MAP["default"].sequence;
+                    current_color_name = LAYER_COLOR_MAP["default"].name;
+                }
+
+                const previous_color_name = last_color_name || "None";
+                if (previous_color_name !== "None" && previous_color_name !== current_color_name) {
+                    output_lines.push(wrapSequenceForMode(WASHING_SEQUENCE));
+                    color_pickup_count["Washing"]++;
+                }
+
+                output_lines.push(wrapSequenceForMode(current_color_sequence));
+                color_pickup_count[current_color_name]++;
+                previous_layer = current_layer;
+                last_color_name = current_color_name;
+            }
+        }
+
+        if (layer_match) {
+            found_m8 = false;
+            if (current_layer !== previous_layer) {
+                accumulated_length = 0;
+                current_segment_length = 0;
+            }
+        }
+
+        if (/G1 Z3\.0000/.test(line)) {
+            output_lines.push("G1 Z3 F1000;         ; Raise brush\n");
+        } else if (/G1 Z0\.0000/.test(line)) {
+            output_lines.push("G1 Z0 F1000;         ; Position at surface\n");
+        } else if (/G1 Z-0\.1000 F500/.test(line)) {
+            output_lines.push("G1 Z-0.1 F1000;      ; Plunge brush to painting depth\n");
+        } else {
+            pending_original_lines.push(line);
+        }
+
+        // Track positioning mode (absolute/relative)
+        if (line.includes("G90")) {
+            inRelativeMode = false;
+        } else if (line.includes("G91")) {
+            inRelativeMode = true;
+        }
+
+        const path_match = line.match(path_regex);
+        if (path_match) {
+            current_path = path_match[1];
+            path_lengths[current_path] = 0;
+        }
+
+        // Drawing state: retract on any G0 with Z>0, plunge on any G1 with Z0
+        if (line.includes('G0') && /Z[1-9]/.test(line)) {
+            is_drawing = false;
+        }
+        if (line.includes('G1') && /Z0\b/.test(line)) {
+            is_drawing = true;
+        }
+
+        // Extract coordinates using flexible X/Y parsing and handle G90/G91
+        const coordXMatch = line.match(coordXRegex);
+        const coordYMatch = line.match(coordYRegex);
+        if (coordXMatch || coordYMatch) {
+            const prevX = current_x;
+            const prevY = current_y;
+
+            if (inRelativeMode) {
+                // Relative mode: treat parsed values as deltas
+                if (coordXMatch) current_x += parseFloat(coordXMatch[1]);
+                if (coordYMatch) current_y += parseFloat(coordYMatch[1]);
+            } else {
+                // Absolute mode: treat parsed values as positions; leave axis
+                // unchanged if it is not present on this line.
+                if (coordXMatch) current_x = parseFloat(coordXMatch[1]);
+                if (coordYMatch) current_y = parseFloat(coordYMatch[1]);
+            }
+
+            if ((prevX !== 0 || prevY !== 0) && is_drawing && line.includes("G1")) {
+                const dx = current_x - prevX;
+                const dy = current_y - prevY;
+                const segment_length = Math.sqrt(dx*dx + dy*dy);
+                total_length += segment_length;
+                accumulated_length += segment_length;
+
+                layer_lengths[current_layer] = (layer_lengths[current_layer] || 0) + segment_length;
+                path_lengths[current_path] = (path_lengths[current_path] || 0) + segment_length;
+                current_segment_length += segment_length;
+
+                if (accumulated_length > distanceThreshold) {
+                    let is_clean_transition = false;
+                    let force_pickup = false;
+
+                    if (aggressive) {
+                        if (/G[01]/.test(line)) {
+                            is_clean_transition = true;
+                        }
+                    } else {
+                        if (/G0\s*Z[1-9]|G0.*Z[1-9]/.test(line)) {
+                            is_clean_transition = true;
+                        } else if (line_index > 0 && line_index + 1 < lines.length) {
+                            const prev_is_g1 = /G1\s*X|G1\s*Y/.test(lines[line_index - 1]);
+                            const next_is_g0 = /G0\s*/.test(lines[line_index + 1]);
+                            if (prev_is_g1 && next_is_g0) {
+                                is_clean_transition = true;
+                            }
+                        }
+                    }
+
+                    if (!aggressive && !is_clean_transition) {
+                        force_pickup = accumulated_length >= (forceMultiplier * distanceThreshold);
+                        if (force_pickup) {
+                            const z_lift_distance = nextZLiftInRange(lines, line_index, 20);
+                            if (z_lift_distance != null && z_lift_distance < 10) {
+                                force_pickup = false;
+                            } else if (/G[01]/.test(line)) {
+                                is_clean_transition = true;
+                            }
+                        }
+                    } else if (aggressive && !is_clean_transition) {
+                        force_pickup = accumulated_length >= (forceMultiplier * distanceThreshold);
+                        if (force_pickup && /G[01]/.test(line)) {
+                            is_clean_transition = true;
+                        }
+                    }
+
+                    if (accumulated_length >= (3.0 * distanceThreshold) && !is_clean_transition) {
+                        is_clean_transition = true;
+                    }
+
+                    if (is_clean_transition) {
+                        flush_pending(current_cut_feedrate);
+                        if (LAYER_COLOR_MAP[current_layer]) {
+                            current_color_name = LAYER_COLOR_MAP[current_layer].name;
+                            current_color_sequence = LAYER_COLOR_MAP[current_layer].sequence;
+                        } else {
+                            current_color_name = LAYER_COLOR_MAP["default"].name;
+                            current_color_sequence = LAYER_COLOR_MAP["default"].sequence;
+                        }
+
+                        if (last_color_name && last_color_name !== current_color_name) {
+                            output_lines.push(wrapSequenceForMode(WASHING_SEQUENCE));
+                            color_pickup_count["Washing"]++;
+                        }
+
+                        color_pickup_count[current_color_name]++;
+                        output_lines.push(wrapSequenceForMode(current_color_sequence));
+                        last_color_name = current_color_name;
+
+                        pickup_segments.push([current_layer, current_color_name, accumulated_length]);
+
+                        accumulated_length = 0;
+                        current_segment_length = 0;
+                    }
+                }
+            }
+        }
+
+        line_index++;
+        processed_count++;
+    }
+
+    flush_pending(current_cut_feedrate);
+    // Ensure ending sequence runs in absolute mode if we end in G91
+    output_lines.push(wrapSequenceForMode(ENDING_SEQUENCE));
+
+    let optimized_g_code = "";
+    for (const l of output_lines) {
+        if (!l.endsWith("\n")) optimized_g_code += l + "\n";
+        else optimized_g_code += l;
+    }
+
+    let report = [];
+    report.push(`Total drawing path length: ${total_length.toFixed(2)} mm (${(total_length/1000).toFixed(2)} m)`);
+    report.push("");
+    report.push("Layer Lengths:");
+    for (const [layer, length] of Object.entries(layer_lengths)) {
+        report.push(`  Layer ${layer}: ${length.toFixed(2)} mm`);
+    }
+    report.push("");
+    report.push("Path Segments Between Color Pickups:");
+    for (const seg of pickup_segments) {
+        report.push(`  Layer ${seg[0]}, Color ${seg[1]}: ${seg[2].toFixed(2)} mm`);
+    }
+    report.push("");
+    report.push("Color Pickup Insertions:");
+    for (const [color, count] of Object.entries(color_pickup_count)) {
+        if (count > 0) report.push(`  ${color}: ${count} pickups added`);
+    }
+
+    return { optimizedText: optimized_g_code, report: report.join("\n") };
+}
+
+// --- Raster S→Z + Backlash Fix helpers (from lbrasterfix.html, simplified) ---
+
+function rf_fmt(val) {
+    try {
+        const f = parseFloat(val);
+        if (!Number.isFinite(f)) return String(val);
+        let s = f.toFixed(3);
+        s = s.replace(/0+$/, "").replace(/\.$/, "");
+        return s === "" ? "0" : s;
+    } catch (e) {
+        return String(val);
+    }
+}
+
+function rf_zcmd(value, useG0, zFeed) {
+    const cmdG = useG0 ? "G0" : "G1";
+    let cmd = `${cmdG} Z${rf_fmt(value)}`;
+    if (zFeed && Number(zFeed) !== 0) {
+        cmd += ` F${rf_fmt(zFeed)}`;
+    }
+    return cmd;
+}
+
+function rf_getSValue(line) {
+    const code = line.split(";", 1)[0];
+    if (!code.trim()) return null;
+    const m = code.match(/S\s*(-?\d+(?:\.\d+)?)/i);
+    if (!m) return null;
+    const v = parseFloat(m[1]);
+    return Number.isFinite(v) ? v : null;
+}
+
+function rf_replaceFeed(line, scanFeed) {
+    if (scanFeed == null || scanFeed === "") return line;
+    const fStr = rf_fmt(scanFeed);
+    return line.replace(/F\s*[-+]?\d+(?:\.\d+)?/g, () => `F${fStr}`);
+}
+
+function rf_detectScanFeedFromHeader(lines) {
+    for (let i = 0; i < Math.min(50, lines.length); i++) {
+        const ln = lines[i];
+        const m = ln.match(/;\s*Scan\s*@\s*(\d+(?:\.\d+)?)\s*mm\s*\/?\. *min/i);
+        if (m) {
+            const v = parseFloat(m[1]);
+            if (Number.isFinite(v)) return v;
+        }
+    }
+    return null;
+}
+
+function rf_processRasterS2Z(lines, opts) {
+    const { zUp, zFeed, useG0, keepS, scanFeed } = opts;
+
+    const out = [];
+    let isRaised = false;
+    let inScanSection = false;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const lstripped = line.replace(/^\s+/, "");
+
+        if (lstripped.startsWith(";")) {
+            if (/\bScan\b/i.test(lstripped)) {
+                inScanSection = true;
+                isRaised = false;
+            }
+            if (/(?:\bOffset\b|\bCut\b)/i.test(lstripped)) {
+                inScanSection = false;
+                isRaised = false;
+            }
+        }
+
+        const sVal = rf_getSValue(lstripped);
+        const needsUp = (sVal === 0);
+        const needsDown = (sVal != null && sVal > 0);
+
+        if (inScanSection && needsUp) {
+            if (!isRaised) {
+                out.push(rf_zcmd(zUp, useG0, zFeed) + "\n");
+                isRaised = true;
+            }
+        }
+        if (inScanSection && needsDown) {
+            if (isRaised) {
+                out.push(rf_zcmd(-zUp, useG0, zFeed) + "\n");
+                isRaised = false;
+            }
+        }
+
+        let toWrite = line;
+        if (!keepS) {
+            toWrite = toWrite.replace(/S(?:0|900)(?!\d)/gi, "");
+        }
+        toWrite = rf_replaceFeed(toWrite, scanFeed);
+        out.push(toWrite);
+    }
+
+    return out;
+}
+
+// LightBurn raster Scan blocks in our workflow use G90 mode but encode the
+// raster as a series of small X/Y deltas starting from an absolute anchor
+// (typically a preceding G0 X.. Y.. move). This converter detects the Scan
+// region and, within it, interprets X/Y on G0/G1 lines as deltas which are
+// accumulated to produce absolute coordinates. Outside the Scan region, lines
+// are passed through unchanged.
+function rf_convertRasterDeltasToAbsolute(lines) {
+    let out = [];
+
+    let inRaster = false;
+    let anchorX = 0.0;
+    let anchorY = 0.0;
+    let haveAnchor = false;
+    let curX = 0.0;
+    let curY = 0.0;
+
+    const coordXRegex = /X([\d.-]+)/;
+    const coordYRegex = /Y([\d.-]+)/;
+
+    for (let raw of lines) {
+        let line = raw;
+        const trimmed = line.trimStart();
+
+        if (/;\s*Scan\b/i.test(trimmed)) {
+            inRaster = true;
+        }
+        if (/;\s*(Offset|Cut)\b/i.test(trimmed)) {
+            inRaster = false;
+            haveAnchor = false;
+        }
+
+        // Outside raster region: just pass lines through, but remember the
+        // last absolute G0 X/Y so we have a sensible starting point if the
+        // raster block begins immediately after.
+        if (!inRaster) {
+            const anchorMatch = line.match(/^(\s*)G0[^;]*X([\d.-]+)[^;]*Y([\d.-]+)/i);
+            if (anchorMatch) {
+                anchorX = parseFloat(anchorMatch[2]);
+                anchorY = parseFloat(anchorMatch[3]);
+                curX = anchorX;
+                curY = anchorY;
+                haveAnchor = true;
+            }
+            out.push(line);
+            continue;
+        }
+
+        // In raster Scan region. If we have not yet locked an anchor for this
+        // raster block, treat the first G0 with X/Y as the anchor and pass it
+        // through unchanged; subsequent moves will be converted to absolute.
+        if (inRaster && !haveAnchor) {
+            const anchorMatch = line.match(/^(\s*)G0[^;]*X([\d.-]+)[^;]*Y([\d.-]+)/i);
+            if (anchorMatch) {
+                anchorX = parseFloat(anchorMatch[2]);
+                anchorY = parseFloat(anchorMatch[3]);
+                curX = anchorX;
+                curY = anchorY;
+                haveAnchor = true;
+                out.push(line);
+                continue;
+            }
+            // If it's not the anchor line yet, just pass it through.
+            out.push(line);
+            continue;
+        }
+
+        // Drop any explicit G91 commands inside the raster block. We are
+        // reinterpreting all subsequent X/Y as deltas from the anchored
+        // absolute position, and outputting absolute coordinates, so the
+        // controller never needs to see G91.
+        if (/^\s*G91\b/i.test(trimmed)) {
+            continue;
+        }
+
+        // Split code/comment
+        const parts = line.split(';');
+        let code = parts[0];
+        const comment = parts.length > 1 ? ';' + parts.slice(1).join(';') : '';
+
+        const cmdMatch = code.match(/^(\s*)(G0|G1)(.*)$/i);
+        if (!cmdMatch) {
+            out.push(line);
+            continue;
+        }
+
+        const indent = cmdMatch[1];
+        const cmd = cmdMatch[2].toUpperCase();
+        let rest = cmdMatch[3];
+
+        const xM = rest.match(coordXRegex);
+        const yM = rest.match(coordYRegex);
+
+        // If no X/Y, nothing to convert for this line
+        if (!xM && !yM) {
+            out.push(line);
+            continue;
+        }
+
+        // Interpret X/Y as deltas from current position
+        if (xM) {
+            curX += parseFloat(xM[1]);
+        }
+        if (yM) {
+            curY += parseFloat(yM[1]);
+        }
+
+        // Remove old coords from rest
+        let params = rest
+            .replace(coordXRegex, '')
+            .replace(coordYRegex, '');
+        params = params.replace(/\s+/g, ' ').trim();
+
+        let rebuilt = indent + cmd;
+        rebuilt += ` X${rf_fmt(curX)} Y${rf_fmt(curY)}`;
+        if (params.length) rebuilt += ' ' + params;
+
+        out.push(rebuilt + comment + (line.endsWith('\n') ? '' : '\n'));
+    }
+
+    return out;
+}
+
+// Convert all relative (G91) moves in the given G-code lines into absolute
+// G90 coordinates. We track current X/Y/Z and, for any G0/G1 line, rewrite
+// its X/Y/Z so they become absolute positions. All G91 commands are removed
+// from the output; we ensure at least one G90 is present near the top.
+function rf_convertRelativeToAbsolute(lines) {
+    let out = [];
+    let currentX = 0.0;
+    let currentY = 0.0;
+    let currentZ = 0.0;
+    let inRelative = false;
+    let sawG90 = false;
+
+    const coordXRegex = /X([\d.-]+)/;
+    const coordYRegex = /Y([\d.-]+)/;
+    const coordZRegex = /Z([\d.-]+)/;
+
+    for (let raw of lines) {
+        let line = raw;
+        const trimmed = line.trimStart();
+
+        if (!trimmed || trimmed.startsWith(';')) {
+            out.push(line);
+            continue;
+        }
+
+        // Split code and comment
+        const parts = line.split(';');
+        let code = parts[0];
+        const comment = parts.length > 1 ? ';' + parts.slice(1).join(';') : '';
+
+        // Detect mode changes anywhere in the code part
+        if (/G91/i.test(code)) {
+            inRelative = true;
+        }
+        if (/G90/i.test(code)) {
+            inRelative = false;
+            sawG90 = true;
+        }
+
+        // Drop standalone G91 lines (no motion command)
+        if (/^\s*G91\b/i.test(code) && !/\bG0\b|\bG1\b/i.test(code)) {
+            continue;
+        }
+
+        // Extract command (G0/G1) if present
+        const cmdMatch = code.match(/^(\s*)(G0|G1)(.*)$/i);
+        if (!cmdMatch) {
+            // No movement command; strip any G91 tokens and normalize G90
+            code = code.replace(/G91\s*/gi, '').replace(/G90\s*/gi, 'G90 ');
+            if (/G90/i.test(code)) sawG90 = true;
+            out.push(code + comment + (line.endsWith('\n') ? '' : '\n'));
+            continue;
+        }
+
+        const indent = cmdMatch[1];
+        const cmd = cmdMatch[2].toUpperCase();
+        let rest = cmdMatch[3];
+
+        // Parse coordinates from the rest
+        const xM = rest.match(coordXRegex);
+        const yM = rest.match(coordYRegex);
+        const zM = rest.match(coordZRegex);
+
+        if (inRelative) {
+            if (xM) currentX += parseFloat(xM[1]);
+            if (yM) currentY += parseFloat(yM[1]);
+            if (zM) currentZ += parseFloat(zM[1]);
+        } else {
+            if (xM) currentX = parseFloat(xM[1]);
+            if (yM) currentY = parseFloat(yM[1]);
+            if (zM) currentZ = parseFloat(zM[1]);
+        }
+
+        // Rebuild params without original X/Y/Z
+        let params = rest
+            .replace(coordXRegex, '')
+            .replace(coordYRegex, '')
+            .replace(coordZRegex, '');
+        params = params.replace(/\s+/g, ' ').trim();
+
+        let rebuilt = indent + cmd;
+        if (xM) rebuilt += ` X${rf_fmt(currentX)}`;
+        if (yM) rebuilt += ` Y${rf_fmt(currentY)}`;
+        if (zM) rebuilt += ` Z${rf_fmt(currentZ)}`;
+        if (params.length) rebuilt += ' ' + params;
+
+        out.push(rebuilt + comment + (line.endsWith('\n') ? '' : '\n'));
+    }
+
+    // Ensure there is at least one G90 at the top of the program
+    if (!sawG90) {
+        let inserted = false;
+        for (let i = 0; i < out.length; i++) {
+            const t = out[i].trimStart();
+            if (!t.startsWith(';') && t.length > 0) {
+                out.splice(i, 0, 'G90\n');
+                inserted = true;
+                break;
+            }
+        }
+        if (!inserted) {
+            out.unshift('G90\n');
+        }
+    }
+
+    return out;
+}
+
+class RF_FluidNCSafeBacklash {
+    constructor(bx, by, threshold = 0.05, safeFeed = 200) {
+        this.bx = bx;
+        this.by = by;
+        this.threshold = threshold;
+        this.safeFeed = safeFeed;
+
+        this.current_x = 0.0;
+        this.current_y = 0.0;
+        this.offset_x = 0.0;
+        this.offset_y = 0.0;
+        this.dir_x = 0;
+        this.dir_y = 0;
+        this.inRelativeMode = false;
+    }
+
+    processLine(originalLine, currentFeed) {
+        let newLines = [];
+        let line = originalLine.trim();
+
+        if (!line || line.startsWith(';')) {
+            return { lines: [originalLine], newFeed: currentFeed };
+        }
+
+        const upper = line.toUpperCase();
+
+        if (upper.includes('G91')) {
+            this.inRelativeMode = true;
+            return { lines: [originalLine], newFeed: currentFeed };
+        }
+
+        if (upper.includes('G90')) {
+            this.inRelativeMode = false;
+            return { lines: [originalLine], newFeed: currentFeed };
+        }
+
+        let target_x = this.current_x;
+        let target_y = this.current_y;
+        let target_z = null;
+        let has_move = false;
+        let nextFeed = currentFeed;
+
+        const rx = /X([\-\d\.]+)/;
+        const ry = /Y([\-\d\.]+)/;
+        const rz = /Z([\-\d\.]+)/;
+        const rf = /F([\-\d\.]+)/;
+
+        let dx_move = 0.0;
+        let dy_move = 0.0;
+
+        let mx = line.match(rx);
+        if (mx) {
+            const valX = parseFloat(mx[1]);
+            if (this.inRelativeMode) {
+                dx_move = valX;
+                target_x = this.current_x + valX;
+            } else {
+                target_x = valX;
+                dx_move = target_x - this.current_x;
+            }
+            has_move = true;
+        }
+
+        let my = line.match(ry);
+        if (my) {
+            const valY = parseFloat(my[1]);
+            if (this.inRelativeMode) {
+                dy_move = valY;
+                target_y = this.current_y + valY;
+            } else {
+                target_y = valY;
+                dy_move = target_y - this.current_y;
+            }
+            has_move = true;
+        }
+
+        let mz = line.match(rz);
+        if (mz) { target_z = parseFloat(mz[1]); }
+
+        let mf = line.match(rf);
+        if (mf) { nextFeed = parseFloat(mf[1]); }
+
+        if (!has_move) {
+            return { lines: [originalLine], newFeed: nextFeed };
+        }
+
+        let dx = target_x - this.current_x;
+        if (Math.abs(dx) > this.threshold) {
+            let new_dir_x = dx > 0 ? 1 : -1;
+            if (this.dir_x !== 0 && new_dir_x !== this.dir_x) {
+                let change = new_dir_x === 1 ? this.bx : -this.bx;
+                this.offset_x += change;
+
+                if (this.inRelativeMode) {
+                    newLines.push(`; --- FIX X Backlash (relative): ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 X${change.toFixed(3)} F${this.safeFeed}`);
+                } else {
+                    let phys_x = this.current_x + this.offset_x;
+                    let phys_y = this.current_y + this.offset_y;
+
+                    if (phys_x < 0) phys_x = 0;
+                    if (phys_y < 0) phys_y = 0;
+
+                    newLines.push(`; --- FIX X Backlash: ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 X${phys_x.toFixed(3)} Y${phys_y.toFixed(3)} F${this.safeFeed}`);
+                }
+            }
+            this.dir_x = new_dir_x;
+        }
+
+        let dy = target_y - this.current_y;
+        if (Math.abs(dy) > this.threshold) {
+            let new_dir_y = dy > 0 ? 1 : -1;
+            if (this.dir_y !== 0 && new_dir_y !== this.dir_y) {
+                let change = new_dir_y === 1 ? this.by : -this.by;
+                this.offset_y += change;
+
+                if (this.inRelativeMode) {
+                    newLines.push(`; --- FIX Y Backlash (relative): ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 Y${change.toFixed(3)} F${this.safeFeed}`);
+                } else {
+                    let phys_x = this.current_x + this.offset_x;
+                    let phys_y = this.current_y + this.offset_y;
+
+                    if (phys_x < 0) phys_x = 0;
+                    if (phys_y < 0) phys_y = 0;
+
+                    newLines.push(`; --- FIX Y Backlash: ${change.toFixed(3)}mm ---`);
+                    newLines.push(`G0 X${phys_x.toFixed(3)} Y${phys_y.toFixed(3)} F${this.safeFeed}`);
+                }
+            }
+            this.dir_y = new_dir_y;
+        }
+
+        if (this.inRelativeMode) {
+            newLines.push(originalLine);
+            this.current_x = target_x;
+            this.current_y = target_y;
+            return { lines: newLines, newFeed: nextFeed };
+        }
+
+        let final_x = target_x + this.offset_x;
+        let final_y = target_y + this.offset_y;
+        if (final_x < 0) final_x = 0;
+        if (final_y < 0) final_y = 0;
+
+        let cmd = line.toUpperCase().includes("G0") ? "G0" : "G1";
+        let out = `${cmd} X${final_x.toFixed(3)} Y${final_y.toFixed(3)}`;
+        if (target_z !== null) out += ` Z${target_z.toFixed(3)}`;
+        if (cmd === "G1") out += ` F${parseInt(nextFeed)}`;
+
+        newLines.push(out);
+
+        this.current_x = target_x;
+        this.current_y = target_y;
+
+        return { lines: newLines, newFeed: nextFeed };
+    }
+}
+
+// Auto-detect raster-style jobs and apply S→Z + backlash first.
+// Returns { text, report, isRaster } where report is a short description.
+function applyRasterFixPipeline(text) {
+    const linesRaw = text.split(/\r?\n/);
+    const relLines = linesRaw.map(l => l + '\n');
+
+    // First, convert any mixed G90/G91 code into pure G90 absolute coordinates
+    // so that downstream S→Z, backlash, and optimizers all see consistent
+    // coordinates.
+    const baseLines = rf_convertRelativeToAbsolute(relLines);
+
+    // Read current UI settings (with sane defaults)
+    const zUp = parseFloat(document.getElementById('zUp')?.value || '5');
+    const zFeed = parseFloat(document.getElementById('zFeed')?.value || '500');
+    const scanFeedInput = document.getElementById('scanFeed')?.value;
+    const useG0 = !!document.getElementById('useG0')?.checked;
+    const removeS = !!document.getElementById('removeS')?.checked;
+    const applyBacklash = !!document.getElementById('applyBacklash')?.checked;
+    const bx = parseFloat(document.getElementById('bx')?.value || '1.4');
+    const by = parseFloat(document.getElementById('by')?.value || '1.5');
+    const safeFeed = parseFloat(document.getElementById('safeFeed')?.value || '1200');
+
+    // Detect raster: look for "; Scan" and at least one S command.
+    let hasScan = false;
+    let hasS = false;
+    for (let i = 0; i < Math.min(baseLines.length, 500); i++) {
+        const ln = baseLines[i];
+        if (/;\s*Scan\b/i.test(ln)) hasScan = true;
+        if (/\bS[-+]?\d/i.test(ln)) hasS = true;
+        if (hasScan && hasS) break;
+    }
+
+    let report = [];
+
+    if (!hasScan || !hasS) {
+        // Not a raster-style job; leave text (now absolute) unchanged but still
+        // report settings.
+        report.push('Raster S→Z + backlash fix: skipped (no raster Scan/S pattern detected).');
+        report.push(`  zUp: ${rf_fmt(zUp)} mm, zFeed: ${rf_fmt(zFeed)} F`);
+        report.push(`  useG0 for Z: ${useG0 ? 'yes' : 'no'}`);
+        report.push(`  scanFeed override: ${scanFeedInput && scanFeedInput.trim() !== '' ? rf_fmt(scanFeedInput) + ' mm/min' : 'auto/unchanged'}`);
+        report.push(`  remove S: ${removeS ? 'yes' : 'no'}`);
+        report.push(`  applyBacklash: ${applyBacklash ? 'yes' : 'no'}`);
+        report.push(`  backlash bx: ${rf_fmt(bx)} mm, by: ${rf_fmt(by)} mm, safeFeed: ${rf_fmt(safeFeed)} F`);
+        const outAbs = baseLines.join('');
+        return { text: outAbs, report: report.join('\n'), isRaster: false };
+    }
+
+    // Determine scan feed
+    let scanFeed = null;
+    if (scanFeedInput && scanFeedInput.trim() !== '') {
+        const v = parseFloat(scanFeedInput);
+        if (Number.isFinite(v)) scanFeed = v;
+    } else {
+        scanFeed = rf_detectScanFeedFromHeader(baseLines);
+    }
+
+    // Step 1: Raster S→Z
+    const rasterLines = rf_processRasterS2Z(baseLines, {
+        zUp: Number.isFinite(zUp) ? zUp : 5,
+        zFeed: Number.isFinite(zFeed) ? zFeed : 500,
+        useG0: useG0,
+        keepS: !removeS,
+        scanFeed: scanFeed,
+    });
+
+    // Start from the already-absolute baseLines (from rf_convertRelativeToAbsolute)
+    // and apply S→Z conversion. At this point, coordinates are absolute, so we
+    // no longer need special Scan delta handling here.
+    let finalLines = rasterLines;
+    let backlashInfo = '';
+
+    // Step 2: Optional Backlash compensation
+    if (applyBacklash) {
+        const fixer = new RF_FluidNCSafeBacklash(
+            Number.isFinite(bx) ? bx : 1.4,
+            Number.isFinite(by) ? by : 1.5,
+            0.05,
+            Number.isFinite(safeFeed) ? safeFeed : 1200
+        );
+
+        let currentFeed = 500;
+        let outLines = [];
+
+        finalLines.forEach(l => {
+            const noNl = l.replace(/\n$/, '');
+            const result = fixer.processLine(noNl, currentFeed);
+            currentFeed = result.newFeed;
+            result.lines.forEach(x => outLines.push(x));
+        });
+
+        finalLines = outLines.map(x => x + '\n');
+        backlashInfo = `  applyBacklash: yes (bx: ${rf_fmt(bx)} mm, by: ${rf_fmt(by)} mm, safeFeed: ${rf_fmt(safeFeed)} F)`;
+    } else {
+        backlashInfo = '  applyBacklash: no (S→Z only, no backlash compensation)';
+    }
+    const outText = finalLines.join('');
+
+    report.push('Raster S→Z + backlash fix applied (auto-detected raster job).');
+    report.push(`  zUp: ${rf_fmt(zUp)} mm, zFeed: ${rf_fmt(zFeed)} F`);
+    report.push(`  useG0 for Z: ${useG0 ? 'yes' : 'no'}`);
+    report.push(`  scanFeed: ${scanFeed != null ? rf_fmt(scanFeed) + ' mm/min' : 'unchanged'}`);
+    report.push(`  remove S: ${removeS ? 'yes' : 'no'}`);
+    report.push(backlashInfo);
+
+    return { text: outText, report: report.join('\n'), isRaster: true };
+}
+
+// Global buffers for UI flow: generate -> preview -> download
+let LAST_OPTIMIZED_TEXT = null;
+let LAST_OPTIMIZED_FILENAME = null;
+let LAST_ORIGINAL_TEXT = null;
+
+// === Inline G-code previewer (mirrors gcode_to_png.py) ===
+
+const PREVIEW_COLOR_PICK_COMMENT = 'Color picking sequence';
+const PREVIEW_WASH_COMMENT = 'Washing sequence (no color)';
+
+const PREVIEW_DEFAULT_Z_THRESHOLD = 1.0;
+const PREVIEW_DEFAULT_X_RANGE = 150.0;
+const PREVIEW_DEFAULT_Y_RANGE = 140.0;
+
+const PREVIEW_PALETTE = [
+    '#0066ff', // strong blue
+    '#ff00aa', // magenta/pink
+    '#00c800', // bright green
+];
+
+function previewParseXY(line, currentX, currentY, relative) {
+    const xMatch = line.match(/X(-?\d+\.?\d*)/);
+    const yMatch = line.match(/Y(-?\d+\.?\d*)/);
+    let x = currentX;
+    let y = currentY;
+    if (xMatch) {
+        const val = parseFloat(xMatch[1]);
+        x = relative ? currentX + val : val;
+    }
+    if (yMatch) {
+        const val = parseFloat(yMatch[1]);
+        y = relative ? currentY + val : val;
+    }
+    return { x, y };
+}
+
+function previewParseZ(line, currentZ, relative) {
+    const zMatch = line.match(/Z(-?\d+\.?\d*)/);
+    if (!zMatch) return currentZ;
+    const val = parseFloat(zMatch[1]);
+    return relative ? currentZ + val : val;
+}
+
+function previewExtractSegments(text, zThreshold, xRangeMm, yRangeMm) {
+    const lines = text.split(/\r?\n/);
+    const segments = []; // [x1,y1,x2,y2,colorIndex]
+
+    let currentX = 0.0;
+    let currentY = 0.0;
+    let currentZ = 10.0;
+    let relative = false;
+    let painting = false;
+    let currentColor = null;
+    let awaitingColorPick = false;
+    let sawColorPickComment = false;
+
+    for (let raw of lines) {
+        const line = raw.trim();
+
+        if (!line || line.startsWith(';')) {
+            if (line.includes(PREVIEW_COLOR_PICK_COMMENT)) {
+                sawColorPickComment = true;
+                awaitingColorPick = true;
+                painting = false;
+            } else if (line.includes(PREVIEW_WASH_COMMENT)) {
+                currentColor = null;
+                painting = false;
+                awaitingColorPick = false;
+            }
+            continue;
+        }
+
+        if (line.startsWith('G90')) {
+            relative = false;
+            continue;
+        }
+        if (line.startsWith('G91')) {
+            relative = true;
+            continue;
+        }
+
+        let newZ = currentZ;
+        if (line.includes('Z')) {
+            newZ = previewParseZ(line, currentZ, relative);
+        }
+
+        if ((line.startsWith('G0') || line.startsWith('G1')) && (line.includes('X') || line.includes('Y'))) {
+            const { x: newX, y: newY } = previewParseXY(line, currentX, currentY, relative);
+
+            // Color well detection near bottom palette area (Y small)
+            if (awaitingColorPick && line.includes('G1') && newZ <= zThreshold && newY <= 20) {
+                // Approximate well centers from lb2colour: X≈45, 90, 135
+                if (newX < 67.5) {
+                    currentColor = 0; // left well
+                } else if (newX < 112.5) {
+                    currentColor = 1; // middle well
+                } else {
+                    currentColor = 2; // right well
+                }
+                awaitingColorPick = false;
+            }
+
+            // Single-color files without explicit color-pick comments
+            if (!sawColorPickComment && currentColor === null && newZ <= zThreshold) {
+                currentColor = 0;
+            }
+
+            painting = currentColor !== null && newZ <= zThreshold;
+
+            if (painting) {
+                segments.push([currentX, currentY, newX, newY, currentColor]);
+            }
+
+            currentX = newX;
+            currentY = newY;
+            currentZ = newZ;
+            continue;
+        }
+
+        if (line.includes('Z') && !(line.includes('X') || line.includes('Y'))) {
+            currentZ = newZ;
+        }
+    }
+
+    return segments;
+}
+
+function previewMapToPixels(x, y, widthPx, heightPx, xRangeMm, yRangeMm) {
+    const xr = xRangeMm || PREVIEW_DEFAULT_X_RANGE;
+    const yr = yRangeMm || PREVIEW_DEFAULT_Y_RANGE;
+
+    const xClamped = Math.max(0, Math.min(xr, x));
+    const yClamped = Math.max(0, Math.min(yr, y));
+
+    const u = xClamped / xr;  // 0..1
+    const v = yClamped / yr;  // 0..1 (bottom to top)
+
+    const px = u * (widthPx - 1);
+    const py = (1 - v) * (heightPx - 1); // invert Y for canvas
+    return { px: Math.round(px), py: Math.round(py) };
+}
+
+function previewDrawSegments(segments, canvas, xRangeMm, yRangeMm) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.lineWidth = 1;
+    ctx.lineCap = 'round';
+
+    for (const [x1, y1, x2, y2, cIdx] of segments) {
+        const color = PREVIEW_PALETTE[cIdx % PREVIEW_PALETTE.length];
+        const p1 = previewMapToPixels(x1, y1, canvas.width, canvas.height, xRangeMm, yRangeMm);
+        const p2 = previewMapToPixels(x2, y2, canvas.width, canvas.height, xRangeMm, yRangeMm);
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(p1.px, p1.py);
+        ctx.lineTo(p2.px, p2.py);
+        ctx.stroke();
+    }
+}
+
+// Render helper used for both original and optimized previews.
+// Important: this function ONLY draws on the canvas and does not touch the
+// #status terminal area, so the optimizer report stays visible there.
+function renderPreviewFor(sourceText, canvas, label) {
+    const width = parseInt(document.getElementById('canvasWidth').value, 10) || 300;
+    const height = parseInt(document.getElementById('canvasHeight').value, 10) || 280;
+    const zThreshold = parseFloat(document.getElementById('zThreshold').value) || PREVIEW_DEFAULT_Z_THRESHOLD;
+    const xRangeMm = parseFloat(document.getElementById('xRange').value) || PREVIEW_DEFAULT_X_RANGE;
+    const yRangeMm = parseFloat(document.getElementById('yRange').value) || PREVIEW_DEFAULT_Y_RANGE;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    if (!sourceText) {
+        // Nothing to draw yet; leave existing canvas contents and status text alone.
+        return;
+    }
+
+    try {
+        const segments = previewExtractSegments(sourceText, zThreshold, xRangeMm, yRangeMm);
+        previewDrawSegments(segments, canvas, xRangeMm, yRangeMm);
+    } catch (err) {
+        // Log errors to console but do not overwrite the optimizer report.
+        console.error(`Preview error for ${label}:`, err);
+    }
+}
+
+function onFileSelected() {
+    const fileInput = document.getElementById('fileInput');
+    const statusDiv = document.getElementById('status');
+    const canvasOriginal = document.getElementById('previewCanvasOriginal');
+
+    LAST_OPTIMIZED_TEXT = null;
+    LAST_OPTIMIZED_FILENAME = null;
+    LAST_ORIGINAL_TEXT = null;
+
+    if (!fileInput.files.length) {
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    statusDiv.style.display = 'block';
+    statusDiv.textContent = 'Loading file for initial preview...';
+
+    reader.onload = function(e) {
+        try {
+            LAST_ORIGINAL_TEXT = e.target.result;
+            if (canvasOriginal) {
+                renderPreviewFor(LAST_ORIGINAL_TEXT, canvasOriginal, 'original');
+            }
+        } catch (err) {
+            console.error(err);
+            statusDiv.textContent = 'Error loading file for preview: ' + err.message;
+        }
+    };
+
+    reader.onerror = function() {
+        statusDiv.textContent = 'Error reading file.';
+    };
+
+    reader.readAsText(file);
+}
+
+function downloadOptimized() {
+    if (!LAST_OPTIMIZED_TEXT) {
+        alert('No optimized G-code available yet. Please run the optimizer first.');
+        return;
+    }
+
+    const filename = LAST_OPTIMIZED_FILENAME || 'optimized.gcode';
+    const blob = new Blob([LAST_OPTIMIZED_TEXT], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Run only the rasterfix pipeline (Step 1) on the selected file and update the optimized preview.
+function runRasterfixOnly() {
+    const fileInput = document.getElementById('fileInput');
+    const statusDiv = document.getElementById('status');
+
+    if (!fileInput.files.length) {
+        alert('Please select a G-code file.');
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    statusDiv.style.display = 'block';
+    statusDiv.textContent = 'Reading file and applying rasterfix (no color optimization)...';
+
+    reader.onload = function(e) {
+        try {
+            const content = e.target.result;
+            LAST_ORIGINAL_TEXT = content;
+
+            const { text: rasterFixedText, report: rasterReport } = applyRasterFixPipeline(content);
+
+            LAST_OPTIMIZED_TEXT = rasterFixedText;
+            LAST_OPTIMIZED_FILENAME = 'rasterfix_' + file.name;
+
+            statusDiv.innerHTML = `<span class="success">Rasterfix done. Original and optimized previews updated.</span>\n\n` + rasterReport;
+
+            const canvasOriginal = document.getElementById('previewCanvasOriginal');
+            const canvasOptimized = document.getElementById('previewCanvasOptimized');
+            if (canvasOriginal && LAST_ORIGINAL_TEXT) {
+                renderPreviewFor(LAST_ORIGINAL_TEXT, canvasOriginal, 'original');
+            }
+            if (canvasOptimized && LAST_OPTIMIZED_TEXT) {
+                renderPreviewFor(LAST_OPTIMIZED_TEXT, canvasOptimized, 'optimized');
+            }
+        } catch (err) {
+            console.error(err);
+            statusDiv.innerHTML = `<span class="error">Error during rasterfix: ${err.message}</span>`;
+        }
+    };
+
+    reader.onerror = function() {
+        statusDiv.innerHTML = `<span class="error">Error reading file for rasterfix.</span>`;
+    };
+
+    reader.readAsText(file);
+}
+
+function runOptimizer() {
+    const fileInput = document.getElementById('fileInput');
+    const statusDiv = document.getElementById('status');
+    const distance = parseFloat(document.getElementById('distance').value);
+    const forceMultiplier = parseFloat(document.getElementById('forceMultiplier').value);
+    const aggressive = document.getElementById('aggressive').checked;
+    const analyzeOnly = document.getElementById('analyzeOnly').checked;
+
+    if (!fileInput.files.length) {
+        alert("Please select a G-code file.");
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    statusDiv.style.display = 'block';
+    statusDiv.textContent = "Reading file and optimizing (no download yet)...";
+
+    reader.onload = function(e) {
+        try {
+            const content = e.target.result;
+            LAST_ORIGINAL_TEXT = content;
+
+            // First step: apply rasterfix (S→Z + backlash) pipeline.
+            const { text: rasterFixedText, report: rasterReport } = applyRasterFixPipeline(content);
+
+            // Always run the color optimizer on the raster-fixed text. Relative
+            // G91 moves are handled correctly in optimizeGcodeText via the
+            // inRelativeMode flag.
+            const layerColorMap = buildLayerColorMapFromUI();
+            const { optimizedText, report: colorReport } = optimizeGcodeText(rasterFixedText, {
+                distanceThreshold: distance,
+                forceMultiplier: forceMultiplier,
+                aggressive: aggressive,
+                analyzeOnly: analyzeOnly,
+                debug: false,
+                layerColorMap: layerColorMap
+            });
+
+            LAST_OPTIMIZED_TEXT = optimizedText;
+            LAST_OPTIMIZED_FILENAME = (analyzeOnly ? "analyzed_" : "optimized_") + file.name;
+
+            let fullReport = colorReport;
+            if (rasterReport && rasterReport.trim() !== "") {
+                fullReport = rasterReport + "\n\n" + colorReport;
+            }
+
+            statusDiv.innerHTML = `<span class="success">Optimization done. Original and optimized previews updated.</span>\n\n` + fullReport;
+
+            // Update both previews: original (from LAST_ORIGINAL_TEXT) and optimized
+            const canvasOriginal = document.getElementById('previewCanvasOriginal');
+            const canvasOptimized = document.getElementById('previewCanvasOptimized');
+            if (canvasOriginal && LAST_ORIGINAL_TEXT) {
+                renderPreviewFor(LAST_ORIGINAL_TEXT, canvasOriginal, 'original');
+            }
+            if (canvasOptimized && LAST_OPTIMIZED_TEXT) {
+                renderPreviewFor(LAST_OPTIMIZED_TEXT, canvasOptimized, 'optimized');
+            }
+        } catch (err) {
+            console.error(err);
+            statusDiv.innerHTML = `<span class="error">Error: ${err.message}</span>`;
+        }
+    };
+
+    reader.onerror = function() {
+        statusDiv.innerHTML = `<span class="error">Error reading file.</span>`;
+    };
+
+    reader.readAsText(file);
+}
+</script>
+
+</body>
+</html>
