@@ -792,16 +792,26 @@ function optimizeGcodeText(lines, options) {
     const layer_regex = /;\s*Layer\s+(\w+)/i; 
     const m8_regex = /M8/i;
     const op_start_regex = /^;(Scan|Offset|Cut)/i;
+    const cut_feed_regex = /;\s*(?:Cut|Scan|Offset)\s*@\s*(\d+)\s*mm\/min/i;
 
     function log(msg) {
         if (debug_log.length < 500) debug_log.push(`L${output_lines.length}: ${msg}`);
     }
+    
+    let current_cut_feedrate = null;
 
     for (let i = 0; i < lines.length; i++) {
         let line = lines[i].trim();
         if (!line) {
             output_lines.push("\n");
             continue;
+        }
+
+        // Parse Feedrate from Cut/Scan/Offset Comment
+        let cutMatch = line.match(cut_feed_regex);
+        if (cutMatch) {
+            current_cut_feedrate = parseFloat(cutMatch[1]);
+            log(`Detected Operation Feedrate: ${current_cut_feedrate}`);
         }
 
         // Detect Start of Operation Block (M8 or ;Scan/Offset/Cut)
@@ -887,6 +897,27 @@ function optimizeGcodeText(lines, options) {
         if (xMatch) current_x = parseFloat(xMatch[1]);
         if (yMatch) current_y = parseFloat(yMatch[1]);
         
+        // Apply Cut Feedrate Override for G1 drawing moves
+        if (current_cut_feedrate !== null && line.startsWith('G1')) {
+            // Check if it's a drawing move (has X or Y). Pure Z moves (lifts) are ignored.
+            let hasXY = xMatch || yMatch;
+            
+            if (hasXY) {
+                 if (/F[\d.]+/.test(line)) {
+                     line = line.replace(/F[\d.]+/, `F${current_cut_feedrate}`);
+                 } else {
+                     let commentIdx = line.indexOf(';');
+                     if (commentIdx >= 0) {
+                         let before = line.substring(0, commentIdx).trimEnd();
+                         let after = line.substring(commentIdx);
+                         line = `${before} F${current_cut_feedrate} ${after}`;
+                     } else {
+                         line = `${line.trimEnd()} F${current_cut_feedrate}`;
+                     }
+                 }
+            }
+        }
+
         output_lines.push(line + "\n");
 
         // Distance Calculation
