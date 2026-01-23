@@ -397,6 +397,16 @@
 
 
 
+        <div class="form-row">
+          <div class="form-group"
+            style="flex:1; align-items:center; flex-direction:row; justify-content:flex-start; gap:10px;">
+            <input type="checkbox" id="isPlotter" style="width:auto; transform:scale(1.5);">
+            <label for="isPlotter" style="margin-bottom:0; cursor:pointer;"
+              title="If checked, disables all ink dipping sequences (Continuous Plot).">Continuous Plot (No
+              Dipping)</label>
+          </div>
+        </div>
+
         <details>
           <summary style="cursor: pointer; color: #fff; margin-bottom: 5px;">Advanced: Custom Dip Sequence</summary>
           <div class="form-row">
@@ -7726,49 +7736,52 @@ G1 F1200;</textarea>
       let dipCount = 0;
 
       const fixer = new BacklashFixer(bx, by);
+      const isPlotter = document.getElementById('isPlotter').checked;
 
-      // --- Perform Initial Dip ---
-      dipCount++;
-      gcode.push(`(Initial Dip #${dipCount})`);
-      const rawDip = document.getElementById('dipSeq').value;
-      if (rawDip && rawDip.trim().length > 0) {
-        // Custom Sequence Logic
-        const lines = rawDip.split('\n');
-        let refX = null, refY = null;
-        for (let l of lines) {
-          const mx = /X([0-9\.\-]+)/i.exec(l);
-          const my = /Y([0-9\.\-]+)/i.exec(l);
-          if (mx && my) { refX = parseFloat(mx[1]); refY = parseFloat(my[1]); break; }
-        }
-        if (refX !== null && refY !== null) {
-          const shiftX = dipX - refX;
-          const shiftY = dipY - refY;
+      // --- Perform Initial Dip (Only if NOT plotter mode) ---
+      if (!isPlotter) {
+        dipCount++;
+        gcode.push(`(Initial Dip #${dipCount})`);
+        const rawDip = document.getElementById('dipSeq').value;
+        if (rawDip && rawDip.trim().length > 0) {
+          // Custom Sequence Logic
+          const lines = rawDip.split('\n');
+          let refX = null, refY = null;
           for (let l of lines) {
-            let clean = l.split(';')[0].trim();
-            if (!clean) continue;
-            let newLine = clean.replace(/([XY])([0-9\.\-]+)/gi, (match, axis, val) => {
-              let v = parseFloat(val);
-              if (axis.toUpperCase() === 'X') return "X" + (v + shiftX).toFixed(3);
-              if (axis.toUpperCase() === 'Y') return "Y" + (v + shiftY).toFixed(3);
-              return match;
-            });
-            gcode.push(newLine);
+            const mx = /X([0-9\.\-]+)/i.exec(l);
+            const my = /Y([0-9\.\-]+)/i.exec(l);
+            if (mx && my) { refX = parseFloat(mx[1]); refY = parseFloat(my[1]); break; }
+          }
+          if (refX !== null && refY !== null) {
+            const shiftX = dipX - refX;
+            const shiftY = dipY - refY;
+            for (let l of lines) {
+              let clean = l.split(';')[0].trim();
+              if (!clean) continue;
+              let newLine = clean.replace(/([XY])([0-9\.\-]+)/gi, (match, axis, val) => {
+                let v = parseFloat(val);
+                if (axis.toUpperCase() === 'X') return "X" + (v + shiftX).toFixed(3);
+                if (axis.toUpperCase() === 'Y') return "Y" + (v + shiftY).toFixed(3);
+                return match;
+              });
+              gcode.push(newLine);
+            }
+          } else {
+            for (let l of lines) {
+              let clean = l.split(';')[0].trim();
+              if (clean) gcode.push(clean);
+            }
           }
         } else {
-          for (let l of lines) {
-            let clean = l.split(';')[0].trim();
-            if (clean) gcode.push(clean);
-          }
+          gcode.push("G0 Z5");
+          gcode.push(`G0 X${dipX} Y${dipY}`);
+          gcode.push(`G1 Z-2 F500`);
+          gcode.push("G4 P500");
+          gcode.push("G0 Z5");
         }
-      } else {
-        gcode.push("G0 Z5");
-        gcode.push(`G0 X${dipX} Y${dipY}`);
-        gcode.push(`G1 Z-2 F500`);
-        gcode.push("G4 P500");
+        // Return to Z5 safe height
         gcode.push("G0 Z5");
       }
-      // Return to Z5 safe height
-      gcode.push("G0 Z5");
 
 
 
@@ -7798,7 +7811,7 @@ G1 F1200;</textarea>
         gcode.push("G0 Z5");
 
         // Check dip AFTER stroke is complete
-        if (distAcc > dipLimit) {
+        if (!isPlotter && distAcc > dipLimit) {
           dipCount++;
           gcode.push(`(Dip #${dipCount} at dist ${distAcc.toFixed(1)} after stroke)`);
           const rawDip = document.getElementById('dipSeq').value;
