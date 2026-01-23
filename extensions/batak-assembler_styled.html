@@ -252,7 +252,7 @@
       overflow-y: auto;
       border: 1px solid var(--border);
       margin-top: 10px;
-      display: none;
+      display: block;
     }
 
     #custom-tooltip {
@@ -358,6 +358,10 @@
             <input type="number" id="by" value="0.0" step="0.1"
               title="Compensate for mechanical slack/play on Y-axis (mm).">
           </div>
+          <div class="form-group">
+            <label for="safeZ">Safe Z (mm):</label>
+            <input type="number" id="safeZ" value="5" step="0.1" title="Height to retract the pen during travel moves.">
+          </div>
         </div>
 
         <div class="form-row">
@@ -417,7 +421,7 @@
                 placeholder="Paste custom G-code here..."
                 title="G-code command sequence to execute for dipping the pen.">; Colour 1 pickup
 G1 Z10 F1000;
-G0 X41 Y5 F1200;
+G0 X41 Y5 F1600;
 G1 Z0 F1000;
 G1 X40.102 Y7.295 Z0 S800 F1200;
 G1 X40.026 Y7.642 Z0 F1200;
@@ -7583,13 +7587,21 @@ G1 F1200;</textarea>
     }
 
     function generate() {
-      document.getElementById('console').innerText = "--- Starting Generation ---\n";
+      const consoleEl = document.getElementById('console');
+      consoleEl.innerText = ""; // Clear console
+      log("--- Starting Generation ---");
+
       if (Object.keys(glyphs).length === 0) { log("Error: No glyphs loaded!"); return; }
       const textStr = document.getElementById('inputText').value;
       const targetW_mm = parseFloat(document.getElementById('width').value);
+      const isPlotter = document.getElementById('isPlotter').checked;
+
+      log(`Mode: ${isPlotter ? 'CONTINUOUS PLOT (No Dipping)' : 'Standard (Ink Dipping)'}`);
+      log(`Target Width: ${targetW_mm}mm`);
       const offX = parseFloat(document.getElementById('ox').value);
       const offY = parseFloat(document.getElementById('oy').value);
       const feed = parseInt(document.getElementById('feed').value);
+      const safeZ = parseFloat(document.getElementById('safeZ').value) || 5;
       const bx = parseFloat(document.getElementById('bx').value);
       const by = parseFloat(document.getElementById('by').value);
 
@@ -7726,7 +7738,7 @@ G1 F1200;</textarea>
 
       log(`Bounds: W=${(maxX - minX).toFixed(2)} units -> ${targetW_mm}mm, Scale=${scale.toFixed(3)}`);
 
-      let gcode = ["%", "(Batak Skeleton Assembler Output)", "G21 G90", "G0 Z5"];
+      let gcode = ["%", "(Batak Skeleton Assembler Output)", "G21 G90", `G0 Z${safeZ}`];
       const dipLimit = parseFloat(document.getElementById('dipDist').value);
       const dipX = parseFloat(document.getElementById('dipX').value);
       const dipY = parseFloat(document.getElementById('dipY').value);
@@ -7736,7 +7748,7 @@ G1 F1200;</textarea>
       let dipCount = 0;
 
       const fixer = new BacklashFixer(bx, by);
-      const isPlotter = document.getElementById('isPlotter').checked;
+
 
       // --- Perform Initial Dip (Only if NOT plotter mode) ---
       if (!isPlotter) {
@@ -7773,14 +7785,14 @@ G1 F1200;</textarea>
             }
           }
         } else {
-          gcode.push("G0 Z5");
+          gcode.push(`G0 Z${safeZ}`);
           gcode.push(`G0 X${dipX} Y${dipY}`);
           gcode.push(`G1 Z-2 F500`);
           gcode.push("G4 P500");
-          gcode.push("G0 Z5");
+          gcode.push(`G0 Z${safeZ}`);
         }
         // Return to Z5 safe height
-        gcode.push("G0 Z5");
+        gcode.push(`G0 Z${safeZ}`);
       }
 
 
@@ -7808,7 +7820,7 @@ G1 F1200;</textarea>
           lastX = tx;
           lastY = ty;
         }
-        gcode.push("G0 Z5");
+        gcode.push(`G0 Z${safeZ}`);
 
         // Check dip AFTER stroke is complete
         if (!isPlotter && distAcc > dipLimit) {
@@ -7851,11 +7863,11 @@ G1 F1200;</textarea>
             }
           } else {
             // Default Sequence
-            gcode.push("G0 Z5");
+            gcode.push(`G0 Z${safeZ}`);
             gcode.push(`G0 X${dipX} Y${dipY}`);
             gcode.push(`G1 Z-2 F500`);
             gcode.push("G4 P500");
-            gcode.push("G0 Z5");
+            gcode.push(`G0 Z${safeZ}`);
           }
 
           // Move back to where the NEXT stroke will start? 
@@ -7900,7 +7912,7 @@ G1 F1200;</textarea>
       ctx.strokeStyle = "#ccc"; ctx.strokeRect(0, 0, W * PPU, H * PPU);
 
       let curX = 0, curY = 0, curZ = 5;
-      const styleDraw = { color: "#ff0080", width: 2 };
+      const styleDraw = { color: "#ff0080", width: 4 };
       const styleTravel = { color: "#cccccc", width: 1 };
 
       ctx.lineCap = "round"; ctx.lineJoin = "round";
