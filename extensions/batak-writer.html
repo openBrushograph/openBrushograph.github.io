@@ -239,7 +239,7 @@
                     </div>
                     <div class="form-group">
                         <label for="minLen">Min Stroke (mm):</label>
-                        <input type="number" id="minLen" value="12" step="1">
+                        <input type="number" id="minLen" value="3" step="1">
                     </div>
                 </div>
 
@@ -289,7 +289,8 @@
                 'g': '\u1BCE', 'n': '\u1BC9', 'm': '\u1BD4',
                 'b': '\u1BC5', 't': '\u1BD6', 'd': '\u1BD1', 'p': '\u1BC7',
                 'w': '\u1BCB', 's': '\u1BD8', 'y': '\u1BDB', 'l': '\u1BDE',
-                'r': '\u1BD2', 'j': '\u1BD0',
+                'r': '\u1BD2', 'j': '\u1BD0', 'c': '\u1BD0',
+                'f': '\u1BC7', 'v': '\u1BC5',
                 'a': '\u1BC0', 'i': '\u1BE4', 'u': '\u1BE5'
             };
             const vowels = {
@@ -299,8 +300,7 @@
             const amborolong = '\u1BF0';
 
             let t = text.toLowerCase().trim()
-                .replace(/ng/g, 'ŋ')
-                .replace(/ua/g, 'uwa'); // Simplified handle for vowel clusters
+                .replace(/ng/g, 'ŋ');
 
             let res = "";
             let i = 0;
@@ -381,6 +381,71 @@
                     for (let idx of passToRemove) pixels[idx] = 0;
                 }
             }
+
+            // Morphological Clean: Aggressively eliminate jitter
+            for (let iter = 0; iter < 6; iter++) {
+                for (let y = 1; y < h - 1; y++) {
+                    for (let x = 1; x < w - 1; x++) {
+                        let idx = y * w + x;
+                        if (!pixels[idx]) continue;
+
+                        let n = 0;
+                        for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+                            if (dx === 0 && dy === 0) continue;
+                            if (pixels[(y + dy) * w + (x + dx)]) n++;
+                        }
+
+                        // Kill pixels with > 2 neighbors if they form clusters
+                        if (n > 2) {
+                            if (pixels[idx + 1] && pixels[idx + w] && pixels[idx + w + 1]) pixels[idx] = 0;
+                            if (pixels[idx - 1] && pixels[idx + w] && pixels[idx + w - 1]) pixels[idx] = 0;
+                            if (pixels[idx - 1] && pixels[idx - w] && pixels[idx - w - 1]) pixels[idx] = 0;
+                            if (pixels[idx + 1] && pixels[idx - w] && pixels[idx - w + 1]) pixels[idx] = 0;
+                        }
+
+                        // Remove staircase steps
+                        if (pixels[idx - 1] && pixels[idx - w] && !pixels[idx - w - 1]) pixels[idx] = 0;
+                        if (pixels[idx + 1] && pixels[idx + w] && !pixels[idx + w + 1]) pixels[idx] = 0;
+                    }
+                }
+            }
+        }
+
+        // --- Path Resampling (Avoid point clusters) ---
+        function resamplePath(points, dist = 1.0) {
+            if (points.length < 2) return points;
+            let result = [points[0]];
+            for (let i = 0; i < points.length - 1; i++) {
+                let p1 = points[i], p2 = points[i + 1];
+                let d = Math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2);
+                if (d > dist) {
+                    let steps = Math.floor(d / dist);
+                    for (let j = 1; j <= steps; j++) {
+                        let t = j / (steps + 1);
+                        result.push([p1[0] + (p2[0] - p1[0]) * t, p1[1] + (p2[1] - p1[1]) * t]);
+                    }
+                }
+                result.push(p2);
+            }
+            return result;
+        }
+
+        // --- Path Smoothing (Gaussian) ---
+        function smoothPath(points, iterations = 20) {
+            if (points.length < 3) return points;
+            let current = points;
+            for (let iter = 0; iter < iterations; iter++) {
+                let next = [current[0]];
+                for (let i = 1; i < current.length - 1; i++) {
+                    next.push([
+                        (current[i - 1][0] * 0.2 + current[i][0] * 0.6 + current[i + 1][0] * 0.2),
+                        (current[i - 1][1] * 0.2 + current[i][1] * 0.6 + current[i + 1][1] * 0.2)
+                    ]);
+                }
+                next.push(current[current.length - 1]);
+                current = next;
+            }
+            return current;
         }
 
         // --- Skeleton Pruning (Remove 'hairs') ---
@@ -408,7 +473,7 @@
         }
 
         // --- Path Simplification (RDP + Collinear Merge) ---
-        function mergeCollinearSegments(points, thres = 0.4) {
+        function mergeCollinearSegments(points, thres = 0.2) {
             if (points.length < 3) return points;
             let result = [points[0]];
             for (let i = 1; i < points.length - 1; i++) {
@@ -558,9 +623,15 @@
                     curr = next;
                 }
 
-                if (path.length > 1) {
+                if (path.length > 2) {
                     let coords = path.map(idx => [idx % w, Math.floor(idx / w)]);
-                    let simplified = simplifyPath(coords, 1.0); // More aggressive simplification
+                    let resampled = resamplePath(coords, 0.8);
+                    let smoothed = smoothPath(resampled, 12);
+
+                    // Kill terminal hooks
+                    if (smoothed.length > 5) smoothed = smoothed.slice(1, -1);
+
+                    let simplified = simplifyPath(smoothed, 1.2);
                     if (simplified.length > 1) paths.push(simplified);
                 }
             }
@@ -576,7 +647,7 @@
                         let t2 = p2[p2.length - 1], h2 = p2[0];
 
                         const d2 = (a, b) => (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2;
-                        const limitSq = 100; // 10 pixels
+                        const limitSq = 900; // 30 pixels joining at high-res
 
                         if (d2(t1, h2) < limitSq) {
                             paths[i] = p1.concat(p2.slice(1)); paths.splice(j, 1); changed = true; break;
@@ -592,7 +663,12 @@
                 }
             }
 
-            paths.sort((a, b) => Math.min(...a.map(p => p[0])) - Math.min(...b.map(p => p[0])));
+            // Left-to-right sorting (ensure characters are drawn in order)
+            paths.sort((a, b) => {
+                let minA = Math.min(a[0][0], a[a.length - 1][0]);
+                let minB = Math.min(b[0][0], b[b.length - 1][0]);
+                return minA - minB;
+            });
             return paths;
         }
 
@@ -602,27 +678,32 @@
                 this.bx = bx; this.by = by;
                 this.cx = 0; this.cy = 0;
                 this.ox = 0; this.oy = 0;
-                this.dx = 0; this.dy = 0;
-                this.threshold = 0.05;
+                this.dx = 1; this.dy = 1; // Assume initial direction for stability
+                this.threshold = 1.0;
             }
             process(targetX, targetY, isG0, feed) {
                 let cmds = [];
                 let dx = targetX - this.cx;
-                if (Math.abs(dx) > this.threshold) {
+                let dy = targetY - this.cy;
+
+                // Sensitive threshold to capture every direction flip
+                const moveThres = 0.1;
+
+                if (Math.abs(dx) > moveThres) {
                     let ndx = dx > 0 ? 1 : -1;
                     if (this.dx !== 0 && ndx !== this.dx) {
                         this.ox += (ndx === 1 ? this.bx : -this.bx);
                     }
                     this.dx = ndx;
                 }
-                let dy = targetY - this.cy;
-                if (Math.abs(dy) > this.threshold) {
+                if (Math.abs(dy) > moveThres) {
                     let ndy = dy > 0 ? 1 : -1;
                     if (this.dy !== 0 && ndy !== this.dy) {
                         this.oy += (ndy === 1 ? this.by : -this.by);
                     }
                     this.dy = ndy;
                 }
+
                 let fx = targetX + this.ox;
                 let fy = targetY + this.oy;
                 let cmd = isG0 ? "G0" : "G1";
@@ -644,10 +725,10 @@
             // Ensure font is ready
             try {
                 if (document.fonts && document.fonts.load) {
-                    await document.fonts.load('400px NotoSansBatak');
+                    await document.fonts.load('800px NotoSansBatak');
                 }
                 await document.fonts.ready;
-                status.innerHTML += "<br>Fonts loaded.";
+                status.innerHTML += "<br>High-res fonts active.";
                 notice.style.display = 'none'; // Hide notice on success
             } catch (e) {
                 console.warn("Font loading wait failed", e);
@@ -679,13 +760,13 @@
             const canvas = document.getElementById('canvas');
             const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-            // High-res render for skeletonization
-            const fontSize = 400;
-            ctx.font = `${fontSize}px NotoSansBatak`;
+            // High-res render for skeletonization - Using BOLD for stability
+            const fontSize = 900;
+            ctx.font = `bold ${fontSize}px NotoSansBatak`;
             const metrics = ctx.measureText(batakText);
 
-            const w = Math.ceil(metrics.width) + 200;
-            const h = fontSize + 200;
+            const w = Math.ceil(metrics.width) + 400;
+            const h = fontSize + 400;
             canvas.width = w; canvas.height = h;
 
             // Reset and Draw
@@ -693,7 +774,7 @@
             ctx.fillStyle = "black";
             ctx.textBaseline = "middle";
             ctx.textAlign = "center";
-            ctx.font = `${fontSize}px NotoSansBatak`;
+            ctx.font = `bold ${fontSize}px NotoSansBatak`;
             ctx.fillText(batakText, w / 2, h / 2);
 
             const imgData = ctx.getImageData(0, 0, w, h);
@@ -724,9 +805,9 @@
                 }
             }
 
-            // Run thinning
+            // Run thinning and ultra-aggressive pruning
             thinning(pixels, w, h);
-            pruneSkeleton(pixels, w, h, 14); // Aggressive pruning (14 pixels)
+            pruneSkeleton(pixels, w, h, 20); // Deep pruning of hairs/spurs
 
             // Re-draw skeleton for preview
             ctx.fillStyle = "white"; ctx.fillRect(0, 0, w, h);
@@ -858,9 +939,22 @@ G1 F1200;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const lines = gcodeText.split('\n');
-            let cx = 0, cy = 0, cz = 10;
+            let cx = null, cy = null, cz = 10;
             let paths = [];
             let currentPath = [];
+
+            // Skip comments and non-move lines for initial position
+            for (let line of lines) {
+                line = line.split(';')[0].trim();
+                const xMatch = line.match(/X(-?\d+\.?\d*)/);
+                const yMatch = line.match(/Y(-?\d+\.?\d*)/);
+                if (xMatch && yMatch && (line.startsWith('G0') || line.startsWith('G1'))) {
+                    cx = parseFloat(xMatch[1]);
+                    cy = parseFloat(yMatch[1]);
+                    break;
+                }
+            }
+            if (cx === null) { cx = 0; cy = 0; }
 
             const margin = 30;
             const plotW = 150;
@@ -905,10 +999,11 @@ G1 F1200;
                             paths.push(currentPath);
                             currentPath = [];
                         }
-                        // Draw travel move in light gray
+                        // Draw travel move in very faint gray
                         const p1 = toPX(cx, cy);
                         const p2 = toPX(nx, ny);
-                        ctx.strokeStyle = "#eee";
+                        ctx.strokeStyle = "#f3f4f6";
+                        ctx.lineWidth = 1.0;
                         ctx.beginPath();
                         ctx.moveTo(p1.x, p1.y);
                         ctx.lineTo(p2.x, p2.y);
@@ -920,10 +1015,10 @@ G1 F1200;
             if (currentPath.length > 0) paths.push(currentPath);
 
             // Draw Drawing paths
-            ctx.lineWidth = 1.5;
+            ctx.lineWidth = 3.0;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
-            ctx.strokeStyle = "#ff2dac"; // Neon pink for drawing
+            ctx.strokeStyle = "#ff2dac"; // Neon pink 
 
             for (let p of paths) {
                 ctx.beginPath();
