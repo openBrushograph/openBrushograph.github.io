@@ -517,10 +517,13 @@ G1 F1200;</textarea>
 
       <!-- Action Buttons -->
       <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+        <button id="upRunBtn"
+          style="background: linear-gradient(90deg, #a855f7, #22c55e); color: white; display: none; flex: 1; margin-top: 0; min-width: 140px;"
+          onclick="uploadAndRun()" title="Upload AND Run in one click">🚀 Upload & Run</button>
         <button id="uploadBtn" style="background: #a855f7; color: white; display: none; flex: 1; margin-top: 0;"
-          onclick="uploadOnly()" title="Upload the G-code to the controller's SD card">Upload Only</button>
+          onclick="uploadOnly()" title="Upload the G-code to the controller's SD card">Upload</button>
         <button id="runBtn" style="background: #22c55e; color: white; display: none; flex: 1; margin-top: 0;"
-          onclick="runGcodeOnly()" title="Run the last uploaded file on the machine">Run G-code</button>
+          onclick="runGcodeOnly()" title="Run the last uploaded file on the machine">Run</button>
         <button id="testBtn" style="background: #f97316; color: white; display: none; flex: 1; margin-top: 0;"
           onclick="testWiggle()" title="Move Z axis up/down 3mm to test connection">Test</button>
       </div>
@@ -7915,6 +7918,8 @@ G1 F1200;</textarea>
       if (upBtn) upBtn.style.display = 'block';
       const runBtn = document.getElementById('runBtn');
       if (runBtn) runBtn.style.display = 'block';
+      const upRunBtn = document.getElementById('upRunBtn');
+      if (upRunBtn) upRunBtn.style.display = 'block';
       const testBtn = document.getElementById('testBtn');
       if (testBtn) testBtn.style.display = 'block';
       renderPreview(gcode);
@@ -8032,6 +8037,14 @@ G1 F1200;</textarea>
       } catch (e) {
         handleError(e);
       }
+    }
+
+    async function uploadAndRun() {
+      await uploadOnly();
+      // Wait for sync (UI logs handled in uploadOnly)
+      log("Waiting 2s for SD sync...");
+      await new Promise(r => setTimeout(r, 2000));
+      await runGcodeOnly();
     }
 
     async function runGcodeOnly() {
