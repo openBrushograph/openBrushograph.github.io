@@ -402,6 +402,15 @@
 
 
         <div class="form-row">
+          <div class="form-group">
+            <label for="controllerHost">Controller Host (for Local Mode):</label>
+            <input type="text" id="controllerHost" value="brushographwhite.local"
+              placeholder="e.g. 192.168.0.x or name.local"
+              title="Hostname or IP of the FluidNC controller when running locally.">
+          </div>
+        </div>
+
+        <div class="form-row">
           <div class="form-group"
             style="flex:1; align-items:center; flex-direction:row; justify-content:flex-start; gap:10px;">
             <input type="checkbox" id="isPlotter" style="width:auto; transform:scale(1.5);">
@@ -505,6 +514,16 @@ G1 F1200;</textarea>
 
       <button onclick="generate()">Generate G-code</button>
       <div id="console" class="console-output"></div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+        <button id="uploadBtn" style="background: #a855f7; color: white; display: none; flex: 1; margin-top: 0;"
+          onclick="uploadOnly()" title="Upload the G-code to the controller's SD card">Upload Only</button>
+        <button id="runBtn" style="background: #22c55e; color: white; display: none; flex: 1; margin-top: 0;"
+          onclick="runGcodeOnly()" title="Run the last uploaded file on the machine">Run G-code</button>
+        <button id="testBtn" style="background: #f97316; color: white; display: none; flex: 1; margin-top: 0;"
+          onclick="testWiggle()" title="Move Z axis up/down 3mm to test connection">Test</button>
+      </div>
       <div id="status"></div>
     </div>
 
@@ -7892,6 +7911,12 @@ G1 F1200;</textarea>
       if (downBtn) downBtn.style.display = 'block';
       const copyBtn = document.getElementById('copyBtn');
       if (copyBtn) copyBtn.style.display = 'block';
+      const upBtn = document.getElementById('uploadBtn');
+      if (upBtn) upBtn.style.display = 'block';
+      const runBtn = document.getElementById('runBtn');
+      if (runBtn) runBtn.style.display = 'block';
+      const testBtn = document.getElementById('testBtn');
+      if (testBtn) testBtn.style.display = 'block';
       renderPreview(gcode);
     }
     function renderPreview(gcodeLines) {
@@ -7969,6 +7994,100 @@ G1 F1200;</textarea>
       const copyText = document.getElementById("gcodeOutput");
       copyText.select();
       document.execCommand("copy");
+    }
+
+    function getBaseUrl() {
+      if (window.location.protocol === 'file:') {
+        const host = document.getElementById('controllerHost').value.trim() || "brushographwhite.local";
+        let url = host.startsWith("http") ? host : "http://" + host;
+        log(`Local Mode. Targeting: ${url}`);
+        return url;
+      }
+      return "";
+    }
+
+    async function uploadOnly() {
+      const text = document.getElementById('gcodeOutput').value;
+      if (!text) { log("No G-code to upload!"); return; }
+
+      const baseUrl = getBaseUrl();
+      const inputStr = document.getElementById('inputText').value.trim();
+      const safeName = (inputStr.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'output') + "-batak.gcode";
+
+      const blob = new Blob([text], { type: 'text/plain' });
+      const formData = new FormData();
+      formData.append("path", "/");
+      formData.append("myfile", blob, safeName);
+
+      log(`Uploading ${safeName} to ${baseUrl}/upload ...`);
+
+      try {
+        const fetchOptions = { method: 'POST', body: formData };
+        if (baseUrl) fetchOptions.mode = 'no-cors';
+
+        const upRes = await fetch(`${baseUrl}/upload`, fetchOptions);
+        if (!baseUrl && !upRes.ok) throw new Error(`Upload failed: ${upRes.statusText}`);
+
+        log(`Upload initiated! (Response opaque in local mode)`);
+      } catch (e) {
+        handleError(e);
+      }
+    }
+
+    async function runGcodeOnly() {
+      const baseUrl = getBaseUrl();
+      const inputStr = document.getElementById('inputText').value.trim();
+      const safeName = (inputStr.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'output') + "-batak.gcode";
+
+      const cmd = `$SD/Run=/${safeName}`;
+      log(`Sending Run Command: ${cmd}`);
+
+      await sendCommand(baseUrl, cmd);
+    }
+
+    async function testWiggle() {
+      const baseUrl = getBaseUrl();
+      log("Testing Connection (Wiggle Z)...");
+      // G91 (Relative), Z3, Z-3, G90 (Absolute)
+      // Send as single line with newlines if supported, or multiple calls?
+      // FluidNC single line command parsing for multiple Gcodes is tricky via web API.
+      // Let's try simple single G0 Z3 for now to test connection.
+      // Better: G0 Z5 (Safe) -> G0 Z8 -> G0 Z5
+      const cmd = "G91 G0 Z3 F500";
+      await sendCommand(baseUrl, cmd);
+      setTimeout(() => sendCommand(baseUrl, "G91 G0 Z-3"), 500);
+      setTimeout(() => sendCommand(baseUrl, "G90"), 1000);
+    }
+
+    async function sendCommand(baseUrl, cmdStr) {
+      const cmdUrl = `${baseUrl}/command?cmd=${encodeURIComponent(cmdStr)}`;
+      const runOptions = { method: 'GET' };
+      if (baseUrl) runOptions.mode = 'no-cors';
+
+      try {
+        const runRes = await fetch(cmdUrl, runOptions);
+        if (!baseUrl && !runRes.ok) throw new Error(`Command failed: ${runRes.statusText}`);
+
+        if (baseUrl) {
+          const cleanCmd = cmdStr.length > 20 ? cmdStr.substring(0, 20) + "..." : cmdStr;
+          log(`Cmd '${cleanCmd}' sent (Blind mode).`);
+        } else {
+          const runText = await runRes.text();
+          log(`Response: ${runText}`);
+        }
+      } catch (e) {
+        handleError(e);
+      }
+    }
+
+    function handleError(e) {
+      log(`Error: ${e.message}`);
+      console.error(e);
+      if (e.message.includes("Failed to fetch")) {
+        alert(`Connection Error: "Failed to fetch".\nBrowser blocked response (CORS). Action likely succeeded.`);
+      } else {
+        alert(`Error: ${e.message}`);
+      }
     }
 
     function showStatus(msg) { document.getElementById('status').innerText = msg; }
