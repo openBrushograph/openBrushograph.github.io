@@ -6,139 +6,258 @@
   <title>Batak Skeleton Assembler</title>
   <style>
     :root {
-      --bg: #0b0f19;
-      --bg-alt: #0c1222;
-      --accent: #ff2dac;
-      --accent-soft: rgba(255, 45, 172, 0.2);
-      --accent-2: #29e0ff;
-      --text: #e5e7eb;
-      --muted: #94a3b8;
-      --border: #1f2a44;
-      --card-bg: #0a0f1a;
-      --input-bg: #0f1623;
-      --radius-lg: 18px;
-      --radius-md: 12px;
-      --radius-pill: 999px;
-      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.85);
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+      --bg: #1a0505;
+      /* Black/Dark Red Void */
+      --bg-pattern: #000000;
+      --card-bg: #2b0b0b;
+      /* Gorga Wood Dark */
+      --accent: #d32f2f;
+      /* Gorga Red */
+      --accent-gold: #ffd700;
+      /* Prosperity Gold */
+      --text: #fff8e1;
+      /* Parchment/Bone */
+      --text-muted: #d7ccc8;
+      --border: #8e0000;
+      --input-bg: #420f0f;
+      --shadow-garish: 0 10px 30px rgba(0, 0, 0, 0.7);
+      --font-display: "Times New Roman", serif;
+      --font-body: system-ui, sans-serif;
+    }
+
+    /* Ulos / Tricolor Theme (Black-Red-White) */
+    body.theme-ulos {
+      --bg: #000000;
+      --bg-pattern: #0a0a0a;
+      --card-bg: #050505;
+      --accent: #ff0000;
+      --accent-gold: #ffffff;
+      /* White replaces gold */
+      --text: #ffffff;
+      --text-muted: #bbbbbb;
+      --border: #ff0000;
+      --input-bg: #111111;
+      --shadow-garish: 0 0 15px rgba(255, 0, 0, 0.5);
+    }
+
+    body.theme-ulos .container {
+      border-style: solid;
+      border-width: 2px;
     }
 
     body {
-      font-family: var(--font-sans);
-      background: linear-gradient(180deg, var(--bg), var(--bg-alt));
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(142, 0, 0, 0.2) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 20%);
       color: var(--text);
       min-height: 100vh;
       margin: 0;
-      padding: 20px;
+      padding: 0;
       display: flex;
       justify-content: center;
+      /* Border removed for full-width integration */
     }
 
     .page-shell {
       width: 100%;
       max-width: 900px;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 25px;
     }
 
     .container {
       background: var(--card-bg);
-      padding: 24px;
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-soft);
-      border: 1px solid var(--border);
+      padding: 30px;
+      border-radius: 4px;
+      box-shadow: var(--shadow-garish);
+      border: 3px double var(--accent-gold);
+      /* Double border like carving */
+      position: relative;
+    }
+
+    /* Ornamental Corners */
+    .container::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 20px;
+      height: 20px;
+      border-top: 2px solid var(--accent-gold);
+      border-left: 2px solid var(--accent-gold);
+    }
+
+    .container::after {
+      content: "";
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      width: 20px;
+      height: 20px;
+      border-bottom: 2px solid var(--accent-gold);
+      border-right: 2px solid var(--accent-gold);
+    }
+
+    /* Responsive Adjustments for Panels/Phones */
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+        border-width: 1px;
+      }
+
+      /* Hide ornamental corners on small screens to save space/cleanliness */
+      .container::before,
+      .container::after {
+        display: none;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+      }
+
+      .preview-item {
+        padding: 10px;
+        border-width: 2px;
+      }
+
+      .form-row {
+        gap: 10px;
+      }
+
+      input[type="number"],
+      input[type="text"] {
+        padding: 8px;
+        font-size: 16px;
+        /* Prevents iOS zoom */
+      }
     }
 
     h2 {
       margin-top: 0;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent-gold);
+      text-align: center;
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 15px;
+      text-shadow: 2px 2px 0px #000;
+    }
+
+    p {
+      text-align: center;
+      color: var(--text-muted);
+      font-style: italic;
     }
 
     .settings-box {
-      background: var(--bg);
-      padding: 16px;
-      border-radius: var(--radius-md);
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
       border: 1px solid var(--border);
-      margin-top: 15px;
+      margin-top: 20px;
     }
 
     .form-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 15px;
+      margin-bottom: 15px;
     }
 
     .form-group {
-      margin-bottom: 5px;
       flex: 1 1 140px;
       min-width: 140px;
     }
 
     label {
       display: block;
-      margin-bottom: 6px;
-      font-size: 0.85rem;
-      color: var(--muted);
-      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.8rem;
+      color: var(--accent-gold);
+      font-family: var(--font-display);
+      letter-spacing: 0.5px;
     }
 
     input[type="number"],
     input[type="text"] {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       box-sizing: border-box;
       border: 1px solid var(--border);
-      border-radius: 6px;
       background: var(--input-bg);
-      color: var(--text);
+      color: var(--accent-gold);
+      font-family: monospace;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: 2px solid var(--accent);
+      border-color: var(--accent);
     }
 
     button {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #0b1220;
-      border: none;
-      padding: 12px 24px;
-      border-radius: var(--radius-pill);
+      background: var(--accent);
+      color: #fff;
+      border: 2px solid #5a0000;
+      padding: 14px 24px;
       cursor: pointer;
-      font-size: 15px;
-      font-weight: 600;
+      font-family: var(--font-display);
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       width: 100%;
-      margin-top: 15px;
-      transition: transform 0.1s;
+      margin-top: 20px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 0 #3b0000;
     }
 
     button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px var(--accent-soft);
+      background: #b71c1c;
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #3b0000;
+    }
+
+    button:active {
+      transform: translateY(4px);
+      box-shadow: none;
     }
 
     #status {
       margin-top: 15px;
       padding: 10px;
       background: #000;
-      color: #00ff66;
+      color: var(--accent-gold);
       font-family: monospace;
       font-size: 12px;
-      border-radius: 4px;
+      border: 1px solid var(--border);
       display: none;
+      text-align: center;
     }
 
     .preview-item {
-      background: white;
-      padding: 15px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
+      background: #fff;
+      /* Paper for preview */
+      padding: 20px;
+      border: 4px solid var(--card-bg);
       text-align: center;
       margin-top: 20px;
+      box-shadow: var(--shadow-garish);
+    }
+
+    .preview-item h4 {
+      color: #000;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      margin-top: 0;
     }
 
     canvas {
-      border: 1px solid #ccc;
+      border: 1px dashed #999;
       max-width: 100%;
       height: auto;
       display: block;
@@ -149,25 +268,69 @@
       width: 100%;
       height: 200px;
       margin-top: 20px;
-      background: #111;
-      color: #eee;
+      background: #1a0505;
+      color: var(--accent-gold);
       font-family: monospace;
-      padding: 10px;
+      padding: 15px;
       border: 1px solid var(--border);
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
     }
 
     .console-output {
       background: #000;
-      color: #0f0;
-      font-family: "Fira Mono", monospace;
+      color: #00ff00;
+      /* Terminal green stands out against red */
+      font-family: monospace;
       font-size: 12px;
       padding: 10px;
       height: 150px;
       overflow-y: auto;
-      border: 1px solid #333;
+      border: 1px solid var(--border);
       margin-top: 10px;
+      display: block;
+    }
+
+    #custom-tooltip {
+      position: absolute;
+      background: rgba(43, 11, 11, 0.95);
+      color: var(--accent-gold);
+      border: 1px solid var(--accent-gold);
+      padding: 8px 12px;
       border-radius: 4px;
-      white-space: pre-wrap;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      pointer-events: none;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      max-width: 300px;
+      line-height: 1.4;
+    }
+
+    body.theme-ulos #custom-tooltip {
+      background: rgba(0, 0, 0, 0.95);
+      border: 1px solid #ff0000;
+      color: #fff;
+    }
+
+
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border: 1px solid var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
     }
   </style>
 </head>
@@ -175,7 +338,16 @@
 <body>
   <div class="page-shell">
     <div class="container">
-      <h2>Batak Skeleton Assembler</h2>
+      <div style="position: absolute; top: 15px; right: 15px; display: flex; gap: 5px; z-index: 10;">
+        <button onclick="setTheme('gorga')"
+          style="padding: 4px 8px; font-size: 10px; width: auto; margin:0; border: 1px solid #ffd700; background: #2b0b0b; color: #ffd700;">GORGA</button>
+        <button onclick="setTheme('ulos')"
+          style="padding: 4px 8px; font-size: 10px; width: auto; margin:0; border: 1px solid #fff; background: #000; color: #fff;">ULOS</button>
+      </div>
+      <h2>GORGA BATAK ASSEMBLER</h2>
+      <p
+        style="color: var(--accent-gold); font-family: var(--font-display); font-style: italic; margin-top: -10px; opacity: 0.8;">
+        "Horas ma di hita saluhutna"</p>
       <p style="color: var(--muted); font-size: 0.9rem;">Assemble pre-skeletonized Batak glyphs for perfect
         single-stroke G-code.</p>
 
@@ -183,71 +355,120 @@
         <div class="form-row">
           <div class="form-group" style="flex: 2;">
             <label for="inputText">Text (Latin or Batak):</label>
-            <input type="text" id="inputText" value="tuak batak" placeholder="Type here...">
+            <input type="text" id="inputText" value="tuak batak" placeholder="Type here..."
+              title="Type Latin text to automatically transliterate to Batak, or paste Batak characters directly.">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="width">Target Width (mm):</label>
-            <input type="number" id="width" value="120" step="1">
+            <input type="number" id="width" value="120" step="1"
+              title="Target width of the text block in millimeters. Determines scale.">
           </div>
           <div class="form-group">
             <label for="ox">Offset X (mm):</label>
-            <input type="number" id="ox" value="10" step="1">
+            <input type="number" id="ox" value="10" step="1"
+              title="X-axis offset (start position) from origin in millimeters.">
           </div>
           <div class="form-group">
             <label for="oy">Offset Y (mm):</label>
-            <input type="number" id="oy" value="70" step="1">
+            <input type="number" id="oy" value="70" step="1"
+              title="Y-axis offset (start position) from origin in millimeters.">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="feed">Feed Rate (mm/min):</label>
-            <input type="number" id="feed" value="1600">
+            <input type="number" id="feed" value="1600" title="Movement speed of the plotter in mm/min.">
           </div>
           <div class="form-group">
             <label for="bx">Backlash X (mm):</label>
-            <input type="number" id="bx" value="0.0" step="0.1">
+            <input type="number" id="bx" value="0.0" step="0.1"
+              title="Compensate for mechanical slack/play on X-axis (mm).">
           </div>
           <div class="form-group">
             <label for="by">Backlash Y (mm):</label>
-            <input type="number" id="by" value="0.0" step="0.1">
+            <input type="number" id="by" value="0.0" step="0.1"
+              title="Compensate for mechanical slack/play on Y-axis (mm).">
+          </div>
+          <div class="form-group">
+            <label for="safeZ">Safe Z (mm):</label>
+            <input type="number" id="safeZ" value="5" step="0.1" title="Height to retract the pen during travel moves.">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="kerning">Kerning (font units):</label>
-            <input type="number" id="kerning" value="0.1" step="0.01">
+            <input type="number" id="kerning" value="0.1" step="0.01"
+              title="Horizontal space between characters (font units). Negative values tighten text.">
           </div>
           <div class="form-group">
             <label for="lineHeight">Line Height:</label>
-            <input type="number" id="lineHeight" value="1.5" step="0.1">
+            <input type="number" id="lineHeight" value="1.5" step="0.1"
+              title="Vertical spacing between lines (multiplier).">
           </div>
           <div class="form-group">
             <label for="artefactThr">Artefact Filter:</label>
-            <input type="number" id="artefactThr" value="0.05" step="0.01">
+            <input type="number" id="artefactThr" value="0.05" step="0.01"
+              title="Ignore paths shorter than this length (mm) to reduce noise/dots.">
+          </div>
+        </div>
+
+        <div class="form-row" style="align-items: flex-start;">
+          <div class="form-group" style="flex: 1;">
+            <label for="dipDist">Dip Interval (mm):</label>
+            <input type="number" id="dipDist" value="50" title="Travel distance (mm) before re-dipping the pen.">
+          </div>
+
+          <div class="form-group" style="flex: 2;">
+            <label>Dip Location (XY):</label>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <!-- Inputs -->
+              <div style="display:flex; gap:5px;">
+                <input type="number" id="dipX" value="41" placeholder="X" style="width: 100%;" title="X Coord">
+                <input type="number" id="dipY" value="5" placeholder="Y" style="width: 100%;" title="Y Coord">
+              </div>
+
+              <!-- Color Buttons -->
+              <div style="display:flex; gap:15px; justify-content: flex-start;">
+                <button onclick="setDipColor(1)"
+                  style="width:100px; height:100px; padding:0; border-radius:50%; border:2px solid #fff; background:#ff0080; margin:0; color:white; font-weight:bold; font-size:14px; text-shadow:0 1px 3px rgba(0,0,0,0.8);"
+                  title="Pink (41mm)">Colour 1</button>
+                <button onclick="setDipColor(2)"
+                  style="width:100px; height:100px; padding:0; border-radius:50%; border:2px solid #fff; background:#00ff00; margin:0; color:white; font-weight:bold; font-size:14px; text-shadow:0 1px 3px rgba(0,0,0,0.8);"
+                  title="Green (86mm)">Colour 2</button>
+                <button onclick="setDipColor(3)"
+                  style="width:100px; height:100px; padding:0; border-radius:50%; border:2px solid #fff; background:#00e5ff; margin:0; color:white; font-weight:bold; font-size:14px; text-shadow:0 1px 3px rgba(0,0,0,0.8);"
+                  title="Blue (131mm)">Colour 3</button>
+              </div>
+            </div>
+            <small style="color:#888;">Select pot color to set X.</small>
+          </div>
+        </div>
+
+
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="controllerHost">Controller Host (for Local Mode):</label>
+            <input type="text" id="controllerHost" value="brushographwhite.local"
+              placeholder="e.g. 192.168.0.x or name.local"
+              title="Hostname or IP of the FluidNC controller when running locally.">
           </div>
         </div>
 
         <div class="form-row">
-          <div class="form-group">
-            <label for="dipDist">Dip Interval (mm):</label>
-            <input type="number" id="dipDist" value="50">
-          </div>
-          <div class="form-group" style="flex:2">
-            <label>Dip Location (XY Reference):</label>
-            <div style="display:flex; gap:10px;">
-              <input type="number" id="dipX" value="41" placeholder="X" style="width: 60px;">
-              <input type="number" id="dipY" value="5" placeholder="Y" style="width: 60px;">
-            </div>
-            <small style="color:#888;">Moves the start of the sequence below to this X/Y.</small>
+          <div class="form-group"
+            style="flex:1; align-items:center; flex-direction:row; justify-content:flex-start; gap:10px;">
+            <input type="checkbox" id="isPlotter" style="width:auto; transform:scale(1.5);">
+            <label for="isPlotter" style="margin-bottom:0; cursor:pointer;"
+              title="If checked, disables all ink dipping sequences (Continuous Plot).">Continuous Plot (No
+              Dipping)</label>
           </div>
         </div>
-
-
 
         <details>
           <summary style="cursor: pointer; color: #fff; margin-bottom: 5px;">Advanced: Custom Dip Sequence</summary>
@@ -256,9 +477,10 @@
               <label>Custom Dip Sequence (G-code):</label>
               <textarea id="dipSeq"
                 style="width:100%; height:150px; background:#111; color:#eee; border:1px solid #333; font-family:monospace; padding:5px; white-space: pre;"
-                placeholder="Paste custom G-code here...">; Colour 1 pickup
+                placeholder="Paste custom G-code here..."
+                title="G-code command sequence to execute for dipping the pen.">; Colour 1 pickup
 G1 Z10 F1000;
-G0 X41 Y5 F1200;
+G0 X41 Y5 F1600;
 G1 Z0 F1000;
 G1 X40.102 Y7.295 Z0 S800 F1200;
 G1 X40.026 Y7.642 Z0 F1200;
@@ -342,6 +564,22 @@ G1 F1200;</textarea>
 
       <button onclick="generate()">Generate G-code</button>
       <div id="console" class="console-output"></div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+        <button id="upRunBtn"
+          style="background: linear-gradient(90deg, #a855f7, #22c55e); color: white; display: none; flex: 1; margin-top: 0; min-width: 140px;"
+          onclick="uploadAndRun()" title="Upload AND Run in one click">🚀 Upload & Run</button>
+        <button id="uploadBtn" style="background: #a855f7; color: white; display: none; flex: 1; margin-top: 0;"
+          onclick="uploadOnly()" title="Upload the G-code to the controller's SD card">Upload</button>
+        <button id="runBtn" style="background: #22c55e; color: white; display: none; flex: 1; margin-top: 0;"
+          onclick="runGcodeOnly()" title="Run the last uploaded file on the machine">Run</button>
+        <button id="testBtn" style="background: #f97316; color: white; display: none; flex: 1; margin-top: 0;"
+          onclick="testWiggle()" title="Move Z axis up/down 3mm to test connection">Test</button>
+        <button id="testAllBtn" style="background: #eab308; color: black; display: none; flex: 1; margin-top: 0;"
+          onclick="generateTestChart()" title="Generate a 130mm wide chart of all available glyphs">Test: All
+          Glyphs</button>
+      </div>
       <div id="status"></div>
     </div>
 
@@ -361,6 +599,60 @@ G1 F1200;</textarea>
   </div>
 
   <script>
+    function setTheme(theme) {
+      if (theme === 'ulos') {
+        document.body.classList.add('theme-ulos');
+        document.querySelector('h2').innerText = "ULOS BATAK ASSEMBLER";
+      } else {
+        document.body.classList.remove('theme-ulos');
+        document.querySelector('h2').innerText = "GORGA BATAK ASSEMBLER";
+      }
+    }
+
+    // Custom Tooltip Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof setDipColor === "function") setDipColor(1);
+
+      const tooltip = document.createElement('div');
+      tooltip.id = 'custom-tooltip';
+      document.body.appendChild(tooltip);
+
+      const elementsWithTitle = document.querySelectorAll('[title]');
+      elementsWithTitle.forEach(el => {
+        el.setAttribute('data-title', el.getAttribute('title'));
+        el.removeAttribute('title'); // Disable native tooltip
+
+        el.addEventListener('mouseenter', (e) => {
+          tooltip.innerText = el.getAttribute('data-title');
+          tooltip.style.display = 'block';
+          tooltip.style.left = e.pageX + 15 + 'px';
+          tooltip.style.top = e.pageY + 15 + 'px';
+        });
+
+        el.addEventListener('mousemove', (e) => {
+          tooltip.style.left = e.pageX + 15 + 'px';
+          tooltip.style.top = e.pageY + 15 + 'px';
+        });
+
+        el.addEventListener('mouseleave', () => {
+          tooltip.style.display = 'none';
+        });
+
+        // Also show on focus for keyboard accessibility
+        el.addEventListener('focus', () => {
+          const rect = el.getBoundingClientRect();
+          tooltip.innerText = el.getAttribute('data-title');
+          tooltip.style.display = 'block';
+          tooltip.style.left = (rect.right + window.scrollX + 5) + 'px';
+          tooltip.style.top = (rect.top + window.scrollY) + 'px';
+        });
+
+        el.addEventListener('blur', () => {
+          tooltip.style.display = 'none';
+        });
+      });
+    });
+
     let glyphs = {
       "\u1bc0": {
         "paths": [
@@ -7372,13 +7664,21 @@ G1 F1200;</textarea>
     }
 
     function generate() {
-      document.getElementById('console').innerText = "--- Starting Generation ---\n";
+      const consoleEl = document.getElementById('console');
+      consoleEl.innerText = ""; // Clear console
+      log("--- Starting Generation ---");
+
       if (Object.keys(glyphs).length === 0) { log("Error: No glyphs loaded!"); return; }
       const textStr = document.getElementById('inputText').value;
       const targetW_mm = parseFloat(document.getElementById('width').value);
+      const isPlotter = document.getElementById('isPlotter').checked;
+
+      log(`Mode: ${isPlotter ? 'CONTINUOUS PLOT (No Dipping)' : 'Standard (Ink Dipping)'}`);
+      log(`Target Width: ${targetW_mm}mm`);
       const offX = parseFloat(document.getElementById('ox').value);
       const offY = parseFloat(document.getElementById('oy').value);
       const feed = parseInt(document.getElementById('feed').value);
+      const safeZ = parseFloat(document.getElementById('safeZ').value) || 5;
       const bx = parseFloat(document.getElementById('bx').value);
       const by = parseFloat(document.getElementById('by').value);
 
@@ -7515,7 +7815,7 @@ G1 F1200;</textarea>
 
       log(`Bounds: W=${(maxX - minX).toFixed(2)} units -> ${targetW_mm}mm, Scale=${scale.toFixed(3)}`);
 
-      let gcode = ["%", "(Batak Skeleton Assembler Output)", "G21 G90", "G0 Z5"];
+      let gcode = ["%", "(Batak Skeleton Assembler Output)", "G21 G90", `G0 Z${safeZ}`];
       const dipLimit = parseFloat(document.getElementById('dipDist').value);
       const dipX = parseFloat(document.getElementById('dipX').value);
       const dipY = parseFloat(document.getElementById('dipY').value);
@@ -7526,48 +7826,51 @@ G1 F1200;</textarea>
 
       const fixer = new BacklashFixer(bx, by);
 
-      // --- Perform Initial Dip ---
-      dipCount++;
-      gcode.push(`(Initial Dip #${dipCount})`);
-      const rawDip = document.getElementById('dipSeq').value;
-      if (rawDip && rawDip.trim().length > 0) {
-        // Custom Sequence Logic
-        const lines = rawDip.split('\n');
-        let refX = null, refY = null;
-        for (let l of lines) {
-          const mx = /X([0-9\.\-]+)/i.exec(l);
-          const my = /Y([0-9\.\-]+)/i.exec(l);
-          if (mx && my) { refX = parseFloat(mx[1]); refY = parseFloat(my[1]); break; }
-        }
-        if (refX !== null && refY !== null) {
-          const shiftX = dipX - refX;
-          const shiftY = dipY - refY;
+
+      // --- Perform Initial Dip (Only if NOT plotter mode) ---
+      if (!isPlotter) {
+        dipCount++;
+        gcode.push(`(Initial Dip #${dipCount})`);
+        const rawDip = document.getElementById('dipSeq').value;
+        if (rawDip && rawDip.trim().length > 0) {
+          // Custom Sequence Logic
+          const lines = rawDip.split('\n');
+          let refX = null, refY = null;
           for (let l of lines) {
-            let clean = l.split(';')[0].trim();
-            if (!clean) continue;
-            let newLine = clean.replace(/([XY])([0-9\.\-]+)/gi, (match, axis, val) => {
-              let v = parseFloat(val);
-              if (axis.toUpperCase() === 'X') return "X" + (v + shiftX).toFixed(3);
-              if (axis.toUpperCase() === 'Y') return "Y" + (v + shiftY).toFixed(3);
-              return match;
-            });
-            gcode.push(newLine);
+            const mx = /X([0-9\.\-]+)/i.exec(l);
+            const my = /Y([0-9\.\-]+)/i.exec(l);
+            if (mx && my) { refX = parseFloat(mx[1]); refY = parseFloat(my[1]); break; }
+          }
+          if (refX !== null && refY !== null) {
+            const shiftX = dipX - refX;
+            const shiftY = dipY - refY;
+            for (let l of lines) {
+              let clean = l.split(';')[0].trim();
+              if (!clean) continue;
+              let newLine = clean.replace(/([XY])([0-9\.\-]+)/gi, (match, axis, val) => {
+                let v = parseFloat(val);
+                if (axis.toUpperCase() === 'X') return "X" + (v + shiftX).toFixed(3);
+                if (axis.toUpperCase() === 'Y') return "Y" + (v + shiftY).toFixed(3);
+                return match;
+              });
+              gcode.push(newLine);
+            }
+          } else {
+            for (let l of lines) {
+              let clean = l.split(';')[0].trim();
+              if (clean) gcode.push(clean);
+            }
           }
         } else {
-          for (let l of lines) {
-            let clean = l.split(';')[0].trim();
-            if (clean) gcode.push(clean);
-          }
+          gcode.push(`G0 Z${safeZ}`);
+          gcode.push(`G0 X${dipX} Y${dipY}`);
+          gcode.push(`G1 Z-2 F500`);
+          gcode.push("G4 P500");
+          gcode.push(`G0 Z${safeZ}`);
         }
-      } else {
-        gcode.push("G0 Z5");
-        gcode.push(`G0 X${dipX} Y${dipY}`);
-        gcode.push(`G1 Z-2 F500`);
-        gcode.push("G4 P500");
-        gcode.push("G0 Z5");
+        // Return to Z5 safe height
+        gcode.push(`G0 Z${safeZ}`);
       }
-      // Return to Z5 safe height
-      gcode.push("G0 Z5");
 
 
 
@@ -7594,10 +7897,10 @@ G1 F1200;</textarea>
           lastX = tx;
           lastY = ty;
         }
-        gcode.push("G0 Z5");
+        gcode.push(`G0 Z${safeZ}`);
 
         // Check dip AFTER stroke is complete
-        if (distAcc > dipLimit) {
+        if (!isPlotter && distAcc > dipLimit) {
           dipCount++;
           gcode.push(`(Dip #${dipCount} at dist ${distAcc.toFixed(1)} after stroke)`);
           const rawDip = document.getElementById('dipSeq').value;
@@ -7637,11 +7940,11 @@ G1 F1200;</textarea>
             }
           } else {
             // Default Sequence
-            gcode.push("G0 Z5");
+            gcode.push(`G0 Z${safeZ}`);
             gcode.push(`G0 X${dipX} Y${dipY}`);
             gcode.push(`G1 Z-2 F500`);
             gcode.push("G4 P500");
-            gcode.push("G0 Z5");
+            gcode.push(`G0 Z${safeZ}`);
           }
 
           // Move back to where the NEXT stroke will start? 
@@ -7666,6 +7969,16 @@ G1 F1200;</textarea>
       if (downBtn) downBtn.style.display = 'block';
       const copyBtn = document.getElementById('copyBtn');
       if (copyBtn) copyBtn.style.display = 'block';
+      const upBtn = document.getElementById('uploadBtn');
+      if (upBtn) upBtn.style.display = 'block';
+      const runBtn = document.getElementById('runBtn');
+      if (runBtn) runBtn.style.display = 'block';
+      const upRunBtn = document.getElementById('upRunBtn');
+      if (upRunBtn) upRunBtn.style.display = 'block';
+      const testBtn = document.getElementById('testBtn');
+      if (testBtn) testBtn.style.display = 'block';
+      const testAllBtn = document.getElementById('testAllBtn');
+      if (testAllBtn) testAllBtn.style.display = 'block';
       renderPreview(gcode);
     }
     function renderPreview(gcodeLines) {
@@ -7686,7 +7999,7 @@ G1 F1200;</textarea>
       ctx.strokeStyle = "#ccc"; ctx.strokeRect(0, 0, W * PPU, H * PPU);
 
       let curX = 0, curY = 0, curZ = 5;
-      const styleDraw = { color: "#ff0080", width: 2 };
+      const styleDraw = { color: "#ff0080", width: 4 };
       const styleTravel = { color: "#cccccc", width: 1 };
 
       ctx.lineCap = "round"; ctx.lineJoin = "round";
@@ -7726,6 +8039,249 @@ G1 F1200;</textarea>
       }
     }
 
+    function generateTestChart() {
+      const consoleEl = document.getElementById('console');
+      consoleEl.innerText = "";
+      log("--- Generating Full Glyph Test Chart ---");
+
+      if (Object.keys(glyphs).length === 0) { log("Error: No glyphs loaded!"); return; }
+
+      // Settings
+      const targetW_mm = 140;
+      const offX = parseFloat(document.getElementById('ox').value);
+      const offY = parseFloat(document.getElementById('oy').value);
+      const feed = parseInt(document.getElementById('feed').value);
+      const safeZ = parseFloat(document.getElementById('safeZ').value) || 5;
+      const bx = parseFloat(document.getElementById('bx').value);
+      const by = parseFloat(document.getElementById('by').value);
+      const lineHeightMult = 0.8;
+
+      const allChars = Object.keys(glyphs).sort();
+      let totalPaths = [];
+
+      let cursorX = 0;
+      let cursorY = 0;
+      let rowCount = 0;
+      let count = 0;
+      const charsPerLine = 7;
+
+      log(`Found ${allChars.length} glyphs. Arranging in rows of ${charsPerLine}.`);
+
+      for (let char of allChars) {
+        const g = glyphs[char];
+
+        // Filter out likely .notdef / placeholder squares
+        // Heuristic: Single path with 4 or 5 points (rectangle)
+        if (g.paths.length === 1 && (g.paths[0].length === 4 || g.paths[0].length === 5)) {
+          continue;
+        }
+
+        // Simple Grid Layout: just place them
+        let drawX = cursorX;
+
+        // Add paths
+        for (let p of g.paths) {
+          totalPaths.push(p.map(pt => [pt[0] + drawX, pt[1] + cursorY]));
+        }
+
+        cursorX += 1.1; // Fixed spacing for test chart
+        count++;
+
+        if (count % charsPerLine === 0) {
+          cursorX = 0;
+          cursorY -= lineHeightMult;
+          rowCount++;
+        }
+      }
+
+      // Calculate Bounds
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (let path of totalPaths) {
+        for (let pt of path) {
+          minX = Math.min(minX, pt[0]); maxX = Math.max(maxX, pt[0]);
+          minY = Math.min(minY, pt[1]); maxY = Math.max(maxY, pt[1]);
+        }
+      }
+
+      const scale = targetW_mm / (maxX - minX);
+      const contentH_mm = (maxY - minY) * scale;
+      log(`Test Chart Bounds: W=${(maxX - minX).toFixed(2)} -> ${targetW_mm}mm, Scale=${scale.toFixed(3)}`);
+
+      let gcode = ["%", "(Test Chart: All Glyphs)", "G21 G90", `G0 Z${safeZ}`];
+
+      // We skip the ink dip logic for this test chart to keep it simple/clean by default
+      // But adding one initial dip is useful.
+      const isPlotter = document.getElementById('isPlotter').checked;
+      if (!isPlotter) {
+        gcode.push(`(Initial Dip)`);
+
+        const rawDip = document.getElementById('dipSeq').value;
+        const dipX = parseFloat(document.getElementById('dipX').value);
+        const dipY = parseFloat(document.getElementById('dipY').value);
+
+        if (rawDip && rawDip.trim().length > 0) {
+          // Custom Sequence - Logic copied from main generate()
+          const lines = rawDip.split('\n');
+          let refX = null, refY = null;
+          for (let l of lines) {
+            const mx = /X([0-9\.\-]+)/i.exec(l);
+            const my = /Y([0-9\.\-]+)/i.exec(l);
+            if (mx && my) { refX = parseFloat(mx[1]); refY = parseFloat(my[1]); break; }
+          }
+          if (refX !== null && refY !== null) {
+            const shiftX = dipX - refX;
+            const shiftY = dipY - refY;
+            for (let l of lines) {
+              let clean = l.split(';')[0].trim();
+              if (!clean) continue;
+              let newLine = clean.replace(/([XY])([0-9\.\-]+)/gi, (match, axis, val) => {
+                let v = parseFloat(val);
+                if (axis.toUpperCase() === 'X') return "X" + (v + shiftX).toFixed(3);
+                if (axis.toUpperCase() === 'Y') return "Y" + (v + shiftY).toFixed(3);
+                return match;
+              });
+              gcode.push(newLine);
+            }
+          } else {
+            for (let l of lines) {
+              let clean = l.split(';')[0].trim();
+              if (clean) gcode.push(clean);
+            }
+          }
+        } else {
+          // Fallback simple dip
+          gcode.push(`G0 Z${safeZ}`);
+          gcode.push(`G0 X${dipX} Y${dipY}`);
+          gcode.push(`G1 Z-2 F500`);
+          gcode.push("G4 P500");
+          gcode.push(`G0 Z${safeZ}`);
+        }
+        // Return to Safe Z
+        gcode.push(`G0 Z${safeZ}`);
+      }
+
+      const fixer = new BacklashFixer(bx, by);
+      let lastX = 0, lastY = 0;
+      let distAcc = 0;
+      let dipCount = 0;
+      const dipLimit = parseFloat(document.getElementById('dipDist').value);
+
+      for (let path of totalPaths) {
+        let first = true;
+        for (let pt of path) {
+          let tx = (pt[0] - minX) * scale + offX;
+          let ty = contentH_mm - (pt[1] - minY) * scale + offY;
+
+          // Calc distance for dipping
+          if (!first) {
+            let d = Math.sqrt(Math.pow(tx - lastX, 2) + Math.pow(ty - lastY, 2));
+            distAcc += d;
+          }
+
+          if (first) {
+            fixer.process(tx, ty, true, feed).forEach(l => gcode.push(l));
+            gcode.push("G1 Z0 F500");
+            first = false;
+          } else {
+            fixer.process(tx, ty, false, feed).forEach(l => gcode.push(l));
+          }
+          lastX = tx; lastY = ty;
+        }
+        gcode.push(`G0 Z${safeZ}`);
+
+        // Check dip AFTER stroke
+        if (!isPlotter && distAcc > dipLimit) {
+          dipCount++;
+          gcode.push(`(Dip #${dipCount} at dist ${distAcc.toFixed(1)})`);
+
+          // --- REUSE DIP LOGIC ---
+          const rawDip = document.getElementById('dipSeq').value;
+          const dipX = parseFloat(document.getElementById('dipX').value);
+          const dipY = parseFloat(document.getElementById('dipY').value);
+
+          if (rawDip && rawDip.trim().length > 0) {
+            const lines = rawDip.split('\n');
+            let refX = null, refY = null;
+            for (let l of lines) {
+              const mx = /X([0-9\.\-]+)/i.exec(l);
+              const my = /Y([0-9\.\-]+)/i.exec(l);
+              if (mx && my) { refX = parseFloat(mx[1]); refY = parseFloat(my[1]); break; }
+            }
+            if (refX !== null && refY !== null) {
+              const shiftX = dipX - refX;
+              const shiftY = dipY - refY;
+              for (let l of lines) {
+                let clean = l.split(';')[0].trim();
+                if (!clean) continue;
+                let newLine = clean.replace(/([XY])([0-9\.\-]+)/gi, (match, axis, val) => {
+                  let v = parseFloat(val);
+                  if (axis.toUpperCase() === 'X') return "X" + (v + shiftX).toFixed(3);
+                  if (axis.toUpperCase() === 'Y') return "Y" + (v + shiftY).toFixed(3);
+                  return match;
+                });
+                gcode.push(newLine);
+              }
+            } else {
+              for (let l of lines) { if (l.trim()) gcode.push(l.trim()); }
+            }
+          } else {
+            gcode.push(`G0 Z${safeZ}`);
+            gcode.push(`G0 X${dipX} Y${dipY}`);
+            gcode.push(`G1 Z-2 F500`);
+            gcode.push("G4 P500");
+            gcode.push(`G0 Z${safeZ}`);
+          }
+          // Reset Distance
+          distAcc = 0;
+          // Return to Safe Z and move back to last position
+          gcode.push(`G0 Z${safeZ}`);
+          // We don't necessarily need to move back explicitly here because the start of next path will do a G0 move.
+        }
+      }
+
+      gcode.push("G0 X0 Y0", "M30", "%");
+
+      const output = document.getElementById('gcodeOutput');
+      if (output) output.value = gcode.join("\n");
+
+      // Enable buttons logic copied from generate()
+      const downBtn = document.getElementById('downloadBtn');
+      if (downBtn) downBtn.style.display = 'block';
+      const copyBtn = document.getElementById('copyBtn');
+      if (copyBtn) copyBtn.style.display = 'block';
+      const upBtn = document.getElementById('uploadBtn');
+      if (upBtn) upBtn.style.display = 'block';
+      const runBtn = document.getElementById('runBtn');
+      if (runBtn) runBtn.style.display = 'block';
+      const upRunBtn = document.getElementById('upRunBtn');
+      if (upRunBtn) upRunBtn.style.display = 'block';
+      const testBtn = document.getElementById('testBtn');
+      if (testBtn) testBtn.style.display = 'block';
+      const testAllBtn = document.getElementById('testAllBtn');
+      if (testAllBtn) testAllBtn.style.display = 'block';
+
+      renderPreview(gcode);
+      log("Test Chart G-code Generated.");
+    }
+
+    function setDipColor(n) {
+      // Base is 41, spacing is 45mm
+      const base = 41;
+      const spacing = 45;
+      const val = base + (n - 1) * spacing;
+      const el = document.getElementById('dipX');
+      if (el) el.value = val;
+
+      // Visual feedback for round buttons
+      const btns = document.querySelectorAll('button[onclick^="setDipColor"]');
+      btns.forEach((b, i) => {
+        // Selected: 4px border, Unselected: 2px border
+        b.style.borderWidth = (i + 1 === n) ? "4px" : "2px";
+        b.style.borderColor = (i + 1 === n) ? "var(--accent-gold)" : "#fff";
+        b.style.transform = (i + 1 === n) ? "scale(1.1)" : "scale(1)";
+      });
+    }
+
     function downloadGcode() {
       const text = document.getElementById('gcodeOutput').value;
       const inputStr = document.getElementById('inputText').value.trim();
@@ -7743,6 +8299,109 @@ G1 F1200;</textarea>
       const copyText = document.getElementById("gcodeOutput");
       copyText.select();
       document.execCommand("copy");
+    }
+
+    function getBaseUrl() {
+      if (window.location.protocol === 'file:') {
+        const host = document.getElementById('controllerHost').value.trim() || "brushographwhite.local";
+        let url = host.startsWith("http") ? host : "http://" + host;
+        log(`Local Mode. Targeting: ${url}`);
+        return url;
+      }
+      // When running on the controller, use the current origin ensures absolute path
+      return window.location.origin;
+    }
+
+    async function uploadOnly() {
+      const text = document.getElementById('gcodeOutput').value;
+      if (!text) { log("No G-code to upload!"); return; }
+
+      const baseUrl = getBaseUrl();
+      const inputStr = document.getElementById('inputText').value.trim();
+      const safeName = (inputStr.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'output') + "-batak.gcode";
+
+      const blob = new Blob([text], { type: 'text/plain' });
+      const formData = new FormData();
+      formData.append("path", "/");
+      formData.append("myfile", blob, safeName);
+
+      log(`Uploading ${safeName} to ${baseUrl}/upload ...`);
+
+      try {
+        const fetchOptions = { method: 'POST', body: formData };
+        if (baseUrl) fetchOptions.mode = 'no-cors';
+
+        const upRes = await fetch(`${baseUrl}/upload`, fetchOptions);
+        if (!baseUrl && !upRes.ok) throw new Error(`Upload failed: ${upRes.statusText}`);
+
+        log(`Upload initiated! (Response opaque in local mode)`);
+      } catch (e) {
+        handleError(e);
+      }
+    }
+
+    async function uploadAndRun() {
+      await uploadOnly();
+      // Wait for sync (UI logs handled in uploadOnly)
+      log("Waiting 2s for SD sync...");
+      await new Promise(r => setTimeout(r, 2000));
+      await runGcodeOnly();
+    }
+
+    async function runGcodeOnly() {
+      const baseUrl = getBaseUrl();
+      const inputStr = document.getElementById('inputText').value.trim();
+      const safeName = (inputStr.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'output') + "-batak.gcode";
+
+      const cmd = `$SD/Run=/${safeName}`;
+      log(`Sending Run Command: ${cmd}`);
+
+      await sendCommand(baseUrl, cmd);
+    }
+
+    async function testWiggle() {
+      const baseUrl = getBaseUrl();
+      log("Testing Connection (Wiggle Z)...");
+      // G91 (Relative), Z3, Z-3, G90 (Absolute)
+      // Send as single line with newlines if supported, or multiple calls?
+      // FluidNC single line command parsing for multiple Gcodes is tricky via web API.
+      // Let's try simple single G0 Z3 for now to test connection.
+      // Better: G0 Z5 (Safe) -> G0 Z8 -> G0 Z5
+      const cmd = "G91 G0 Z3 F500";
+      await sendCommand(baseUrl, cmd);
+      setTimeout(() => sendCommand(baseUrl, "G91 G0 Z-3"), 500);
+      setTimeout(() => sendCommand(baseUrl, "G90"), 1000);
+    }
+
+    async function sendCommand(baseUrl, cmdStr) {
+      const cmdUrl = `${baseUrl}/command?cmd=${encodeURIComponent(cmdStr)}`;
+      const runOptions = { method: 'GET' };
+      if (baseUrl) runOptions.mode = 'no-cors';
+
+      try {
+        const runRes = await fetch(cmdUrl, runOptions);
+        if (!baseUrl && !runRes.ok) throw new Error(`Command failed: ${runRes.statusText}`);
+
+        if (baseUrl) {
+          const cleanCmd = cmdStr.length > 20 ? cmdStr.substring(0, 20) + "..." : cmdStr;
+          log(`Cmd '${cleanCmd}' sent (Blind mode).`);
+        } else {
+          const runText = await runRes.text();
+          log(`Response: ${runText}`);
+        }
+      } catch (e) {
+        handleError(e);
+      }
+    }
+
+    function handleError(e) {
+      log(`Error: ${e.message}`);
+      console.error(e);
+      if (e.message.includes("Failed to fetch")) {
+        alert(`Connection Error: "Failed to fetch".\nBrowser blocked response (CORS). Action likely succeeded.`);
+      } else {
+        alert(`Error: ${e.message}`);
+      }
     }
 
     function showStatus(msg) { document.getElementById('status').innerText = msg; }
