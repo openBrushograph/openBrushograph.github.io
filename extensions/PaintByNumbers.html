@@ -484,6 +484,42 @@
                     </div>
                 </div>
                 
+                
+                <div class="control-section">
+                    <div class="section-header">Backlash Compensation & Limits</div>
+                    <div class="control-group">
+                        <label for="enableBacklash">
+                            <input type="checkbox" id="enableBacklash" style="width: auto; margin-right: 8px;">
+                            Enable Backlash Fix
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label for="backlashX">X Axis Backlash (mm)</label>
+                        <input type="number" id="backlashX" value="0.5" step="0.01" min="0">
+                    </div>
+                    <div class="control-group">
+                        <label for="backlashY">Y Axis Backlash (mm)</label>
+                        <input type="number" id="backlashY" value="1.6" step="0.01" min="0">
+                    </div>
+                    <div class="control-group">
+                        <label for="backlashThreshold">Direction Change Threshold (mm)</label>
+                        <input type="number" id="backlashThreshold" value="0.05" step="0.01" min="0.01">
+                    </div>
+                    <div class="control-group">
+                        <label for="enableLimits">
+                            <input type="checkbox" id="enableLimits" style="width: auto; margin-right: 8px;">
+                            Enable Travel Limits
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label for="maxX">Max X Travel (mm)</label>
+                        <input type="number" id="maxX" value="200" step="1" min="0">
+                    </div>
+                    <div class="control-group">
+                        <label for="maxY">Max Y Travel (mm)</label>
+                        <input type="number" id="maxY" value="200" step="1" min="0">
+                    </div>
+                </div>
                 <button id="generateBtn">Generate G-Code</button>
                 <button id="downloadBtn" disabled>Download G-Code</button>
             </div>
@@ -985,6 +1021,148 @@
             }
         }
         
+        // Backlash Compensation Class
+        class BacklashCompensator {
+            constructor(bx, by, threshold = 0.05, enableLimits = false, maxX = 200, maxY = 200) {
+                this.bx = bx;
+                this.by = by;
+                this.threshold = threshold;
+                this.enableLimits = enableLimits;
+                this.maxX = maxX;
+                this.maxY = maxY;
+                
+                this.current_x = 0.0;
+                this.current_y = 0.0;
+                this.offset_x = 0.0;
+                this.offset_y = 0.0;
+                this.dir_x = 0;
+                this.dir_y = 0;
+            }
+
+            compensate(gcode) {
+                const lines = gcode.split('\n');
+                const output = [];
+                
+                for (const originalLine of lines) {
+                    const line = originalLine.trim();
+                    
+                    if (!line || line.startsWith(';') || line.startsWith('M') || line.startsWith('G90') || line.startsWith('G21')) {
+                        output.push(originalLine);
+                        continue;
+                    }
+
+                    const upper = line.toUpperCase();
+                    
+                    // Parse coordinates
+                    let target_x = this.current_x;
+                    let target_y = this.current_y;
+                    let target_z = null;
+                    let has_move = false;
+                    let feedRate = null;
+
+                    const xMatch = line.match(/X([-\d\.]+)/);
+                    const yMatch = line.match(/Y([-\d\.]+)/);
+                    const zMatch = line.match(/Z([-\d\.]+)/);
+                    const fMatch = line.match(/F([-\d\.]+)/);
+
+                    if (xMatch) {
+                        target_x = parseFloat(xMatch[1]);
+                        has_move = true;
+                    }
+                    if (yMatch) {
+                        target_y = parseFloat(yMatch[1]);
+                        has_move = true;
+                    }
+                    if (zMatch) {
+                        target_z = parseFloat(zMatch[1]);
+                    }
+                    if (fMatch) {
+                        feedRate = parseFloat(fMatch[1]);
+                    }
+
+                    if (!has_move) {
+                        output.push(originalLine);
+                        continue;
+                    }
+
+                    // X Axis Backlash Logic
+                    const dx = target_x - this.current_x;
+                    if (Math.abs(dx) > this.threshold) {
+                        const new_dir_x = dx > 0 ? 1 : -1;
+                        if (this.dir_x !== 0 && new_dir_x !== this.dir_x) {
+                            const change = new_dir_x === 1 ? this.bx : -this.bx;
+                            this.offset_x += change;
+
+                            let phys_x = this.current_x + this.offset_x;
+                            let phys_y = this.current_y + this.offset_y;
+                            
+                            // Apply limits
+                            phys_x = Math.max(0, phys_x);
+                            phys_y = Math.max(0, phys_y);
+                            if (this.enableLimits) {
+                                phys_x = Math.min(phys_x, this.maxX);
+                                phys_y = Math.min(phys_y, this.maxY);
+                            }
+
+                            output.push(`; --- FIX X Backlash: ${change.toFixed(3)}mm ---`);
+                            output.push(`G0 X${phys_x.toFixed(3)} Y${phys_y.toFixed(3)}`);
+                        }
+                        this.dir_x = new_dir_x;
+                    }
+
+                    // Y Axis Backlash Logic
+                    const dy = target_y - this.current_y;
+                    if (Math.abs(dy) > this.threshold) {
+                        const new_dir_y = dy > 0 ? 1 : -1;
+                        if (this.dir_y !== 0 && new_dir_y !== this.dir_y) {
+                            const change = new_dir_y === 1 ? this.by : -this.by;
+                            this.offset_y += change;
+
+                            let phys_x = this.current_x + this.offset_x;
+                            let phys_y = this.current_y + this.offset_y;
+                            
+                            // Apply limits
+                            phys_x = Math.max(0, phys_x);
+                            phys_y = Math.max(0, phys_y);
+                            if (this.enableLimits) {
+                                phys_x = Math.min(phys_x, this.maxX);
+                                phys_y = Math.min(phys_y, this.maxY);
+                            }
+
+                            output.push(`; --- FIX Y Backlash: ${change.toFixed(3)}mm ---`);
+                            output.push(`G0 X${phys_x.toFixed(3)} Y${phys_y.toFixed(3)}`);
+                        }
+                        this.dir_y = new_dir_y;
+                    }
+
+                    // Output compensated move
+                    let final_x = target_x + this.offset_x;
+                    let final_y = target_y + this.offset_y;
+                    
+                    // Apply limits
+                    final_x = Math.max(0, final_x);
+                    final_y = Math.max(0, final_y);
+                    if (this.enableLimits) {
+                        final_x = Math.min(final_x, this.maxX);
+                        final_y = Math.min(final_y, this.maxY);
+                    }
+
+                    const cmd = upper.includes("G0") ? "G0" : "G1";
+                    let outLine = `${cmd} X${final_x.toFixed(3)} Y${final_y.toFixed(3)}`;
+                    
+                    if (target_z !== null) outLine += ` Z${target_z.toFixed(3)}`;
+                    if (feedRate !== null && cmd === "G1") outLine += ` F${parseInt(feedRate)}`;
+
+                    output.push(outLine);
+
+                    this.current_x = target_x;
+                    this.current_y = target_y;
+                }
+                
+                return output.join('\n');
+            }
+        }
+        
         // Visualization
         function visualize(gcode, paths, mode) {
             const canvas = document.getElementById('gcodeCanvas');
@@ -1105,6 +1283,20 @@
                 
                 const painter = new GCodePainter(config);
                 generatedGCode = painter.generate(imgData, w, h);
+                
+                // Apply backlash compensation if enabled
+                const enableBacklash = document.getElementById('enableBacklash').checked;
+                if (enableBacklash) {
+                    const backlashX = parseFloat(document.getElementById('backlashX').value);
+                    const backlashY = parseFloat(document.getElementById('backlashY').value);
+                    const backlashThreshold = parseFloat(document.getElementById('backlashThreshold').value);
+                    const enableLimits = document.getElementById('enableLimits').checked;
+                    const maxX = parseFloat(document.getElementById('maxX').value);
+                    const maxY = parseFloat(document.getElementById('maxY').value);
+                    
+                    const compensator = new BacklashCompensator(backlashX, backlashY, backlashThreshold, enableLimits, maxX, maxY);
+                    generatedGCode = compensator.compensate(generatedGCode);
+                }
                 
                 document.getElementById('previewCanvas').style.display = 'none';
                 document.getElementById('gcodeCanvas').style.display = 'block';
