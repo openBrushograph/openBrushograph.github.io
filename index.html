@@ -6,39 +6,39 @@
    <title>openBrushograph</title>
    <style>
      :root {
-       /* Default: dark theme, aligned with brushograph-lb2gcode web API */
-       --bg: #0b0f19;
-       --bg-alt: #0c1222;
-       --accent: #ff2dac; /* neon pink */
-       --accent-soft: rgba(255, 45, 172, 0.2);
-       --accent-2: #29e0ff; /* neon cyan */
-       --text: #e5e7eb;
-       --muted: #94a3b8;
-       --border: #1f2a44;
-       --card-bg: #0a0f1a;
-       --radius-lg: 18px;
-       --radius-md: 12px;
-       --radius-pill: 999px;
-       --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.85);
-       --shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.45);
-       --transition-fast: 180ms ease-out;
-       --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
-     }
+      /* Default: light theme, aligned with z-babystep-like palette */
+      --bg: #f8f9fa;
+      --bg-alt: #f8f9fa;
+      --accent: #e83e8c; /* pinkish */
+      --accent-soft: rgba(232, 62, 140, 0.16);
+      --accent-2: #e83e8c;
+      --text: #212529;
+      --muted: #6c757d;
+      --border: #dee2e6;
+      --card-bg: #ffffff;
+      --radius-lg: 12px;
+      --radius-md: 10px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 0 15px rgba(0, 0, 0, 0.08);
+      --shadow-subtle: 0 0 8px rgba(0, 0, 0, 0.05);
+      --transition-fast: 180ms ease-out;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+    }
 
-     /* Light theme inspired by FluidNC dashboard */
-     html[data-theme="light"] {
-       --bg: #e9f2ff;
-       --bg-alt: #dde8ff;
-       --accent: #2563eb; /* FluidNC-ish blue */
-       --accent-soft: rgba(37, 99, 235, 0.24);
-       --accent-2: #0ea5e9; /* cyan accent */
-       --text: #0f172a;
-       --muted: #64748b;
-       --border: #d0d7e8;
-       --card-bg: #ffffff;
-       --shadow-soft: 0 14px 32px rgba(15, 23, 42, 0.1);
-       --shadow-subtle: 0 10px 24px rgba(15, 23, 42, 0.08);
-     }
+    /* Tropical theme variant, inspired by z-babystep-http */
+    html[data-theme="tropical"] {
+      --bg: #051a05;
+      --bg-alt: #051a05;
+      --accent: #ff00ff;
+      --accent-soft: rgba(255, 0, 255, 0.2);
+      --accent-2: #ff66ff;
+      --text: #e0ffe0;
+      --muted: #5ccc5c;
+      --border: #2e8b57;
+      --card-bg: #0a220a;
+      --shadow-soft: 0 0 15px rgba(255, 0, 255, 0.2);
+      --shadow-subtle: 0 0 10px rgba(255, 0, 255, 0.12);
+    }
 
      * {
        box-sizing: border-box;
@@ -171,23 +171,22 @@
      }
 
      .hero-card {
-       background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
-       border-radius: 26px;
-       border: 1px solid rgba(148, 163, 184, 0.4);
-       padding: 24px 22px 22px;
-       box-shadow: var(--shadow-soft);
-       position: relative;
-       overflow: hidden;
-     }
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 24px 22px 22px;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
 
-     .hero-card::before {
-       content: "";
-       position: absolute;
-       inset: -120px;
-       background: radial-gradient(circle at 10% 10%, rgba(253, 224, 71, 0.2), transparent 55%), radial-gradient(circle at 80% 10%, rgba(59, 130, 246, 0.34), transparent 55%);
-       opacity: 0.9;
-       pointer-events: none;
-     }
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: transparent;
+      pointer-events: none;
+    }
 
      .hero-inner {
        position: relative;
@@ -350,9 +349,9 @@
      }
 
      .card {
-       background: radial-gradient(circle at top right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
+       background: var(--card-bg);
        border-radius: var(--radius-lg);
-       border: 1px solid rgba(148, 163, 184, 0.45);
+       border: 1px solid var(--border);
        box-shadow: var(--shadow-subtle);
        padding: 14px 14px 13px;
      }
@@ -490,6 +489,39 @@
        color: var(--text);
      }
 
+     html[data-theme="tropical"] .hero-card {
+       background: linear-gradient(180deg, #0a220a, #051a05);
+       border-color: var(--border);
+       box-shadow: var(--shadow-soft);
+     }
+
+     html[data-theme="tropical"] .card {
+       background: #0a220a;
+       border-color: var(--border);
+       box-shadow: var(--shadow-subtle);
+     }
+
+     html[data-theme="tropical"] .badge {
+       background: #2e865f;
+       color: #e0ffe0;
+       border-color: #2e8b57;
+     }
+
+     html[data-theme="tropical"] .pill,
+     html[data-theme="tropical"] .pill-badge {
+       background: #2e865f;
+       border-color: #2e8b57;
+       color: #e0ffe0;
+     }
+
+     html[data-theme="tropical"] .link-list a span {
+       color: #5ccc5c;
+     }
+
+     html[data-theme="tropical"] .page-shell {
+       color: var(--text);
+     }
+
      footer {
        margin-top: 2px;
        font-size: 0.78rem;
@@ -518,58 +550,60 @@
      }
 
      .theme-toggle {
-       border-radius: var(--radius-pill);
-       border: 1px solid rgba(148, 163, 184, 0.5);
-       background: rgba(15, 23, 42, 0.5);
-       color: var(--muted);
-       font-size: 0.72rem;
-       text-transform: uppercase;
-       letter-spacing: 0.13em;
-       padding: 5px 11px;
-       cursor: pointer;
-       display: inline-flex;
-       align-items: center;
-       gap: 6px;
-     }
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
 
-     .theme-toggle:hover {
-       border-color: rgba(248, 250, 252, 0.9);
-     }
+    .theme-btn {
+      font-size: 0.8rem;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .theme-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
 
      .extension-grid {
-       display: grid;
-       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-       gap: 10px;
-       margin-top: 8px;
-     }
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
 
-     .extension-tile {
-       display: block;
-       padding: 9px 10px;
-       border-radius: 14px;
-       border: 1px solid rgba(148, 163, 184, 0.45);
-       background: rgba(15, 23, 42, 0.9);
-       text-decoration: none;
-       color: #e5e7eb;
-       box-shadow: 0 8px 20px rgba(15, 23, 42, 0.7);
-       transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
-     }
+    .extension-tile {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      text-decoration: none;
+      color: var(--text);
+      box-shadow: var(--shadow-subtle);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+    }
 
-     .extension-tile:hover {
-       transform: translateY(-1px);
-       border-color: rgba(248, 250, 252, 0.85);
-       box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
-       background: rgba(15, 23, 42, 0.96);
-     }
+    .extension-tile:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-soft);
+      background: rgba(232, 62, 140, 0.03);
+    }
 
-     .extension-name {
-       font-size: 0.8rem;
-       text-transform: uppercase;
-       letter-spacing: 0.15em;
-       color: rgba(209, 213, 219, 0.96);
-       margin-bottom: 4px;
-       display: flex;
-       align-items: center;
+    .extension-name {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
        justify-content: space-between;
        gap: 6px;
      }
@@ -581,29 +615,13 @@
      }
 
      .extension-chip {
-       border-radius: var(--radius-pill);
-       border: 1px solid rgba(148, 163, 184, 0.6);
-       padding: 2px 7px;
-       font-size: 0.7rem;
-       color: rgba(209, 213, 219, 0.96);
-     }
-
-     html[data-theme="light"] .extension-tile {
-       background: #ffffff;
-       border-color: var(--border);
-       box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-       color: #0f172a;
-     }
-
-     html[data-theme="light"] .extension-desc {
-       color: var(--muted);
-     }
-
-     html[data-theme="light"] .extension-chip {
-       border-color: #c4d0f5;
-       background: #eef3ff;
-       color: #1f2937;
-     }
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(232, 62, 140, 0.45);
+      padding: 2px 7px;
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: rgba(232, 62, 140, 0.06);
+    }
 
      @media (max-width: 880px) {
        main {
@@ -642,12 +660,15 @@
          </div>
        </div>
        <div style="display:flex; align-items:center; gap:8px;">
-         <div class="chip">
-           <span class="chip-dot"></span>
-           <span>Open tools for playful machine painting</span>
-         </div>
-         <button id="themeToggle" class="theme-toggle" type="button">Light mode</button>
-       </div>
+        <div class="chip">
+          <span class="chip-dot"></span>
+          <span>Open tools for playful machine painting</span>
+        </div>
+        <div class="theme-toggle" aria-label="Theme toggle">
+          <button class="theme-btn" type="button" onclick="setTheme('light')" title="Light mode">☀️</button>
+          <button class="theme-btn" type="button" onclick="setTheme('tropical')" title="Tropical mode">🌴</button>
+        </div>
+      </div>
      </header>
 
      <main>
@@ -695,6 +716,15 @@
                </div>
                <div class="extension-desc">
                  Generate FluidNC raster G-code from images, with brush dipping, wiping and optional X/Y backlash compensation.
+               </div>
+             </a>
+             <a class="extension-tile" href="extensions/PaintByNumbers.html">
+               <div class="extension-name">
+                 <span>PaintByNumbers</span>
+                 <span class="extension-chip">numbered passes</span>
+               </div>
+               <div class="extension-desc">
+                 Turn separated regions or colors into numbered painting passes with brush-friendly G-code output.
                </div>
              </a>
              <a class="extension-tile" href="extensions/Raster_plotter_Variable_Z.html">
@@ -827,38 +857,41 @@
  </body>
 
  <script>
-   (function() {
-     const root = document.documentElement;
-     const key = 'obg-theme';
-     const btn = document.getElementById('themeToggle');
-     const logo = document.querySelector('.brand-logo');
+  (function() {
+    const root = document.documentElement;
+    const key = 'obg-theme';
+    const logo = document.querySelector('.brand-logo');
 
-     function apply(theme) {
-       if (theme === 'light') {
-         root.setAttribute('data-theme', 'light');
-         if (btn) btn.textContent = 'Dark mode';
-       } else {
-         root.removeAttribute('data-theme');
-         if (btn) btn.textContent = 'Light mode';
-       }
-     }
+    function apply(theme) {
+      if (theme === 'tropical') {
+        root.setAttribute('data-theme', 'tropical');
+      } else {
+        root.removeAttribute('data-theme');
+      }
+    }
 
-     let saved = localStorage.getItem(key);
-     if (saved !== 'light' && saved !== 'dark') {
-       saved = 'dark';
-     }
-     apply(saved);
+    // Expose setTheme globally so header buttons can call it, similar to z-babystep-http
+    window.setTheme = function(mode) {
+      const theme = mode === 'tropical' ? 'tropical' : 'light';
+      apply(theme);
+      localStorage.setItem(key, theme);
+    };
 
-     function toggleTheme() {
-       const isLight = root.getAttribute('data-theme') === 'light';
-       const next = isLight ? 'dark' : 'light';
-       apply(next);
-       localStorage.setItem(key, next);
-     }
+    let saved = localStorage.getItem(key);
+    if (saved !== 'light' && saved !== 'tropical') {
+      saved = 'light';
+    }
+    apply(saved);
 
-     btn?.addEventListener('click', toggleTheme);
-     logo?.addEventListener('click', toggleTheme);
-   })();
+    // Allow clicking the logo to toggle between light and tropical
+    function toggleTheme() {
+      const isTropical = root.getAttribute('data-theme') === 'tropical';
+      const next = isTropical ? 'light' : 'tropical';
+      window.setTheme(next);
+    }
+
+    logo?.addEventListener('click', toggleTheme);
+  })();
  </script>
 
  </html>
