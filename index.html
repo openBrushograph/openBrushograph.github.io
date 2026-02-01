@@ -656,7 +656,7 @@
          <img class="brand-logo" src="img/logo.png" alt="openBrushograph logo" />
          <div class="brand-text">
            <div class="brand-title">openBrushograph</div>
-           <div class="brand-subtitle">CNC painting · open hardware</div>
+           <div class="brand-subtitle">CNC painting · open hardware · open software</div>
          </div>
        </div>
        <div style="display:flex; align-items:center; gap:8px;">
@@ -679,6 +679,9 @@
                <span>Open hardware</span>
              </div>
              <div class="pill">
+               <span>Open source software</span>
+             </div>
+             <div class="pill">
                <span>G-code painting</span>
              </div>
              <div class="pill">
@@ -694,9 +697,9 @@
 
            <p class="hero-lead">
              openBrushograph grows out of the Brushograph experiments in "brushology" – playful ways of
-             painting with a mechatronic brush. It brings together low-cost CNC mechanics, brush heads,
-             inks and hacked-together controllers. Here you will find firmware extensions, workshop files
-             and documentation for openBrushograph machines and related experiments.
+             painting with a mechatronic brush. It brings together low-cost CNC mechanics, open source software,
+             brush heads, inks and hacked-together controllers. Here you will find firmware extensions,
+             software tools, workshop files and documentation for openBrushograph machines and related experiments.
            </p>
 
            <div class="hero-cta-row">
@@ -709,6 +712,24 @@
              </a>
            </div>
            <div class="extension-grid">
+             <a class="extension-tile" href="https://nirmanaflow.netlify.app/" target="_blank" rel="noreferrer" style="border-color: var(--accent); box-shadow: 0 0 15px var(--accent-soft);">
+               <div class="extension-name">
+                 <span>NirmanaFlow</span>
+                 <span class="extension-chip" style="background: var(--accent); color: #fff; border: none; font-weight: 700;">NEW</span>
+               </div>
+               <div class="extension-desc">
+                 Generative flow field art for plotters. Create organic textures and patterns directly in the browser.
+               </div>
+             </a>
+             <a class="extension-tile" href="extensions/batak-assembler.html" style="background: #2b0b0b; border-color: #8e0000; color: #fff8e1;">
+               <div class="extension-name">
+                 <span style="color: #ffd700;">Batak Assembler</span>
+                 <span class="extension-chip" style="background: #d32f2f; color: #ffd700; border-color: #ffd700;">Gorga</span>
+               </div>
+               <div class="extension-desc" style="color: #d7ccc8;">
+                 Construct Batak script text paths from skeletal definitions. Generates vector paths for plotting.
+               </div>
+             </a>
              <a class="extension-tile" href="extensions/Raster-painter.html">
                <div class="extension-name">
                  <span>Raster-painter</span>
@@ -752,15 +773,6 @@
                </div>
                <div class="extension-desc">
                  Add color pick-ups, washing sequences and path-length based brush refreshes to LightBurn G-code using layer names.
-               </div>
-             </a>
-             <a class="extension-tile" href="extensions/lbrasterfix.html">
-               <div class="extension-name">
-                 <span>lbrasterfix</span>
-                 <span class="extension-chip">raster Z lifts</span>
-               </div>
-               <div class="extension-desc">
-                 Convert LightBurn raster S power values into Z up/down moves inside Scan sections, with optional scan feed override and S removal.
                </div>
              </a>
            </div>
@@ -809,6 +821,7 @@
             <div class="badge-row" style="margin-top: 10px;">
               <div class="badge">Hackable CNC painting setups</div>
               <div class="badge">Low-cost materials</div>
+              <div class="badge">FOSS tools</div>
               <div class="badge">Work-in-progress labs</div>
             </div>
           </div>
