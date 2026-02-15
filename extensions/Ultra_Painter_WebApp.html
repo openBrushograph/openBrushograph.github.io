@@ -549,6 +549,9 @@
                 this.log('🎨 Starting G-code generation...', 'info');
                 const c = this.config;
                 
+                console.log('🔍 DEBUG: infill_type =', c.infill_type);
+                console.log('🔍 DEBUG: typeof infill_type =', typeof c.infill_type);
+                
                 // Process image
                 this.log('📸 Processing image...', 'info');
                 const threshold = 140;
@@ -570,21 +573,157 @@
                 const stepPx = Math.floor((c.brush_w * (1 - c.overlap)) * res);
                 
                 if (c.infill_type === 'concentric') {
+                    console.log('✅ ENTERING CONCENTRIC MODE!');
                     this.log('🌀 Using concentric infill...', 'info');
-                    // Simplified concentric (basic implementation)
-                    for (let y = 0; y < height; y += stepPx) {
-                        const line = [];
-                        for (let x = 0; x < width; x++) {
-                            if (arr[y] && arr[y][x]) {
-                                line.push([x / res + c.x_off, y / res + c.y_off]);
-                            } else {
-                                if (line.length > 1) rawPaths.push([...line]);
-                                line.length = 0;
+                    this.log(`📊 Erosion step: ${stepPx}px`, 'info');
+                    
+                    // Helper: Find next neighbor in contour (8-connectivity)
+                    const findNextBoundary = (x, y, prevDir, edges) => {
+                        // 8 directions: E, SE, S, SW, W, NW, N, NE
+                        const dirs = [[1,0], [1,1], [0,1], [-1,1], [-1,0], [-1,-1], [0,-1], [1,-1]];
+                        
+                        // Start search from previous direction + 2 (to go around perimeter)
+                        let startIdx = (prevDir + 6) % 8;
+                        
+                        for (let i = 0; i < 8; i++) {
+                            const idx = (startIdx + i) % 8;
+                            const [dx, dy] = dirs[idx];
+                            const nx = x + dx;
+                            const ny = y + dy;
+                            
+                            if (nx >= 0 && nx < width && ny >= 0 && ny < height && edges[ny][nx]) {
+                                return [nx, ny, idx];
                             }
                         }
-                        if (line.length > 1) rawPaths.push(line);
+                        return null;
+                    };
+                    
+                    let tempArr = arr.map(row => [...row]);
+                    let layerCount = 0;
+                    
+                    while (true) {
+                        let pixelCount = 0;
+                        for (let y = 0; y < height; y++) {
+                            for (let x = 0; x < width; x++) {
+                                if (tempArr[y][x]) pixelCount++;
+                            }
+                        }
+                        
+                        if (pixelCount === 0) break;
+                        
+                        layerCount++;
+                        this.log(`🔄 Processing layer ${layerCount}, ${pixelCount} pixels remaining`, 'info');
+                        
+                        // Find edge pixels
+                        const edges = [];
+                        for (let y = 0; y < height; y++) {
+                            edges[y] = [];
+                            for (let x = 0; x < width; x++) {
+                                if (tempArr[y][x]) {
+                                    let isEdge = false;
+                                    for (let dy = -1; dy <= 1; dy++) {
+                                        for (let dx = -1; dx <= 1; dx++) {
+                                            if (dx === 0 && dy === 0) continue;
+                                            const ny = y + dy;
+                                            const nx = x + dx;
+                                            if (ny < 0 || ny >= height || nx < 0 || nx >= width || !tempArr[ny][nx]) {
+                                                isEdge = true;
+                                                break;
+                                            }
+                                        }
+                                        if (isEdge) break;
+                                    }
+                                    edges[y][x] = isEdge;
+                                } else {
+                                    edges[y][x] = false;
+                                }
+                            }
+                        }
+                        
+                        // Trace boundaries as connected contours
+                        const visited = edges.map(row => row.map(() => false));
+                        
+                        for (let y = 0; y < height; y++) {
+                            for (let x = 0; x < width; x++) {
+                                if (edges[y][x] && !visited[y][x]) {
+                                    const contour = [];
+                                    let cx = x, cy = y, dir = 0;
+                                    let steps = 0;
+                                    const maxSteps = width * height; // Safety limit
+                                    
+                                    // Trace this contour
+                                    while (steps < maxSteps) {
+                                        if (!visited[cy][cx]) {
+                                            contour.push([cx / res + c.x_off, cy / res + c.y_off]);
+                                            visited[cy][cx] = true;
+                                        }
+                                        
+                                        // Find next boundary pixel
+                                        const next = findNextBoundary(cx, cy, dir, edges);
+                                        if (!next) break; // End of contour
+                                        
+                                        const [nx, ny, ndir] = next;
+                                        
+                                        // Stop if we've returned to start
+                                        if (nx === x && ny === y && contour.length > 2) break;
+                                        
+                                        cx = nx;
+                                        cy = ny;
+                                        dir = ndir;
+                                        steps++;
+                                    }
+                                    
+                                    if (contour.length > 1) {
+                                        rawPaths.push(contour);
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Remove this layer
+                        for (let y = 0; y < height; y++) {
+                            for (let x = 0; x < width; x++) {
+                                if (edges[y][x]) tempArr[y][x] = false;
+                            }
+                        }
+                        
+                        // Additional erosion
+                        if (stepPx > 1) {
+                            for (let iter = 0; iter < stepPx - 1; iter++) {
+                                const toRemove = [];
+                                for (let y = 0; y < height; y++) {
+                                    for (let x = 0; x < width; x++) {
+                                        if (tempArr[y][x]) {
+                                            let isEdge = false;
+                                            for (let dy = -1; dy <= 1; dy++) {
+                                                for (let dx = -1; dx <= 1; dx++) {
+                                                    if (dx === 0 && dy === 0) continue;
+                                                    const ny = y + dy;
+                                                    const nx = x + dx;
+                                                    if (ny < 0 || ny >= height || nx < 0 || nx >= width || !tempArr[ny][nx]) {
+                                                        isEdge = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if (isEdge) break;
+                                            }
+                                            if (isEdge) toRemove.push([y, x]);
+                                        }
+                                    }
+                                }
+                                toRemove.forEach(([y, x]) => tempArr[y][x] = false);
+                            }
+                        }
+                        
+                        if (layerCount > 1000) {
+                            this.log('⚠️ Layer limit reached', 'warning');
+                            break;
+                        }
                     }
+                    
+                    this.log(`✅ Generated ${layerCount} concentric layers`, 'success');
                 } else {
+                    console.log('ℹ️ ENTERING LINES MODE!');
                     this.log(`📐 Using lines infill at ${c.infill_angle}°...`, 'info');
                     const angleRad = c.infill_angle * Math.PI / 180;
                     const cosA = Math.cos(angleRad);
