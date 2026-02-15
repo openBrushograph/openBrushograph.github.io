@@ -16,7 +16,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #FF0018 0%, #FFA52C 16%, #FFFF41 33%, #008018 50%, #0000F9 66%, #86007D 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -31,7 +31,7 @@
         }
         
         .header {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(90deg, #FF0018 0%, #FFA52C 20%, #FFFF41 40%, #008018 60%, #0000F9 80%, #86007D 100%);
             color: white;
             padding: 30px;
             text-align: center;
@@ -67,7 +67,10 @@
             font-size: 1.3em;
             font-weight: bold;
             margin-bottom: 15px;
-            color: #764ba2;
+            background: linear-gradient(90deg, #FF0018 0%, #FFA52C 20%, #FFFF41 40%, #008018 60%, #0000F9 80%, #86007D 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -90,7 +93,7 @@
         
         .control-group h3 {
             font-size: 0.95em;
-            color: #f5576c;
+            color: #86007D;
             margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -121,7 +124,7 @@
         .control-item input:focus,
         .control-item select:focus {
             outline: none;
-            border-color: #f5576c;
+            border-color: #0000F9;
         }
         
         .file-upload {
@@ -137,7 +140,7 @@
             display: block;
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(90deg, #FF0018 0%, #FFA52C 20%, #FFFF41 40%, #008018 60%, #0000F9 80%, #86007D 100%);
             color: white;
             border: none;
             border-radius: 10px;
@@ -149,13 +152,13 @@
         
         .file-upload-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(245, 87, 108, 0.3);
+            box-shadow: 0 6px 12px rgba(255, 0, 24, 0.3);
         }
         
         .generate-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #FF0018 0%, #FFA52C 20%, #FFFF41 40%, #008018 60%, #0000F9 80%, #86007D 100%);
             color: white;
             border: none;
             border-radius: 10px;
@@ -168,7 +171,7 @@
         
         .generate-btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 6px 12px rgba(134, 0, 125, 0.3);
         }
         
         .generate-btn:disabled {
@@ -179,7 +182,7 @@
         .download-btn {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(90deg, #0000F9 0%, #86007D 100%);
             color: white;
             border: none;
             border-radius: 10px;
@@ -245,7 +248,7 @@
         }
         
         .stat-box {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(90deg, #FF0018 0%, #FFA52C 20%, #FFFF41 40%, #008018 60%, #0000F9 80%, #86007D 100%);
             color: white;
             padding: 15px;
             border-radius: 10px;
@@ -283,7 +286,7 @@
         }
         
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(180deg, #FF0018 0%, #FFA52C 20%, #FFFF41 40%, #008018 60%, #0000F9 80%, #86007D 100%);
             border-radius: 10px;
         }
         
@@ -304,7 +307,7 @@
         }
         
         .tab.active {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(90deg, #FF0018 0%, #FFA52C 20%, #FFFF41 40%, #008018 60%, #0000F9 80%, #86007D 100%);
             color: white;
         }
         
@@ -332,7 +335,7 @@
         }
         
         .legend-color.paint {
-            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(90deg, #FF0018 0%, #FFA52C 33%, #FFFF41 66%, #008018 100%);
         }
         
         .legend-color.travel {
@@ -343,8 +346,8 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background: #4facfe;
-            border: 2px solid #0077cc;
+            background: #86007D;
+            border: 2px solid #FF0018;
         }
     </style>
 </head>
@@ -964,8 +967,11 @@
                         const [x2, y2] = transform(move.x2, move.y2);
                         
                         const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
-                        gradient.addColorStop(0, '#f093fb');
-                        gradient.addColorStop(1, '#f5576c');
+                        gradient.addColorStop(0, '#FF0018');
+                        gradient.addColorStop(0.25, '#FFA52C');
+                        gradient.addColorStop(0.5, '#FFFF41');
+                        gradient.addColorStop(0.75, '#008018');
+                        gradient.addColorStop(1, '#0000F9');
                         
                         ctx.strokeStyle = gradient;
                         ctx.lineWidth = 2;
@@ -978,11 +984,11 @@
                 
                 // Draw dip position marker
                 const [dipX, dipY] = transform(config.dip_x, config.dip_y);
-                ctx.fillStyle = '#4facfe';
+                ctx.fillStyle = '#86007D';
                 ctx.beginPath();
                 ctx.arc(dipX, dipY, 5, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.strokeStyle = '#0077cc';
+                ctx.strokeStyle = '#FF0018';
                 ctx.lineWidth = 2;
                 ctx.stroke();
                 
