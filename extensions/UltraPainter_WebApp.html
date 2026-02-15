@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UltraPainter GRBL Generator</title>
+    <title>OpenBrushograph</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -306,6 +306,45 @@
         .tab.active {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
+        }
+        
+        .visual-legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85em;
+        }
+        
+        .legend-color {
+            width: 30px;
+            height: 3px;
+            border-radius: 2px;
+        }
+        
+        .legend-color.paint {
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .legend-color.travel {
+            background: #cccccc;
+        }
+        
+        .legend-color.dip {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4facfe;
+            border: 2px solid #0077cc;
         }
     </style>
 </head>
@@ -679,8 +718,8 @@
                 dip_z: 0.3,
                 dip_jitter: 7.0,
                 dip_spiral_loops: 1.0,
-                dip_spiral_r: 10.0,
-                wipe_r: 15.0,
+                dip_spiral_r: 13.0,
+                wipe_r: 18.0,
                 feed: 1500,
                 feed_paint: 400,
                 backlash_x: 0.5,
@@ -698,6 +737,7 @@
             const [filename, setFilename] = useState('');
             
             const imageCanvasRef = useRef(null);
+            const gcodeCanvasRef = useRef(null);
             const fileInputRef = useRef(null);
             
             const log = (message, type = 'info') => {
@@ -715,30 +755,39 @@
                 reader.onload = (event) => {
                     const img = new Image();
                     img.onload = () => {
-                        // Draw to canvas and process
-                        const canvas = imageCanvasRef.current;
-                        const ctx = canvas.getContext('2d');
+                        // Show original image in preview (not flipped)
+                        const previewCanvas = imageCanvasRef.current;
+                        const previewCtx = previewCanvas.getContext('2d');
                         
                         // Calculate dimensions
                         const res = 4.8;
                         const targetWidth = config.target_width * res;
                         const targetHeight = targetWidth * (img.height / img.width);
                         
-                        canvas.width = targetWidth;
-                        canvas.height = targetHeight;
+                        previewCanvas.width = targetWidth;
+                        previewCanvas.height = targetHeight;
                         
-                        // Draw and flip
-                        ctx.save();
-                        ctx.scale(1, -1);
-                        ctx.drawImage(img, 0, -targetHeight, targetWidth, targetHeight);
-                        ctx.restore();
+                        // Draw original image for preview
+                        previewCtx.drawImage(img, 0, 0, targetWidth, targetHeight);
                         
-                        // Get image data
-                        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        // Create a separate canvas for processing with flip
+                        const processCanvas = document.createElement('canvas');
+                        processCanvas.width = targetWidth;
+                        processCanvas.height = targetHeight;
+                        const processCtx = processCanvas.getContext('2d');
+                        
+                        // Draw flipped for processing (to match Python behavior)
+                        processCtx.save();
+                        processCtx.scale(1, -1);
+                        processCtx.drawImage(img, 0, -targetHeight, targetWidth, targetHeight);
+                        processCtx.restore();
+                        
+                        // Get image data from the flipped version for processing
+                        const imgData = processCtx.getImageData(0, 0, processCanvas.width, processCanvas.height);
                         
                         setImage(img);
                         setImageData(imgData);
-                        log(`✅ Image loaded: ${canvas.width}x${canvas.height}px`, 'success');
+                        log(`✅ Image loaded: ${previewCanvas.width}x${previewCanvas.height}px`, 'success');
                     };
                     img.src = event.target.result;
                 };
@@ -765,7 +814,7 @@
                         
                         setGcode(result.gcode);
                         setStats(result.stats);
-                        setActiveTab('gcode');
+                        setActiveTab('visual');
                     } catch (err) {
                         log(`❌ Error: ${err.message}`, 'error');
                     }
@@ -786,6 +835,173 @@
                 log(`💾 Downloaded: ${a.download}`, 'success');
             };
             
+            const visualizeGcode = () => {
+                if (!gcode || !gcodeCanvasRef.current) return;
+                
+                const canvas = gcodeCanvasRef.current;
+                const ctx = canvas.getContext('2d');
+                
+                // Parse G-code to extract movements
+                const lines = gcode.split('\n');
+                let x = 0, y = 0, z = 0;
+                let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+                const moves = [];
+                
+                // First pass: collect all moves and find bounds
+                for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (!trimmed || trimmed.startsWith(';')) continue;
+                    
+                    let newX = x, newY = y, newZ = z;
+                    let hasMove = false;
+                    
+                    const xMatch = trimmed.match(/X([-\d.]+)/);
+                    if (xMatch) {
+                        newX = parseFloat(xMatch[1]);
+                        hasMove = true;
+                    }
+                    
+                    const yMatch = trimmed.match(/Y([-\d.]+)/);
+                    if (yMatch) {
+                        newY = parseFloat(yMatch[1]);
+                        hasMove = true;
+                    }
+                    
+                    const zMatch = trimmed.match(/Z([-\d.]+)/);
+                    if (zMatch) {
+                        newZ = parseFloat(zMatch[1]);
+                    }
+                    
+                    if (hasMove) {
+                        const isTravel = trimmed.startsWith('G0');
+                        const isPaint = trimmed.startsWith('G1') && Math.abs(newZ - config.z_paint) < 0.1;
+                        
+                        moves.push({
+                            x1: x, y1: y,
+                            x2: newX, y2: newY,
+                            type: isPaint ? 'paint' : (isTravel ? 'travel' : 'other')
+                        });
+                        
+                        minX = Math.min(minX, x, newX);
+                        minY = Math.min(minY, y, newY);
+                        maxX = Math.max(maxX, x, newX);
+                        maxY = Math.max(maxY, y, newY);
+                        
+                        x = newX;
+                        y = newY;
+                    }
+                    z = newZ;
+                }
+                
+                // Set canvas size and calculate scaling
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                
+                const padding = 30;
+                const rangeX = maxX - minX || 1;
+                const rangeY = maxY - minY || 1;
+                const scale = Math.min(
+                    (canvas.width - 2 * padding) / rangeX,
+                    (canvas.height - 2 * padding) / rangeY
+                );
+                
+                // Clear canvas
+                ctx.fillStyle = '#f5f5f5';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Transform function
+                const transform = (x, y) => {
+                    return [
+                        padding + (x - minX) * scale,
+                        canvas.height - (padding + (y - minY) * scale)
+                    ];
+                };
+                
+                // Draw grid
+                ctx.strokeStyle = '#e0e0e0';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]);
+                
+                const gridStep = 10; // mm
+                for (let gx = Math.floor(minX / gridStep) * gridStep; gx <= maxX; gx += gridStep) {
+                    const [sx, sy1] = transform(gx, minY);
+                    const [, sy2] = transform(gx, maxY);
+                    ctx.beginPath();
+                    ctx.moveTo(sx, sy1);
+                    ctx.lineTo(sx, sy2);
+                    ctx.stroke();
+                }
+                
+                for (let gy = Math.floor(minY / gridStep) * gridStep; gy <= maxY; gy += gridStep) {
+                    const [sx1, sy] = transform(minX, gy);
+                    const [sx2, ] = transform(maxX, gy);
+                    ctx.beginPath();
+                    ctx.moveTo(sx1, sy);
+                    ctx.lineTo(sx2, sy);
+                    ctx.stroke();
+                }
+                
+                ctx.setLineDash([]);
+                
+                // Draw travel moves (light gray)
+                ctx.strokeStyle = '#cccccc';
+                ctx.lineWidth = 1;
+                for (const move of moves) {
+                    if (move.type === 'travel') {
+                        const [x1, y1] = transform(move.x1, move.y1);
+                        const [x2, y2] = transform(move.x2, move.y2);
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+                    }
+                }
+                
+                // Draw paint moves (vibrant gradient)
+                for (const move of moves) {
+                    if (move.type === 'paint') {
+                        const [x1, y1] = transform(move.x1, move.y1);
+                        const [x2, y2] = transform(move.x2, move.y2);
+                        
+                        const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
+                        gradient.addColorStop(0, '#f093fb');
+                        gradient.addColorStop(1, '#f5576c');
+                        
+                        ctx.strokeStyle = gradient;
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+                    }
+                }
+                
+                // Draw dip position marker
+                const [dipX, dipY] = transform(config.dip_x, config.dip_y);
+                ctx.fillStyle = '#4facfe';
+                ctx.beginPath();
+                ctx.arc(dipX, dipY, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#0077cc';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Add labels
+                ctx.fillStyle = '#333';
+                ctx.font = '12px sans-serif';
+                ctx.fillText(`Dip`, dipX + 8, dipY + 4);
+                ctx.fillText(`${minX.toFixed(1)}, ${minY.toFixed(1)}`, padding, canvas.height - 10);
+                ctx.fillText(`${maxX.toFixed(1)}, ${maxY.toFixed(1)}`, canvas.width - padding - 60, padding + 15);
+                
+                log('🎨 G-code visualization complete', 'success');
+            };
+            
+            useEffect(() => {
+                if (gcode && activeTab === 'visual') {
+                    setTimeout(() => visualizeGcode(), 100);
+                }
+            }, [gcode, activeTab, config]);
+            
             const updateConfig = (key, value) => {
                 setConfig(prev => ({ ...prev, [key]: parseFloat(value) || value }));
             };
@@ -793,8 +1009,8 @@
             return (
                 <div className="app-container">
                     <div className="header">
-                        <h1>🎨 UltraPainter GRBL Generator</h1>
-                        <p>Modern Tropical FluidNC Style Interface</p>
+                        <h1>🎨 OpenBrushograph</h1>
+                        <p>"A man paints with his brains and not with his hands" Michelangelo</p>
                     </div>
                     
                     <div className="main-content">
@@ -952,6 +1168,33 @@
                                         step="0.1"
                                     />
                                 </div>
+                                <div className="control-item">
+                                    <label>Spiral Loops</label>
+                                    <input
+                                        type="number"
+                                        value={config.dip_spiral_loops}
+                                        onChange={(e) => updateConfig('dip_spiral_loops', e.target.value)}
+                                        step="0.1"
+                                    />
+                                </div>
+                                <div className="control-item">
+                                    <label>Spiral Radius (mm)</label>
+                                    <input
+                                        type="number"
+                                        value={config.dip_spiral_r}
+                                        onChange={(e) => updateConfig('dip_spiral_r', e.target.value)}
+                                        step="0.1"
+                                    />
+                                </div>
+                                <div className="control-item">
+                                    <label>Wipe Radius (mm)</label>
+                                    <input
+                                        type="number"
+                                        value={config.wipe_r}
+                                        onChange={(e) => updateConfig('wipe_r', e.target.value)}
+                                        step="0.1"
+                                    />
+                                </div>
                             </div>
                             
                             <div className="control-group">
@@ -980,6 +1223,15 @@
                                         type="number"
                                         value={config.z_high}
                                         onChange={(e) => updateConfig('z_high', e.target.value)}
+                                        step="0.1"
+                                    />
+                                </div>
+                                <div className="control-item">
+                                    <label>Wipe Exit Height (mm)</label>
+                                    <input
+                                        type="number"
+                                        value={config.z_wipe_exit}
+                                        onChange={(e) => updateConfig('z_wipe_exit', e.target.value)}
                                         step="0.1"
                                     />
                                 </div>
@@ -1074,6 +1326,12 @@
                                     🖼️ Image
                                 </button>
                                 <button
+                                    className={`tab ${activeTab === 'visual' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('visual')}
+                                >
+                                    🎨 Visual
+                                </button>
+                                <button
                                     className={`tab ${activeTab === 'gcode' ? 'active' : ''}`}
                                     onClick={() => setActiveTab('gcode')}
                                 >
@@ -1087,6 +1345,44 @@
                                     className="preview-canvas"
                                     style={{ maxHeight: '400px' }}
                                 />
+                            )}
+                            
+                            {activeTab === 'visual' && (
+                                <>
+                                    <canvas
+                                        ref={gcodeCanvasRef}
+                                        className="preview-canvas"
+                                        style={{ height: '400px', display: gcode ? 'block' : 'none' }}
+                                    />
+                                    {!gcode && (
+                                        <div style={{
+                                            height: '400px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            color: '#999',
+                                            fontSize: '1.1em'
+                                        }}>
+                                            🎨 Visual path preview will appear here after generation
+                                        </div>
+                                    )}
+                                    {gcode && (
+                                        <div className="visual-legend">
+                                            <div className="legend-item">
+                                                <div className="legend-color paint"></div>
+                                                <span>Paint Moves</span>
+                                            </div>
+                                            <div className="legend-item">
+                                                <div className="legend-color travel"></div>
+                                                <span>Travel Moves</span>
+                                            </div>
+                                            <div className="legend-item">
+                                                <div className="legend-color dip"></div>
+                                                <span>Dip Position</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
                             )}
                             
                             {activeTab === 'gcode' && (
