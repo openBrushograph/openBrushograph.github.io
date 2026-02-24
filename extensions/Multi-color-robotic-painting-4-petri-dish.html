@@ -10,6 +10,7 @@
 :root {
   --bg:#0c0d10; --surface:#13151b; --panel:#191c24; --border:#252933;
   --accent:#e8ff47; --accent2:#ff6b35; --text:#c4c9da; --muted:#4e5468;
+  --label:#9ba3c0;
   --mono:'Space Mono',monospace; --sans:'Barlow Condensed',sans-serif;
   --c1:#ff6b6b; --c2:#3dd6c8; --c3:#ffd166; --c4:#b06aff;
 }
@@ -30,7 +31,7 @@ header{
 .pill{width:8px;height:8px;border-radius:50%;opacity:.28;transition:opacity .2s,box-shadow .2s}
 .pill.on{opacity:1}
 
-.workspace{display:grid;grid-template-columns:1fr 320px;height:calc(100vh - 57px)}
+.workspace{display:grid;grid-template-columns:1fr 340px;height:calc(100vh - 57px)}
 .main{overflow-y:auto;padding:22px 24px 0}
 .sidebar{border-left:1px solid var(--border);overflow-y:auto;background:var(--surface)}
 
@@ -78,16 +79,34 @@ header{
 
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px}
 .fr.t3{grid-template-columns:1fr 1fr 1fr}
+.fr.t1{grid-template-columns:1fr}
 .f{display:flex;flex-direction:column;gap:3px}
-.f label{font-size:.57rem;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-family:var(--sans)}
+.f label{font-size:.57rem;color:var(--label);letter-spacing:.14em;text-transform:uppercase;font-family:var(--sans)}
 .f input,.f select{background:var(--bg);border:1px solid var(--border);color:var(--text);
   font-family:var(--mono);font-size:.74rem;padding:5px 7px;border-radius:3px;
   outline:none;transition:border-color .15s;width:100%}
 .f input:focus,.f select:focus{border-color:var(--accent)}
 .f select{cursor:pointer}.f select option{background:var(--panel)}
 
+/* Checkbox toggle row */
+.ftog{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.ftog label{font-size:.57rem;color:var(--label);letter-spacing:.14em;text-transform:uppercase;font-family:var(--sans);cursor:pointer;user-select:none}
+.ftog input[type=checkbox]{appearance:none;width:26px;height:15px;background:var(--border);
+  border-radius:8px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.ftog input[type=checkbox]:checked{background:var(--accent)}
+.ftog input[type=checkbox]::after{content:'';position:absolute;width:9px;height:9px;
+  border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s}
+.ftog input[type=checkbox]:checked::after{left:14px}
+
 .ss{padding:17px 18px;border-bottom:1px solid var(--border)}
 .cg{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.cg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+
+/* Inline badge for section tags */
+.badge{display:inline-block;font-family:var(--sans);font-size:.55rem;letter-spacing:.12em;
+  text-transform:uppercase;background:rgba(232,255,71,.12);color:var(--accent);
+  padding:1px 6px;border-radius:2px;margin-left:8px;vertical-align:middle}
+.badge.warn{background:rgba(255,107,53,.12);color:var(--accent2)}
 
 .genbar{padding:15px 24px;background:var(--surface);border-top:1px solid var(--border);
   display:flex;align-items:center;gap:14px}
@@ -109,6 +128,62 @@ header{
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
+/* ── Quote ── */
+.hdr-quote{
+  font-family:var(--sans);font-style:italic;font-size:.72rem;
+  color:var(--muted);letter-spacing:.04em;
+  border-left:2px solid var(--border);padding-left:12px;
+  max-width:260px;line-height:1.5;margin-right:14px;
+  display:none;
+}
+.hdr-quote em{font-style:normal;color:#4e5468;display:block;margin-top:2px;font-size:.65rem;letter-spacing:.1em}
+@media(min-width:1100px){.hdr-quote{display:block}}
+
+/* ── Preview button (secondary style) ── */
+.btn-sec{font-family:var(--sans);font-weight:700;font-size:.88rem;letter-spacing:.16em;
+  text-transform:uppercase;background:transparent;color:var(--accent);
+  border:1px solid rgba(232,255,71,.35);padding:9px 20px;border-radius:3px;cursor:pointer;
+  transition:background .15s,border-color .15s;white-space:nowrap}
+.btn-sec:hover{background:rgba(232,255,71,.08);border-color:var(--accent)}
+.btn-sec:disabled{opacity:.3;cursor:not-allowed}
+
+/* ── Visualizer Modal ── */
+#vizModal{
+  display:none;position:fixed;inset:0;z-index:999;
+  background:rgba(8,9,12,.92);backdrop-filter:blur(6px);
+  flex-direction:column;
+}
+#vizModal.open{display:flex}
+.viz-header{
+  display:flex;align-items:center;gap:16px;padding:12px 20px;
+  background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.viz-title{font-family:var(--sans);font-weight:800;font-size:1.1rem;
+  letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
+.viz-stats{font-family:var(--mono);font-size:.65rem;color:var(--muted)}
+.viz-legend{display:flex;gap:14px;margin-left:8px}
+.viz-leg-item{display:flex;align-items:center;gap:5px;
+  font-family:var(--sans);font-size:.65rem;color:var(--label);letter-spacing:.08em}
+.viz-leg-swatch{width:22px;height:2px;border-radius:1px}
+.viz-leg-swatch.travel{background:rgba(255,255,255,.18);border-top:1px dashed rgba(255,255,255,.25)}
+.viz-controls{display:flex;gap:8px;margin-left:auto;align-items:center}
+.viz-ctl-label{font-family:var(--sans);font-size:.62rem;color:var(--muted);
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;user-select:none;
+  display:flex;align-items:center;gap:5px}
+.viz-ctl-label input{accent-color:var(--accent);cursor:pointer}
+.viz-canvas-wrap{flex:1;position:relative;overflow:hidden;cursor:grab}
+.viz-canvas-wrap:active{cursor:grabbing}
+#vizCanvas{display:block;width:100%;height:100%}
+.viz-hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  font-family:var(--sans);font-size:.62rem;color:var(--muted);
+  letter-spacing:.1em;pointer-events:none;text-transform:uppercase;
+  background:rgba(12,13,16,.6);padding:4px 12px;border-radius:10px}
+.viz-close{font-family:var(--sans);font-weight:700;font-size:.8rem;letter-spacing:.12em;
+  text-transform:uppercase;background:rgba(255,107,53,.12);color:var(--accent2);
+  border:1px solid rgba(255,107,53,.25);padding:7px 16px;border-radius:3px;cursor:pointer;
+  transition:background .15s}
+.viz-close:hover{background:rgba(255,107,53,.22)}
+
 @media(max-width:860px){
   .workspace{grid-template-columns:1fr;height:auto}
   .sidebar{border-left:none;border-top:1px solid var(--border)}
@@ -123,10 +198,34 @@ header{
     <div class="logo">Painter <em>//</em> G-Code Studio</div>
     <div class="subtitle">Multi-color robotic painting &mdash; runs entirely in browser</div>
   </div>
+  <div class="hdr-quote">
+    "A man paints with his brains and not with his hands."
+    <em>— Michelangelo</em>
+  </div>
   <div class="hdr-right">
     <div class="pills" id="pills"></div>
   </div>
 </header>
+
+<!-- ── VISUALIZER MODAL ── -->
+<div id="vizModal">
+  <div class="viz-header">
+    <div class="viz-title">&#x2B21; Path Preview</div>
+    <div class="viz-stats" id="vizStats"></div>
+    <div class="viz-legend" id="vizLegend"></div>
+    <div class="viz-controls">
+      <label class="viz-ctl-label"><input type="checkbox" id="vizShowTravel" checked> Travel moves</label>
+      <label class="viz-ctl-label"><input type="checkbox" id="vizShowWork" checked> Work area</label>
+      <label class="viz-ctl-label"><input type="checkbox" id="vizShowDips" checked> Dip points</label>
+      <button class="btn-sec" onclick="vizDownloadPNG()" style="padding:6px 14px;font-size:.75rem">&#x21E9; PNG</button>
+      <button class="viz-close" onclick="closeViz()">&#x2715; Close</button>
+    </div>
+  </div>
+  <div class="viz-canvas-wrap" id="vizWrap">
+    <canvas id="vizCanvas"></canvas>
+    <div class="viz-hint">Scroll to zoom &nbsp;·&nbsp; Drag to pan &nbsp;·&nbsp; Double-click to reset</div>
+  </div>
+</div>
 
 <div class="workspace">
 
@@ -184,11 +283,42 @@ header{
       </div>
     </div>
 
+    <!-- ── WORKING AREA LIMITS ── -->
+    <div class="ss">
+      <div class="sec">Working Area Limits <span class="badge">Clamp</span></div>
+      <div class="cg" style="margin-bottom:8px">
+        <div class="f"><label>Min X (mm)</label><input type="number" id="g_area_min_x" value="0" step="1"></div>
+        <div class="f"><label>Max X (mm)</label><input type="number" id="g_area_max_x" value="1400" step="10"></div>
+        <div class="f"><label>Min Y (mm)</label><input type="number" id="g_area_min_y" value="0" step="1"></div>
+        <div class="f"><label>Max Y (mm)</label><input type="number" id="g_area_max_y" value="1400" step="10"></div>
+      </div>
+      <div class="ftog">
+        <input type="checkbox" id="g_area_enabled" checked>
+        <label for="g_area_enabled">Enable coordinate clamping</label>
+      </div>
+    </div>
+
+    <!-- ── BACKLASH COMPENSATION ── -->
+    <div class="ss">
+      <div class="sec">Backlash Compensation <span class="badge warn">BL</span></div>
+      <div class="ftog" style="margin-bottom:10px">
+        <input type="checkbox" id="g_bl_enabled">
+        <label for="g_bl_enabled">Enable backlash compensation</label>
+      </div>
+      <div class="cg">
+        <div class="f"><label>BL X (mm)</label><input type="number" id="g_bl_x" value="0.5" step="0.05"></div>
+        <div class="f"><label>BL Y (mm)</label><input type="number" id="g_bl_y" value="1.6" step="0.05"></div>
+        <div class="f"><label>Threshold (mm)</label><input type="number" id="g_bl_threshold" value="0.05" step="0.01"></div>
+        <div class="f"><label>Safe Feed (mm/min)</label><input type="number" id="g_bl_safe_feed" value="200" step="10"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <div class="genbar">
   <button class="btn" id="btnGen" onclick="generate()">&#x2B21; Generate G-Code</button>
+  <button class="btn-sec" id="btnPreview" onclick="openViz()" disabled>&#x25A3; Preview Paths</button>
   <div class="pw" id="pw"><div class="pb"><div class="pf" id="pf"></div></div></div>
   <div class="st" id="st">Load images for each active layer, then generate.</div>
 </div>
@@ -268,12 +398,10 @@ function loadBinaryArr(file, targetWidth, res) {
 
 // ══════════════════════════════════════════════════════
 //  CHEBYSHEV DISTANCE TRANSFORM  (8-connected BFS)
-//  Equivalent to repeated erosion with np.ones((3,3))
 // ══════════════════════════════════════════════════════
 
 function chebyshevDist(arr, h, w) {
   const dist = new Uint16Array(h * w).fill(65535);
-  // Use a plain array as queue — each pixel enqueued at most once
   const q = new Int32Array(h * w);
   let head = 0, tail = 0;
   for (let i = 0; i < h * w; i++) {
@@ -298,8 +426,6 @@ function chebyshevDist(arr, h, w) {
 
 // ══════════════════════════════════════════════════════
 //  MARCHING SQUARES
-//  Works on any numeric array (binary or distance transform).
-//  Returns array of paths in pixel [row, col] coordinates.
 // ══════════════════════════════════════════════════════
 
 function marchingSquares(data, h, w, level) {
@@ -315,29 +441,27 @@ function marchingSquares(data, h, w, level) {
       const idx = (tlI << 3) | (trI << 2) | (brI << 1) | blI;
       if (idx === 0 || idx === 15) continue;
 
-      // Linear interpolation along each edge
       const iT = tl !== tr ? (level - tl) / (tr - tl) : 0.5;
       const iR = tr !== br ? (level - tr) / (br - tr) : 0.5;
       const iB = bl !== br ? (level - bl) / (br - bl) : 0.5;
       const iL = tl !== bl ? (level - tl) / (bl - tl) : 0.5;
 
-      // Edge midpoints in [row, col] space
-      const T = [r,     c + iT];  // top edge
-      const R = [r + iR, c + 1];  // right edge
-      const B = [r + 1,  c + iB]; // bottom edge
-      const L = [r + iL, c    ];  // left edge
+      const T = [r,     c + iT];
+      const R = [r + iR, c + 1];
+      const B = [r + 1,  c + iB];
+      const L = [r + iL, c    ];
 
       switch (idx) {
         case  1: segs.push([L, B]); break;
         case  2: segs.push([B, R]); break;
         case  3: segs.push([L, R]); break;
         case  4: segs.push([T, R]); break;
-        case  5: segs.push([T, R], [L, B]); break; // ambiguous saddle
+        case  5: segs.push([T, R], [L, B]); break;
         case  6: segs.push([T, B]); break;
         case  7: segs.push([T, L]); break;
-        case  8: segs.push([T, L]); break; // complement of 7
+        case  8: segs.push([T, L]); break;
         case  9: segs.push([T, B]); break;
-        case 10: segs.push([T, L], [B, R]); break; // ambiguous saddle
+        case 10: segs.push([T, L], [B, R]); break;
         case 11: segs.push([T, R]); break;
         case 12: segs.push([L, R]); break;
         case 13: segs.push([B, R]); break;
@@ -349,15 +473,11 @@ function marchingSquares(data, h, w, level) {
   return connectSegments(segs);
 }
 
-/** Chain individual line segments into continuous paths */
 function connectSegments(segs) {
   if (!segs.length) return [];
 
-  // Encode point to string key. For integer dist + half-integer levels,
-  // all midpoints land exactly at *.5 so *4 gives exact integers.
   const key = p => `${Math.round(p[0] * 4)},${Math.round(p[1] * 4)}`;
 
-  // Build adjacency: key → list of (segIndex*2 + endIndex)
   const adj = new Map();
   const addAdj = (p, ref) => {
     const k = key(p);
@@ -376,7 +496,6 @@ function connectSegments(segs) {
     if (used[si]) continue;
     used[si] = 1;
 
-    // Grow forward from segs[si][1]
     const fwd = [segs[si][0], segs[si][1]];
     let cur = segs[si][1];
     for (let lim = segs.length; lim-- > 0;) {
@@ -395,7 +514,6 @@ function connectSegments(segs) {
       if (!moved) break;
     }
 
-    // Grow backward from segs[si][0]
     const bwd = [segs[si][0]];
     cur = segs[si][0];
     for (let lim = segs.length; lim-- > 0;) {
@@ -423,7 +541,7 @@ function connectSegments(segs) {
 }
 
 // ══════════════════════════════════════════════════════
-//  PATH GENERATION  (lines + concentric)
+//  PATH GENERATION  (lines + concentric + outline)
 // ══════════════════════════════════════════════════════
 
 async function generatePaths(arr, h, w, cfg, onProg) {
@@ -432,31 +550,44 @@ async function generatePaths(arr, h, w, cfg, onProg) {
   const raw = [];
 
   if (cfg.infill_type === 'concentric') {
-    // 1. Distance transform — equivalent to repeated erosion with 3×3 ones
     const dist = chebyshevDist(arr, h, w);
-    let maxD = 0;
-    for (let i = 0; i < dist.length; i++) {
-      if (dist[i] !== 65535 && dist[i] > maxD) maxD = dist[i];
-    }
-    // 2. Marching squares at each contour level (fast: one pass over pixels per level)
-    let lvIdx = 0;
-    for (let lv = 0.5; lv < maxD; lv += stepPx, lvIdx++) {
-      for (const contour of marchingSquares(dist, h, w, lv)) {
-        // Convert [row, col] → G-code [x, y], flip Y so image is right-way-up on canvas
+
+    if (cfg.outline_only) {
+      // ── Outline only: single contour at level 0.5 (the outermost boundary) ──
+      onProg && onProg(0.1);
+      await sleep(0);
+      for (const contour of marchingSquares(dist, h, w, 0.5)) {
         const path = contour.map(([row, col]) => [
           col / res + cfg.x_off,
           (h - 1 - row) / res + cfg.y_off
         ]);
         if (path.length > 2) raw.push(path);
       }
-      if (lvIdx % 8 === 0) {
-        onProg && onProg(lv / maxD);
-        await sleep(0); // yield to UI thread
+      onProg && onProg(1.0);
+    } else {
+      // ── Full concentric fill ──
+      let maxD = 0;
+      for (let i = 0; i < dist.length; i++) {
+        if (dist[i] !== 65535 && dist[i] > maxD) maxD = dist[i];
+      }
+      let lvIdx = 0;
+      for (let lv = 0.5; lv < maxD; lv += stepPx, lvIdx++) {
+        for (const contour of marchingSquares(dist, h, w, lv)) {
+          const path = contour.map(([row, col]) => [
+            col / res + cfg.x_off,
+            (h - 1 - row) / res + cfg.y_off
+          ]);
+          if (path.length > 2) raw.push(path);
+        }
+        if (lvIdx % 8 === 0) {
+          onProg && onProg(lv / maxD);
+          await sleep(0);
+        }
       }
     }
 
   } else {
-    // Lines infill — scan in rotated coordinate system
+    // Lines infill
     const ar = cfg.infill_angle * Math.PI / 180;
     const ca = Math.cos(ar), sa = Math.sin(ar);
     const cx = w / 2, cy = h / 2;
@@ -488,7 +619,7 @@ async function generatePaths(arr, h, w, cfg, onProg) {
 }
 
 // ══════════════════════════════════════════════════════
-//  PATH OPTIMIZER  (nearest-neighbour or spatial sort)
+//  PATH OPTIMIZER
 // ══════════════════════════════════════════════════════
 
 function optimizePaths(paths, start) {
@@ -520,16 +651,97 @@ function optimizePaths(paths, start) {
 }
 
 // ══════════════════════════════════════════════════════
-//  G-CODE GENERATOR
+//  G-CODE GENERATOR  (with working area clamping and
+//  backlash compensation)
 // ══════════════════════════════════════════════════════
 
 class UltraPainter {
   constructor(cfg) {
     this.c = cfg;
     this.gc = [];
-    this.dd = 0; // distance since last dip
+    this.dd = 0;
     this.pos = [cfg.dip_x, cfg.dip_y];
     this.md = cfg.min_dist + Math.random() * (cfg.max_dist - cfg.min_dist);
+
+    // Backlash compensation state
+    this.bl_dir_x  = 0;
+    this.bl_dir_y  = 0;
+    this.bl_off_x  = 0.0;
+    this.bl_off_y  = 0.0;
+    this.bl_log_x  = cfg.dip_x;
+    this.bl_log_y  = cfg.dip_y;
+    this.bl_feed   = cfg.feed_paint;  // tracks current active feed
+  }
+
+  // ── Clamp a coordinate to working area (always >= 0) ──
+  _clamp(x, y) {
+    const c = this.c;
+    // Always prevent negative coords (like Python's if x < 0: x = 0)
+    let cx = Math.max(0, x);
+    let cy = Math.max(0, y);
+    // Additionally apply user-defined area bounds when enabled
+    if (c.area_enabled) {
+      cx = Math.max(c.area_min_x, Math.min(c.area_max_x, cx));
+      cy = Math.max(c.area_min_y, Math.min(c.area_max_y, cy));
+    }
+    return [cx, cy];
+  }
+
+  // ── Emit move with optional backlash pre-correction ──
+  // Returns array of gcode strings to push
+  _blMove(cmd, tx, ty, extra) {
+    const c = this.c;
+    const f = n => n.toFixed(3);
+    const lines = [];
+
+    if (c.bl_enabled) {
+      const dx = tx - this.bl_log_x;
+      const dy = ty - this.bl_log_y;
+
+      // X direction reversal
+      if (Math.abs(dx) > c.bl_threshold) {
+        const nd = dx > 0 ? 1 : -1;
+        if (this.bl_dir_x !== 0 && nd !== this.bl_dir_x) {
+          this.bl_off_x += nd === 1 ? c.bl_x : -c.bl_x;
+          const [fx, fy] = this._clamp(
+            this.bl_log_x + this.bl_off_x,
+            this.bl_log_y + this.bl_off_y
+          );
+          lines.push(`; --- Backlash X fix: ${(nd===1?c.bl_x:-c.bl_x).toFixed(3)}mm ---`);
+          lines.push(`G0 X${f(fx)} Y${f(fy)} F${c.bl_safe_feed}`);
+        }
+        this.bl_dir_x = nd;
+      }
+
+      // Y direction reversal
+      if (Math.abs(dy) > c.bl_threshold) {
+        const nd = dy > 0 ? 1 : -1;
+        if (this.bl_dir_y !== 0 && nd !== this.bl_dir_y) {
+          this.bl_off_y += nd === 1 ? c.bl_y : -c.bl_y;
+          const [fx, fy] = this._clamp(
+            this.bl_log_x + this.bl_off_x,
+            this.bl_log_y + this.bl_off_y
+          );
+          lines.push(`; --- Backlash Y fix: ${(nd===1?c.bl_y:-c.bl_y).toFixed(3)}mm ---`);
+          lines.push(`G0 X${f(fx)} Y${f(fy)} F${c.bl_safe_feed}`);
+        }
+        this.bl_dir_y = nd;
+      }
+    }
+
+    // Final physical position = logical + accumulated backlash offset
+    const [fx, fy] = this._clamp(
+      tx + this.bl_off_x,
+      ty + this.bl_off_y
+    );
+
+    lines.push(`${cmd} X${f(fx)} Y${f(fy)}${extra || ''}`);
+
+    // Update logical position
+    this.bl_log_x = tx;
+    this.bl_log_y = ty;
+
+    return lines;
   }
 
   _spd(m) {
@@ -541,30 +753,40 @@ class UltraPainter {
 
   _dip(tx, ty) {
     const c = this.c, f = n => n.toFixed(3);
-    const ax = c.dip_x + (Math.random() * 2 - 1) * c.dip_jitter;
-    const ay = c.dip_y + (Math.random() * 2 - 1) * c.dip_jitter;
+    // Clamp jittered dip approach — jitter can push near-zero dip_x negative
+    const [ax, ay] = this._clamp(
+      c.dip_x + (Math.random() * 2 - 1) * c.dip_jitter,
+      c.dip_y + (Math.random() * 2 - 1) * c.dip_jitter
+    );
 
     this.gc.push('\n; --- CIKEL NAMAKANJA ---', `G0 Z${f(c.z_low)} F3000`);
     this._spd('travel');
     this.gc.push(`G0 X${f(ax)} Y${f(ay)} Z${f(c.z_high)}`, `G1 Z${f(c.dip_z)} F3000`);
 
+    // Clamp every spiral point individually
     const ns = Math.floor(c.dip_spiral_loops * 4);
     for (let i = 0; i < ns; i++) {
       const a = i * Math.PI / 2, r = (i / ns) * c.dip_spiral_r;
-      this.gc.push(`G1 X${f(ax + r * Math.cos(a))} Y${f(ay + r * Math.sin(a))} F2500`);
+      const [sx, sy] = this._clamp(ax + r * Math.cos(a), ay + r * Math.sin(a));
+      this.gc.push(`G1 X${f(sx)} Y${f(sy)} F2500`);
     }
 
-    const dx = tx - c.dip_x, dy = ty - c.dip_y, d = Math.hypot(dx, dy);
-    const wx = d > 0 ? c.dip_x + dx / d * c.wipe_r : c.dip_x + c.wipe_r;
-    const wy = d > 0 ? c.dip_y + dy / d * c.wipe_r : c.dip_y;
+    // Clamp wipe exit point — most common source of negative: dip_x=66, wipe_r=70 → 66-70=-4
+    const ddx = tx - c.dip_x, ddy = ty - c.dip_y, dd = Math.hypot(ddx, ddy);
+    const rawWx = dd > 0 ? c.dip_x + ddx / dd * c.wipe_r : c.dip_x + c.wipe_r;
+    const rawWy = dd > 0 ? c.dip_y + ddy / dd * c.wipe_r : c.dip_y;
+    const [wx, wy] = this._clamp(rawWx, rawWy);
+
+    // Clamp final target coordinate too
+    const [ftx, fty] = this._clamp(tx, ty);
 
     this.gc.push(
       `G0 Z${f(c.z_wipe_exit)} F3000`, `G0 X${f(wx)} Y${f(wy)}`,
-      `G0 Z${f(c.z_high)} F3000`, `G0 X${f(tx)} Y${f(ty)} Z${f(c.z_low)}`
+      `G0 Z${f(c.z_high)} F3000`, `G0 X${f(ftx)} Y${f(fty)} Z${f(c.z_low)}`
     );
     this.dd = 0;
     this.md = c.min_dist + Math.random() * (c.max_dist - c.min_dist);
-    this.pos = [tx, ty];
+    this.pos = [ftx, fty];
   }
 
   run(paths, appendTo) {
@@ -575,13 +797,13 @@ class UltraPainter {
     this._dip(paths[0][0][0], paths[0][0][1]);
 
     for (let path of paths) {
-      // Bidirectional: pick the closer end as start
       const d0 = Math.hypot(path[0][0] - this.pos[0], path[0][1] - this.pos[1]);
       const d1 = Math.hypot(path[path.length-1][0] - this.pos[0], path[path.length-1][1] - this.pos[1]);
       if (d1 < d0) path = [...path].reverse();
 
       this._spd('travel');
-      this.gc.push(`G0 X${f(path[0][0])} Y${f(path[0][1])} Z${f(c.z_low)}`);
+      // Travel to path start
+      this.gc.push(...this._blMove('G0', path[0][0], path[0][1], ` Z${f(c.z_low)}`));
       this._spd('paint');
       this.gc.push(`G1 Z${f(c.z_paint)} F2500`);
       this.pos = path[0];
@@ -595,7 +817,8 @@ class UltraPainter {
           this._spd('paint');
           this.gc.push(`G1 Z${f(c.z_paint)} F2500`);
         }
-        this.gc.push(`G1 X${f(px)} Y${f(py)}`);
+        // Paint move with backlash compensation
+        this.gc.push(...this._blMove('G1', px, py, ''));
         this.dd += dist;
         this.pos = [px, py];
       }
@@ -617,6 +840,7 @@ const state = Array.from({length:4}, (_, i) => ({
   name: NAMES[i], enabled: true,
   dip_x: DIPS[i].x, dip_y: DIPS[i].y,
   infill_type: 'lines', infill_angle: i * 45,
+  outline_only: false,
   brush_w: null,
   file: null, preview: null, stats: ''
 }));
@@ -659,7 +883,7 @@ function render() {
         <!-- Infill -->
         <div class="fr t3">
           <div class="f" style="grid-column:span 2"><label>Infill Type</label>
-            <select onchange="state[${i}].infill_type=this.value">
+            <select id="sel_infill_${i}" onchange="onInfillChange(${i},this.value)">
               <option value="lines"      ${s.infill_type==='lines'?'selected':''}>Lines</option>
               <option value="concentric" ${s.infill_type==='concentric'?'selected':''}>Concentric</option>
             </select></div>
@@ -668,8 +892,15 @@ function render() {
               oninput="state[${i}].infill_angle=+this.value||0"></div>
         </div>
 
+        <!-- Outline Only (concentric) -->
+        <div class="ftog" id="outlinerow_${i}" style="${s.infill_type==='concentric'?'':'opacity:.35;pointer-events:none'}">
+          <input type="checkbox" id="outline_${i}" ${s.outline_only?'checked':''}
+            onchange="state[${i}].outline_only=this.checked">
+          <label for="outline_${i}">Outline only (single contour)</label>
+        </div>
+
         <!-- Per-layer brush width -->
-        <div class="fr">
+        <div class="fr" style="margin-top:7px">
           <div class="f"><label>Brush Width (mm)</label>
             <input type="number" placeholder="(global)" step="0.1"
               value="${s.brush_w !== null ? s.brush_w : ''}"
@@ -679,6 +910,18 @@ function render() {
     </div>
   `).join('');
   updatePills();
+}
+
+function onInfillChange(i, val) {
+  state[i].infill_type = val;
+  const row = document.getElementById(`outlinerow_${i}`);
+  if (val === 'concentric') {
+    row.style.opacity = '1'; row.style.pointerEvents = 'auto';
+  } else {
+    row.style.opacity = '.35'; row.style.pointerEvents = 'none';
+    state[i].outline_only = false;
+    document.getElementById(`outline_${i}`).checked = false;
+  }
 }
 
 function updatePills() {
@@ -715,7 +958,9 @@ async function handleFile(file, i) {
 
 // ── GLOBAL CONFIG READ ──
 function gcfg() {
-  const g = id => parseFloat(document.getElementById('g_' + id).value) || 0;
+  const g  = id => parseFloat(document.getElementById('g_' + id).value) || 0;
+  const gi = id => parseInt(document.getElementById('g_' + id).value)   || 0;
+  const gb = id => document.getElementById('g_' + id).checked;
   return {
     target_width: g('target_width'), brush_w: g('brush_w'), overlap: g('overlap'),
     res: g('res') || 1.0,
@@ -726,7 +971,17 @@ function gcfg() {
     dip_jitter: g('dip_jitter'), dip_spiral_loops: g('dip_spiral_loops'),
     dip_spiral_r: g('dip_spiral_r'), wipe_r: g('wipe_r'),
     feed: g('feed'), feed_paint: g('feed_paint'),
-    accel_travel: g('accel_travel'), accel_paint: g('accel_paint')
+    accel_travel: g('accel_travel'), accel_paint: g('accel_paint'),
+    // Working area
+    area_enabled: gb('area_enabled'),
+    area_min_x: g('area_min_x'), area_max_x: g('area_max_x'),
+    area_min_y: g('area_min_y'), area_max_y: g('area_max_y'),
+    // Backlash
+    bl_enabled:   gb('bl_enabled'),
+    bl_x:         g('bl_x'),
+    bl_y:         g('bl_y'),
+    bl_threshold: g('bl_threshold') || 0.05,
+    bl_safe_feed: gi('bl_safe_feed') || 200,
   };
 }
 
@@ -739,6 +994,12 @@ function setProg(v) {
   document.getElementById('pf').style.width = Math.min(v * 100, 100) + '%';
 }
 
+// ══════════════════════════════════════════════════════
+//  PATH DATA STORE  (for visualizer)
+// ══════════════════════════════════════════════════════
+let lastGenData = [];   // [{layerIdx, color, name, paths, cfg}]
+let lastGenCfg  = null;
+
 // ── MAIN GENERATE ──
 async function generate() {
   const activeLayers = state.filter(s => s.enabled && s.file);
@@ -749,13 +1010,20 @@ async function generate() {
 
   const btn = document.getElementById('btnGen');
   const pw  = document.getElementById('pw');
-  btn.disabled = true; pw.classList.add('vis'); setProg(0);
+  btn.disabled = true;
+  document.getElementById('btnPreview').disabled = true;
+  pw.classList.add('vis'); setProg(0);
 
   const global = gcfg();
+  lastGenData = [];
+  lastGenCfg  = global;
+
   const combined = [
     'G90', 'G21',
     '; === MULTI-COLOR PAINTER GCODE ===',
     `; Generated layers: ${activeLayers.length}`,
+    `; Backlash compensation: ${global.bl_enabled ? `ON  BX=${global.bl_x} BY=${global.bl_y}` : 'OFF'}`,
+    `; Working area clamping: ${global.area_enabled ? `ON  X[${global.area_min_x}–${global.area_max_x}] Y[${global.area_min_y}–${global.area_max_y}]` : 'OFF'}`,
     ''
   ];
 
@@ -768,6 +1036,7 @@ async function generate() {
       combined.push(
         `\n; ═══════════════════════════════`,
         `; LAYER ${i+1}: ${s.name}`,
+        `; Infill: ${s.infill_type}${s.infill_type==='concentric' && s.outline_only ? ' (outline only)' : ''}`,
         `; ═══════════════════════════════\n`
       );
 
@@ -775,6 +1044,7 @@ async function generate() {
         ...global,
         dip_x: s.dip_x, dip_y: s.dip_y,
         infill_type: s.infill_type, infill_angle: s.infill_angle,
+        outline_only: s.outline_only,
         brush_w: s.brush_w !== null ? s.brush_w : global.brush_w
       };
 
@@ -787,6 +1057,9 @@ async function generate() {
       const paths = await generatePaths(arr, h, w, cfg, v => {
         setProg(base + v / activeLayers.length * 0.9);
       });
+
+      // Store for visualizer
+      lastGenData.push({ layerIdx: i, color: COLORS[i], name: s.name, paths, cfg });
 
       setst(`Layer ${i+1} / ${activeLayers.length}: writing G-code (${paths.length} paths)…`, '');
       await sleep(0);
@@ -809,7 +1082,8 @@ async function generate() {
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 
-    setst(`✓ G-code for ${activeLayers.length} layer(s) downloaded.`, 'ok');
+    setst(`✓ G-code for ${activeLayers.length} layer(s) downloaded. — Preview paths ▶`, 'ok');
+    document.getElementById('btnPreview').disabled = false;
 
   } catch (err) {
     setst('Generation failed: ' + err.message, 'err');
@@ -818,6 +1092,359 @@ async function generate() {
 
   btn.disabled = false;
   pw.classList.remove('vis');
+}
+
+// ══════════════════════════════════════════════════════
+//  VISUALIZER
+// ══════════════════════════════════════════════════════
+
+// Viewport state
+let viz = {
+  scale: 1, ox: 0, oy: 0,   // pan offset in canvas px
+  dragging: false, lastX: 0, lastY: 0,
+  // Computed from data
+  dataMinX: 0, dataMinY: 0, dataMaxX: 1000, dataMaxY: 1000,
+  fitScale: 1, fitOx: 0, fitOy: 0
+};
+
+function openViz() {
+  if (!lastGenData.length) return;
+
+  const modal = document.getElementById('vizModal');
+  modal.classList.add('open');
+
+  // Build legend
+  const leg = document.getElementById('vizLegend');
+  leg.innerHTML = lastGenData.map(ld =>
+    `<div class="viz-leg-item">
+      <div class="viz-leg-swatch" style="background:${ld.color};height:2px"></div>
+      ${ld.name}
+    </div>`
+  ).join('') +
+  `<div class="viz-leg-item">
+    <div class="viz-leg-swatch travel"></div>
+    Travel
+  </div>`;
+
+  // Stats
+  let totalPaths = 0, totalPts = 0;
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  for (const ld of lastGenData) {
+    totalPaths += ld.paths.length;
+    for (const path of ld.paths) {
+      totalPts += path.length;
+      for (const [x, y] of path) {
+        if (x < minX) minX = x; if (x > maxX) maxX = x;
+        if (y < minY) minY = y; if (y > maxY) maxY = y;
+      }
+    }
+    // include dip points
+    if (ld.cfg.dip_x < minX) minX = ld.cfg.dip_x;
+    if (ld.cfg.dip_x > maxX) maxX = ld.cfg.dip_x;
+    if (ld.cfg.dip_y < minY) minY = ld.cfg.dip_y;
+    if (ld.cfg.dip_y > maxY) maxY = ld.cfg.dip_y;
+  }
+
+  viz.dataMinX = minX - 20; viz.dataMinY = minY - 20;
+  viz.dataMaxX = maxX + 20; viz.dataMaxY = maxY + 20;
+
+  document.getElementById('vizStats').textContent =
+    `${totalPaths} paths · ${totalPts.toLocaleString()} points · ${(maxX - minX).toFixed(0)}×${(maxY - minY).toFixed(0)} mm`;
+
+  requestAnimationFrame(() => {
+    vizResize();
+    vizFit();
+    vizDraw();
+    bindVizEvents();
+  });
+}
+
+function closeViz() {
+  document.getElementById('vizModal').classList.remove('open');
+}
+
+function vizResize() {
+  const wrap = document.getElementById('vizWrap');
+  const cv = document.getElementById('vizCanvas');
+  cv.width  = wrap.clientWidth;
+  cv.height = wrap.clientHeight;
+}
+
+function vizFit() {
+  const cv = document.getElementById('vizCanvas');
+  const W = cv.width, H = cv.height;
+  const dataW = viz.dataMaxX - viz.dataMinX;
+  const dataH = viz.dataMaxY - viz.dataMinY;
+  const pad = 40;
+  const s = Math.min((W - pad * 2) / dataW, (H - pad * 2) / dataH);
+  viz.fitScale = s;
+  viz.fitOx = (W - dataW * s) / 2 - viz.dataMinX * s;
+  viz.fitOy = (H - dataH * s) / 2 - viz.dataMinY * s;
+  viz.scale = s; viz.ox = viz.fitOx; viz.oy = viz.fitOy;
+}
+
+// World → canvas
+function w2c(x, y) {
+  return [x * viz.scale + viz.ox, y * viz.scale + viz.oy];
+}
+
+function vizDraw() {
+  const cv = document.getElementById('vizCanvas');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  const showTravel = document.getElementById('vizShowTravel').checked;
+  const showWork   = document.getElementById('vizShowWork').checked;
+  const showDips   = document.getElementById('vizShowDips').checked;
+
+  // Background
+  ctx.fillStyle = '#0c0d10';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid lines (major every 100mm)
+  ctx.strokeStyle = 'rgba(37,41,51,0.7)';
+  ctx.lineWidth = 0.5;
+  const gridStep = 100;
+  const gx0 = Math.floor(viz.dataMinX / gridStep) * gridStep;
+  const gy0 = Math.floor(viz.dataMinY / gridStep) * gridStep;
+  ctx.beginPath();
+  for (let gx = gx0; gx <= viz.dataMaxX + gridStep; gx += gridStep) {
+    const [cx] = w2c(gx, 0);
+    ctx.moveTo(cx, 0); ctx.lineTo(cx, H);
+    // Label
+    ctx.fillStyle = 'rgba(78,84,104,0.6)';
+    ctx.font = `${Math.max(9, 10 * viz.scale / viz.fitScale)}px monospace`;
+    ctx.fillText(gx, cx + 2, H - 6);
+  }
+  for (let gy = gy0; gy <= viz.dataMaxY + gridStep; gy += gridStep) {
+    const [, cy] = w2c(0, gy);
+    ctx.moveTo(0, cy); ctx.lineTo(W, cy);
+    ctx.fillStyle = 'rgba(78,84,104,0.6)';
+    ctx.fillText(gy, 4, cy - 3);
+  }
+  ctx.stroke();
+
+  // Working area boundary
+  if (showWork && lastGenCfg && lastGenCfg.area_enabled) {
+    const c = lastGenCfg;
+    const [x1, y1] = w2c(c.area_min_x, c.area_min_y);
+    const [x2, y2] = w2c(c.area_max_x, c.area_max_y);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(232,255,71,0.22)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([6, 4]);
+    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+    ctx.fillStyle = 'rgba(232,255,71,0.06)';
+    ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+    ctx.restore();
+  }
+
+  // Zero axes
+  const [zx, zy] = w2c(0, 0);
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255,107,53,0.35)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 3]);
+  ctx.beginPath(); ctx.moveTo(zx, 0); ctx.lineTo(zx, H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, zy); ctx.lineTo(W, zy); ctx.stroke();
+  ctx.restore();
+
+  // Paint paths per layer
+  for (const ld of lastGenData) {
+    const paintColor = ld.color;
+
+    for (let pi = 0; pi < ld.paths.length; pi++) {
+      const path = ld.paths[pi];
+      if (!path.length) continue;
+
+      // Travel line from last path end to this path start
+      if (showTravel && pi > 0) {
+        const prev = ld.paths[pi - 1];
+        const [px, py] = w2c(prev[prev.length - 1][0], prev[prev.length - 1][1]);
+        const [nx, ny] = w2c(path[0][0], path[0][1]);
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+        ctx.lineWidth = 0.5;
+        ctx.setLineDash([3, 5]);
+        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(nx, ny); ctx.stroke();
+        ctx.restore();
+      }
+
+      // Paint stroke
+      ctx.save();
+      ctx.strokeStyle = paintColor;
+      ctx.lineWidth = Math.max(0.5, viz.scale * 0.5);
+      ctx.globalAlpha = 0.78;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      const [sx, sy] = w2c(path[0][0], path[0][1]);
+      ctx.moveTo(sx, sy);
+      for (let i = 1; i < path.length; i++) {
+        const [cx2, cy2] = w2c(path[i][0], path[i][1]);
+        ctx.lineTo(cx2, cy2);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      // Path start dot
+      const [dx, dy] = w2c(path[0][0], path[0][1]);
+      ctx.save();
+      ctx.fillStyle = paintColor;
+      ctx.globalAlpha = 0.5;
+      ctx.beginPath();
+      ctx.arc(dx, dy, Math.max(1.5, viz.scale * 0.8), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Dip point marker
+    if (showDips) {
+      const [dpx, dpy] = w2c(ld.cfg.dip_x, ld.cfg.dip_y);
+      ctx.save();
+      // Outer ring
+      ctx.strokeStyle = ld.color;
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.8;
+      ctx.beginPath();
+      ctx.arc(dpx, dpy, 9, 0, Math.PI * 2);
+      ctx.stroke();
+      // Inner dot
+      ctx.fillStyle = ld.color;
+      ctx.globalAlpha = 0.5;
+      ctx.beginPath();
+      ctx.arc(dpx, dpy, 3, 0, Math.PI * 2);
+      ctx.fill();
+      // Label
+      ctx.globalAlpha = 0.7;
+      ctx.fillStyle = ld.color;
+      ctx.font = `bold ${Math.max(9, 11)}px 'Barlow Condensed', sans-serif`;
+      ctx.fillText('DIP', dpx + 11, dpy + 4);
+      ctx.restore();
+    }
+  }
+
+  // Scale bar
+  const barMm = niceBarMm();
+  const barPx = barMm * viz.scale;
+  const bx = W - 20 - barPx, by = H - 18;
+  ctx.save();
+  ctx.strokeStyle = 'rgba(196,201,218,0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(bx, by); ctx.lineTo(bx + barPx, by);
+  ctx.moveTo(bx, by - 4); ctx.lineTo(bx, by + 4);
+  ctx.moveTo(bx + barPx, by - 4); ctx.lineTo(bx + barPx, by + 4);
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(196,201,218,0.6)';
+  ctx.font = '10px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(`${barMm} mm`, bx + barPx / 2, by - 7);
+  ctx.restore();
+}
+
+function niceBarMm() {
+  const cv = document.getElementById('vizCanvas');
+  const targetPx = cv.width * 0.15;
+  const raw = targetPx / viz.scale;
+  const pow10 = Math.pow(10, Math.floor(Math.log10(raw)));
+  for (const mult of [1, 2, 5, 10]) {
+    if (pow10 * mult * viz.scale >= targetPx * 0.5) return pow10 * mult;
+  }
+  return pow10 * 10;
+}
+
+let _vizEventsBound = false;
+function bindVizEvents() {
+  if (_vizEventsBound) return;
+  _vizEventsBound = true;
+
+  const wrap = document.getElementById('vizWrap');
+  const cv   = document.getElementById('vizCanvas');
+
+  wrap.addEventListener('wheel', e => {
+    e.preventDefault();
+    const rect = cv.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+    viz.ox = mx + (viz.ox - mx) * factor;
+    viz.oy = my + (viz.oy - my) * factor;
+    viz.scale *= factor;
+    vizDraw();
+  }, { passive: false });
+
+  wrap.addEventListener('mousedown', e => {
+    viz.dragging = true; viz.lastX = e.clientX; viz.lastY = e.clientY;
+  });
+  window.addEventListener('mousemove', e => {
+    if (!viz.dragging) return;
+    viz.ox += e.clientX - viz.lastX;
+    viz.oy += e.clientY - viz.lastY;
+    viz.lastX = e.clientX; viz.lastY = e.clientY;
+    vizDraw();
+  });
+  window.addEventListener('mouseup', () => { viz.dragging = false; });
+
+  wrap.addEventListener('dblclick', () => { vizFit(); vizDraw(); });
+
+  // Touch support
+  let lastTouchDist = null;
+  wrap.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) {
+      viz.dragging = true;
+      viz.lastX = e.touches[0].clientX;
+      viz.lastY = e.touches[0].clientY;
+    } else if (e.touches.length === 2) {
+      lastTouchDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+    }
+  }, { passive: true });
+  wrap.addEventListener('touchmove', e => {
+    if (e.touches.length === 1 && viz.dragging) {
+      viz.ox += e.touches[0].clientX - viz.lastX;
+      viz.oy += e.touches[0].clientY - viz.lastY;
+      viz.lastX = e.touches[0].clientX;
+      viz.lastY = e.touches[0].clientY;
+      vizDraw();
+    } else if (e.touches.length === 2 && lastTouchDist) {
+      const d = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const f = d / lastTouchDist;
+      const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      const my = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      const rect = cv.getBoundingClientRect();
+      const px = mx - rect.left, py = my - rect.top;
+      viz.ox = px + (viz.ox - px) * f;
+      viz.oy = py + (viz.oy - py) * f;
+      viz.scale *= f;
+      lastTouchDist = d;
+      vizDraw();
+    }
+  }, { passive: true });
+  wrap.addEventListener('touchend', () => { viz.dragging = false; lastTouchDist = null; });
+
+  // Toggle checkboxes redraw
+  ['vizShowTravel','vizShowWork','vizShowDips'].forEach(id => {
+    document.getElementById(id).addEventListener('change', vizDraw);
+  });
+
+  window.addEventListener('resize', () => {
+    if (document.getElementById('vizModal').classList.contains('open')) {
+      vizResize(); vizDraw();
+    }
+  });
+}
+
+function vizDownloadPNG() {
+  const cv = document.getElementById('vizCanvas');
+  const a = document.createElement('a');
+  a.href = cv.toDataURL('image/png');
+  a.download = 'gcode_preview.png';
+  a.click();
 }
 
 // ── INIT ──
