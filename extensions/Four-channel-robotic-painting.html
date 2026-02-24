@@ -269,12 +269,12 @@ header{
     <div class="ss">
       <div class="sec">Canvas</div>
       <div class="cg">
-        <div class="f"><label>Target Width (mm)</label><input type="number" id="g_target_width" value="1070" step="1"></div>
-        <div class="f"><label>Resolution (px/mm)</label><input type="number" id="g_res" value="1.0" step="0.5" min="0.5" max="4"></div>
+        <div class="f"><label>Target Width (mm)</label><input type="number" id="g_target_width" value="150" step="1"></div>
+        <div class="f"><label>Resolution (px/mm)</label><input type="number" id="g_res" value="10.0" step="0.5" min="0.5" max="4"></div>
         <div class="f"><label>Brush Width (mm)</label><input type="number" id="g_brush_w" value="1.6" step="0.1"></div>
         <div class="f"><label>Overlap</label><input type="number" id="g_overlap" value="0.15" step="0.01"></div>
-        <div class="f"><label>X Offset (mm)</label><input type="number" id="g_x_off" value="263" step="1"></div>
-        <div class="f"><label>Y Offset (mm)</label><input type="number" id="g_y_off" value="266" step="1"></div>
+        <div class="f"><label>X Offset (mm)</label><input type="number" id="g_x_off" value="0" step="1"></div>
+        <div class="f"><label>Y Offset (mm)</label><input type="number" id="g_y_off" value="29" step="1"></div>
       </div>
     </div>
 
@@ -282,9 +282,9 @@ header{
       <div class="sec">Z Heights (mm)</div>
       <div class="cg">
         <div class="f"><label>Z Paint</label><input type="number" id="g_z_paint" value="0.0" step="0.1"></div>
-        <div class="f"><label>Z Low</label><input type="number" id="g_z_low" value="4.6" step="0.1"></div>
-        <div class="f"><label>Z High</label><input type="number" id="g_z_high" value="31.0" step="0.5"></div>
-        <div class="f"><label>Z Wipe Exit</label><input type="number" id="g_z_wipe_exit" value="16.0" step="0.5"></div>
+        <div class="f"><label>Z Low</label><input type="number" id="g_z_low" value="1.6" step="0.1"></div>
+        <div class="f"><label>Z High</label><input type="number" id="g_z_high" value="10.0" step="0.5"></div>
+        <div class="f"><label>Z Wipe Exit</label><input type="number" id="g_z_wipe_exit" value="5.0" step="0.5"></div>
         <div class="f"><label>Dip Z</label><input type="number" id="g_dip_z" value="0.0" step="0.1"></div>
       </div>
     </div>
@@ -292,21 +292,21 @@ header{
     <div class="ss">
       <div class="sec">Dip Parameters</div>
       <div class="cg">
-        <div class="f"><label>Min Dist (mm)</label><input type="number" id="g_min_dist" value="240" step="5"></div>
-        <div class="f"><label>Max Dist (mm)</label><input type="number" id="g_max_dist" value="280" step="5"></div>
-        <div class="f"><label>Jitter</label><input type="number" id="g_dip_jitter" value="20" step="1"></div>
+        <div class="f"><label>Min Dist (mm)</label><input type="number" id="g_min_dist" value="80" step="5"></div>
+        <div class="f"><label>Max Dist (mm)</label><input type="number" id="g_max_dist" value="100" step="5"></div>
+        <div class="f"><label>Jitter</label><input type="number" id="g_dip_jitter" value="5" step="1"></div>
         <div class="f"><label>Spiral Loops</label><input type="number" id="g_dip_spiral_loops" value="1.0" step="0.5"></div>
-        <div class="f"><label>Spiral Radius</label><input type="number" id="g_dip_spiral_r" value="50" step="5"></div>
-        <div class="f"><label>Wipe Radius</label><input type="number" id="g_wipe_r" value="70" step="5"></div>
+        <div class="f"><label>Spiral Radius</label><input type="number" id="g_dip_spiral_r" value="10" step="5"></div>
+        <div class="f"><label>Wipe Radius</label><input type="number" id="g_wipe_r" value="16" step="5"></div>
       </div>
     </div>
 
     <div class="ss">
       <div class="sec">Speed &amp; Acceleration</div>
       <div class="cg">
-        <div class="f"><label>Feed Travel</label><input type="number" id="g_feed" value="12000" step="500"></div>
-        <div class="f"><label>Feed Paint</label><input type="number" id="g_feed_paint" value="400" step="50"></div>
-        <div class="f"><label>Accel Travel</label><input type="number" id="g_accel_travel" value="12000" step="500"></div>
+        <div class="f"><label>Feed Travel</label><input type="number" id="g_feed" value="1500" step="500"></div>
+        <div class="f"><label>Feed Paint</label><input type="number" id="g_feed_paint" value="600" step="50"></div>
+        <div class="f"><label>Accel Travel</label><input type="number" id="g_accel_travel" value="600" step="500"></div>
         <div class="f"><label>Accel Paint</label><input type="number" id="g_accel_paint" value="200" step="50"></div>
       </div>
     </div>
@@ -316,9 +316,9 @@ header{
       <div class="sec">Working Area Limits <span class="badge">Clamp</span></div>
       <div class="cg" style="margin-bottom:8px">
         <div class="f"><label>Min X (mm)</label><input type="number" id="g_area_min_x" value="0" step="1"></div>
-        <div class="f"><label>Max X (mm)</label><input type="number" id="g_area_max_x" value="1400" step="10"></div>
+        <div class="f"><label>Max X (mm)</label><input type="number" id="g_area_max_x" value="150" step="10"></div>
         <div class="f"><label>Min Y (mm)</label><input type="number" id="g_area_min_y" value="0" step="1"></div>
-        <div class="f"><label>Max Y (mm)</label><input type="number" id="g_area_max_y" value="1400" step="10"></div>
+        <div class="f"><label>Max Y (mm)</label><input type="number" id="g_area_max_y" value="150" step="10"></div>
       </div>
       <div class="ftog">
         <input type="checkbox" id="g_area_enabled" checked>
@@ -335,7 +335,7 @@ header{
       </div>
       <div class="cg">
         <div class="f"><label>BL X (mm)</label><input type="number" id="g_bl_x" value="0.5" step="0.05"></div>
-        <div class="f"><label>BL Y (mm)</label><input type="number" id="g_bl_y" value="1.6" step="0.05"></div>
+        <div class="f"><label>BL Y (mm)</label><input type="number" id="g_bl_y" value="1.0" step="0.05"></div>
         <div class="f"><label>Threshold (mm)</label><input type="number" id="g_bl_threshold" value="0.05" step="0.01"></div>
         <div class="f"><label>Safe Feed (mm/min)</label><input type="number" id="g_bl_safe_feed" value="200" step="10"></div>
       </div>
@@ -911,7 +911,7 @@ class UltraPainter {
 
 const COLORS = ['#ff6b6b','#3dd6c8','#ffd166','#b06aff'];
 const NAMES  = ['Color 1 — Red','Color 2 — Teal','Color 3 — Yellow','Color 4 — Purple'];
-const DIPS   = [{x:66,y:862},{x:66,y:700},{x:66,y:538},{x:66,y:376}];
+const DIPS   = [{x:15,y:0},{x:45,y:0},{x:75,y:0},{x:105,y:0}];
 
 const state = Array.from({length:4}, (_, i) => ({
   name: NAMES[i], enabled: true,
