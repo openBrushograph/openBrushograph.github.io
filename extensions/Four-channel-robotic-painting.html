@@ -270,7 +270,7 @@ header{
       <div class="sec">Canvas</div>
       <div class="cg">
         <div class="f"><label>Target Width (mm)</label><input type="number" id="g_target_width" value="150" step="1"></div>
-        <div class="f"><label>Resolution (px/mm)</label><input type="number" id="g_res" value="10.0" step="0.5" min="0.5" max="4"></div>
+        <div class="f"><label>Resolution (px/mm)</label><input type="number" id="g_res" value="4.0" step="0.5" min="0.5" max="4"></div>
         <div class="f"><label>Brush Width (mm)</label><input type="number" id="g_brush_w" value="1.1" step="0.1"></div>
         <div class="f"><label>Overlap</label><input type="number" id="g_overlap" value="0.15" step="0.01"></div>
         <div class="f"><label>X Offset (mm)</label><input type="number" id="g_x_off" value="0" step="1"></div>
@@ -282,8 +282,8 @@ header{
       <div class="sec">Z Heights (mm)</div>
       <div class="cg">
         <div class="f"><label>Z Paint</label><input type="number" id="g_z_paint" value="0.0" step="0.1"></div>
-        <div class="f"><label>Z Low</label><input type="number" id="g_z_low" value="1.6" step="0.1"></div>
-        <div class="f"><label>Z High</label><input type="number" id="g_z_high" value="10.0" step="0.5"></div>
+        <div class="f"><label>Z Low</label><input type="number" id="g_z_low" value="2.0" step="0.1"></div>
+        <div class="f"><label>Z High</label><input type="number" id="g_z_high" value="8.0" step="0.5"></div>
         <div class="f"><label>Z Wipe Exit</label><input type="number" id="g_z_wipe_exit" value="3.0" step="0.5"></div>
         <div class="f"><label>Dip Z</label><input type="number" id="g_dip_z" value="1.0" step="0.1"></div>
       </div>
@@ -294,17 +294,17 @@ header{
       <div class="cg">
         <div class="f"><label>Min Dist (mm)</label><input type="number" id="g_min_dist" value="80" step="5"></div>
         <div class="f"><label>Max Dist (mm)</label><input type="number" id="g_max_dist" value="100" step="5"></div>
-        <div class="f"><label>Jitter</label><input type="number" id="g_dip_jitter" value="5" step="1"></div>
+        <div class="f"><label>Jitter</label><input type="number" id="g_dip_jitter" value="7" step="1"></div>
         <div class="f"><label>Spiral Loops</label><input type="number" id="g_dip_spiral_loops" value="1.0" step="0.5"></div>
-        <div class="f"><label>Spiral Radius</label><input type="number" id="g_dip_spiral_r" value="10" step="5"></div>
-        <div class="f"><label>Wipe Radius</label><input type="number" id="g_wipe_r" value="16" step="16"></div>
+        <div class="f"><label>Spiral Radius</label><input type="number" id="g_dip_spiral_r" value="7" step="5"></div>
+        <div class="f"><label>Wipe Radius</label><input type="number" id="g_wipe_r" value="20" step="16"></div>
       </div>
     </div>
 
     <div class="ss">
       <div class="sec">Speed &amp; Acceleration</div>
       <div class="cg">
-        <div class="f"><label>Feed Travel</label><input type="number" id="g_feed" value="1500" step="500"></div>
+        <div class="f"><label>Feed Travel</label><input type="number" id="g_feed" value="1300" step="500"></div>
         <div class="f"><label>Feed Paint</label><input type="number" id="g_feed_paint" value="600" step="50"></div>
         <div class="f"><label>Accel Travel</label><input type="number" id="g_accel_travel" value="600" step="500"></div>
         <div class="f"><label>Accel Paint</label><input type="number" id="g_accel_paint" value="200" step="50"></div>
@@ -335,7 +335,7 @@ header{
       </div>
       <div class="cg">
         <div class="f"><label>BL X (mm)</label><input type="number" id="g_bl_x" value="0.5" step="0.05"></div>
-        <div class="f"><label>BL Y (mm)</label><input type="number" id="g_bl_y" value="1.0" step="0.05"></div>
+        <div class="f"><label>BL Y (mm)</label><input type="number" id="g_bl_y" value="0.9" step="0.05"></div>
         <div class="f"><label>Threshold (mm)</label><input type="number" id="g_bl_threshold" value="0.05" step="0.01"></div>
         <div class="f"><label>Safe Feed (mm/min)</label><input type="number" id="g_bl_safe_feed" value="200" step="10"></div>
       </div>
@@ -764,6 +764,7 @@ class UltraPainter {
           );
           lines.push(`; --- Backlash X fix: ${(nd===1?c.bl_x:-c.bl_x).toFixed(3)}mm ---`);
           lines.push(`G0 X${f(fx)} Y${f(fy)} F${c.bl_safe_feed}`);
+          lines.push(`G1 F${this.bl_feed}`);  // restore feedrate clobbered by G0 F
         }
         this.bl_dir_x = nd;
       }
@@ -779,6 +780,7 @@ class UltraPainter {
           );
           lines.push(`; --- Backlash Y fix: ${(nd===1?c.bl_y:-c.bl_y).toFixed(3)}mm ---`);
           lines.push(`G0 X${f(fx)} Y${f(fy)} F${c.bl_safe_feed}`);
+          lines.push(`G1 F${this.bl_feed}`);  // restore feedrate clobbered by G0 F
         }
         this.bl_dir_y = nd;
       }
@@ -803,6 +805,7 @@ class UltraPainter {
     const c = this.c;
     const ac = m === 'travel' ? c.accel_travel : c.accel_paint;
     const f  = m === 'travel' ? c.feed         : c.feed_paint;
+    this.bl_feed = f;   // keep in sync so backlash correction can restore it
     this.gc.push('M400', `M204 P${ac} T${ac}`, `G1 F${f}`);
   }
 
@@ -911,7 +914,7 @@ class UltraPainter {
 
 const COLORS = ['#ff6b6b','#3dd6c8','#ffd166','#b06aff'];
 const NAMES  = ['Color 1 — Red','Color 2 — Teal','Color 3 — Yellow','Color 4 — Purple'];
-const DIPS   = [{x:17,y:0},{x:63,y:0},{x:109,y:0},{x:155,y:0}];
+const DIPS   = [{x:15,y:0},{x:59,y:0},{x:106,y:0},{x:156,y:0}];
 
 const state = Array.from({length:4}, (_, i) => ({
   name: NAMES[i], enabled: true,
