@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hand2Gcode Web App</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f4f4f9; color: #333;}
+        .container { display: flex; gap: 20px; }
+        .controls { background: white; padding: 20px; border-radius: 8px; width: 360px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: 85vh; overflow-y: auto;}
+        .control-group { margin-bottom: 12px; }
+        label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 12px; color: #555;}
+        input, select { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .inline-group { display: flex; gap: 5px; }
+        canvas { background: white; border: 2px solid #ccc; border-radius: 8px; cursor: crosshair; }
+        button { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; margin-top: 10px;}
+        button:hover { background: #0056b3; }
+        textarea { width: 100%; height: 180px; margin-top: 15px; font-family: monospace; border-radius: 4px; border: 1px solid #ccc; padding: 10px; box-sizing: border-box;}
+        h3 { margin-top: 15px; border-bottom: 1px solid #eee; padding-bottom: 5px; color: #0056b3; font-size:16px;}
+    </style>
+</head>
+<body>
+
+    <h1>🖌️ Hand2Gcode Web App (Lines500 Logic)</h1>
+    
+    <div class="container">
+        <div class="controls">
+            <h3>Machine & Offsets</h3>
+            <div class="control-group">
+                <label>Target Canvas Width (mm)</label>
+                <input type="number" id="targetWidth" value="290">
+            </div>
+            <div class="control-group">
+                <label>Workpiece Offset X / Y (mm)</label>
+                <div class="inline-group">
+                    <input type="number" id="xOff" value="240.0">
+                    <input type="number" id="yOff" value="220.0">
+                </div>
+            </div>
+
+            <h3>Speeds & Acceleration</h3>
+            <div class="control-group">
+                <label>Travel Speed / Paint Speed (F)</label>
+                <div class="inline-group">
+                    <input type="number" id="feed" value="12000" placeholder="Travel">
+                    <input type="number" id="feedPaint" value="3000" placeholder="Paint">
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Accel Travel / Accel Paint (M204)</label>
+                <div class="inline-group">
+                    <input type="number" id="accelTravel" value="12000">
+                    <input type="number" id="accelPaint" value="1000">
+                </div>
+            </div>
+
+            <h3>Heights (Z mm)</h3>
+            <div class="control-group">
+                <label>Z Paint (Down) / Z Low (Above)</label>
+                <div class="inline-group">
+                    <input type="number" id="zPaint" value="0.0">
+                    <input type="number" id="zLow" value="2.0" step="0.1">
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Z High (Safe Travel)</label>
+                <input type="number" id="zHigh" value="17.0" step="0.1">
+            </div>
+
+            <h3>Dipping Logic (Randomized)</h3>
+            <div class="control-group">
+                <label>Min / Max Paint Distance (mm)</label>
+                <div class="inline-group">
+                    <input type="number" id="minDist" value="150.0">
+                    <input type="number" id="maxDist" value="180.0">
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Dip Station X / Y / Z</label>
+                <div class="inline-group">
+                    <input type="number" id="dipX" value="104.0">
+                    <input type="number" id="dipY" value="679.0">
+                    <input type="number" id="dipZ" value="1.0">
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Dip Jitter / Spiral Loops / Spiral R</label>
+                <div class="inline-group">
+                    <input type="number" id="dipJitter" value="5.0" step="0.1">
+                    <input type="number" id="dipSpiralLoops" value="1.0" step="0.5">
+                    <input type="number" id="dipSpiralR" value="10.0">
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Wipe Exit Height / Wipe Radius</label>
+                <div class="inline-group">
+                    <input type="number" id="zWipeExit" value="9.4" step="0.1">
+                    <input type="number" id="wipeR" value="34.2">
+                </div>
+            </div>
+
+            <button id="generateBtn">Generate G-Code</button>
+            <button id="clearBtn" style="background:#dc3545;">Clear Canvas</button>
+            
+            <textarea id="output" readonly placeholder="G-Code preview will appear here..."></textarea>
+        </div>
+
+        <div>
+            <h3>Draw your path here:</h3>
+            <canvas id="paintCanvas" width="600" height="600"></canvas>
+            <p style="color: #666; font-size: 14px;">Mid-stroke dips now accurately return to the exact breaking point to avoid line gaps.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('paintCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+        let paths = [];
+        let currentPath = [];
+
+        ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#000';
+
+        canvas.addEventListener('mousedown', (e) => {
+            drawing = true; currentPath = [];
+            const pos = getCanvasPos(e); currentPath.push(pos);
+            ctx.beginPath(); ctx.moveTo(pos.x, pos.y);
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!drawing) return;
+            const pos = getCanvasPos(e);
+            
+            const lastPos = currentPath[currentPath.length - 1];
+            if (lastPos) {
+                const dist = Math.sqrt(Math.pow(pos.x - lastPos.x, 2) + Math.pow(pos.y - lastPos.y, 2));
+                if (dist < 1.5) return; // Point density guard
+            }
+
+            currentPath.push(pos);
+            ctx.lineTo(pos.x, pos.y); ctx.stroke();
+        });
+
+        canvas.addEventListener('mouseup', () => { if (drawing) { drawing = false; if (currentPath.length > 1) paths.push(currentPath); } });
+
+        function getCanvasPos(e) { const rect = canvas.getBoundingClientRect(); return { x: e.clientX - rect.left, y: e.clientY - rect.top }; }
+
+        document.getElementById('clearBtn').addEventListener('click', () => { ctx.clearRect(0, 0, canvas.width, canvas.height); paths = []; document.getElementById('output').value = ''; });
+
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            // Fetch All Variables from DOM
+            const targetWidth = parseFloat(document.getElementById('targetWidth').value);
+            const xOff = parseFloat(document.getElementById('xOff').value); const yOff = parseFloat(document.getElementById('yOff').value);
+            const feed = document.getElementById('feed').value; const feedPaint = document.getElementById('feedPaint').value;
+            const accelTravel = document.getElementById('accelTravel').value; const accelPaint = document.getElementById('accelPaint').value;
+            const zPaint = parseFloat(document.getElementById('zPaint').value); const zLow = parseFloat(document.getElementById('zLow').value);
+            const zHigh = parseFloat(document.getElementById('zHigh').value);
+            const minDist = parseFloat(document.getElementById('minDist').value); const maxDist = parseFloat(document.getElementById('maxDist').value);
+            const dipX = parseFloat(document.getElementById('dipX').value); const dipY = parseFloat(document.getElementById('dipY').value); const dipZ = parseFloat(document.getElementById('dipZ').value);
+            const dipJitter = parseFloat(document.getElementById('dipJitter').value);
+            const dipSpiralLoops = parseFloat(document.getElementById('dipSpiralLoops').value); const dipSpiralR = parseFloat(document.getElementById('dipSpiralR').value);
+            const zWipeExit = parseFloat(document.getElementById('zWipeExit').value); const wipeR = parseFloat(document.getElementById('wipeR').value);
+
+            const scale = targetWidth / canvas.width;
+            let gcode = ["G90", "G21"];
+            let distSinceDip = 0;
+            let currentMaxDist = Math.random() * (maxDist - minDist) + minDist;
+            let currentX = dipX; let currentY = dipY;
+
+            function calculateDistance(x1, y1, x2, y2) { return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)); }
+
+            function setSpeed(mode) {
+                const accel = mode === 'travel' ? accelTravel : accelPaint;
+                const f = mode === 'travel' ? feed : feedPaint;
+                gcode.push("M400");
+                gcode.push(`M204 P${accel} T${accel}`);
+                gcode.push(`G1 F${f}`);
+            }
+
+            function performDipAndTravel(targetX, targetY) {
+                gcode.push(`\n; --- CIKEL NAMAKANJA ---`);
+                gcode.push(`G0 Z${zLow.toFixed(3)} F3000`);
+                setSpeed('travel');
+                
+                const ax = dipX + (Math.random() - 0.5) * 2 * dipJitter;
+                const ay = dipY + (Math.random() - 0.5) * 2 * dipJitter;
+                
+                gcode.push(`G0 X${ax.toFixed(3)} Y${ay.toFixed(3)} Z${zHigh.toFixed(3)}`);
+                gcode.push(`G1 Z${dipZ.toFixed(3)} F3000`);
+                
+                const numSteps = Math.floor(dipSpiralLoops * 4);
+                for(let i=0; i<numSteps; i++) {
+                    const ang = i * (Math.PI / 2);
+                    const r = (i / numSteps) * dipSpiralR;
+                    const sx = ax + r * Math.cos(ang);
+                    const sy = ay + r * Math.sin(ang);
+                    gcode.push(`G1 X${sx.toFixed(3)} Y${sy.toFixed(3)} F2500`);
+                }
+                
+                const dx = targetX - dipX; const dy = targetY - dipY;
+                const dist = Math.hypot(dx, dy);
+                const wx = dist > 0 ? dipX + (dx/dist * wipeR) : dipX + wipeR;
+                const wy = dist > 0 ? dipY + (dy/dist * wipeR) : dipY;
+                
+                gcode.push(`G0 Z${zWipeExit.toFixed(3)} F3000`);
+                gcode.push(`G0 X${wx.toFixed(3)} Y${wy.toFixed(3)} F${feed}`);
+                gcode.push(`G0 Z${zHigh.toFixed(3)} F3000`);
+                gcode.push(`G0 X${targetX.toFixed(3)} Y${targetY.toFixed(3)} Z${zLow.toFixed(3)} F${feed}`);
+                
+                distSinceDip = 0;
+                currentMaxDist = Math.random() * (maxDist - minDist) + minDist;
+                currentX = targetX; currentY = targetY;
+            }
+
+            if (paths.length > 0) {
+                const firstX = (paths[0][0].x * scale) + xOff;
+                const firstY = ((canvas.height - paths[0][0].y) * scale) + yOff;
+                performDipAndTravel(firstX, firstY);
+
+                paths.forEach((path) => {
+                    if (path.length < 2) return;
+
+                    const startX = (path[0].x * scale) + xOff;
+                    const startY = ((canvas.height - path[0].y) * scale) + yOff;
+
+                    setSpeed('travel');
+                    gcode.push(`G0 X${startX.toFixed(3)} Y${startY.toFixed(3)} Z${zLow.toFixed(3)}`);
+                    setSpeed('paint');
+                    gcode.push(`G1 Z${zPaint.toFixed(3)} F2500`);
+                    currentX = startX; currentY = startY;
+
+                    for (let i = 1; i < path.length; i++) {
+                        const ptX = (path[i].x * scale) + xOff;
+                        const ptY = ((canvas.height - path[i].y) * scale) + yOff;
+                        
+                        const segmentDist = calculateDistance(currentX, currentY, ptX, ptY);
+
+                        if ((distSinceDip + segmentDist) > currentMaxDist) {
+                            gcode.push(`G0 Z${zLow.toFixed(3)} F3000`);
+                            // Return to the PREVIOUS point after dipping
+                            performDipAndTravel(currentX, currentY);
+                            setSpeed('paint');
+                            gcode.push(`G1 Z${zPaint.toFixed(3)} F2500`);
+                        }
+
+                        gcode.push(`G1 X${ptX.toFixed(3)} Y${ptY.toFixed(3)}`);
+                        distSinceDip += segmentDist;
+                        currentX = ptX; currentY = ptY;
+                    }
+                    gcode.push(`G0 Z${zLow.toFixed(3)} F3000`);
+                });
+            }
+
+            gcode.push("M400");
+            gcode.push(`G0 Z${zHigh.toFixed(3)} F3000\nM2`);
+
+            const finalGcode = gcode.join('\n');
+            document.getElementById('output').value = finalGcode;
+            
+            const blob = new Blob([finalGcode], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'hand2gcode.gcode'; link.click();
+        });
+    </script>
+</body>
+</html>
