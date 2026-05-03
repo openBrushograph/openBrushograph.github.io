@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brushograph Synthesizer</title>
+    <style>
+        :root {
+            --bg-color: #0d0d12;
+            --panel-bg: #1a1a24;
+            --text-color: #e0e0e0;
+            --accent-pink: #FF007F;
+            --accent-green: #39FF14;
+            --accent-blue: #00f3ff;
+            --font-main: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--accent-pink);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+        }
+
+        .panel h2 {
+            color: var(--accent-green);
+            margin-top: 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        /* Connection Panel */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"] {
+            background-color: #000;
+            border: 1px solid #555;
+            color: var(--accent-green);
+            padding: 10px;
+            font-family: var(--font-main);
+            flex-grow: 1;
+            border-radius: 4px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent-pink);
+        }
+
+        button {
+            background-color: transparent;
+            border: 2px solid var(--accent-pink);
+            color: var(--accent-pink);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-pink);
+            color: #000;
+            box-shadow: 0 0 10px var(--accent-pink);
+        }
+
+        /* Synth Pad */
+        .pad-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .synth-btn {
+            aspect-ratio: 1;
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            font-size: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .synth-btn span {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .synth-btn:hover, .synth-btn:active {
+            background-color: var(--accent-green);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-green);
+        }
+
+        /* Sequence Player */
+        textarea {
+            width: 100%;
+            height: 150px;
+            background-color: #000;
+            border: 1px solid #555;
+            color: var(--accent-green);
+            padding: 10px;
+            font-family: var(--font-main);
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+
+        /* Console */
+        .console-output {
+            background-color: #000;
+            border: 1px solid #333;
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .console-output .sent { color: var(--accent-green); }
+        .console-output .error { color: var(--accent-pink); }
+        .console-output .info { color: var(--accent-blue); }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Brushograph Synthesizer</h1>
+
+    <div class="container">
+        
+        <!-- Connection Config -->
+        <div class="panel">
+            <h2>Connection</h2>
+            <div class="input-group">
+                <input type="text" id="ip-input" value="192.168.4.1" placeholder="Enter FluidNC IP (e.g. 192.168.4.1)">
+                <button id="btn-ping">Ping</button>
+            </div>
+            <p style="font-size: 0.8rem; opacity: 0.7;">Using HTTP GET mode for cross-origin local files. Responses are blind.</p>
+        </div>
+
+        <!-- Terminal Console -->
+        <div class="panel">
+            <h2>Terminal Console</h2>
+            <div class="console-output" id="console"></div>
+        </div>
+
+        <!-- Synth Pad -->
+        <div class="panel">
+            <h2>Live Synth Pad</h2>
+            <div class="pad-grid">
+                <button class="synth-btn" data-f="400">Low <span>F400</span></button>
+                <button class="synth-btn" data-f="500">Mid 1 <span>F500</span></button>
+                <button class="synth-btn" data-f="600">Mid 2 <span>F600</span></button>
+                <button class="synth-btn" data-f="700">High 1 <span>F700</span></button>
+                <button class="synth-btn" data-f="800">High 2 <span>F800</span></button>
+                <button class="synth-btn" data-f="1000">Squeak <span>F1000</span></button>
+                <button class="synth-btn" data-f="1500">Scream <span>F1500</span></button>
+                <button class="synth-btn" data-f="2000">Piercing <span>F2000</span></button>
+            </div>
+        </div>
+
+        <!-- Sequence Player -->
+        <div class="panel">
+            <h2>Sequence Player</h2>
+            <textarea id="sequence-input" placeholder="Paste G-code here...">
+G1 Z3.2 F672
+G1 Z4.8 F400
+G1 Z3.7 F756
+G1 Z4.3 F533
+G1 Z3.1 F800
+G1 Z4.9 F450</textarea>
+            <button id="btn-play" style="width: 100%;">Play Sequence</button>
+            <button id="btn-stop" style="width: 100%; margin-top: 10px; border-color: var(--accent-pink); color: var(--accent-pink);">Stop</button>
+        </div>
+
+    </div>
+
+    <script>
+        const consoleEl = document.getElementById('console');
+        const ipInput = document.getElementById('ip-input');
+        let isPlaying = false;
+
+        function log(msg, type = 'info') {
+            const line = document.createElement('div');
+            line.className = type;
+            line.textContent = `> ${msg}`;
+            consoleEl.appendChild(line);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        async function sendCommand(cmd) {
+            const ip = ipInput.value.trim();
+            if (!ip) {
+                log('Error: No IP address set.', 'error');
+                return;
+            }
+
+            const url = `http://${ip}/command?cmd=${encodeURIComponent(cmd + '\n')}`;
+            try {
+                // Using no-cors because we are running from a local file:// and FluidNC might not send CORS headers
+                await fetch(url, { method: 'GET', mode: 'no-cors', cache: 'no-store' });
+                log(cmd, 'sent');
+            } catch (e) {
+                log(`Failed to fetch: ${e.message}`, 'error');
+            }
+        }
+
+        // Live Pad
+        document.querySelectorAll('.synth-btn').forEach(btn => {
+            btn.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                e.target.setPointerCapture(e.pointerId);
+                const f = e.target.getAttribute('data-f');
+                // Send a quick relative Z shake
+                const gcode = `G91\nG1 Z0.5 F${f}\nG1 Z-0.5 F${f}\nG90`;
+                const commands = gcode.split('\n');
+                commands.forEach(c => sendCommand(c));
+            });
+        });
+
+        // Sequence Player
+        document.getElementById('btn-play').addEventListener('click', async () => {
+            if (isPlaying) return;
+            const text = document.getElementById('sequence-input').value;
+            const lines = text.split('\n')
+                              .map(l => l.trim())
+                              .filter(l => l && !l.startsWith(';'));
+            
+            if (lines.length === 0) return;
+
+            isPlaying = true;
+            log('Starting sequence...', 'info');
+
+            for (let i = 0; i < lines.length; i++) {
+                if (!isPlaying) {
+                    log('Sequence stopped.', 'error');
+                    break;
+                }
+                await sendCommand(lines[i]);
+                // Basic throttle to avoid overloading ESP32 buffer
+                await new Promise(r => setTimeout(r, 200)); 
+            }
+            
+            isPlaying = false;
+            log('Sequence complete.', 'info');
+        });
+
+        document.getElementById('btn-stop').addEventListener('click', () => {
+            isPlaying = false;
+            // Send feed hold to stop motion immediately
+            sendCommand('!');
+            log('Sent Feed Hold (!)', 'error');
+        });
+
+        // Ping test (just sends ?, which is status request, to see if it throws network error)
+        document.getElementById('btn-ping').addEventListener('click', async () => {
+            log('Pinging controller...', 'info');
+            await sendCommand('?');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brushograph 3-Axis Sequencer</title>
+    <style>
+        :root {
+            --bg-color: #0d0d12;
+            --panel-bg: #1a1a24;
+            --text-color: #e0e0e0;
+            --accent-pink: #FF007F;
+            --accent-green: #39FF14;
+            --accent-blue: #00f3ff;
+            --font-main: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--accent-pink);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .top-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+        }
+
+        .panel h2 {
+            color: var(--accent-green);
+            margin-top: 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        /* Inputs & Buttons */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            background-color: #000;
+            border: 1px solid #555;
+            color: var(--accent-green);
+            padding: 10px;
+            font-family: var(--font-main);
+            flex-grow: 1;
+            border-radius: 4px;
+        }
+
+        input[type="range"] {
+            flex-grow: 1;
+            accent-color: var(--accent-pink);
+        }
+
+        button {
+            background-color: transparent;
+            border: 2px solid var(--accent-pink);
+            color: var(--accent-pink);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-pink);
+            color: #000;
+            box-shadow: 0 0 10px var(--accent-pink);
+        }
+        
+        button.active {
+            background-color: var(--accent-green);
+            border-color: var(--accent-green);
+            color: #000;
+            box-shadow: 0 0 10px var(--accent-green);
+        }
+
+        /* Sequencer Grid */
+        .seq-wrapper {
+            overflow-x: auto;
+        }
+
+        .seq-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(16, minmax(40px, 1fr));
+            gap: 5px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .seq-label {
+            font-weight: bold;
+            color: var(--accent-blue);
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .seq-header {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #777;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #333;
+        }
+
+        .seq-step {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40px;
+            background-color: #000;
+            border: 1px solid #333;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .seq-step.active-x { background-color: rgba(255, 0, 127, 0.4); border-color: var(--accent-pink); }
+        .seq-step.active-y { background-color: rgba(0, 243, 255, 0.4); border-color: var(--accent-blue); }
+        .seq-step.active-z { background-color: rgba(57, 255, 20, 0.4); border-color: var(--accent-green); }
+
+        .seq-step:hover {
+            border-color: #fff;
+        }
+
+        .seq-col-active {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Pitch Track */
+        .pitch-input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #555;
+            color: #fff;
+            text-align: center;
+            font-family: var(--font-main);
+            font-size: 0.75rem;
+            padding: 5px 0;
+            border-radius: 4px;
+        }
+        .pitch-input:focus {
+            outline: none;
+            border-color: var(--accent-green);
+        }
+
+        /* Console */
+        .console-output {
+            background-color: #000;
+            border: 1px solid #333;
+            height: 150px;
+            overflow-y: auto;
+            padding: 10px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .console-output .sent { color: var(--accent-green); }
+        .console-output .error { color: var(--accent-pink); }
+        .console-output .info { color: var(--accent-blue); }
+
+    </style>
+</head>
+<body>
+
+    <h1>Brushograph 3-Axis Sequencer</h1>
+
+    <div class="container">
+        
+        <div class="top-row">
+            <!-- Connection Config -->
+            <div class="panel">
+                <h2>Connection</h2>
+                <div class="input-group">
+                    <input type="text" id="ip-input" value="192.168.4.1" placeholder="Enter FluidNC IP (e.g. 192.168.4.1)">
+                    <button id="btn-ping">Ping</button>
+                </div>
+                <p style="font-size: 0.8rem; opacity: 0.7;">Using HTTP GET mode for cross-origin local files.</p>
+            </div>
+
+            <!-- Terminal Console -->
+            <div class="panel">
+                <h2>Terminal Console</h2>
+                <div class="console-output" id="console"></div>
+            </div>
+        </div>
+
+        <!-- Sequencer Panel -->
+        <div class="panel">
+            <h2>Sequencer</h2>
+            
+            <div class="input-group">
+                <button id="btn-play">Play</button>
+                <button id="btn-stop" style="border-color: var(--accent-pink); color: var(--accent-pink);">Stop</button>
+                
+                <span style="margin-left: 20px; color: var(--accent-blue);">Step Delay: <span id="delay-val">400</span>ms</span>
+                <input type="range" id="delay-slider" min="100" max="1000" value="400" step="50">
+            </div>
+
+            <div class="seq-wrapper">
+                <!-- Header -->
+                <div class="seq-grid" id="seq-headers">
+                    <div class="seq-label"></div>
+                    <!-- 16 steps generated by JS -->
+                </div>
+
+                <!-- X Axis -->
+                <div class="seq-grid" id="seq-x">
+                    <div class="seq-label">X Axis</div>
+                </div>
+
+                <!-- Y Axis -->
+                <div class="seq-grid" id="seq-y">
+                    <div class="seq-label">Y Axis</div>
+                </div>
+
+                <!-- Z Axis -->
+                <div class="seq-grid" id="seq-z">
+                    <div class="seq-label">Z Axis</div>
+                </div>
+
+                <!-- Pitch Track -->
+                <div class="seq-grid" id="seq-pitch" style="margin-top: 15px;">
+                    <div class="seq-label">Pitch (F)</div>
+                </div>
+            </div>
+            <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 15px;">Note: Motors triggered on the same step share the single Feedrate (Pitch) specified for that step.</p>
+        </div>
+
+    </div>
+
+    <script>
+        const consoleEl = document.getElementById('console');
+        const ipInput = document.getElementById('ip-input');
+        const delaySlider = document.getElementById('delay-slider');
+        const delayVal = document.getElementById('delay-val');
+        
+        let isPlaying = false;
+        let currentStep = -1;
+        let playTimeout = null;
+
+        // --- Logging & Comms ---
+        function log(msg, type = 'info') {
+            const line = document.createElement('div');
+            line.className = type;
+            line.textContent = `> ${msg}`;
+            consoleEl.appendChild(line);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        async function sendCommand(cmd) {
+            const ip = ipInput.value.trim();
+            if (!ip) return;
+            const url = `http://${ip}/command?cmd=${encodeURIComponent(cmd + '\n')}`;
+            try {
+                await fetch(url, { method: 'GET', mode: 'no-cors', cache: 'no-store' });
+                log(cmd, 'sent');
+            } catch (e) {
+                log(`Failed: ${e.message}`, 'error');
+            }
+        }
+
+        // --- Sequencer UI Generation ---
+        const numSteps = 16;
+        const axes = ['x', 'y', 'z'];
+        
+        // Generate Headers
+        const headerGrid = document.getElementById('seq-headers');
+        for (let i = 0; i < numSteps; i++) {
+            const div = document.createElement('div');
+            div.className = 'seq-header';
+            div.textContent = i + 1;
+            div.id = `header-${i}`;
+            headerGrid.appendChild(div);
+        }
+
+        // Generate Axis Rows
+        axes.forEach(axis => {
+            const grid = document.getElementById(`seq-${axis}`);
+            for (let i = 0; i < numSteps; i++) {
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'seq-step';
+                stepDiv.id = `step-${axis}-${i}`;
+                stepDiv.dataset.axis = axis;
+                stepDiv.dataset.index = i;
+                stepDiv.dataset.active = "false";
+                
+                stepDiv.addEventListener('click', () => {
+                    const isActive = stepDiv.dataset.active === "true";
+                    stepDiv.dataset.active = !isActive;
+                    stepDiv.classList.toggle(`active-${axis}`);
+                });
+                
+                grid.appendChild(stepDiv);
+            }
+        });
+
+        // Generate Pitch Row
+        const pitchGrid = document.getElementById('seq-pitch');
+        for (let i = 0; i < numSteps; i++) {
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.className = 'pitch-input';
+            input.value = 600; // default F value
+            input.min = 100;
+            input.max = 3000;
+            input.id = `pitch-${i}`;
+            pitchGrid.appendChild(input);
+        }
+
+        // --- Playback Logic ---
+        delaySlider.addEventListener('input', (e) => {
+            delayVal.textContent = e.target.value;
+        });
+
+        async function executeStep(stepIndex) {
+            // Highlight column
+            document.querySelectorAll('.seq-col-active').forEach(el => el.classList.remove('seq-col-active'));
+            document.getElementById(`header-${stepIndex}`).classList.add('seq-col-active');
+            axes.forEach(axis => document.getElementById(`step-${axis}-${stepIndex}`).classList.add('seq-col-active'));
+            document.getElementById(`pitch-${stepIndex}`).classList.add('seq-col-active');
+
+            // Gather active axes
+            let activeAxes = [];
+            axes.forEach(axis => {
+                const el = document.getElementById(`step-${axis}-${stepIndex}`);
+                if (el.dataset.active === "true") activeAxes.push(axis.toUpperCase());
+            });
+
+            if (activeAxes.length > 0) {
+                const pitch = document.getElementById(`pitch-${stepIndex}`).value;
+                const moveDist = '0.5';
+                
+                const forwardMove = activeAxes.map(a => `${a}${moveDist}`).join(' ');
+                const backwardMove = activeAxes.map(a => `${a}-${moveDist}`).join(' ');
+                
+                // Assemble Multi-axis G-Code Shake
+                const gcode = `G91\nG1 ${forwardMove} F${pitch}\nG1 ${backwardMove} F${pitch}\nG90`;
+                
+                const commands = gcode.split('\n');
+                for (let c of commands) {
+                    await sendCommand(c);
+                    // Tiny delay between command injections for stability
+                    await new Promise(r => setTimeout(r, 20)); 
+                }
+            }
+        }
+
+        async function loop() {
+            if (!isPlaying) return;
+            
+            currentStep = (currentStep + 1) % numSteps;
+            await executeStep(currentStep);
+            
+            const delayMs = parseInt(delaySlider.value);
+            playTimeout = setTimeout(loop, delayMs);
+        }
+
+        document.getElementById('btn-play').addEventListener('click', () => {
+            if (isPlaying) return;
+            isPlaying = true;
+            document.getElementById('btn-play').classList.add('active');
+            log('Sequencer Started', 'info');
+            loop();
+        });
+
+        document.getElementById('btn-stop').addEventListener('click', () => {
+            isPlaying = false;
+            clearTimeout(playTimeout);
+            currentStep = -1;
+            document.getElementById('btn-play').classList.remove('active');
+            document.querySelectorAll('.seq-col-active').forEach(el => el.classList.remove('seq-col-active'));
+            
+            sendCommand('!');
+            log('Sent Feed Hold (!)', 'error');
+        });
+
+        document.getElementById('btn-ping').addEventListener('click', async () => {
+            log('Pinging controller...', 'info');
+            await sendCommand('?');
+        });
+
+    </script>
+</body>
+</html>

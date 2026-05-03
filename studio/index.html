@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenBrushograph Studio Index</title>
+    <style>
+        :root {
+            /* Light Mode Default */
+            --bg-color: #f8f9fa;
+            --panel-bg: #ffffff;
+            --text-color: #212529;
+            --text-muted: #6c757d;
+            --border: #dee2e6;
+            --accent-pink: #e83e8c;
+            --accent-green: #28a745;
+            --accent-blue: #007bff;
+            --accent-yellow: #ffc107;
+            --accent-orange: #fd7e14;
+            --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            --font-main: 'Courier New', Courier, monospace;
+        }
+
+        body.theme-tropical {
+            /* Deep Jungle Dark */
+            --bg-color: #051a05; 
+            --panel-bg: #0a220a; 
+            --text-color: #e0ffe0; 
+            --text-muted: #5ccc5c; 
+            --border: #2e8b57; 
+            --accent-pink: #ff00ff; 
+            --accent-green: #39FF14;
+            --accent-blue: #00f3ff;
+            --accent-yellow: #ffea00;
+            --accent-orange: #ff8800;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--accent-pink);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        body.theme-tropical h1 {
+            text-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+        }
+
+        .subtitle {
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent-green);
+            border-radius: 6px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .panel-content {
+            flex: 1;
+        }
+
+        .panel-thumb {
+            width: 220px;
+            height: 150px;
+            object-fit: contain;
+            object-position: center;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            opacity: 0.85;
+            transition: all 0.2s;
+            background-color: var(--bg-color);
+        }
+
+        .panel:hover .panel-thumb {
+            opacity: 1;
+            border-color: var(--accent-pink) !important;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border-left-color: var(--accent-pink) !important;
+        }
+        
+        body.theme-tropical .panel:hover {
+            box-shadow: 0 8px 25px rgba(57, 255, 20, 0.2);
+        }
+
+        .panel h2 {
+            color: var(--accent-yellow);
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .tag {
+            background-color: rgba(0, 243, 255, 0.1);
+            color: var(--accent-blue);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            border: 1px solid var(--accent-blue);
+        }
+
+        .intro-text {
+            background: var(--panel-bg);
+            border: 1px dashed var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        body.theme-tropical .intro-text {
+            background: rgba(46, 139, 87, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 10px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            gap: 5px;
+        }
+
+        .theme-btn {
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            background: var(--panel-bg);
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent-pink);
+        }
+
+    </style>
+</head>
+<body class="theme-tropical">
+
+    <div class="header-container">
+        <img src="../img/logo.png" alt="Brushograph Logo" style="height: 50px; opacity: 0.9; filter: drop-shadow(0 0 5px rgba(255,0,127,0.5));">
+        <h1>Brushograph Studio</h1>
+        <div class="theme-toggle">
+            <button class="theme-btn" onclick="setTheme('light')" title="Light Mode">☀️</button>
+            <button class="theme-btn" onclick="setTheme('tropical')" title="Tropical Mode" style="color:var(--accent-pink);">🌴</button>
+        </div>
+    </div>
+    
+    <div class="subtitle">Mechatronic Web Interfaces & Sonic Experiments</div>
+
+    <div class="container">
+        
+        <div class="intro-text">
+            <strong>About this Experiment:</strong><br><br>
+            This directory hosts a collection of single-file, portable web interfaces designed to interact with a FluidNC-driven Brushograph. By injecting "blind" G-code over local HTTP, these interfaces turn the machine's stepper motors into dynamic sound generators and interactive drawing tools. Built with a unified <em>Cyber-Tropical</em> aesthetic, these tools evolved sequentially from a simple sequencer to a full generative studio.
+        </div>
+
+        <a href="brushograph_synth_first.html" class="panel" style="border-left-color: var(--text-muted);">
+            <img src="thumb_phase0.png" class="panel-thumb" style="border-color: var(--text-muted);" alt="Phase 0 Thumbnail">
+            <div class="panel-content">
+                <h2 style="color: var(--text-muted);">Phase 0: Initial Prototype <span class="tag" style="border-color: var(--text-muted); color: var(--text-muted); background: rgba(92,204,92,0.1);">HTML/JS</span></h2>
+                <p>The very first experimental version of the interface. This prototype laid the groundwork for HTTP command injection and basic mechatronic control before the UI evolved into a multi-track sequencer.</p>
+            </div>
+        </a>
+
+        <a href="brushograph_synth.html" class="panel" style="border-left-color: var(--accent-green);">
+            <img src="thumb_phase1.png" class="panel-thumb" style="border-color: var(--accent-green);" alt="Phase 1 Thumbnail">
+            <div class="panel-content">
+                <h2 style="color: var(--accent-green);">Phase 1: Synth Sequencer <span class="tag" style="border-color: var(--accent-green); color: var(--accent-green); background: rgba(57,255,20,0.1);">HTML/JS</span></h2>
+                <p>A 16-step grid sequencer with separate tracks for the X, Y, and Z motors. Generates rhythmic motor vibrations by translating active steps into microscopic reciprocating G-code moves. Features play/stop controls and playback speed adjustments.</p>
+            </div>
+        </a>
+
+        <a href="brushograph_drone.html" class="panel" style="border-left-color: var(--accent-yellow);">
+            <img src="thumb_phase2.png" class="panel-thumb" style="border-color: var(--accent-yellow);" alt="Phase 2 Thumbnail">
+            <div class="panel-content">
+                <h2 style="color: var(--accent-yellow);">Phase 2: Drone & Draw <span class="tag" style="border-color: var(--accent-yellow); color: var(--accent-yellow); background: rgba(255,234,0,0.1);">HTML/JS</span></h2>
+                <p>Introduces continuous recursive "Drone Tracks" with real-time pitch (Feedrate) sliders to generate continuous tones. Also features an interactive HTML Canvas representing the physical workspace for click-to-move spatial navigation.</p>
+            </div>
+        </a>
+
+        <a href="brushograph_studio.html" class="panel" style="border-left-color: var(--accent-orange);">
+            <img src="thumb_phase3.png" class="panel-thumb" style="border-color: var(--accent-orange);" alt="Phase 3 Thumbnail">
+            <div class="panel-content">
+                <h2 style="color: var(--accent-orange);">Phase 3: The Ultimate Studio <span class="tag" style="border-color: var(--accent-orange); color: var(--accent-orange); background: rgba(255,136,0,0.1);">HTML/JS</span></h2>
+                <p>The master dashboard combining the Sequencer and Drone Engines into a unified 3-column layout. Features an upgraded Drawing Pad that records your mouse strokes and physically plays them back on the Brushograph with automated Z-axis pen lifting.</p>
+            </div>
+        </a>
+
+        <div class="subtitle" style="margin-top: 30px; margin-bottom: 20px; color: var(--accent-pink);">Current Development</div>
+
+        <a href="brushograph_ultimate_platinum.html" class="panel" style="border-left-color: var(--accent-pink);">
+            <img src="thumb_platinum.png" class="panel-thumb" style="border-color: var(--accent-pink);" alt="Ultimate Platinum Thumbnail">
+            <div class="panel-content">
+                <h2 style="color: var(--accent-pink);">Phase 4: Brushograph Studio - Ultimate Platinum <span class="tag" style="border-color: var(--accent-pink); color: var(--accent-pink); background: rgba(255,0,127,0.1);">HTML/JS</span></h2>
+                <p>The latest iteration currently under development. Building upon the 3-column studio layout, this interface serves as the testbed for advanced color-theming logic and the next evolution of generative mechatronic features.</p>
+            </div>
+        </a>
+
+        <div class="subtitle" style="margin-top: 30px; margin-bottom: 20px; color: var(--text-muted);">Documentation</div>
+
+        <a href="conversation_summary.md" class="panel" style="border-left-color: var(--accent-blue); display: block;">
+            <h2 style="color: var(--accent-blue);">Development Log <span class="tag" style="border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(0,243,255,0.1);">Markdown</span></h2>
+            <p>A chronological summary of the AI-assisted development process, tracking the exact prompts and technical implementation details that built these interfaces.</p>
+        </a>
+
+        <div class="intro-text" style="margin-top: 20px; margin-bottom: 0; font-size: 0.9rem;">
+            <strong style="color: var(--accent-blue);">AI Development Context:</strong><br>
+            These mechatronic web tools were rapidly prototyped and developed through an agentic pair-programming session using the <strong>Antigravity IDE</strong>. The workflow utilized Google DeepMind's advanced <strong>Gemini models</strong> (acting autonomously to write, refactor, and debug the HTML/JS logic) combined with the OpenBrushograph Knowledge Base to ensure stateless HTTP G-code injection compatibility. While exact API token usage isn't precisely logged in the UI, a deep-context session like this—involving multi-file generation, architectural planning, and active debugging—typically leverages tens of thousands of contextual tokens to maintain perfect consistency across the project's codebase.
+        </div>
+
+    </div>
+
+    <script>
+        function setTheme(mode) {
+            if (mode === 'tropical') {
+                document.body.classList.add('theme-tropical');
+            } else {
+                document.body.classList.remove('theme-tropical');
+            }
+        }
+    </script>
+</body>
+</html>
