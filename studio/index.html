@@ -5,20 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenBrushograph Studio Index</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Bungee&display=swap');
+
         :root {
-            /* Light Mode Default */
-            --bg-color: #f8f9fa;
+            /* Arai-eek Light Mode */
+            --bg-color: #ffffff;
             --panel-bg: #ffffff;
-            --text-color: #212529;
-            --text-muted: #6c757d;
-            --border: #dee2e6;
-            --accent-pink: #e83e8c;
-            --accent-green: #28a745;
-            --accent-blue: #007bff;
-            --accent-yellow: #ffc107;
-            --accent-orange: #fd7e14;
-            --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            --font-main: 'Courier New', Courier, monospace;
+            --text-color: #2e3192;
+            --text-muted: #2e3192;
+            --border: #2e3192;
+            --accent-pink: #ed1b24; /* Red */
+            --accent-green: #2e3192; /* Navy */
+            --accent-blue: #2e3192; /* Navy */
+            --accent-yellow: #ed1b24; /* Red */
+            --accent-orange: #ed1b24; /* Red */
+            --shadow: 4px 4px 0 #2e3192;
+            --shadow-hover: 6px 6px 0 #ed1b24;
+            --font-main: 'Space Mono', monospace;
+            --font-head: 'Archivo Black', sans-serif;
+            --font-title: 'Bungee', sans-serif;
+            --panel-border: 3px solid var(--border);
+            --border-radius: 0px;
         }
 
         body.theme-tropical {
@@ -34,12 +41,19 @@
             --accent-yellow: #ffea00;
             --accent-orange: #ff8800;
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 0 10px var(--accent-pink);
+            --font-main: 'Courier New', Courier, monospace;
+            --font-head: 'Courier New', Courier, monospace;
+            --font-title: 'Courier New', Courier, monospace;
+            --panel-border: var(--panel-border);
+            --border-radius: var(--border-radius);
         }
 
         body {
+            font-family: var(--font-main);
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: var(--font-main);
+            
             margin: 0;
             padding: 40px 20px;
             display: flex;
@@ -48,6 +62,7 @@
         }
 
         h1 {
+            font-family: var(--font-title);
             color: var(--accent-pink);
             text-transform: uppercase;
             letter-spacing: 4px;
@@ -55,8 +70,19 @@
             text-align: center;
         }
 
+        h1 {
+            color: var(--accent-pink);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            width: 100%;
+            font-family: var(--font-title);
+            transform: skew(-2deg);
+        }
+
         body.theme-tropical h1 {
-            text-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+            transform: none;
         }
 
         .subtitle {
@@ -82,7 +108,7 @@
             border-left: 4px solid var(--accent-green);
             border-radius: 6px;
             padding: 25px;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow); font-family: var(--font-main);
             transition: transform 0.2s, box-shadow 0.2s;
             text-decoration: none;
             display: flex;
@@ -122,6 +148,7 @@
         }
 
         .panel h2 {
+            font-family: var(--font-head);
             color: var(--accent-yellow);
             margin-top: 0;
             margin-bottom: 10px;
@@ -139,6 +166,7 @@
         }
 
         .tag {
+            font-family: var(--font-main);
             background-color: rgba(0, 243, 255, 0.1);
             color: var(--accent-blue);
             padding: 4px 8px;
@@ -190,12 +218,18 @@
             border-color: var(--accent-pink);
         }
 
-    </style>
+    
+        .logo-img { height: 50px; border: none; }
+        body.theme-tropical .logo-img { filter: drop-shadow(0 0 5px rgba(255,0,127,0.5)); }
+        body:not(.theme-tropical) .logo-img { box-shadow: 4px 4px 0 var(--border); transform: rotate(-3deg); border: 2px solid var(--border); background: #fff; padding: 4px; border-radius: 4px; height: 40px;}
+\n    </style>
 </head>
 <body class="theme-tropical">
 
     <div class="header-container">
-        <img src="../img/logo.png" alt="Brushograph Logo" style="height: 50px; opacity: 0.9; filter: drop-shadow(0 0 5px rgba(255,0,127,0.5));">
+        <a href="https://openbrushograph.github.io/" target="_blank">
+            <img src="../img/logo.png" alt="Logo" class="logo-img" id="dynamic-logo">
+        </a>
         <h1>Brushograph Studio</h1>
         <div class="theme-toggle">
             <button class="theme-btn" onclick="setTheme('light')" title="Light Mode">☀️</button>
@@ -211,6 +245,18 @@
             <strong>About this Experiment:</strong><br><br>
             This directory hosts a collection of single-file, portable web interfaces designed to interact with a FluidNC-driven Brushograph. By injecting "blind" G-code over local HTTP, these interfaces turn the machine's stepper motors into dynamic sound generators and interactive drawing tools. Built with a unified <em>Cyber-Tropical</em> aesthetic, these tools evolved sequentially from a simple sequencer to a full generative studio.
         </div>
+
+        <div class="subtitle" style="margin-top: 10px; margin-bottom: 20px; color: var(--accent-pink);">Current Development</div>
+
+        <a href="brushograph_ultimate_platinum.html" class="panel" style="border-left-color: var(--accent-pink);">
+            <img src="thumb_platinum.png" class="panel-thumb" style="border-color: var(--accent-pink);" alt="Ultimate Platinum Thumbnail">
+            <div class="panel-content">
+                <h2 style="color: var(--accent-pink);">Phase 4: Brushograph Studio - Ultimate Platinum <span class="tag" style="border-color: var(--accent-pink); color: var(--accent-pink); background: rgba(255,0,127,0.1);">HTML/JS</span></h2>
+                <p>The latest iteration currently under development. Building upon the 3-column studio layout, this interface serves as the testbed for advanced color-theming logic and the next evolution of generative mechatronic features.</p>
+            </div>
+        </a>
+
+        <div class="subtitle" style="margin-top: 30px; margin-bottom: 20px; color: var(--text-muted);">Earlier Prototypes</div>
 
         <a href="brushograph_synth_first.html" class="panel" style="border-left-color: var(--text-muted);">
             <img src="thumb_phase0.png" class="panel-thumb" style="border-color: var(--text-muted);" alt="Phase 0 Thumbnail">
@@ -244,16 +290,6 @@
             </div>
         </a>
 
-        <div class="subtitle" style="margin-top: 30px; margin-bottom: 20px; color: var(--accent-pink);">Current Development</div>
-
-        <a href="brushograph_ultimate_platinum.html" class="panel" style="border-left-color: var(--accent-pink);">
-            <img src="thumb_platinum.png" class="panel-thumb" style="border-color: var(--accent-pink);" alt="Ultimate Platinum Thumbnail">
-            <div class="panel-content">
-                <h2 style="color: var(--accent-pink);">Phase 4: Brushograph Studio - Ultimate Platinum <span class="tag" style="border-color: var(--accent-pink); color: var(--accent-pink); background: rgba(255,0,127,0.1);">HTML/JS</span></h2>
-                <p>The latest iteration currently under development. Building upon the 3-column studio layout, this interface serves as the testbed for advanced color-theming logic and the next evolution of generative mechatronic features.</p>
-            </div>
-        </a>
-
         <div class="subtitle" style="margin-top: 30px; margin-bottom: 20px; color: var(--text-muted);">Documentation</div>
 
         <a href="conversation_summary.md" class="panel" style="border-left-color: var(--accent-blue); display: block;">
@@ -272,8 +308,10 @@
         function setTheme(mode) {
             if (mode === 'tropical') {
                 document.body.classList.add('theme-tropical');
+                document.getElementById('dynamic-logo').src = '../img/logo.png';
             } else {
                 document.body.classList.remove('theme-tropical');
+                document.getElementById('dynamic-logo').src = '../img/arai-icon.svg';
             }
         }
     </script>
