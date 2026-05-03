@@ -394,7 +394,11 @@
                 
                 <button id="btn-home" style="width: 100%; margin-top: 10px; background: var(--accent-blue); color: #000; border: none; font-weight: bold; padding: 10px; cursor: pointer; text-transform: uppercase;">Initialize & Home Robot</button>
                 <button id="btn-force-wash" style="width: 100%; margin-top: 10px; background: #888; color: #fff; border: none; font-weight: bold; padding: 10px; cursor: pointer; text-transform: uppercase;">Manual Wash Sequence</button>
-                <button id="btn-panic" style="width: 100%; margin-top: 10px;">Emergency Stop All (!)</button>
+                <button id="btn-panic" style="width: 100%; margin-top: 10px;">Emergency Stop (!)</button>
+                <div style="display:flex; gap:5px; margin-top: 5px;">
+                    <button id="btn-resume" style="flex:1; border-color: var(--accent-green); color: var(--accent-green);">Resume (~)</button>
+                    <button id="btn-flush" style="flex:1; border-color: var(--accent-pink); color: var(--accent-pink);">Flush / Reset</button>
+                </div>
                 <div class="console-output" id="console"></div>
             </div>
         </div>
@@ -407,6 +411,8 @@
                 <button id="draw-play" class="btn-green">Play Drawing</button>
                 <div style="display:flex; gap: 5px;">
                     <button id="draw-download" style="border-color: var(--accent-blue); color: var(--accent-blue);">Download G-Code</button>
+                    <input type="file" id="upload-gcode" accept=".gcode" style="display:none;">
+                    <button id="draw-upload" style="border-color: var(--accent-pink); color: var(--accent-pink);">Load G-Code</button>
                     <button id="draw-clear" style="border-color: #777; color: #777;">Clear</button>
                 </div>
             </div>
@@ -428,11 +434,26 @@
             </div>
 
             <h3 style="margin-top:20px; margin-bottom:10px; font-size:1rem; border-bottom:1px solid var(--border); padding-bottom:5px;">Color Palette</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                <button id="sel-c1" style="background:#ff00aa; color:white; border:none; padding:8px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s;">Pink (C1)</button>
-                <button id="sel-c2" style="background:#0066ff; color:white; border:none; padding:8px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s;">Blue (C2)</button>
-                <button id="sel-c3" style="background:#00c800; color:white; border:none; padding:8px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s;">Green (C3)</button>
-                <button id="sel-wash" style="background:#888; color:white; border:none; padding:8px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s;">Wash</button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 5px; margin-bottom: 10px;">
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                    <button id="sel-wash" style="background:#888888; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">Wash</button>
+                    <input type="color" id="picker-wash" value="#888888" style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
+                </div>
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                    <button id="sel-c1" style="background:#ff00aa; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">C1</button>
+                    <input type="color" id="picker-c1" value="#ff00aa" style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
+                </div>
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                    <button id="sel-c2" style="background:#0066ff; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">C2</button>
+                    <input type="color" id="picker-c2" value="#0066ff" style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
+                </div>
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                    <button id="sel-c3" style="background:#00c800; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">C3</button>
+                    <input type="color" id="picker-c3" value="#00c800" style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
+                </div>
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                    <button id="sel-dry" style="background:#cccccc; color:#333; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">Dry</button>
+                </div>
             </div>
         </div>
 
@@ -568,10 +589,11 @@
         let currentStroke = null;
 
         const POTS = {
-            'c1': { x: 45, y: 8, color: '#ff00aa', isWash: false },
-            'c2': { x: 90, y: 8, color: '#0066ff', isWash: false },
-            'c3': { x: 135, y: 8, color: '#00c800', isWash: false },
-            'wash': { x: 5, y: 5, color: '#888888', isWash: true }
+            'c1': { x: 45, y: 8, color: '#ff00aa', isWash: false, skipDip: false },
+            'c2': { x: 90, y: 8, color: '#0066ff', isWash: false, skipDip: false },
+            'c3': { x: 135, y: 8, color: '#00c800', isWash: false, skipDip: false },
+            'wash': { x: 5, y: 5, color: '#888888', isWash: true, skipDip: false },
+            'dry': { x: 0, y: 0, color: '#cccccc', isWash: false, skipDip: true }
         };
 
         let activeColor = POTS['c1'].color;
@@ -587,7 +609,7 @@
             }
             
             // Update UI buttons opacity
-            ['c1', 'c2', 'c3', 'wash'].forEach(pid => {
+            ['c1', 'c2', 'c3', 'wash', 'dry'].forEach(pid => {
                 const btn = document.getElementById(`sel-${pid}`);
                 if (btn) btn.style.opacity = (pid === activePotId) ? '1.0' : '0.5';
             });
@@ -601,6 +623,23 @@
         document.getElementById('sel-c2').onclick = () => setActivePot('c2');
         document.getElementById('sel-c3').onclick = () => setActivePot('c3');
         document.getElementById('sel-wash').onclick = () => setActivePot('wash');
+        document.getElementById('sel-dry').onclick = () => setActivePot('dry');
+
+        ['c1', 'c2', 'c3', 'wash'].forEach(id => {
+            document.getElementById(`picker-${id}`).oninput = (e) => {
+                const newColor = e.target.value;
+                POTS[id].color = newColor;
+                document.getElementById(`sel-${id}`).style.background = newColor;
+                if (activePotId === id) activeColor = newColor;
+                
+                // Update strokes that match this pot id
+                paths.forEach(stroke => {
+                    if (stroke.potId === id) stroke.color = newColor;
+                });
+                
+                redrawCanvas();
+            };
+        });
 
         document.getElementById('draw-speed').oninput = e => document.getElementById('draw-speed-val').textContent = e.target.value;
         document.getElementById('fast-speed').oninput = e => document.getElementById('fast-speed-val').textContent = e.target.value;
@@ -622,26 +661,28 @@
             ctx.setLineDash([]); // Reset to solid for drawing
             ctx.globalAlpha = 1.0;
 
-            // Draw Color Pots
+            // Draw Bottom Warning Area (20mm)
             const maxX = parseFloat(document.getElementById('max-x').value);
             const maxY = parseFloat(document.getElementById('max-y').value);
             
+            const warnHeight = (20 / maxY) * canvas.height;
+            ctx.fillStyle = isTropical ? 'rgba(255, 0, 100, 0.25)' : 'rgba(255, 0, 0, 0.25)';
+            ctx.fillRect(0, canvas.height - warnHeight, canvas.width, warnHeight);
+
+            // Draw Color Pots (Half circles at bottom)
             const drawPot = (id) => {
+                if (id === 'dry') return; // Don't draw dry pot physically
                 const pot = POTS[id];
                 if (!pot) return;
                 
                 const cx = (pot.x / maxX) * canvas.width;
-                const cy = canvas.height - ((pot.y / maxY) * canvas.height);
-                const r = pot.isWash ? 20 : 15;
+                const cy = canvas.height; // Sitting on the bottom
+                const r = (17.5 / maxX) * canvas.width; // 35mm diameter
                 
                 ctx.fillStyle = pot.color;
-                ctx.globalAlpha = 0.6;
+                ctx.globalAlpha = 0.8;
                 ctx.beginPath();
-                if (pot.isWash) {
-                    ctx.rect(cx - r, cy - r, r*2, r*2);
-                } else {
-                    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                }
+                ctx.arc(cx, cy, r, Math.PI, Math.PI * 2); // Half circle upwards
                 ctx.fill();
                 ctx.globalAlpha = 1.0;
                 
@@ -655,7 +696,7 @@
                 ctx.fillStyle = isTropical ? '#fff' : '#000';
                 ctx.font = '10px monospace';
                 ctx.textAlign = 'center';
-                ctx.fillText(id.toUpperCase(), cx, cy + (pot.isWash ? 30 : 25));
+                ctx.fillText(id.toUpperCase(), cx, cy - 5);
             };
 
             drawPot('c1');
@@ -707,10 +748,13 @@
             
             // Hit detection for virtual paint pots
             for (let id in POTS) {
+                if (id === 'dry') continue;
                 const pot = POTS[id];
                 const pcx = (pot.x / maxX) * canvas.width;
-                const pcy = canvas.height - ((pot.y / maxY) * canvas.height);
-                const radius = pot.isWash ? 20 : 15;
+                const pcy = canvas.height;
+                const radius = (17.5 / maxX) * canvas.width;
+                
+                // Check distance to center. Since it's a half-circle on the bottom, cy must be <= pcy is always true since pcy is canvas.height.
                 if (Math.hypot(cx - pcx, cy - pcy) <= radius) {
                     setActivePot(id);
                     return; // Abort drawing stroke
@@ -718,7 +762,8 @@
             }
 
             isDrawingMouse = true; 
-            const stroke = { color: activeColor, potId: activePotId, points: [] };
+            const currentFeedrate = document.getElementById('draw-speed').value;
+            const stroke = { color: activeColor, potId: activePotId, feedrate: currentFeedrate, points: [] };
             paths.push(stroke);
             currentStroke = stroke.points;
             addPoint(e); 
@@ -727,6 +772,72 @@
         window.onmouseup = () => { isDrawingMouse = false; };
 
         document.getElementById('draw-clear').onclick = () => { paths = []; redrawCanvas(); };
+
+        document.getElementById('draw-upload').onclick = () => document.getElementById('upload-gcode').click();
+        
+        document.getElementById('upload-gcode').onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const text = event.target.result;
+                const lines = text.split('\n');
+                
+                paths = [];
+                let currentPotId = null;
+                let currentStroke = null;
+                
+                const maxX = parseFloat(document.getElementById('max-x').value);
+                const maxY = parseFloat(document.getElementById('max-y').value);
+
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (line.startsWith('; --- Tool Change to')) {
+                        currentStroke = null;
+                        const match = line.match(/--- Tool Change to (.*) ---/);
+                        if (match) currentPotId = match[1].toLowerCase();
+                        // Dry is represented as (DRY) in the comment
+                        if (match && match[1].includes('(DRY)')) {
+                            currentPotId = 'dry';
+                        }
+                    } else if (line.startsWith('; Stroke')) {
+                        currentStroke = {
+                            color: currentPotId && POTS[currentPotId] ? POTS[currentPotId].color : '#39FF14',
+                            potId: currentPotId,
+                            feedrate: null,
+                            points: []
+                        };
+                        paths.push(currentStroke);
+                    } else if (line.startsWith('G1 X') || line.startsWith('G0 X')) {
+                        // Only add points if we are currently building a stroke
+                        // We skip the Safe Lift / Tool Change X/Y moves because those happen before the ; Stroke marker
+                        if (currentStroke) {
+                            const xMatch = line.match(/X([0-9.]+)/);
+                            const yMatch = line.match(/Y([0-9.]+)/);
+                            if (xMatch && yMatch) {
+                                const mx = parseFloat(xMatch[1]);
+                                const my = parseFloat(yMatch[1]);
+                                const cx = (mx / maxX) * canvas.width;
+                                const cy = canvas.height - ((my / maxY) * canvas.height);
+                                currentStroke.points.push({cx, cy, mx, my});
+                            }
+                            const fMatch = line.match(/F([0-9]+)/);
+                            if (fMatch && !currentStroke.feedrate) {
+                                currentStroke.feedrate = fMatch[1];
+                            }
+                        }
+                    } else if (line.startsWith('; End of drawing')) {
+                        currentStroke = null;
+                    }
+                });
+
+                redrawCanvas();
+                log('G-Code Loaded', 'info');
+                e.target.value = ''; 
+            };
+            reader.readAsText(file);
+        };
 
         document.getElementById('draw-download').onclick = () => {
             if(paths.length === 0) return;
@@ -750,12 +861,17 @@
 
                 // Check if color changed
                 if (stroke.potId && stroke.potId !== lastPotId) {
-                    gcode.push(`; --- Tool Change to ${stroke.potId.toUpperCase()} ---`);
-                    let macroSeq = [];
-                    if (stroke.potId === 'wash') macroSeq = getWashSequence(zUp, zDown, fastSpeed);
-                    else macroSeq = getDipSequence(stroke.potId, zUp, zDown, fastSpeed);
-                    gcode = gcode.concat(macroSeq);
-                    lastPotId = stroke.potId;
+                    if (POTS[stroke.potId] && POTS[stroke.potId].skipDip) {
+                        gcode.push(`; --- Tool Change to ${stroke.potId.toUpperCase()} (DRY) ---`);
+                        lastPotId = stroke.potId;
+                    } else {
+                        gcode.push(`; --- Tool Change to ${stroke.potId.toUpperCase()} ---`);
+                        let macroSeq = [];
+                        if (stroke.potId === 'wash') macroSeq = getWashSequence(zUp, zDown, fastSpeed);
+                        else macroSeq = getDipSequence(stroke.potId, zUp, zDown, fastSpeed);
+                        gcode = gcode.concat(macroSeq);
+                        lastPotId = stroke.potId;
+                    }
                 }
 
                 gcode.push(`; Stroke ${s+1}`);
@@ -763,7 +879,8 @@
                 gcode.push(`G1 Z${zDown} F${fastSpeed}`);
 
                 for(let i=1; i<stroke.points.length; i++) {
-                    gcode.push(`G1 X${stroke.points[i].mx.toFixed(3)} Y${stroke.points[i].my.toFixed(3)} F${speed}`);
+                    const strokeSpeed = stroke.feedrate || speed;
+                    gcode.push(`G1 X${stroke.points[i].mx.toFixed(3)} Y${stroke.points[i].my.toFixed(3)} F${strokeSpeed}`);
                 }
                 gcode.push(`G1 Z${zUp} F${fastSpeed}`);
             }
@@ -807,17 +924,22 @@
 
                 // Check if color changed and we need to dip
                 if (stroke.potId && stroke.potId !== lastPotId) {
-                    log(`Switching Color to ${stroke.potId.toUpperCase()}...`, 'info');
-                    let macroSeq = [];
-                    if (stroke.potId === 'wash') macroSeq = getWashSequence(zUp, zDown, fastSpeed);
-                    else macroSeq = getDipSequence(stroke.potId, zUp, zDown, fastSpeed);
-                    
-                    for (let cmd of macroSeq) {
-                        if(!isDrawing) break;
-                        await sendCommand(cmd);
-                        await new Promise(r => setTimeout(r, 100));
+                    if (POTS[stroke.potId] && POTS[stroke.potId].skipDip) {
+                        log(`Switching Tool to ${stroke.potId.toUpperCase()} (Dry)...`, 'info');
+                        lastPotId = stroke.potId;
+                    } else {
+                        log(`Switching Color to ${stroke.potId.toUpperCase()}...`, 'info');
+                        let macroSeq = [];
+                        if (stroke.potId === 'wash') macroSeq = getWashSequence(zUp, zDown, fastSpeed);
+                        else macroSeq = getDipSequence(stroke.potId, zUp, zDown, fastSpeed);
+                        
+                        for (let cmd of macroSeq) {
+                            if(!isDrawing) break;
+                            await sendCommand(cmd);
+                            await new Promise(r => setTimeout(r, 100));
+                        }
+                        lastPotId = stroke.potId;
                     }
-                    lastPotId = stroke.potId;
                 }
 
                 // Move to start of stroke
@@ -830,7 +952,8 @@
 
                 for(let i=1; i<stroke.points.length; i++) {
                     if(!isDrawing) break;
-                    await sendCommand(`G1 X${stroke.points[i].mx.toFixed(3)} Y${stroke.points[i].my.toFixed(3)} F${speed}`);
+                    const strokeSpeed = stroke.feedrate || speed;
+                    await sendCommand(`G1 X${stroke.points[i].mx.toFixed(3)} Y${stroke.points[i].my.toFixed(3)} F${strokeSpeed}`);
                     await new Promise(r => setTimeout(r, 100)); 
                 }
 
@@ -949,6 +1072,18 @@
             isDrawing = false; document.getElementById('draw-play').classList.remove('active');
             sendCommand('!');
             log('EMERGENCY STOP', 'error');
+        };
+
+        document.getElementById('btn-resume').onclick = async () => {
+            log('Resuming Job...', 'info');
+            await sendCommand('~'); // Cycle Start / Resume
+        };
+
+        document.getElementById('btn-flush').onclick = async () => {
+            log('Flushing Buffer / Soft Reset...', 'error');
+            await sendCommand(String.fromCharCode(0x18)); // Ctrl+X Soft Reset
+            await new Promise(r => setTimeout(r, 200));
+            await sendCommand('$X'); // Clear Alarm if any
         };
 
         document.getElementById('btn-ping').onclick = () => { log('Ping...', 'info'); sendCommand('?'); };
