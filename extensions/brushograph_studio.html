@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brushograph Studio</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0f;
+            --panel-bg: #14141e;
+            --text-color: #e0e0e0;
+            --accent-pink: #FF007F;
+            --accent-green: #39FF14;
+            --accent-blue: #00f3ff;
+            --accent-yellow: #ffea00;
+            --font-main: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--accent-pink);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .studio-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            max-width: 1600px;
+            width: 100%;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid #333;
+            border-top: 3px solid var(--accent-blue);
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .panel h2 {
+            color: var(--accent-green);
+            margin-top: 0;
+            border-bottom: 1px dashed #444;
+            padding-bottom: 10px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Forms & Buttons */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .input-group label {
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        input[type="text"], input[type="number"] {
+            background-color: #000;
+            border: 1px solid #555;
+            color: var(--accent-green);
+            padding: 8px;
+            font-family: var(--font-main);
+            border-radius: 4px;
+        }
+
+        input[type="range"] {
+            flex-grow: 1;
+            accent-color: var(--accent-pink);
+        }
+
+        button {
+            background-color: transparent;
+            border: 2px solid var(--accent-pink);
+            color: var(--accent-pink);
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        button:hover, button.active {
+            background-color: var(--accent-pink);
+            color: #000;
+            box-shadow: 0 0 10px var(--accent-pink);
+        }
+
+        button.btn-green { border-color: var(--accent-green); color: var(--accent-green); }
+        button.btn-green:hover, button.btn-green.active { background-color: var(--accent-green); color: #000; box-shadow: 0 0 10px var(--accent-green); }
+        
+        button.btn-blue { border-color: var(--accent-blue); color: var(--accent-blue); }
+        button.btn-blue:hover, button.btn-blue.active { background-color: var(--accent-blue); color: #000; box-shadow: 0 0 10px var(--accent-blue); }
+
+        /* Sequencer */
+        .seq-wrapper { overflow-x: auto; margin-top: 15px; }
+        .seq-grid {
+            display: grid;
+            grid-template-columns: 60px repeat(16, minmax(30px, 1fr));
+            gap: 3px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .seq-label { font-weight: bold; color: var(--accent-blue); text-align: right; padding-right: 5px; font-size: 0.8rem; }
+        .seq-header { text-align: center; font-size: 0.7rem; color: #777; padding-bottom: 3px; border-bottom: 1px solid #333; }
+        .seq-step {
+            height: 30px;
+            background-color: #000;
+            border: 1px solid #333;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .seq-step.active-x { background-color: rgba(255, 0, 127, 0.4); border-color: var(--accent-pink); }
+        .seq-step.active-y { background-color: rgba(0, 243, 255, 0.4); border-color: var(--accent-blue); }
+        .seq-step.active-z { background-color: rgba(57, 255, 20, 0.4); border-color: var(--accent-green); }
+        .seq-col-active { background-color: rgba(255, 255, 255, 0.1) !important; box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2); }
+        .pitch-input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #555;
+            color: #fff;
+            text-align: center;
+            font-family: var(--font-main);
+            font-size: 0.65rem;
+            padding: 3px 0;
+            border-radius: 2px;
+        }
+
+        /* Drone Tracks */
+        .drone-track {
+            background: #000;
+            border: 1px solid #333;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .drone-label { font-size: 1.2rem; font-weight: bold; color: var(--accent-yellow); width: 20px; }
+        .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 20px; }
+        .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 4px; bottom: 4px; background-color: #aaa; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent-yellow); }
+        input:checked + .slider:before { transform: translateX(20px); background-color: #000; }
+        .pitch-val { width: 50px; text-align: right; font-size: 0.8rem; color: var(--accent-yellow); }
+
+        /* Drawing Pad */
+        .canvas-container { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        #xy-pad {
+            background: #000;
+            border: 1px solid var(--accent-green);
+            border-radius: 4px;
+            cursor: crosshair;
+            box-shadow: inset 0 0 20px rgba(57, 255, 20, 0.05);
+            touch-action: none;
+        }
+
+        /* Console */
+        .console-output {
+            background-color: #000;
+            border: 1px solid #333;
+            height: 100px;
+            overflow-y: auto;
+            padding: 10px;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 15px;
+        }
+        .console-output .sent { color: var(--accent-green); }
+        .console-output .error { color: var(--accent-pink); }
+        .console-output .info { color: var(--accent-blue); }
+
+        @media (max-width: 1200px) {
+            .studio-layout { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 800px) {
+            .studio-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Brushograph Studio</h1>
+
+    <div class="studio-layout">
+        
+        <!-- COLUMN 1: SEQUENCER -->
+        <div class="panel">
+            <h2>1. Step Sequencer</h2>
+            
+            <div class="input-group">
+                <button id="seq-play" class="btn-blue">Play</button>
+                <button id="seq-stop" class="btn-pink">Stop</button>
+                <label>Delay (ms): <span id="seq-delay-val">250</span></label>
+                <input type="range" id="seq-delay" min="50" max="1000" value="250" step="10">
+            </div>
+
+            <div class="seq-wrapper">
+                <div class="seq-grid" id="seq-headers"><div class="seq-label"></div></div>
+                <div class="seq-grid" id="seq-x"><div class="seq-label">X Axis</div></div>
+                <div class="seq-grid" id="seq-y"><div class="seq-label">Y Axis</div></div>
+                <div class="seq-grid" id="seq-z"><div class="seq-label">Z Axis</div></div>
+                <div class="seq-grid" id="seq-pitch" style="margin-top: 10px;"><div class="seq-label">Pitch</div></div>
+            </div>
+        </div>
+
+        <!-- COLUMN 2: DRONES & CONFIG -->
+        <div class="panel">
+            <h2>2. Drone Engines</h2>
+            
+            <div class="drone-track">
+                <div class="drone-label">X</div>
+                <label class="switch"><input type="checkbox" id="drone-x-toggle"><span class="slider"></span></label>
+                <input type="range" id="drone-x-pitch" min="100" max="3000" value="600" step="50">
+                <div class="pitch-val" id="drone-x-val">F600</div>
+            </div>
+            <div class="drone-track">
+                <div class="drone-label">Y</div>
+                <label class="switch"><input type="checkbox" id="drone-y-toggle"><span class="slider"></span></label>
+                <input type="range" id="drone-y-pitch" min="100" max="3000" value="600" step="50">
+                <div class="pitch-val" id="drone-y-val">F600</div>
+            </div>
+            <div class="drone-track">
+                <div class="drone-label">Z</div>
+                <label class="switch"><input type="checkbox" id="drone-z-toggle"><span class="slider"></span></label>
+                <input type="range" id="drone-z-pitch" min="100" max="3000" value="600" step="50">
+                <div class="pitch-val" id="drone-z-val">F600</div>
+            </div>
+
+            <h2 style="margin-top: 30px;">Connection</h2>
+            <div class="input-group">
+                <input type="text" id="ip-input" value="192.168.4.1" placeholder="IP Address" style="flex-grow: 1;">
+                <button id="btn-ping" style="padding: 8px;">Ping</button>
+            </div>
+            <div class="input-group">
+                <label>Max X (mm):</label><input type="number" id="max-x" value="100" style="width:60px;">
+                <label>Max Y (mm):</label><input type="number" id="max-y" value="100" style="width:60px;">
+            </div>
+            
+            <button id="btn-panic" style="width: 100%; margin-top: 10px;">Emergency Stop All (!)</button>
+        </div>
+
+        <!-- COLUMN 3: DRAWING PAD -->
+        <div class="panel">
+            <h2>3. Drone & Draw Pad</h2>
+            
+            <div class="input-group" style="justify-content: space-between;">
+                <button id="draw-play" class="btn-green">Play Drawing</button>
+                <button id="draw-clear" style="border-color: #777; color: #777;">Clear</button>
+            </div>
+            <div class="input-group">
+                <label>Speed (F): <span id="draw-speed-val">1500</span></label>
+                <input type="range" id="draw-speed" min="100" max="5000" value="1500" step="100">
+            </div>
+            <div class="input-group">
+                <label>Z Up:</label><input type="number" id="z-up" value="4.8" step="0.1" style="width:55px;">
+                <label>Z Down:</label><input type="number" id="z-down" value="0" step="0.1" style="width:55px;">
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="xy-pad" width="400" height="400"></canvas>
+            </div>
+
+            <div class="console-output" id="console"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Globals & Comms ---
+        const consoleEl = document.getElementById('console');
+        const ipInput = document.getElementById('ip-input');
+        const moveDist = '0.5';
+
+        function log(msg, type = 'info') {
+            const line = document.createElement('div');
+            line.className = type;
+            line.textContent = `> ${msg}`;
+            consoleEl.appendChild(line);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        async function sendCommand(cmd) {
+            const ip = ipInput.value.trim();
+            if (!ip) return;
+            const url = `http://${ip}/command?cmd=${encodeURIComponent(cmd + '\n')}`;
+            try {
+                await fetch(url, { method: 'GET', mode: 'no-cors', cache: 'no-store' });
+                log(cmd, 'sent');
+            } catch (e) {
+                // Ignore silent errors for performance in console
+            }
+        }
+
+        // --- 1. Sequencer Logic ---
+        let seqPlaying = false;
+        let seqStep = -1;
+        let seqTimeout = null;
+        const numSteps = 16;
+        const axes = ['x', 'y', 'z'];
+
+        // Build Sequencer UI
+        for (let i = 0; i < numSteps; i++) {
+            let h = document.createElement('div'); h.className = 'seq-header'; h.textContent = i+1; h.id = `h-${i}`;
+            document.getElementById('seq-headers').appendChild(h);
+            
+            axes.forEach(a => {
+                let s = document.createElement('div'); s.className = 'seq-step'; s.id = `s-${a}-${i}`;
+                s.dataset.active = "false";
+                s.onclick = () => { s.dataset.active = s.dataset.active === "true" ? "false" : "true"; s.classList.toggle(`active-${a}`); };
+                document.getElementById(`seq-${a}`).appendChild(s);
+            });
+
+            let p = document.createElement('input'); p.type = 'number'; p.className = 'pitch-input'; p.value = 600; p.id = `p-${i}`;
+            document.getElementById('seq-pitch').appendChild(p);
+        }
+
+        document.getElementById('seq-delay').oninput = e => document.getElementById('seq-delay-val').textContent = e.target.value;
+
+        async function seqLoop() {
+            if (!seqPlaying) return;
+            seqStep = (seqStep + 1) % numSteps;
+            
+            document.querySelectorAll('.seq-col-active').forEach(e => e.classList.remove('seq-col-active'));
+            document.getElementById(`h-${seqStep}`).classList.add('seq-col-active');
+            axes.forEach(a => document.getElementById(`s-${a}-${seqStep}`).classList.add('seq-col-active'));
+
+            let active = axes.filter(a => document.getElementById(`s-${a}-${seqStep}`).dataset.active === "true");
+            if (active.length > 0) {
+                let pitch = document.getElementById(`p-${seqStep}`).value;
+                let fwd = active.map(a => `${a.toUpperCase()}${moveDist}`).join(' ');
+                let bwd = active.map(a => `${a.toUpperCase()}-${moveDist}`).join(' ');
+                let gcode = `G91\nG1 ${fwd} F${pitch}\nG1 ${bwd} F${pitch}\nG90`;
+                for (let c of gcode.split('\n')) await sendCommand(c);
+            }
+            seqTimeout = setTimeout(seqLoop, parseInt(document.getElementById('seq-delay').value));
+        }
+
+        document.getElementById('seq-play').onclick = () => { if(!seqPlaying) { seqPlaying=true; document.getElementById('seq-play').classList.add('active'); seqLoop(); }};
+        document.getElementById('seq-stop').onclick = () => { seqPlaying=false; clearTimeout(seqTimeout); document.getElementById('seq-play').classList.remove('active'); };
+
+        // --- 2. Drone Logic ---
+        let isDroning = false;
+        let isDrawing = false; // Pause drones while playing drawing
+
+        axes.forEach(a => {
+            document.getElementById(`drone-${a}-pitch`).oninput = e => document.getElementById(`drone-${a}-val`).textContent = `F${e.target.value}`;
+            document.getElementById(`drone-${a}-toggle`).onchange = () => {
+                if(axes.some(ax => document.getElementById(`drone-${ax}-toggle`).checked) && !isDroning && !isDrawing) {
+                    isDroning = true; droneLoop();
+                }
+            };
+        });
+
+        async function droneLoop() {
+            let active = axes.filter(a => document.getElementById(`drone-${a}-toggle`).checked);
+            if (!isDroning || isDrawing || active.length === 0) { isDroning = false; return; }
+
+            let cmds = ['G91'];
+            active.forEach(a => {
+                let p = document.getElementById(`drone-${a}-pitch`).value;
+                cmds.push(`G1 ${a.toUpperCase()}${moveDist} F${p}`, `G1 ${a.toUpperCase()}-${moveDist} F${p}`);
+            });
+            cmds.push('G90');
+            
+            await sendCommand(cmds.join('\n'));
+            setTimeout(droneLoop, 200); // 200ms rest to avoid crash
+        }
+
+        // --- 3. Drawing Pad ---
+        const canvas = document.getElementById('xy-pad');
+        const ctx = canvas.getContext('2d');
+        let isDrawingMouse = false;
+        let paths = []; // Array of strokes
+        let currentStroke = [];
+
+        document.getElementById('draw-speed').oninput = e => document.getElementById('draw-speed-val').textContent = e.target.value;
+
+        function redrawCanvas() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.strokeStyle = '#222'; ctx.lineWidth = 1;
+            for(let i=0; i<=canvas.width; i+=40) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,canvas.height); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(canvas.width,i); ctx.stroke(); }
+            
+            paths.forEach(stroke => {
+                if(stroke.length > 0) {
+                    ctx.strokeStyle = '#39FF14'; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+                    ctx.beginPath();
+                    ctx.moveTo(stroke[0].cx, stroke[0].cy);
+                    for(let i=1; i<stroke.length; i++) ctx.lineTo(stroke[i].cx, stroke[i].cy);
+                    ctx.stroke();
+                }
+            });
+        }
+        redrawCanvas();
+
+        function addPoint(e) {
+            const r = canvas.getBoundingClientRect();
+            const cx = e.clientX - r.left; const cy = e.clientY - r.top;
+            
+            // Filter points too close together (save hardware buffer)
+            if(currentStroke.length > 0) {
+                const last = currentStroke[currentStroke.length-1];
+                const dist = Math.hypot(cx - last.cx, cy - last.cy);
+                if (dist < 5) return; // Must move at least 5px to record
+            }
+
+            const maxX = parseFloat(document.getElementById('max-x').value);
+            const maxY = parseFloat(document.getElementById('max-y').value);
+            const mx = (cx / canvas.width) * maxX;
+            const my = ((canvas.height - cy) / canvas.height) * maxY;
+            
+            currentStroke.push({cx, cy, mx, my});
+            redrawCanvas();
+        }
+
+        canvas.onmousedown = (e) => { 
+            isDrawingMouse = true; 
+            currentStroke = [];
+            paths.push(currentStroke);
+            addPoint(e); 
+        };
+        canvas.onmousemove = (e) => { if(isDrawingMouse) addPoint(e); };
+        window.onmouseup = () => { isDrawingMouse = false; };
+
+        document.getElementById('draw-clear').onclick = () => { paths = []; redrawCanvas(); };
+
+        document.getElementById('draw-play').onclick = async () => {
+            if(paths.length === 0 || isDrawing) return;
+            isDrawing = true;
+            document.getElementById('draw-play').classList.add('active');
+            log('Playing Drawing...', 'info');
+
+            const speed = document.getElementById('draw-speed').value;
+            const zUp = document.getElementById('z-up').value;
+            const zDown = document.getElementById('z-down').value;
+            
+            await sendCommand(`G90`);
+            await sendCommand(`G1 Z${zUp} F1500`);
+
+            for(let s=0; s<paths.length; s++) {
+                const stroke = paths[s];
+                if(stroke.length <= 1) continue; // Skip single-click dots
+                if(!isDrawing) break;
+
+                // Move to start of stroke
+                await sendCommand(`G1 X${stroke[0].mx.toFixed(3)} Y${stroke[0].my.toFixed(3)} F${speed}`);
+                await new Promise(r => setTimeout(r, 100)); 
+
+                // Drop pen
+                await sendCommand(`G1 Z${zDown} F1500`);
+                await new Promise(r => setTimeout(r, 100)); 
+
+                for(let i=1; i<stroke.length; i++) {
+                    if(!isDrawing) break;
+                    await sendCommand(`G1 X${stroke[i].mx.toFixed(3)} Y${stroke[i].my.toFixed(3)} F${speed}`);
+                    await new Promise(r => setTimeout(r, 100)); 
+                }
+
+                // Lift pen at end of stroke
+                await sendCommand(`G1 Z${zUp} F1500`);
+                await new Promise(r => setTimeout(r, 100)); 
+            }
+
+            isDrawing = false;
+            document.getElementById('draw-play').classList.remove('active');
+            log('Drawing Complete', 'info');
+            
+            // Resume Drones if toggled
+            if(axes.some(a => document.getElementById(`drone-${a}-toggle`).checked)) {
+                isDroning = true; droneLoop();
+            }
+        };
+
+        // --- Global Controls ---
+        document.getElementById('btn-panic').onclick = () => {
+            seqPlaying = false; clearTimeout(seqTimeout); document.getElementById('seq-play').classList.remove('active');
+            isDroning = false; axes.forEach(a => document.getElementById(`drone-${a}-toggle`).checked = false);
+            isDrawing = false; document.getElementById('draw-play').classList.remove('active');
+            sendCommand('!');
+            log('EMERGENCY STOP', 'error');
+        };
+
+        document.getElementById('btn-ping').onclick = () => { log('Ping...', 'info'); sendCommand('?'); };
+
+    </script>
+</body>
+</html>
