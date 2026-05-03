@@ -392,8 +392,6 @@
                     <label>Max Y (mm):</label><input type="number" id="max-y" value="140" style="width:60px;">
                 </div>
                 
-                <button id="btn-home" style="width: 100%; margin-top: 10px; background: var(--accent-blue); color: #000; border: none; font-weight: bold; padding: 10px; cursor: pointer; text-transform: uppercase;">Initialize & Home Robot</button>
-                <button id="btn-force-wash" style="width: 100%; margin-top: 10px; background: #888; color: #fff; border: none; font-weight: bold; padding: 10px; cursor: pointer; text-transform: uppercase;">Manual Wash Sequence</button>
                 <button id="btn-panic" style="width: 100%; margin-top: 10px;">Emergency Stop All (!)</button>
                 <div class="console-output" id="console"></div>
             </div>
@@ -405,34 +403,19 @@
             
             <div class="input-group" style="justify-content: space-between;">
                 <button id="draw-play" class="btn-green">Play Drawing</button>
-                <div style="display:flex; gap: 5px;">
-                    <button id="draw-download" style="border-color: var(--accent-blue); color: var(--accent-blue);">Download G-Code</button>
-                    <button id="draw-clear" style="border-color: #777; color: #777;">Clear</button>
-                </div>
-            </div>
-            <div class="input-group" style="gap: 5px;">
-                <label style="flex:1;">Draw (F): <span id="draw-speed-val">1500</span></label>
-                <input type="range" id="draw-speed" min="1" max="2000" value="1500" step="1" style="flex:2;">
-            </div>
-            <div class="input-group" style="gap: 5px;">
-                <label style="flex:1;">Fast (F): <span id="fast-speed-val">1500</span></label>
-                <input type="range" id="fast-speed" min="1" max="2000" value="1500" step="1" style="flex:2;">
+                <button id="draw-clear" style="border-color: #777; color: #777;">Clear</button>
             </div>
             <div class="input-group">
-                <label>Z Up:</label><input type="number" id="z-up" value="2.5" step="0.1" style="width:55px;">
+                <label>Speed (F): <span id="draw-speed-val">1500</span></label>
+                <input type="range" id="draw-speed" min="100" max="5000" value="1500" step="100">
+            </div>
+            <div class="input-group">
+                <label>Z Up:</label><input type="number" id="z-up" value="4.8" step="0.1" style="width:55px;">
                 <label>Z Down:</label><input type="number" id="z-down" value="0" step="0.1" style="width:55px;">
             </div>
 
             <div class="canvas-container">
                 <canvas id="xy-pad" width="450" height="420"></canvas>
-            </div>
-
-            <h3 style="margin-top:20px; margin-bottom:10px; font-size:1rem; border-bottom:1px solid var(--border); padding-bottom:5px;">Color Palette</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                <button id="sel-c1" style="background:#ff00aa; color:white; border:none; padding:8px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s;">Pink (C1)</button>
-                <button id="sel-c2" style="background:#0066ff; color:white; border:none; padding:8px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s;">Blue (C2)</button>
-                <button id="sel-c3" style="background:#00c800; color:white; border:none; padding:8px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s;">Green (C3)</button>
-                <button id="sel-wash" style="background:#888; color:white; border:none; padding:8px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s;">Wash</button>
             </div>
         </div>
 
@@ -476,10 +459,10 @@
         async function sendCommand(cmd) {
             const ip = ipInput.value.trim();
             if (!ip) return;
-            log(cmd, 'sent'); // Log before fetch so it displays offline
             const url = `http://${ip}/command?cmd=${encodeURIComponent(cmd + '\n')}`;
             try {
                 await fetch(url, { method: 'GET', mode: 'no-cors', cache: 'no-store' });
+                log(cmd, 'sent');
             } catch (e) {
                 // Ignore silent errors for performance in console
             }
@@ -564,52 +547,18 @@
         const canvas = document.getElementById('xy-pad');
         const ctx = canvas.getContext('2d');
         let isDrawingMouse = false;
-        let paths = []; // Array of stroke objects
-        let currentStroke = null;
-
-        const POTS = {
-            'c1': { x: 45, y: 8, color: '#ff00aa', isWash: false },
-            'c2': { x: 90, y: 8, color: '#0066ff', isWash: false },
-            'c3': { x: 135, y: 8, color: '#00c800', isWash: false },
-            'wash': { x: 5, y: 5, color: '#888888', isWash: true }
-        };
-
-        let activeColor = POTS['c1'].color;
-        let activePotId = 'c1';
-
-        function setActivePot(id) {
-            if (id === null) {
-                activePotId = null;
-                activeColor = '#39FF14'; // Default green if somehow null
-            } else {
-                activePotId = id;
-                activeColor = POTS[id].color;
-            }
-            
-            // Update UI buttons opacity
-            ['c1', 'c2', 'c3', 'wash'].forEach(pid => {
-                const btn = document.getElementById(`sel-${pid}`);
-                if (btn) btn.style.opacity = (pid === activePotId) ? '1.0' : '0.5';
-            });
-            redrawCanvas();
-        }
-
-        // Initialize default active pot
-        setActivePot('c1');
-
-        document.getElementById('sel-c1').onclick = () => setActivePot('c1');
-        document.getElementById('sel-c2').onclick = () => setActivePot('c2');
-        document.getElementById('sel-c3').onclick = () => setActivePot('c3');
-        document.getElementById('sel-wash').onclick = () => setActivePot('wash');
+        let paths = []; // Array of strokes
+        let currentStroke = [];
 
         document.getElementById('draw-speed').oninput = e => document.getElementById('draw-speed-val').textContent = e.target.value;
-        document.getElementById('fast-speed').oninput = e => document.getElementById('fast-speed-val').textContent = e.target.value;
+
         
         function redrawCanvas() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
             
             const isTropical = document.body.classList.contains('theme-tropical');
             const gridColor = isTropical ? getComputedStyle(document.documentElement).getPropertyValue('--border').trim() : '#999999';
+            const strokeColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-green').trim() || '#39FF14';
 
             ctx.strokeStyle = gridColor; 
             ctx.lineWidth = 1;
@@ -622,54 +571,12 @@
             ctx.setLineDash([]); // Reset to solid for drawing
             ctx.globalAlpha = 1.0;
 
-            // Draw Color Pots
-            const maxX = parseFloat(document.getElementById('max-x').value);
-            const maxY = parseFloat(document.getElementById('max-y').value);
-            
-            const drawPot = (id) => {
-                const pot = POTS[id];
-                if (!pot) return;
-                
-                const cx = (pot.x / maxX) * canvas.width;
-                const cy = canvas.height - ((pot.y / maxY) * canvas.height);
-                const r = pot.isWash ? 20 : 15;
-                
-                ctx.fillStyle = pot.color;
-                ctx.globalAlpha = 0.6;
-                ctx.beginPath();
-                if (pot.isWash) {
-                    ctx.rect(cx - r, cy - r, r*2, r*2);
-                } else {
-                    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                }
-                ctx.fill();
-                ctx.globalAlpha = 1.0;
-                
-                if (id === activePotId) {
-                    ctx.strokeStyle = isTropical ? '#fff' : '#000';
-                    ctx.lineWidth = 3;
-                    ctx.stroke();
-                }
-                
-                // Draw label
-                ctx.fillStyle = isTropical ? '#fff' : '#000';
-                ctx.font = '10px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText(id.toUpperCase(), cx, cy + (pot.isWash ? 30 : 25));
-            };
-
-            drawPot('c1');
-            drawPot('c2');
-            drawPot('c3');
-            drawPot('wash');
-
             paths.forEach(stroke => {
-                if(stroke.points && stroke.points.length > 0) {
-                    ctx.strokeStyle = stroke.color; 
-                    ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+                if(stroke.length > 0) {
+                    ctx.strokeStyle = strokeColor; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
                     ctx.beginPath();
-                    ctx.moveTo(stroke.points[0].cx, stroke.points[0].cy);
-                    for(let i=1; i<stroke.points.length; i++) ctx.lineTo(stroke.points[i].cx, stroke.points[i].cy);
+                    ctx.moveTo(stroke[0].cx, stroke[0].cy);
+                    for(let i=1; i<stroke.length; i++) ctx.lineTo(stroke[i].cx, stroke[i].cy);
                     ctx.stroke();
                 }
             });
@@ -698,91 +605,15 @@
         }
 
         canvas.onmousedown = (e) => { 
-            const r = canvas.getBoundingClientRect();
-            const cx = e.clientX - r.left; 
-            const cy = e.clientY - r.top;
-            
-            const maxX = parseFloat(document.getElementById('max-x').value);
-            const maxY = parseFloat(document.getElementById('max-y').value);
-            
-            // Hit detection for virtual paint pots
-            for (let id in POTS) {
-                const pot = POTS[id];
-                const pcx = (pot.x / maxX) * canvas.width;
-                const pcy = canvas.height - ((pot.y / maxY) * canvas.height);
-                const radius = pot.isWash ? 20 : 15;
-                if (Math.hypot(cx - pcx, cy - pcy) <= radius) {
-                    setActivePot(id);
-                    return; // Abort drawing stroke
-                }
-            }
-
             isDrawingMouse = true; 
-            const stroke = { color: activeColor, potId: activePotId, points: [] };
-            paths.push(stroke);
-            currentStroke = stroke.points;
+            currentStroke = [];
+            paths.push(currentStroke);
             addPoint(e); 
         };
         canvas.onmousemove = (e) => { if(isDrawingMouse) addPoint(e); };
         window.onmouseup = () => { isDrawingMouse = false; };
 
         document.getElementById('draw-clear').onclick = () => { paths = []; redrawCanvas(); };
-
-        document.getElementById('draw-download').onclick = () => {
-            if(paths.length === 0) return;
-            log('Generating G-Code...', 'info');
-
-            const speed = document.getElementById('draw-speed').value;
-            const fastSpeed = document.getElementById('fast-speed').value;
-            const zUp = document.getElementById('z-up').value;
-            const zDown = document.getElementById('z-down').value;
-            
-            let gcode = [];
-            gcode.push(`; Brushograph G-Code Export`);
-            gcode.push(`G90`);
-            gcode.push(`G1 Z${zUp} F${fastSpeed}`);
-
-            let lastPotId = null;
-
-            for(let s=0; s<paths.length; s++) {
-                const stroke = paths[s];
-                if(!stroke.points || stroke.points.length <= 1) continue; 
-
-                // Check if color changed
-                if (stroke.potId && stroke.potId !== lastPotId) {
-                    gcode.push(`; --- Tool Change to ${stroke.potId.toUpperCase()} ---`);
-                    let macroSeq = [];
-                    if (stroke.potId === 'wash') macroSeq = getWashSequence(zUp, zDown, fastSpeed);
-                    else macroSeq = getDipSequence(stroke.potId, zUp, zDown, fastSpeed);
-                    gcode = gcode.concat(macroSeq);
-                    lastPotId = stroke.potId;
-                }
-
-                gcode.push(`; Stroke ${s+1}`);
-                gcode.push(`G1 X${stroke.points[0].mx.toFixed(3)} Y${stroke.points[0].my.toFixed(3)} F${fastSpeed}`);
-                gcode.push(`G1 Z${zDown} F${fastSpeed}`);
-
-                for(let i=1; i<stroke.points.length; i++) {
-                    gcode.push(`G1 X${stroke.points[i].mx.toFixed(3)} Y${stroke.points[i].my.toFixed(3)} F${speed}`);
-                }
-                gcode.push(`G1 Z${zUp} F${fastSpeed}`);
-            }
-
-            gcode.push(`; End of drawing`);
-            gcode.push(`G1 Z10 F${fastSpeed}`);
-            gcode.push(`G0 X0 Y0 F${fastSpeed}`);
-
-            const blob = new Blob([gcode.join('\n')], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'brushograph_drawing.gcode';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            log('G-Code Downloaded', 'info');
-        };
 
         document.getElementById('draw-play').onclick = async () => {
             if(paths.length === 0 || isDrawing) return;
@@ -791,51 +622,33 @@
             log('Playing Drawing...', 'info');
 
             const speed = document.getElementById('draw-speed').value;
-            const fastSpeed = document.getElementById('fast-speed').value;
             const zUp = document.getElementById('z-up').value;
             const zDown = document.getElementById('z-down').value;
             
             await sendCommand(`G90`);
-            await sendCommand(`G1 Z${zUp} F${fastSpeed}`);
-
-            let lastPotId = null;
+            await sendCommand(`G1 Z${zUp} F1500`);
 
             for(let s=0; s<paths.length; s++) {
                 const stroke = paths[s];
-                if(!stroke.points || stroke.points.length <= 1) continue; // Skip single-click dots
+                if(stroke.length <= 1) continue; // Skip single-click dots
                 if(!isDrawing) break;
 
-                // Check if color changed and we need to dip
-                if (stroke.potId && stroke.potId !== lastPotId) {
-                    log(`Switching Color to ${stroke.potId.toUpperCase()}...`, 'info');
-                    let macroSeq = [];
-                    if (stroke.potId === 'wash') macroSeq = getWashSequence(zUp, zDown, fastSpeed);
-                    else macroSeq = getDipSequence(stroke.potId, zUp, zDown, fastSpeed);
-                    
-                    for (let cmd of macroSeq) {
-                        if(!isDrawing) break;
-                        await sendCommand(cmd);
-                        await new Promise(r => setTimeout(r, 100));
-                    }
-                    lastPotId = stroke.potId;
-                }
-
                 // Move to start of stroke
-                await sendCommand(`G1 X${stroke.points[0].mx.toFixed(3)} Y${stroke.points[0].my.toFixed(3)} F${fastSpeed}`);
+                await sendCommand(`G1 X${stroke[0].mx.toFixed(3)} Y${stroke[0].my.toFixed(3)} F${speed}`);
                 await new Promise(r => setTimeout(r, 100)); 
 
                 // Drop pen
-                await sendCommand(`G1 Z${zDown} F${fastSpeed}`);
+                await sendCommand(`G1 Z${zDown} F1500`);
                 await new Promise(r => setTimeout(r, 100)); 
 
-                for(let i=1; i<stroke.points.length; i++) {
+                for(let i=1; i<stroke.length; i++) {
                     if(!isDrawing) break;
-                    await sendCommand(`G1 X${stroke.points[i].mx.toFixed(3)} Y${stroke.points[i].my.toFixed(3)} F${speed}`);
+                    await sendCommand(`G1 X${stroke[i].mx.toFixed(3)} Y${stroke[i].my.toFixed(3)} F${speed}`);
                     await new Promise(r => setTimeout(r, 100)); 
                 }
 
                 // Lift pen at end of stroke
-                await sendCommand(`G1 Z${zUp} F${fastSpeed}`);
+                await sendCommand(`G1 Z${zUp} F1500`);
                 await new Promise(r => setTimeout(r, 100)); 
             }
 
@@ -849,100 +662,7 @@
             }
         };
 
-        // --- Color Dipping & Wash Macros ---
-        function getDipSequence(id, zUp, zDown, fastSpeed = 1500) {
-            const pot = POTS[id];
-            if (!pot) return [];
-            const cx = pot.x; const cy = pot.y;
-            let seq = [];
-            seq.push(`G90`);
-            seq.push(`G1 Z10 F${fastSpeed}`); // Safe lift
-            seq.push(`G0 X${cx} Y${cy} F${fastSpeed}`);
-            seq.push(`G1 Z${zDown} F1000`);
-            
-            // Stirring
-            for (let i = 0; i <= 720; i += 45) {
-                let rad = i * Math.PI / 180;
-                let px = cx + Math.cos(rad) * 4;
-                let py = cy + Math.sin(rad) * 4;
-                seq.push(`G1 X${px.toFixed(3)} Y${py.toFixed(3)} Z${zDown} F1200`);
-            }
-            
-            // Wipe edge
-            seq.push(`G1 Z${zUp - 2} F800`); 
-            seq.push(`G1 X${cx - 10} Y${cy} Z${zDown} F1200`);
-            seq.push(`G1 X${cx - 20} Y${cy + 10} Z${zUp} F500`);
-            seq.push(`G1 Z10 F${fastSpeed}`); // Safe lift
-            return seq;
-        }
-
-        function getWashSequence(zUp, zDown, fastSpeed = 1500) {
-            const pot = POTS['wash'];
-            if (!pot) return [];
-            const cx = pot.x; const cy = pot.y;
-            let seq = [];
-            seq.push(`G90`);
-            seq.push(`G1 Z10 F${fastSpeed}`); // Safe lift
-            seq.push(`G0 X${cx} Y${cy} F${fastSpeed}`);
-            
-            // Scrubbing
-            seq.push(`G1 Z${zDown} F800`);
-            seq.push(`G1 X${cx+5} Y${cy+7} Z${zUp-2} F1200`);
-            seq.push(`G1 Z${zDown} F800`);
-            seq.push(`G1 X${cx+20} Y${cy+9} Z${zUp-4} F800`);
-            seq.push(`G1 Z${zUp-2} F800`);
-            
-            seq.push(`G0 X${cx} Y${cy} F${fastSpeed}`);
-            seq.push(`G1 Z${zDown} F800`);
-            seq.push(`G1 X${cx+10} Y${cy+7} Z${zUp-2} F1200`);
-            seq.push(`G1 Z${zDown} F800`);
-            seq.push(`G1 X${cx+20} Y${cy+9} Z${zUp-4} F800`);
-            
-            seq.push(`G1 Z10 F${fastSpeed}`); // Safe lift
-            return seq;
-        }
-
         // --- Global Controls ---
-        document.getElementById('btn-home').onclick = async () => {
-            const rawSeq = "G10 P0 L20 X0 Y0 Z0; G91 Z10 F1800; G90; G1 X160 Y160 Z32 F1800; G1 X0 Y0 Z22 F1800; G10 P0 L20 X0 Y0 Z10; G1 Z15 F600; G1 Z10 F600; G1 X-10 Y-10 F1000; G1 X-6 Y-6 F1000; G10 P0 L20 X0 Y0 Z14;";
-            const cmds = rawSeq.split(';').map(c => c.trim()).filter(c => c.length > 0);
-            
-            log('Initializing & Homing Robot...', 'info');
-            const btn = document.getElementById('btn-home');
-            btn.style.opacity = '0.5';
-            btn.textContent = 'Homing...';
-            
-            for (let cmd of cmds) {
-                await sendCommand(cmd);
-                await new Promise(r => setTimeout(r, 300)); // slightly longer delay for safety during big moves
-            }
-            
-            log('Homing Complete.', 'info');
-            btn.style.opacity = '1.0';
-            btn.textContent = 'Initialize & Home Robot';
-        };
-
-        document.getElementById('btn-force-wash').onclick = async () => {
-            log('Running Manual Wash Sequence...', 'info');
-            const zUp = document.getElementById('z-up').value;
-            const zDown = document.getElementById('z-down').value;
-            const fastSpeed = document.getElementById('fast-speed').value;
-            const cmds = getWashSequence(zUp, zDown, fastSpeed);
-            
-            const btn = document.getElementById('btn-force-wash');
-            btn.style.opacity = '0.5';
-            btn.textContent = 'Washing...';
-            
-            for (let cmd of cmds) {
-                await sendCommand(cmd);
-                await new Promise(r => setTimeout(r, 200));
-            }
-            
-            log('Wash Complete.', 'info');
-            btn.style.opacity = '1.0';
-            btn.textContent = 'Manual Wash Sequence';
-        };
-
         document.getElementById('btn-panic').onclick = () => {
             seqPlaying = false; clearTimeout(seqTimeout); document.getElementById('seq-play').classList.remove('active');
             isDroning = false; axes.forEach(a => document.getElementById(`drone-${a}-toggle`).checked = false);
