@@ -352,39 +352,49 @@
         </div>
 
         <!-- COLUMN 2: DRONES & CONFIG -->
-        <div class="panel">
-            <h2>2. Drone Engines</h2>
-            
-            <div class="drone-track">
-                <div class="drone-label">X</div>
-                <label class="switch"><input type="checkbox" id="drone-x-toggle"><span class="slider"></span></label>
-                <input type="range" id="drone-x-pitch" min="100" max="3000" value="600" step="50">
-                <div class="pitch-val" id="drone-x-val">F600</div>
-            </div>
-            <div class="drone-track">
-                <div class="drone-label">Y</div>
-                <label class="switch"><input type="checkbox" id="drone-y-toggle"><span class="slider"></span></label>
-                <input type="range" id="drone-y-pitch" min="100" max="3000" value="600" step="50">
-                <div class="pitch-val" id="drone-y-val">F600</div>
-            </div>
-            <div class="drone-track">
-                <div class="drone-label">Z</div>
-                <label class="switch"><input type="checkbox" id="drone-z-toggle"><span class="slider"></span></label>
-                <input type="range" id="drone-z-pitch" min="100" max="3000" value="600" step="50">
-                <div class="pitch-val" id="drone-z-val">F600</div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="panel">
+                <h2>2. Drone Engines</h2>
+                
+                <div class="drone-track">
+                    <div class="drone-label">X</div>
+                    <label class="switch"><input type="checkbox" id="drone-x-toggle"><span class="slider"></span></label>
+                    <input type="range" id="drone-x-pitch" min="100" max="3000" value="600" step="50">
+                    <div class="pitch-val" id="drone-x-val">F600</div>
+                </div>
+                <div class="drone-track">
+                    <div class="drone-label">Y</div>
+                    <label class="switch"><input type="checkbox" id="drone-y-toggle"><span class="slider"></span></label>
+                    <input type="range" id="drone-y-pitch" min="100" max="3000" value="600" step="50">
+                    <div class="pitch-val" id="drone-y-val">F600</div>
+                </div>
+                <div class="drone-track">
+                    <div class="drone-label">Z</div>
+                    <label class="switch"><input type="checkbox" id="drone-z-toggle"><span class="slider"></span></label>
+                    <input type="range" id="drone-z-pitch" min="100" max="3000" value="600" step="50">
+                    <div class="pitch-val" id="drone-z-val">F600</div>
+                </div>
             </div>
 
-            <h2 style="margin-top: 30px;">Connection</h2>
-            <div class="input-group">
-                <input type="text" id="ip-input" value="192.168.4.1" placeholder="IP Address" style="flex-grow: 1;">
-                <button id="btn-ping" style="padding: 8px;">Ping</button>
+            <div class="panel">
+                <h2>Connection</h2>
+                <div class="input-group" style="margin-bottom: 8px;">
+                    <input type="text" id="ip-input" value="brushparang.local" placeholder="Device Address" style="flex-grow: 1;">
+                    <button id="btn-ping" style="padding: 8px;">Ping</button>
+                </div>
+                <div style="display: flex; gap: 15px; margin-bottom: 15px; font-size: 0.75rem; color: var(--accent-blue); font-family: var(--font-head); text-transform: uppercase; flex-wrap: wrap;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:4px;"><input type="radio" name="ip-choice" value="brushparang.local" onchange="document.getElementById('ip-input').value = this.value" checked> brushparang.local</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:4px;"><input type="radio" name="ip-choice" value="fluidnc.local" onchange="document.getElementById('ip-input').value = this.value"> fluidnc.local</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:4px;"><input type="radio" name="ip-choice" value="192.168.4.1" onchange="document.getElementById('ip-input').value = this.value"> AP (192.168.4.1)</label>
+                </div>
+                <div class="input-group">
+                    <label>Max X (mm):</label><input type="number" id="max-x" value="150" style="width:60px;">
+                    <label>Max Y (mm):</label><input type="number" id="max-y" value="140" style="width:60px;">
+                </div>
+                
+                <button id="btn-panic" style="width: 100%; margin-top: 10px;">Emergency Stop All (!)</button>
+                <div class="console-output" id="console"></div>
             </div>
-            <div class="input-group">
-                <label>Max X (mm):</label><input type="number" id="max-x" value="150" style="width:60px;">
-                <label>Max Y (mm):</label><input type="number" id="max-y" value="140" style="width:60px;">
-            </div>
-            
-            <button id="btn-panic" style="width: 100%; margin-top: 10px;">Emergency Stop All (!)</button>
         </div>
 
         <!-- COLUMN 3: DRAWING PAD -->
@@ -407,8 +417,6 @@
             <div class="canvas-container">
                 <canvas id="xy-pad" width="450" height="420"></canvas>
             </div>
-
-            <div class="console-output" id="console"></div>
         </div>
 
     </div>
