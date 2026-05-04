@@ -248,6 +248,22 @@
 
         <div class="subtitle" style="margin-top: 10px; margin-bottom: 20px; color: var(--accent-pink);">Current Development</div>
 
+        <a href="brushograph_sequencer_pro.html" class="panel" style="border-left-color: var(--accent-yellow);">
+            <img src="thumb_sequencer_pro.png" class="panel-thumb" style="border-color: var(--accent-yellow);" alt="Sequencer Pro Thumbnail">
+            <div class="panel-content">
+                <h2 style="color: var(--accent-yellow);">Phase 6: Sequencer Platinum Pro <span class="tag" style="border-color: var(--accent-yellow); color: var(--accent-yellow); background: rgba(255,234,0,0.1);">WebSocket/JS</span></h2>
+                <p><strong>Technical Core:</strong> Migrated to persistent WebSocket streaming for binary-encoded G-code injection. Implemented axis-combining batching in <code>droneLoop</code> for synchronized harmonic motion and a delta-accumulator smoothing layer for gesture-based XY/Z sequencing. Operates in stateful Relative (G91) mode by default to minimize serial buffer overhead, with explicit G90 resets for absolute macros.</p>
+                <div style="margin-top: 10px; font-size: 0.85rem; color: var(--accent-blue); background: rgba(0,243,255,0.05); padding: 8px; border-radius: 4px; border: 1px dashed var(--accent-blue);">
+                    <strong>🛠️ Agentic Dev Stack & Performance:</strong><br>
+                    Developed in <strong>Antigravity IDE</strong> using a hybrid-model workflow: <strong>Gemini 1.5 Flash</strong> for rapid mechatronic feedback loops and <strong>DeepSeek V4 (Pro)</strong> via MCP for low-level logic refactoring and stateful mode management. 
+                    <br><br>
+                    <strong>Token Usage:</strong> High-frequency session leveraging <strong>~120k context tokens</strong> for real-time mechatronic state tracking and browser-based UI validation. Utilized headless browser sub-agents for automated full-page UI documentation.
+                </div>
+            </div>
+        </a>
+
+        <div class="subtitle" style="margin-top: 30px; margin-bottom: 20px; color: var(--text-muted);">Earlier Prototypes</div>
+
         <a href="brushograph_sequencer_platinum.html" class="panel" style="border-left-color: var(--accent-blue);">
             <img src="thumb_sequencer_platinum.png" class="panel-thumb" style="border-color: var(--accent-blue);" alt="Sequencer Platinum Thumbnail">
             <div class="panel-content">
@@ -271,8 +287,6 @@
                 </div>
             </div>
         </a>
-
-        <div class="subtitle" style="margin-top: 30px; margin-bottom: 20px; color: var(--text-muted);">Earlier Prototypes</div>
 
         <a href="brushograph_studio.html" class="panel" style="border-left-color: var(--accent-orange);">
             <img src="thumb_phase3.png" class="panel-thumb" style="border-color: var(--accent-orange);" alt="Phase 3 Thumbnail">
