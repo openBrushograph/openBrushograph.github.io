@@ -14,7 +14,7 @@ We performed a live "Cyber-Tropical" gesture test to verify the new architecture
 ### UI Overview
 The studio preserves the triple-panel layout, with the left panel now serving as a clean **Module Bay** for future mechatronic expansion.
 
-![Studio Pro Deluxe Full UI](brushograph_studio_pro_deluxe_full_view_1777879310541.png)
+![Studio Pro Deluxe Full UI](../assets/milestones/brushograph_studio_pro_deluxe_full_view_1777879310541.png)
 
 ### Live Gesture Test: The Mechatronic Heart
 A heart-shaped path was drawn and streamed to the virtual machine. The test confirmed that:
@@ -22,13 +22,13 @@ A heart-shaped path was drawn and streamed to the virtual machine. The test conf
 2. **Real-time Feedback:** The machine crosshair and status log correctly track the work position (`WPos`) during playback.
 3. **Execution Stability:** The system maintained a stable `RUN` state throughout the path injection.
 
-![Heart Test Complete](brushograph_heart_test_complete_1777879834304.png)
+![Heart Test Complete](../assets/milestones/brushograph_heart_test_complete_1777879834304.png)
 
 ## 3. Browser Session Recordings
 Every mechatronic interaction was recorded as a high-fidelity WebP animation. These can be reviewed to analyze pathing behavior and UI responsiveness.
 
-- **[Live Drawing & Playback Test](draw_heart_test_1777879595416.webp)**
-- **[Final State Verification](verify_heart_canvas_1777879735760.webp)**
+- **[Live Drawing & Playback Test](../assets/recordings/draw_heart_test_1777879595416.webp)**
+- **[Final State Verification](../assets/recordings/verify_heart_canvas_1777879735760.webp)**
 
 ## 4. Cyber-Tropical Assets
 New documentation assets were generated to reflect the "Sonic Mechatronics" theme of the Pro Deluxe build:
@@ -45,14 +45,14 @@ The **Studio Pro Deluxe** was subjected to a full-spectrum "Hello World" mechatr
 Draw "Hello" using **PINK (C1)** and "world" using **BLUE (C2)**. The system successfully maintained stroke-based color separation during the G-code generation phase.
 
 ### Performance Media & Logs
-- **[Full Performance Archive (WebP)](hello_world_performance_archive.webp)**
-- **[Canvas Final Result (PNG)](hello_world_canvas_result.png)**
+- **[Full Performance Archive (WebP)](../assets/recordings/hello_world_performance_archive.webp)**
+- **[Canvas Final Result (PNG)](../assets/milestones/hello_world_canvas_result.png)**
 
 #### Technical Milestone Logs:
 | Phase | Verification Log | Status |
 | :--- | :--- | :--- |
-| Initialization | ![Homing Complete](log_homing_complete.png) | **SUCCESS** |
-| Playback | ![Drawing Complete](log_drawing_complete.png) | **SUCCESS** |
+| Initialization | ![Homing Complete](../assets/milestones/log_homing_complete.png) | **SUCCESS** |
+| Playback | ![Drawing Complete](../assets/milestones/log_drawing_complete.png) | **SUCCESS** |
 
 ---
 **Build Context:** Engineered in the Antigravity IDE using **DeepSeek V4 (Pro)** for mechatronic logic and **Gemini 3.5 Flash** for rapid UI iteration.

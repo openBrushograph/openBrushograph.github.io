@@ -484,9 +484,9 @@
 
     <div class="header-container">
         <a href="https://openbrushograph.github.io/" target="_blank">
-            <img src="../img/logo.png" alt="Logo" class="logo-img" id="dynamic-logo">
+            <img src="../../img/logo.png" alt="Logo" class="logo-img" id="dynamic-logo">
         </a>
-        <h1 style="margin:0; text-shadow:none;">Brushograph Studio Pro Deluxe</h1>
+        <h1 style="margin:0; text-shadow:none;">Brushograph: Sequencer Platinum</h1>
         <div class="theme-toggle">
             <button class="theme-btn" onclick="setTheme('light')" title="Light Mode">☀️</button>
             <button class="theme-btn" onclick="setTheme('tropical')" title="Tropical Mode"
@@ -496,11 +496,126 @@
 
     <div class="studio-layout">
 
-        <!-- COLUMN 1: FUTURE MODULES -->
+        <!-- COLUMN 1: SEQUENCER & DRONES -->
         <div style="display: flex; flex-direction: column; gap: 20px;">
-            <div class="panel" style="min-height: 600px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-style: dashed; opacity: 0.5;">
-                <h2 style="color: var(--accent-blue);">Pro Deluxe Module Bay</h2>
-                <p style="color: var(--text-muted); text-align: center;">Ready for advanced mechatronic expansion.<br>Future G-Code modules will be docked here.</p>
+            <div class="panel">
+                <h2>1. Step Sequencer</h2>
+
+                <div class="input-group">
+                    <button id="seq-play" class="btn-blue">Play</button>
+                    <button id="seq-stop" class="btn-pink">Stop</button>
+                    <label>Delay (ms): <span id="seq-delay-val">250</span></label>
+                    <input type="range" id="seq-delay" min="50" max="1000" value="250" step="10">
+                </div>
+
+                <div class="seq-wrapper">
+                    <div class="seq-grid" id="seq-headers">
+                        <div class="seq-label"></div>
+                    </div>
+                    <div class="seq-grid" id="seq-m1">
+                        <div class="seq-label">Motion 1 (XY)</div>
+                    </div>
+                    <div class="seq-grid" id="seq-m2">
+                        <div class="seq-label">Motion 2 (Z)</div>
+                    </div>
+                    <div class="seq-grid" id="seq-pitch" style="margin-top: 10px;">
+                        <div class="seq-label">Speed/Pitch</div>
+                    </div>
+                </div>
+
+                <div style="margin-top:20px; border-top: 1px dashed var(--border); padding-top:15px;">
+                    <h3
+                        style="font-size:0.9rem; margin-bottom:10px; color:var(--accent-pink); text-transform:uppercase; font-family:var(--font-head);">
+                        Motion Sample 1 (X-Y)</h3>
+                    <div style="display:flex; gap:10px; align-items: flex-start;">
+                        <canvas id="motion-pad" width="150" height="150"
+                            style="background:var(--input-bg); border:1px solid var(--accent-pink); border-radius:var(--border-radius); cursor:crosshair;"></canvas>
+                        <div style="display:flex; flex-direction:column; gap:8px; flex:1;">
+                            <div style="display:flex; flex-direction:column; gap:2px;">
+                                <label style="font-size:0.65rem; color:var(--accent-blue);">XY Speed: <span
+                                        id="motion-speed-val">1500</span></label>
+                                <input type="range" id="motion-speed" min="1" max="2000" value="1500" step="1"
+                                    style="width:100%;">
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:2px;">
+                                <label style="font-size:0.65rem; color:var(--accent-orange);">XY Scale: <span
+                                        id="motion-scale-val">10</span>mm</label>
+                                <input type="range" id="motion-scale" min="1" max="20" value="10" step="1"
+                                    style="width:100%;">
+                            </div>
+                            <div style="display:flex; gap:5px;">
+                                <button id="motion-clear" style="font-size:0.7rem; padding:4px 8px; flex:1;">Clear
+                                    XY</button>
+                                <button id="motion-test"
+                                    style="font-size:0.7rem; padding:4px 8px; flex:1; border-color:var(--accent-green); color:var(--accent-green);">Test
+                                    XY</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:10px; align-items: flex-start; margin-top:15px;">
+                        <div style="display:flex; flex-direction:column; gap:5px;">
+                            <canvas id="z-motion-pad" width="150" height="80"
+                                style="background:var(--input-bg); border:1px solid var(--accent-blue); border-radius:var(--border-radius); cursor:crosshair;"></canvas>
+                            <div style="display:flex; gap:5px;">
+                                <button id="btn-z-0" style="font-size:0.6rem; padding:3px; flex:1;">Z -> 0</button>
+                                <button id="btn-z-2-5" style="font-size:0.6rem; padding:3px; flex:1;">Z -> 2.5</button>
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:8px; flex:1;">
+                            <h4 style="font-size:0.7rem; color:var(--accent-blue); margin:0;">Z-MOTION PROFILE (+1 to
+                                -1)</h4>
+                            <div style="display:flex; flex-direction:column; gap:2px;">
+                                <label style="font-size:0.65rem; color:var(--accent-blue);">Z Speed: <span
+                                        id="z-speed-val">1000</span></label>
+                                <input type="range" id="z-speed" min="1" max="2000" value="1000" step="1"
+                                    style="width:100%;">
+                            </div>
+                            <div style="display:flex; gap:5px;">
+                                <button id="z-motion-clear" style="font-size:0.7rem; padding:4px 8px; flex:1;">Clear
+                                    Z</button>
+                                <button id="z-motion-test"
+                                    style="font-size:0.7rem; padding:4px 8px; flex:1; border-color:var(--accent-green); color:var(--accent-green);">Test
+                                    Z</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DRONE ENGINE PANEL -->
+            <div class="panel">
+                <h2 style="color: var(--accent-pink);">2. Drone Engine</h2>
+                <div id="drone-controls"
+                    style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 8px;">
+                    <div class="drone-chan" style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <label style="color: var(--accent-blue); font-size: 0.75rem; font-weight: bold; font-family: var(--font-head);">X-AXIS</label>
+                        <div style="display: flex; gap: 8px;">
+                            <div class="pitch-slider-wrap"><input type="range" id="drone-x-pitch" min="0" max="100" value="50" class="pitch-slider" orient="vertical"></div>
+                            <div class="pitch-slider-wrap"><input type="range" id="drone-x-width" min="0.1" max="10" step="0.1" value="0.5" class="pitch-slider" orient="vertical"></div>
+                        </div>
+                        <input type="checkbox" id="drone-x-toggle">
+                        <div id="drone-x-val" style="font-size: 0.75rem; color: var(--accent-yellow); font-family: 'Courier New', monospace; font-weight: bold; text-shadow: 0 0 5px rgba(255, 234, 0, 0.3);">F44 W0.5</div>
+                    </div>
+                    <div class="drone-chan" style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <label style="color: var(--accent-blue); font-size: 0.75rem; font-weight: bold; font-family: var(--font-head);">Y-AXIS</label>
+                        <div style="display: flex; gap: 8px;">
+                            <div class="pitch-slider-wrap"><input type="range" id="drone-y-pitch" min="0" max="100" value="50" class="pitch-slider" orient="vertical"></div>
+                            <div class="pitch-slider-wrap"><input type="range" id="drone-y-width" min="0.1" max="10" step="0.1" value="0.5" class="pitch-slider" orient="vertical"></div>
+                        </div>
+                        <input type="checkbox" id="drone-y-toggle">
+                        <div id="drone-y-val" style="font-size: 0.75rem; color: var(--accent-yellow); font-family: 'Courier New', monospace; font-weight: bold; text-shadow: 0 0 5px rgba(255, 234, 0, 0.3);">F44 W0.5</div>
+                    </div>
+                    <div class="drone-chan" style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <label style="color: var(--accent-blue); font-size: 0.75rem; font-weight: bold; font-family: var(--font-head);">Z-AXIS</label>
+                        <div style="display: flex; gap: 8px;">
+                            <div class="pitch-slider-wrap"><input type="range" id="drone-z-pitch" min="0" max="100" value="50" class="pitch-slider" orient="vertical"></div>
+                            <div class="pitch-slider-wrap"><input type="range" id="drone-z-width" min="0.1" max="10" step="0.1" value="0.5" class="pitch-slider" orient="vertical"></div>
+                        </div>
+                        <input type="checkbox" id="drone-z-toggle">
+                        <div id="drone-z-val" style="font-size: 0.75rem; color: var(--accent-yellow); font-family: 'Courier New', monospace; font-weight: bold; text-shadow: 0 0 5px rgba(255, 234, 0, 0.3);">F44 W0.5</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -581,7 +696,7 @@
 
         <!-- COLUMN 3: DRAWING PAD -->
         <div class="panel">
-            <h2>3. Brushograph Drawing Pad</h2>
+            <h2>3. Drone & Draw Pad</h2>
 
             <div class="input-group" style="justify-content: space-between;">
                 <button id="draw-play" class="btn-green">Play Drawing</button>
@@ -650,10 +765,13 @@
 
     <div class="footer-box">
         <strong style="color: var(--accent-blue);">About this Tool:</strong><br>
-        Brushograph Studio Pro Deluxe is a professional G-code production studio for the FluidNC-driven
-        Brushograph. It focuses on high-performance motion injection, automated macro execution, and mechatronic drawing workflows. <br><br>
+        Brushograph: Sequencer Platinum is a dedicated sonic and rhythmic exploration tool for the FluidNC-driven
+        Brushograph. It combines a multi-axis step sequencer with persistent drone engines, allowing for complex
+        mechatronic soundscapes and generative drawing patterns. <br><br>
         <strong style="color: var(--accent-pink);">AI Development Context:</strong><br>
-        This is the elite "Deluxe" build of the OpenBrushograph ecosystem, optimized for maximum serial bandwidth and persistent WebSocket streaming. Engineered autonomously in the Antigravity IDE using <strong>DeepSeek V4 (Pro)</strong> and <strong>Gemini 3.5 Flash</strong>.
+        This version is a specialized fork of the Ultimate Platinum Studio, optimized for rhythmic experimentation and
+        sonic performance. Developed autonomously in the Antigravity IDE using <strong>Gemini 3 Flash</strong> for rapid
+        iteration, leveraging the established mechatronic communication patterns of the OpenBrushograph ecosystem.
         <br><br>
         <a href="https://openbrushograph.github.io/" target="_blank"
             style="color: var(--accent-green); font-weight: bold; text-decoration: none; display: inline-block; padding: 5px 10px; border: 1px solid var(--accent-green); border-radius: 4px; transition: all 0.2s;"
@@ -670,7 +788,14 @@
         const ipInput = document.getElementById('ip-input');
         const moveDist = '0.5';
 
+        let seqPlaying = false;
+        let seqStep = -1;
+        let seqTimeout = null;
+        const numSteps = 16;
         const axes = ['x', 'y', 'z'];
+        const tracks = ['m1', 'm2'];
+
+        let isDroning = false;
         let isDrawing = false;
         let isDrawingMouse = false;
 
@@ -715,6 +840,7 @@
                         // Performance Mode Handshake
                         this.send('$X', true);
                         this.send('G90', true);
+                        this.send('G91', true);
                         this.processQueue();
                         if (this.pingInterval) clearInterval(this.pingInterval);
                         this.pingInterval = setInterval(() => this.send('?'), 1000);
@@ -892,7 +1018,7 @@
         // sendCommand now returns a Promise that waits for machine acknowledgment
         async function sendCommand(cmd, priority = false) {
             // Block non-priority commands if we are stopping or offline
-            if (!priority && (!isDrawing)) {
+            if (!priority && (!isDrawing && !seqPlaying && !isDroning)) {
                 // If it's a manual command it might be fine, but from loops it should block
                 // For now, let's just ensure machine is connected
             }
@@ -914,7 +1040,12 @@
 
         document.getElementById('btn-panic').onclick = () => {
             isDrawing = false;
+            seqPlaying = false;
+            isDroning = false;
+            clearTimeout(seqTimeout);
             document.getElementById('draw-play').classList.remove('active');
+            document.getElementById('seq-play').classList.remove('active');
+            axes.forEach(a => document.getElementById(`drone-${a}-toggle`).checked = false);
 
             machine.clearQueue();
             machine.send('!', true); // Feed Hold
@@ -925,12 +1056,18 @@
         document.getElementById('btn-resume').onclick = async () => {
             log('Resuming / Unlocking...', 'info');
             await sendCommand('$X'); // Kill Alarm
+            await sendCommand('G91'); // Back to Performance Mode
             await new Promise(r => setTimeout(r, 100));
             machine.send('~'); // Resume
         };
         document.getElementById('btn-flush').onclick = async () => {
             isDrawing = false;
+            seqPlaying = false;
+            isDroning = false;
+            clearTimeout(seqTimeout);
             document.getElementById('draw-play').classList.remove('active');
+            document.getElementById('seq-play').classList.remove('active');
+            axes.forEach(a => document.getElementById(`drone-${a}-toggle`).checked = false);
 
             log('Flushing Buffer / Soft Reset...', 'error');
             machine.clearQueue();
@@ -939,7 +1076,7 @@
             await sendCommand('$X'); // Kill Alarm
         };
         document.getElementById('btn-home').onclick = async () => {
-            const rawSeq = "$X; G10 P0 L20 X0 Y0 Z0; G90; G1 Z10 F1800; G1 X160 Y160 Z32 F1800; G1 X0 Y0 Z22 F1800; G10 P0 L20 X0 Y0 Z10; G1 Z15 F600; G1 Z10 F600; G1 X-10 Y-10 F1000; G1 X-6 Y-6 F1000; G10 P0 L20 X0 Y0 Z14;";
+            const rawSeq = "$X; G10 P0 L20 X0 Y0 Z0; G91 Z10 F1800; G90; G1 X160 Y160 Z32 F1800; G1 X0 Y0 Z22 F1800; G10 P0 L20 X0 Y0 Z10; G1 Z15 F600; G1 Z10 F600; G1 X-10 Y-10 F1000; G1 X-6 Y-6 F1000; G10 P0 L20 X0 Y0 Z14; G91;";
             const cmds = rawSeq.split(';').map(c => c.trim()).filter(c => c.length > 0);
 
             log('Initializing & Homing Robot...', 'info');
@@ -968,11 +1105,262 @@
             if (typeof redrawCanvas === 'function') redrawCanvas();
         }
 
+        // Build Sequencer UI
+        for (let i = 0; i < numSteps; i++) {
+            let h = document.createElement('div'); h.className = 'seq-header'; h.textContent = i + 1; h.id = `h-${i}`;
+            document.getElementById('seq-headers').appendChild(h);
+
+            tracks.forEach(t => {
+                let s = document.createElement('div'); s.className = 'seq-step'; s.id = `s-${t}-${i}`;
+                s.dataset.active = "false";
+                // Use the active-x style for Motion 1
+                s.onclick = () => { s.dataset.active = s.dataset.active === "true" ? "false" : "true"; s.classList.toggle(`active-x`); };
+                document.getElementById(`seq-${t}`).appendChild(s);
+            });
+
+            // Speed Slider (Logarithmic mapping: 50 - 3000)
+            let wrap = document.createElement('div'); wrap.className = 'pitch-slider-wrap';
+            let p = document.createElement('input'); p.type = 'range'; p.className = 'pitch-slider'; p.min = 0; p.max = 100; p.value = 60; p.id = `p-${i}`;
+            p.orient = "vertical";
+            wrap.appendChild(p);
+            document.getElementById('seq-pitch').appendChild(wrap);
+        }
+
+        document.getElementById('seq-delay').oninput = e => document.getElementById('seq-delay-val').textContent = e.target.value;
+
+        function seqLoop() {
+            if (!seqPlaying) return;
+            seqStep = (seqStep + 1) % numSteps;
+            
+            // PREEMPTION: Clear any unsent commands from the previous step
+            machine.clearQueue();
+
+            document.querySelectorAll('.seq-col-active').forEach(e => e.classList.remove('seq-col-active'));
+            document.getElementById(`h-${seqStep}`).classList.add('seq-col-active');
+            tracks.forEach(t => document.getElementById(`s-${t}-${seqStep}`).classList.add('seq-col-active'));
+
+            let m1Active = document.getElementById(`s-m1-${seqStep}`).dataset.active === "true";
+            let m2Active = document.getElementById(`s-m2-${seqStep}`).dataset.active === "true";
+            
+            // Shared speed mapping
+            const sVal = parseFloat(document.getElementById(`p-${seqStep}`).value);
+            const minS = 50; const maxS = 3000;
+            const pitch = Math.round(Math.pow(maxS / minS, sVal / 100) * minS);
+
+            if (m1Active) sendCommand(getMotionGCode(['x', 'y'], pitch));
+            if (m2Active) sendCommand(getZMotionGCode(pitch));
+
+            seqTimeout = setTimeout(seqLoop, parseInt(document.getElementById('seq-delay').value));
+        }
+
+        document.getElementById('seq-play').onclick = () => { 
+            if (!seqPlaying) { 
+                seqPlaying = true; 
+                document.getElementById('seq-play').classList.add('active'); 
+                sendCommand('G91'); // Ensure Relative mode
+                seqLoop(); 
+            } 
+        };
+        document.getElementById('seq-stop').onclick = () => { seqPlaying = false; clearTimeout(seqTimeout); document.getElementById('seq-play').classList.remove('active'); };
+
+        // --- Motion Pad Logic ---
+        const mCanvas = document.getElementById('motion-pad');
+        const mCtx = mCanvas.getContext('2d');
+        let mPoints = [];
+        let isDrawingMotion = false;
+
+        function redrawMotionPad() {
+            mCtx.clearRect(0, 0, mCanvas.width, mCanvas.height);
+            // Draw crosshair at center
+            mCtx.strokeStyle = 'rgba(255,255,255,0.1)';
+            mCtx.beginPath(); mCtx.moveTo(75, 0); mCtx.lineTo(75, 150); mCtx.stroke();
+            mCtx.beginPath(); mCtx.moveTo(0, 75); mCtx.lineTo(150, 75); mCtx.stroke();
+
+            if (mPoints.length > 0) {
+                mCtx.strokeStyle = '#ff00ff'; // Neon Pink (Hardcoded for canvas)
+                mCtx.lineWidth = 2; mCtx.lineCap = 'round'; mCtx.beginPath();
+                mCtx.moveTo(mPoints[0].x, mPoints[0].y);
+                for (let i = 1; i < mPoints.length; i++) mCtx.lineTo(mPoints[i].x, mPoints[i].y);
+                mCtx.stroke();
+            }
+        }
+        redrawMotionPad();
+
+        mCanvas.onmousedown = (e) => {
+            mPoints = [];
+            isDrawingMotion = true;
+            const r = mCanvas.getBoundingClientRect();
+            mPoints.push({ x: e.clientX - r.left, y: e.clientY - r.top });
+            redrawMotionPad();
+        };
+        mCanvas.onmousemove = (e) => {
+            if (!isDrawingMotion) return;
+            const r = mCanvas.getBoundingClientRect();
+            const x = e.clientX - r.left; const y = e.clientY - r.top;
+            const last = mPoints[mPoints.length - 1];
+            if (Math.hypot(x - last.x, y - last.y) > 3) {
+                mPoints.push({ x, y });
+                redrawMotionPad();
+            }
+        };
+        window.addEventListener('mouseup', () => isDrawingMotion = false);
+        document.getElementById('motion-clear').onclick = () => { mPoints = []; redrawMotionPad(); };
+        document.getElementById('motion-speed').oninput = e => document.getElementById('motion-speed-val').textContent = e.target.value;
+        document.getElementById('motion-scale').oninput = e => document.getElementById('motion-scale-val').textContent = e.target.value;
+
+        function getMotionGCode(activeAxes, pitch) {
+            if (mPoints.length < 2) return ""; 
+
+            const maxMM = parseFloat(document.getElementById('motion-scale').value);
+            const scale = maxMM / 150.0;
+            let cmds = [];
+            
+            let accX = 0, accY = 0;
+            const threshold = scale * 2; // ~2 pixels threshold
+
+            for (let i = 1; i < mPoints.length; i++) {
+                accX += (mPoints[i].x - mPoints[i - 1].x) * scale;
+                accY += -((mPoints[i].y - mPoints[i - 1].y) * scale);
+
+                if (Math.abs(accX) > threshold || Math.abs(accY) > threshold) {
+                    let axesMove = "";
+                    if (activeAxes.includes('x') && Math.abs(accX) > 0.001) axesMove += ` X${accX.toFixed(3)}`;
+                    if (activeAxes.includes('y') && Math.abs(accY) > 0.001) axesMove += ` Y${accY.toFixed(3)}`;
+                    if (activeAxes.includes('z')) axesMove += ` Z${(accX * 0.5).toFixed(3)}`; // Z follows X
+                    
+                    if (axesMove) cmds.push(`G1${axesMove} F${pitch}`);
+                    accX = 0; accY = 0;
+                }
+            }
+            // Final cleanup
+            let finalMove = "";
+            if (activeAxes.includes('x') && Math.abs(accX) > 0.001) finalMove += ` X${accX.toFixed(3)}`;
+            if (activeAxes.includes('y') && Math.abs(accY) > 0.001) finalMove += ` Y${accY.toFixed(3)}`;
+            if (activeAxes.includes('z')) finalMove += ` Z${(accX * 0.5).toFixed(3)}`;
+            if (finalMove) cmds.push(`G1${finalMove} F${pitch}`);
+
+            return cmds.join('\n');
+        }
+
+        document.getElementById('motion-test').onclick = async () => {
+            const pitch = document.getElementById('motion-speed').value;
+            const gcode = getMotionGCode(['x', 'y'], pitch);
+            await sendCommand(gcode);
+        };
+
+        // --- Z-Motion Profile Logic ---
+        const zCanvas = document.getElementById('z-motion-pad');
+        const zCtx = zCanvas.getContext('2d');
+        let zPoints = [];
+        let isDrawingZ = false;
+
+        function redrawZPad() {
+            zCtx.clearRect(0, 0, zCanvas.width, zCanvas.height);
+            // Draw center line (0mm)
+            zCtx.strokeStyle = 'rgba(255,255,255,0.1)';
+            zCtx.beginPath(); zCtx.moveTo(0, 40); zCtx.lineTo(150, 40); zCtx.stroke();
+
+            if (zPoints.length > 0) {
+                zCtx.strokeStyle = '#00f3ff'; // Cyan
+                zCtx.lineWidth = 2; zCtx.beginPath();
+                zCtx.moveTo(zPoints[0].x, zPoints[0].y);
+                for (let i = 1; i < zPoints.length; i++) zCtx.lineTo(zPoints[i].x, zPoints[i].y);
+                zCtx.stroke();
+            }
+        }
+        redrawZPad();
+
+        zCanvas.onmousedown = (e) => { zPoints = []; isDrawingZ = true; addZPoint(e); };
+        zCanvas.onmousemove = (e) => { if (isDrawingZ) addZPoint(e); };
+        window.addEventListener('mouseup', () => isDrawingZ = false);
+
+        function addZPoint(e) {
+            const r = zCanvas.getBoundingClientRect();
+            zPoints.push({ x: e.clientX - r.left, y: e.clientY - r.top });
+            redrawZPad();
+        }
+
+        document.getElementById('z-motion-clear').onclick = () => { zPoints = []; redrawZPad(); };
+        document.getElementById('z-speed').oninput = e => document.getElementById('z-speed-val').textContent = e.target.value;
+
+        function getZMotionGCode(pitch) {
+            if (zPoints.length < 2) return ""; // Silence if no gesture drawn
+
+            let cmds = [];
+            let accZ = 0;
+            const threshold = 0.05; // 0.05mm threshold for Z
+
+            for (let i = 1; i < zPoints.length; i++) {
+                accZ += -((zPoints[i].y - zPoints[i - 1].y) / 40.0); // 40px = 1mm
+                if (Math.abs(accZ) > threshold) {
+                    cmds.push(`G1 Z${accZ.toFixed(3)} F${pitch}`);
+                    accZ = 0;
+                }
+            }
+            if (Math.abs(accZ) > 0.001) cmds.push(`G1 Z${accZ.toFixed(3)} F${pitch}`);
+            return cmds.join('\n');
+        }
+
+        document.getElementById('z-motion-test').onclick = async () => {
+            const pitch = document.getElementById('z-speed').value;
+            const gcode = getZMotionGCode(pitch);
+            await sendCommand(gcode);
+        };
+
+        document.getElementById('btn-z-0').onclick = () => sendCommand('G90\nG1 Z0 F1500\nG91');
+        document.getElementById('btn-z-2-5').onclick = () => sendCommand('G90\nG1 Z2.5 F1500\nG91');
+
+        // --- Drone Engine ---
+        const getLogPitch = (val) => Math.round(Math.pow(2000 / 1, val / 100) * 1);
+
+        axes.forEach(a => {
+            const updateDroneVal = () => {
+                const sVal = document.getElementById(`drone-${a}-pitch`).value;
+                const p = getLogPitch(sVal);
+                const w = document.getElementById(`drone-${a}-width`).value;
+                document.getElementById(`drone-${a}-val`).textContent = `F${p} W${w}`;
+            };
+            document.getElementById(`drone-${a}-pitch`).oninput = updateDroneVal;
+            document.getElementById(`drone-${a}-width`).oninput = updateDroneVal;
+            document.getElementById(`drone-${a}-toggle`).onchange = () => {
+                if (axes.some(ax => document.getElementById(`drone-${ax}-toggle`).checked) && !isDroning) {
+                    isDroning = true; droneLoop();
+                }
+            };
+        });
+
+        async function droneLoop() {
+            if (!isDroning) return;
+
+            let active = axes.filter(a => document.getElementById(`drone-${a}-toggle`).checked);
+            if (active.length === 0) { isDroning = false; return; }
+
+            let fwd = "";
+            let bwd = "";
+            let maxF = 0;
+
+            active.forEach(a => {
+                const sVal = parseInt(document.getElementById(`drone-${a}-pitch`).value);
+                const p = getLogPitch(sVal);
+                const w = parseFloat(document.getElementById(`drone-${a}-width`).value);
+                if (p > maxF) maxF = p;
+                fwd += ` ${a.toUpperCase()}${w.toFixed(3)}`;
+                bwd += ` ${a.toUpperCase()}${(-w).toFixed(3)}`;
+            });
+
+            if (fwd) {
+                let cmds = [`G1${fwd} F${maxF}`, `G1${bwd} F${maxF}`];
+                await sendCommand(cmds.join('\n'));
+            }
+
+            setTimeout(droneLoop, 200); // 200ms rest to avoid crash
+        }
+
         // --- 3. Drawing Pad ---
         const canvas = document.getElementById('xy-pad');
         const ctx = canvas.getContext('2d');
-        let paths = []; // Array of stroke objects
-        let currentStroke = null;
+        paths = []; // Array of stroke objects
+        currentStroke = null;
 
         const POTS = {
             'c1': { x: 45, y: 8, color: '#ff00aa', isWash: false, skipDip: false },
@@ -1379,10 +1767,15 @@
                 await new Promise(r => setTimeout(r, 100));
             }
 
-            await sendCommand('G90'); // Explicitly stay in Absolute mode
+            await sendCommand('G91');
             isDrawing = false;
             document.getElementById('draw-play').classList.remove('active');
             log('Drawing Complete', 'info');
+
+            // Resume Drones if toggled
+            if (axes.some(a => document.getElementById(`drone-${a}-toggle`).checked)) {
+                isDroning = true; droneLoop();
+            }
         };
 
         // --- Color Dipping & Wash Macros ---
@@ -1454,6 +1847,7 @@
             for (let cmd of macroSeq) {
                 await sendCommand(cmd);
             }
+            await sendCommand('G91');
             log(`Macro ${potId.toUpperCase()} Complete`, 'info');
         }
 
