@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dots Stamp Master V8</title>
+<style>
+:root {
+  --bg:#121212; --panel:#1e1e1e; --accent:#ff9f1c;
+  --text:#e0e0e0; --input:#2b2b2b; --border:#333;
+  --travel:#00e5ff; --paint:#ff9f1c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden}
+#sidebar{width:360px;min-width:360px;background:var(--panel);padding:16px;overflow-y:auto;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+h2{color:var(--accent);font-size:0.75rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);padding-bottom:3px;margin:8px 0 4px}
+.group{display:flex;flex-direction:column;gap:2px}
+label{font-size:0.68rem;color:#888}
+input{background:var(--input);border:1px solid var(--border);color:white;padding:6px 8px;border-radius:4px;font-size:0.82rem;width:100%}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+button{background:var(--accent);color:#000;border:none;padding:10px;border-radius:4px;cursor:pointer;font-weight:700;font-size:0.85rem}
+button.sec{background:#2a2a2a;color:var(--text)}
+button:hover{filter:brightness(1.15)}
+#main{flex:1;display:flex;flex-direction:column;padding:16px;gap:10px;min-width:0}
+.tabs{display:flex;gap:4px}
+.tab{padding:6px 14px;font-size:0.78rem;font-weight:600;border-radius:4px 4px 0 0;cursor:pointer;background:#1a1a1a;color:#666;border:1px solid var(--border);border-bottom:none}
+.tab.active{background:#0a0a0a;color:var(--accent)}
+.view{flex:1;background:#000;border:1px solid var(--border);border-radius:0 8px 8px 8px;position:relative;overflow:hidden;display:none}
+.view.active{display:block}
+canvas.svg-canvas{width:100%;height:100%}
+#glCanvas{width:100%;height:100%;display:block}
+#legend{position:absolute;bottom:10px;left:12px;font-size:0.7rem;display:flex;gap:14px;pointer-events:none}
+.leg{display:flex;align-items:center;gap:5px}
+.leg-dot{width:14px;height:3px;border-radius:2px}
+#rotate-hint{position:absolute;top:8px;right:10px;font-size:0.65rem;color:#444;pointer-events:none}
+#terminal{height:130px;background:#080808;border:1px solid #1a1a1a;padding:8px 10px;font-family:monospace;font-size:0.72rem;color:var(--accent);overflow-y:scroll;white-space:pre;border-radius:4px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <h2 style="margin-top:0">📁 Input &amp; Size</h2>
+  <input type="file" id="fileInput" accept=".svg">
+  <div class="group"><label>Target image width (mm)</label><input type="number" id="targetWidth" value="200"></div>
+
+  <h2>🔨 Stamp Depth (Z)</h2>
+  <div class="grid-2">
+    <div class="group"><label>Z Min — small dots</label><input type="number" id="zDotMin" value="0.5" step="0.1"></div>
+    <div class="group"><label>Z Max — large dots</label><input type="number" id="zDotMax" value="-2.0" step="0.1"></div>
+  </div>
+  <div class="group"><label>Max brush diameter (mm)</label><input type="number" id="maxBrushWidth" value="5.0"></div>
+
+  <h2>🌐 Global Z Offset</h2>
+  <div class="group"><label>Z Global Offset — added to all Z values (mm)</label><input type="number" id="zGlobalOffset" value="0.0" step="0.1"></div>
+
+  <h2>🛢️ Dip &amp; Wipe</h2>
+  <div class="grid-2">
+    <div class="group"><label>Dip X</label><input type="number" id="dipX" value="91.0"></div>
+    <div class="group"><label>Dip Y</label><input type="number" id="dipY" value="25.0"></div>
+    <div class="group"><label>Dip Z depth (raw)</label><input type="number" id="dipZ" value="1.3"></div>
+    <div class="group"><label>Wipe radius (mm)</label><input type="number" id="wipeR" value="29.0"></div>
+  </div>
+  <div class="group"><label>Dots per dip</label><input type="number" id="dotsPerDip" value="20"></div>
+
+  <h2>🌀 Jitter &amp; Spiral</h2>
+  <div class="grid-3">
+    <div class="group"><label>Jitter XY (mm)</label><input type="number" id="dipJitter" value="3.0" step="0.5"></div>
+    <div class="group"><label>Spiral loops</label><input type="number" id="dipSpiralLoops" value="1.0" step="0.5"></div>
+    <div class="group"><label>Spiral radius</label><input type="number" id="dipSpiralR" value="8.0" step="0.5"></div>
+  </div>
+
+  <h2>🚀 Heights &amp; Speeds</h2>
+  <div class="grid-2">
+    <div class="group"><label>Z Travel / Dip height (raw)</label><input type="number" id="zSafeDip" value="16.0"></div>
+    <div class="group"><label>Z Safe / Paint height (raw)</label><input type="number" id="zSafe" value="5.0"></div>
+    <div class="group"><label>Z Wipe exit height (raw)</label><input type="number" id="zWipeExit" value="4.4"></div>
+    <div class="group"><label>Feed rate — travel</label><input type="number" id="feedRate" value="3000"></div>
+    <div class="group"><label>Feed rate — wipe</label><input type="number" id="feedWipe" value="1500"></div>
+    <div class="group"><label>Feed rate — stamp</label><input type="number" id="feedPaint" value="600"></div>
+  </div>
+  <div class="grid-2">
+    <div class="group"><label>X Offset (canvas origin)</label><input type="number" id="xOff" value="33"></div>
+    <div class="group"><label>Y Offset (canvas origin)</label><input type="number" id="yOff" value="110"></div>
+  </div>
+
+  <button id="generateBtn">▶ GENERATE G-CODE</button>
+  <button id="downloadBtn" class="sec">⬇ DOWNLOAD .GCODE</button>
+</div>
+
+<div id="main">
+  <div class="tabs">
+    <div class="tab active" data-tab="svg">SVG Preview</div>
+    <div class="tab" data-tab="gcode">3D G-code Preview</div>
+  </div>
+
+  <div class="view active" id="view-svg">
+    <canvas class="svg-canvas" id="previewCanvas"></canvas>
+  </div>
+
+  <div class="view" id="view-gcode">
+    <canvas id="glCanvas"></canvas>
+    <div id="legend">
+      <span class="leg"><span class="leg-dot" style="background:var(--travel)"></span>Travel (G0)</span>
+      <span class="leg"><span class="leg-dot" style="background:var(--paint)"></span>Stamp (G1)</span>
+    </div>
+    <div id="rotate-hint">Drag to rotate · Scroll to zoom</div>
+  </div>
+
+  <div id="terminal">Load an SVG file and click GENERATE G-CODE…</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ── Tab switching ──────────────────────────────────────────────────── */
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('view-' + tab.dataset.tab).classList.add('active');
+    if (tab.dataset.tab === 'gcode') { resizeGL(); renderGL(); }
+  });
+});
+
+/* ── SVG dot preview ────────────────────────────────────────────────── */
+let rawCircles = [];
+let generatedGCode = "";
+const svgCanvas = document.getElementById('previewCanvas');
+const svgCtx    = svgCanvas.getContext('2d');
+
+document.getElementById('fileInput').addEventListener('change', e => {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const doc = new DOMParser().parseFromString(ev.target.result, "image/svg+xml");
+    rawCircles = Array.from(doc.querySelectorAll('circle')).map(c => ({
+      cx: parseFloat(c.getAttribute('cx') || 0),
+      cy: parseFloat(c.getAttribute('cy') || 0),
+      r:  parseFloat(c.getAttribute('r')  || 0)
+    }));
+    drawSVGPreview();
+  };
+  reader.readAsText(e.target.files[0]);
+});
+
+function drawSVGPreview() {
+  svgCanvas.width  = svgCanvas.parentElement.clientWidth;
+  svgCanvas.height = svgCanvas.parentElement.clientHeight;
+  svgCtx.clearRect(0, 0, svgCanvas.width, svgCanvas.height);
+  if (!rawCircles.length) return;
+  const maxCX = Math.max(...rawCircles.map(c => c.cx + c.r), 1);
+  const sc = (svgCanvas.width - 100) / maxCX;
+  svgCtx.fillStyle = '#ff9f1c';
+  rawCircles.forEach(c => {
+    svgCtx.beginPath();
+    svgCtx.arc(c.cx*sc + 50, c.cy*sc + 50, Math.max(c.r*sc, 0.5), 0, Math.PI*2);
+    svgCtx.fill();
+  });
+}
+
+/* ── G-code generation ──────────────────────────────────────────────── */
+document.getElementById('generateBtn').addEventListener('click', () => {
+  if (!rawCircles.length) return alert("Please load an SVG file first.");
+
+  const zGOff = parseFloat(document.getElementById('zGlobalOffset').value);
+  const cfg = {
+    targetW:        parseFloat(document.getElementById('targetWidth').value),
+    zDotMin:        parseFloat(document.getElementById('zDotMin').value)        + zGOff,
+    zDotMax:        parseFloat(document.getElementById('zDotMax').value)        + zGOff,
+    maxBrush:       parseFloat(document.getElementById('maxBrushWidth').value),
+    dotsPerDip:     parseInt(  document.getElementById('dotsPerDip').value),
+    dipX:           parseFloat(document.getElementById('dipX').value),
+    dipY:           parseFloat(document.getElementById('dipY').value),
+    dipZ:           parseFloat(document.getElementById('dipZ').value)           + zGOff,
+    wipeR:          parseFloat(document.getElementById('wipeR').value),
+    dipJitter:      parseFloat(document.getElementById('dipJitter').value),
+    dipSpiralLoops: parseFloat(document.getElementById('dipSpiralLoops').value),
+    dipSpiralR:     parseFloat(document.getElementById('dipSpiralR').value),
+    zHigh:          parseFloat(document.getElementById('zSafeDip').value)       + zGOff,
+    zLow:           parseFloat(document.getElementById('zSafe').value)          + zGOff,
+    zWipeExit:      parseFloat(document.getElementById('zWipeExit').value)      + zGOff,
+    feed:           parseFloat(document.getElementById('feedRate').value),
+    feedWipe:       parseFloat(document.getElementById('feedWipe').value),
+    feedPaint:      parseFloat(document.getElementById('feedPaint').value),
+    xOff:           parseFloat(document.getElementById('xOff').value),
+    yOff:           parseFloat(document.getElementById('yOff').value),
+  };
+
+  // Scale SVG circles to machine mm
+  const minX  = Math.min(...rawCircles.map(c => c.cx - c.r));
+  const maxX  = Math.max(...rawCircles.map(c => c.cx + c.r));
+  const maxY  = Math.max(...rawCircles.map(c => c.cy + c.r));
+  const sc    = cfg.targetW / (maxX - minX);
+  let dots = rawCircles.map(c => ({
+    x: (c.cx - minX) * sc + cfg.xOff,
+    y: (maxY - c.cy) * sc + cfg.yOff,   // flip Y for machine coords
+    r: c.r * sc
+  }));
+
+  let g = [
+    "G90 ; Absolute positioning",
+    "G21 ; Units: millimetres",
+    `; Dots Stamp V8 — z_global_offset=${zGOff}`,
+    `G0 Z${cfg.zHigh.toFixed(3)} F${cfg.feed} ; Initial safe lift`
+  ];
+
+  let dotsCount = 0;
+  let curPos = { x: cfg.dipX, y: cfg.dipY };
+
+  /*
+   * performDipAndTravel
+   * Ported from lines500 _perform_dip_and_travel.
+   *
+   * Z-SPIKE FIX: this function issues its own "G0 Z zLow" + combined
+   * "G0 X Y Z zHigh" internally.  The caller must NOT add an extra
+   * "G0 Z zHigh" before calling — that was the cause of the visible spikes
+   * (zLow -> zHigh spike -> zLow -> zHigh -> dip).
+   */
+  const performDipAndTravel = (targetX, targetY) => {
+    const ax = cfg.dipX + (Math.random()*2 - 1) * cfg.dipJitter;
+    const ay = cfg.dipY + (Math.random()*2 - 1) * cfg.dipJitter;
+
+    g.push(`\n; --- DIP CYCLE ---`);
+
+    // 1. Clear canvas surface
+    g.push(`G0 Z${cfg.zLow.toFixed(3)} F3000`);
+
+    // 2. Travel to dip station — combined XYZ rises to zHigh en route
+    g.push(`G0 X${ax.toFixed(3)} Y${ay.toFixed(3)} Z${cfg.zHigh.toFixed(3)} F${cfg.feed}`);
+
+    // 3. Plunge into paint
+    g.push(`G1 Z${cfg.dipZ.toFixed(3)} F3000`);
+
+    // 4. Outward spiral while submerged — loads paint evenly across bristles
+    const steps = Math.round(cfg.dipSpiralLoops * 4);
+    for (let i = 0; i < steps; i++) {
+      const ang = i * (Math.PI / 2);
+      const r   = steps > 0 ? (i / steps) * cfg.dipSpiralR : 0;
+      g.push(`G1 X${(ax + r*Math.cos(ang)).toFixed(3)} Y${(ay + r*Math.sin(ang)).toFixed(3)} F2500`);
+    }
+
+    // 5. Directional wipe — exit toward the target dot (not hardcoded +X)
+    const dx = targetX - cfg.dipX, dy = targetY - cfg.dipY;
+    const dd = Math.hypot(dx, dy);
+    const wx = dd > 0 ? cfg.dipX + (dx/dd)*cfg.wipeR : cfg.dipX + cfg.wipeR;
+    const wy = dd > 0 ? cfg.dipY + (dy/dd)*cfg.wipeR : cfg.dipY;
+    g.push(`G0 Z${cfg.zWipeExit.toFixed(3)} F3000`);
+    g.push(`G1 X${wx.toFixed(3)} Y${wy.toFixed(3)} F${cfg.feedWipe} ; Directional wipe`);
+
+    // 6. Rise to travel height, move to target dot, arrive at zLow ready to stamp
+    g.push(`G0 Z${cfg.zHigh.toFixed(3)} F3000`);
+    g.push(`G0 X${targetX.toFixed(3)} Y${targetY.toFixed(3)} Z${cfg.zLow.toFixed(3)} F${cfg.feed}`);
+    g.push(`; --- DIP END ---`);
+  };
+
+  // Initial dip before first dot
+  const first = dots[0];
+  performDipAndTravel(first ? first.x : cfg.dipX, first ? first.y : cfg.dipY);
+  dotsCount = 0;
+
+  // Nearest-neighbour stamp loop
+  while (dots.length > 0) {
+    let bIdx = 0, bDist = Infinity;
+    dots.forEach((pt, i) => {
+      const dst = Math.hypot(pt.x - curPos.x, pt.y - curPos.y);
+      if (dst < bDist) { bDist = dst; bIdx = i; }
+    });
+    const d = dots.splice(bIdx, 1)[0];
+
+    // Re-dip when dot budget exhausted.
+    // NO external "G0 Z zHigh" here — performDipAndTravel handles it.
+    if (dotsCount >= cfg.dotsPerDip) {
+      performDipAndTravel(d.x, d.y);
+      dotsCount = 0;
+    }
+
+    // XY travel (tool already at zLow from dip arrival or previous retract)
+    g.push(`G0 X${d.x.toFixed(3)} Y${d.y.toFixed(3)} F${cfg.feed}`);
+
+    // Stamp depth proportional to dot radius
+    const ratio   = Math.min((d.r * 2) / cfg.maxBrush, 1.0);
+    const targetZ = cfg.zDotMin + (cfg.zDotMax - cfg.zDotMin) * ratio;
+    g.push(`G1 Z${targetZ.toFixed(3)} F${cfg.feedPaint} ; Stamp`);
+
+    // Retract to zLow — ready for next XY travel
+    g.push(`G0 Z${cfg.zLow.toFixed(3)} F3000 ; Retract`);
+
+    dotsCount++;
+    curPos = { x: d.x, y: d.y };
+  }
+
+  g.push(`G0 Z${cfg.zHigh.toFixed(3)} F3000`);
+  g.push("M2 ; End of program");
+
+  generatedGCode = g.join("\n");
+  document.getElementById('terminal').innerText = generatedGCode;
+
+  // Auto-switch to 3D preview
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelector('[data-tab="gcode"]').classList.add('active');
+  document.getElementById('view-gcode').classList.add('active');
+  buildGLScene(generatedGCode);
+});
+
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  if (!generatedGCode) return alert("Generate G-code first.");
+  const blob = new Blob([generatedGCode], { type: 'text/plain' });
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(blob), download: 'stamp_v8.gcode'
+  });
+  a.click();
+});
+
+/* ── Three.js G-code 3D preview ─────────────────────────────────────── */
+const glCanvas = document.getElementById('glCanvas');
+let renderer, scene, camera, glGroup;
+let glRotX = 0.45, glRotY = 0.6, glZoom = 1.0;
+let drag = null;
+
+function initGL() {
+  if (renderer) return;
+  renderer = new THREE.WebGLRenderer({ canvas: glCanvas, antialias: true });
+  renderer.setClearColor(0x060606);
+  renderer.setPixelRatio(window.devicePixelRatio);
+
+  scene  = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200000);
+  camera.position.set(0, 0, 600);
+
+  // Grid floor
+  const grid = new THREE.GridHelper(800, 40, 0x1e1e1e, 0x181818);
+  grid.position.y = -5;
+  scene.add(grid);
+
+  // Mouse drag rotation
+  glCanvas.addEventListener('mousedown', e => {
+    drag = { mx: e.clientX, my: e.clientY, rx: glRotX, ry: glRotY };
+  });
+  window.addEventListener('mouseup', () => { drag = null; });
+  window.addEventListener('mousemove', e => {
+    if (!drag) return;
+    glRotY = drag.ry + (e.clientX - drag.mx) * 0.007;
+    glRotX = Math.max(-1.4, Math.min(1.4, drag.rx + (e.clientY - drag.my) * 0.007));
+    renderGL();
+  });
+  glCanvas.addEventListener('wheel', e => {
+    glZoom *= e.deltaY > 0 ? 0.91 : 1.10;
+    glZoom = Math.max(0.03, Math.min(30, glZoom));
+    renderGL();
+    e.preventDefault();
+  }, { passive: false });
+}
+
+function parseGCode3D(gcode) {
+  const travel = [], paint = [];
+  let x = 0, y = 0, z = 0;
+  for (const raw of gcode.split('\n')) {
+    const line = raw.split(';')[0].trim().toUpperCase();
+    if (!line) continue;
+    const isG0 = /^G0\b/.test(line);
+    const isG1 = /^G1\b/.test(line);
+    if (!isG0 && !isG1) continue;
+    const xm = line.match(/X([-\d.]+)/), ym = line.match(/Y([-\d.]+)/), zm = line.match(/Z([-\d.]+)/);
+    const nx = xm ? parseFloat(xm[1]) : x;
+    const ny = ym ? parseFloat(ym[1]) : y;
+    const nz = zm ? parseFloat(zm[1]) : z;
+    // Map machine XYZ to Three.js: X=machX, Y=machZ(height), Z=-machY
+    const arr = isG0 ? travel : paint;
+    arr.push(x, z, -y,  nx, nz, -ny);
+    x = nx; y = ny; z = nz;
+  }
+  return { travel, paint };
+}
+
+function buildGLScene(gcode) {
+  initGL();
+  if (glGroup) scene.remove(glGroup);
+  glGroup = new THREE.Group();
+
+  const { travel, paint } = parseGCode3D(gcode);
+
+  const addLines = (verts, color) => {
+    if (!verts.length) return;
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
+    glGroup.add(new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color })));
+  };
+  addLines(travel, 0x00e5ff);  // cyan  — G0 travel
+  addLines(paint,  0xff9f1c);  // amber — G1 stamp
+
+  // Auto-centre and auto-scale
+  const all = [...travel, ...paint];
+  if (all.length) {
+    let mnX=Infinity, mnY=Infinity, mnZ=Infinity, mxX=-Infinity, mxY=-Infinity, mxZ=-Infinity;
+    for (let i = 0; i < all.length; i += 3) {
+      mnX=Math.min(mnX,all[i]);   mxX=Math.max(mxX,all[i]);
+      mnY=Math.min(mnY,all[i+1]); mxY=Math.max(mxY,all[i+1]);
+      mnZ=Math.min(mnZ,all[i+2]); mxZ=Math.max(mxZ,all[i+2]);
+    }
+    glGroup.position.set(-(mnX+mxX)/2, -(mnY+mxY)/2, -(mnZ+mxZ)/2);
+    glZoom = 280 / Math.max(mxX-mnX, mxY-mnY, mxZ-mnZ, 1);
+  }
+
+  scene.add(glGroup);
+  resizeGL();
+  renderGL();
+}
+
+function resizeGL() {
+  if (!renderer) return;
+  const w = glCanvas.parentElement.clientWidth;
+  const h = glCanvas.parentElement.clientHeight;
+  renderer.setSize(w, h, false);
+  if (camera) { camera.aspect = w/h; camera.updateProjectionMatrix(); }
+}
+
+function renderGL() {
+  if (!renderer) return;
+  if (glGroup) {
+    glGroup.rotation.x = glRotX;
+    glGroup.rotation.y = glRotY;
+    glGroup.scale.setScalar(glZoom);
+  }
+  renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => { drawSVGPreview(); resizeGL(); renderGL(); });
+</script>
+</body>
+</html>
