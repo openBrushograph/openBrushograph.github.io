@@ -712,31 +712,13 @@
              </a>
            </div>
            <div class="extension-grid">
-             <a class="extension-tile" href="studio/" style="background: #051a05; border-color: #39FF14; color: #e0ffe0;">
+             <a class="extension-tile" href="https://nirmanaflow.netlify.app/" target="_blank" rel="noreferrer" style="border-color: var(--accent); box-shadow: 0 0 15px var(--accent-soft);">
                <div class="extension-name">
-                 <span style="color: #39FF14;">Brushograph Studio</span>
-                 <span class="extension-chip" style="background: rgba(57,255,20,0.12); color: #39FF14; border-color: rgba(57,255,20,0.4);">mechatronics</span>
+                 <span>NirmanaFlow</span>
+                 <span class="extension-chip" style="background: var(--accent); color: #fff; border: none; font-weight: 700;">NEW</span>
                </div>
-               <div class="extension-desc" style="color: #5ccc5c;">
-                 Mechatronic web interfaces &amp; sonic experiments &mdash; stepper-motor synths, drawing pads, drone engines and G-code sequencers.
-               </div>
-             </a>
-             <a class="extension-tile" href="extensions/Ultra_Painter_WebApp.html" style="background: linear-gradient(135deg, #86007D 0%, #0000F9 50%, #008018 100%); border-color: #ffd166; color: #fff;">
-               <div class="extension-name">
-                 <span style="color: #fff;">Ultra Painter</span>
-                 <span class="extension-chip" style="background: rgba(255,255,255,0.2); color: #fff; border-color: rgba(255,255,255,0.4);">concentric / lines</span>
-               </div>
-               <div class="extension-desc" style="color: rgba(255,255,255,0.85);">
-                 Full raster-to-G-code painter with concentric and lines infill, path optimization, backlash compensation and dip cycles.
-               </div>
-             </a>
-             <a class="extension-tile" href="extensions/Four-channel-robotic-painting.html" style="background: #13151b; border-color: #e8ff47; color: #c4c9da;">
-               <div class="extension-name">
-                 <span style="color: #e8ff47;">4-Channel Painter</span>
-                 <span class="extension-chip" style="background: rgba(232,255,71,0.12); color: #e8ff47; border-color: rgba(232,255,71,0.4);">multi-color</span>
-               </div>
-               <div class="extension-desc" style="color: #9ba3c0;">
-                 Multi-color robotic painting studio &mdash; four image layers, per-channel dip stations, tutti frutti mode and path visualizer.
+               <div class="extension-desc">
+                 Generative flow field art for plotters. Create organic textures and patterns directly in the browser.
                </div>
              </a>
              <a class="extension-tile" href="extensions/batak-assembler.html" style="background: #2b0b0b; border-color: #8e0000; color: #fff8e1;">
@@ -747,35 +729,20 @@
               <div class="extension-desc" style="color: #d7ccc8;">
                 Construct Batak script text paths from skeletal definitions. Generates vector paths for plotting.
               </div>
-             </a>
-           </div>
-           <div style="margin-top: 14px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted);">Generative art</div>
-           <div class="extension-grid">
-             <a class="extension-tile" href="https://nirmanaflow.netlify.app/" target="_blank" rel="noreferrer" style="border-color: var(--accent); box-shadow: 0 0 15px var(--accent-soft);">
-               <div class="extension-name">
-                 <span>NirmanaFlow</span>
-                 <span class="extension-chip" style="background: var(--accent); color: #fff; border: none; font-weight: 700;">NEW</span>
-               </div>
-               <div class="extension-desc">
-                 Generative flow field art for plotters. Create organic textures and patterns directly in the browser.
-               </div>
-             </a>
-           </div>
-           <div style="margin-top: 14px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted);">Legacy tools</div>
-           <div class="extension-grid">
-             <a class="extension-tile" href="https://brushograph.pro/" target="_blank" rel="noreferrer">
-               <div class="extension-name">
-                 <span>brushograph.pro</span>
-                 <span class="extension-chip">main web UI</span>
-               </div>
-               <div class="extension-desc">
-                 The primary web interface for converting images and vectors into brush-friendly G-code toolpaths.
-               </div>
-             </a>
-             <a class="extension-tile" href="extensions/Raster-painter.html">
+            </a>
+            <a class="extension-tile" href="https://brushograph.pro/" target="_blank" rel="noreferrer">
+              <div class="extension-name">
+                <span>brushograph.pro</span>
+                <span class="extension-chip">main web UI</span>
+              </div>
+              <div class="extension-desc">
+                The primary web interface for converting images and vectors into brush-friendly G-code toolpaths.
+              </div>
+            </a>
+            <a class="extension-tile" href="extensions/Raster-painter.html">
                <div class="extension-name">
                  <span>Raster-painter</span>
-                 <span class="extension-chip">image &rarr; G-code</span>
+                 <span class="extension-chip">image → G-code</span>
                </div>
                <div class="extension-desc">
                  Generate FluidNC raster G-code from images, with brush dipping, wiping and optional X/Y backlash compensation.
@@ -805,7 +772,7 @@
                  <span class="extension-chip">X/Y compensation</span>
                </div>
                <div class="extension-desc">
-                 Post-process G-code to insert correction moves on X/Y direction changes, compensating mechanical backlash.
+                 Post-process existing G-code to insert safe correction moves whenever X/Y direction changes, compensating mechanical backlash.
                </div>
              </a>
              <a class="extension-tile" href="extensions/lb2gcode.html">
@@ -814,7 +781,7 @@
                  <span class="extension-chip">LightBurn colors</span>
                </div>
                <div class="extension-desc">
-                 Add color pick-ups, washing sequences and brush refreshes to LightBurn G-code using layer names.
+                 Add color pick-ups, washing sequences and path-length based brush refreshes to LightBurn G-code using layer names.
                </div>
              </a>
            </div>
@@ -877,7 +844,6 @@
              </div>
            </div>
            <div class="card-body">
-             <a href="https://wiki.sgmk-ssam.ch/wiki/Brushograph" target="_blank" rel="noreferrer"><img src="img/664px-OpenBrushograph_flyer.jpg" alt="OpenBrushograph flyer" style="width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 12px; opacity: 0.9;"></a>
              <p>
                1. Read the <a href="https://wiki.sgmk-ssam.ch/wiki/Brushograph" target="_blank" rel="noreferrer">Brushograph wiki</a>
                for background, construction notes and links to earlier machines.
