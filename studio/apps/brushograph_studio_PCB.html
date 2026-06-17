@@ -1431,9 +1431,11 @@
                 drawPot('wash');
             }
 
+            const themeOppositeColor = isTropical ? '#ff00ff' : '#39FF14';
+
             paths.forEach(stroke => {
                 if (stroke.points && stroke.points.length > 0) {
-                    ctx.strokeStyle = stroke.color;
+                    ctx.strokeStyle = isPurePen ? themeOppositeColor : stroke.color;
                     ctx.lineWidth = 0.8 * (canvas.width / maxX); 
                     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
                     ctx.beginPath();
@@ -1451,7 +1453,7 @@
                     if (validPoints.length < 2) return;
                     
                     ctx.beginPath();
-                    ctx.strokeStyle = stroke.color;
+                    ctx.strokeStyle = isPurePen ? themeOppositeColor : stroke.color;
                     ctx.lineWidth = stroke.isLift ? 1 : 0.8 * (canvas.width / maxX);
                     ctx.setLineDash(stroke.isLift ? [5, 5] : []);
                     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
@@ -2221,7 +2223,8 @@
             });
             
             let currentStroke = null;
-            let activeColor = hasColorPicking ? '#333333' : '#ff00ff';
+            const isTropical = document.body.classList.contains('theme-tropical');
+            let activeColor = hasColorPicking ? '#333333' : (isTropical ? '#ff00ff' : '#39FF14');
             let minX = Infinity, maxXParsed = -Infinity, minY = Infinity, maxYParsed = -Infinity;
             
             streamLines.forEach((line, index) => {
