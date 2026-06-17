@@ -244,9 +244,22 @@
         <div class="intro-text">
             <strong>About this Experiment:</strong><br><br>
             This directory hosts a collection of single-file, portable web interfaces designed to interact with a FluidNC-driven Brushograph. By injecting "blind" G-code over local HTTP or persistent WebSockets, these interfaces turn the machine's stepper motors into dynamic sound generators and professional drawing tools. Built with a unified <em>Cyber-Tropical</em> aesthetic, these tools evolved sequentially from a simple sequencer to a high-performance mechatronic studio.
+            <img src="assets/thumbnails/studio_layout.png" alt="Brushograph Studio PCB Layout" style="width: 100%; border-radius: 6px; margin-top: 15px; border: 1px solid var(--border); opacity: 0.9;">
         </div>
 
         <div class="subtitle" style="margin-top: 10px; margin-bottom: 20px; color: var(--accent-pink);">Current Development</div>
+
+        <a href="apps/brushograph_studio_PCB.html" class="panel" style="border-left-color: var(--accent-pink);">
+            <img src="assets/thumbnails/thumb_studio_pcb.png" class="panel-thumb" style="border-color: var(--accent-pink);" alt="Studio PCB Thumbnail">
+            <div class="panel-content">
+                <h2 style="color: var(--accent-pink);">Phase 8: Brushograph Studio PCB <span class="tag" style="border-color: var(--accent-pink); color: var(--accent-pink); background: rgba(255,0,127,0.1);">WS/GCode</span></h2>
+                <p><strong>Technical Core:</strong> The definitive web studio featuring an advanced G-Code streamer pipeline. Includes on-the-fly "Raster Fix" translation (converting LightBurn S-values to Z-lifts) and physical Backlash Compensation. Features a persistent Drawing Pad preview that renders perfectly synchronized absolute moves.</p>
+                <div style="margin-top: 10px; font-size: 0.85rem; color: var(--accent-blue); background: rgba(0,243,255,0.05); padding: 8px; border-radius: 4px; border: 1px dashed var(--accent-blue);">
+                    <strong>🛠️ Agentic Dev Stack & Stability:</strong><br>
+                    Developed with <strong>Antigravity IDE</strong> to port complex G-Code preprocessing algorithms directly into the browser runtime, maintaining a seamless mechatronic pipeline.
+                </div>
+            </div>
+        </a>
 
         <a href="apps/brushograph_studio_pro_deluxe.html" class="panel" style="border-left-color: var(--accent-green);">
             <img src="assets/thumbnails/thumb_studio_pro_deluxe.png" class="panel-thumb" style="border-color: var(--accent-green);" alt="Studio Pro Deluxe Thumbnail">
