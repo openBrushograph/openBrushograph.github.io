@@ -748,6 +748,32 @@
                 <label>Y:</label><input type="number" id="max-y" value="50" style="width:50px;" oninput="document.getElementById('canvas-preset').value='custom'; updateCanvasDimensions()">
             </div>
 
+            <h3 style="margin-top:20px; margin-bottom:10px; font-size:1rem; border-bottom:1px solid var(--border); padding-bottom:5px;">Diy-CAD Components</h3>
+            <div class="input-group" style="gap:5px; flex-wrap:wrap;">
+                <label style="display:flex; align-items:center; gap:5px; font-weight:bold;">
+                    <input type="radio" name="canvas-mode" id="mode-draw" value="draw" checked onchange="window.updateCanvasMode && window.updateCanvasMode()"> Draw
+                </label>
+                <label style="display:flex; align-items:center; gap:5px; font-weight:bold; color:var(--accent-pink);">
+                    <input type="radio" name="canvas-mode" id="mode-move" value="move" onchange="window.updateCanvasMode && window.updateCanvasMode()"> Move Parts
+                </label>
+                <label style="display:flex; align-items:center; gap:5px; font-weight:bold; color:#ff4444;">
+                    <input type="radio" name="canvas-mode" id="mode-erase" value="erase" onchange="window.updateCanvasMode && window.updateCanvasMode()"> Eraser
+                </label>
+                <div style="width:10px;"></div>
+                <select id="pcb-part-type" style="background:var(--input-bg); color:var(--input-text); border:var(--border-width) solid var(--border); padding:3px; font-family:var(--font-main); border-radius:var(--border-radius);">
+                    <option value="DIL-8">DIL-8</option>
+                    <option value="DIL-14">DIL-14</option>
+                    <option value="DIL-16">DIL-16</option>
+                </select>
+                <button id="btn-add-part" style="padding:2px 8px;">Add</button>
+            </div>
+            <div class="input-group" id="part-edit-tools" style="display:none; gap:5px; background:rgba(255,0,127,0.1); padding:5px; border-radius:4px; margin-top:5px; align-items:center;">
+                <label style="font-size:0.8rem;">Rot (&deg;):</label>
+                <input type="range" id="part-rotation" min="-180" max="180" value="0" step="1" style="flex:1;" oninput="document.getElementById('part-rotation-val').textContent = this.value; window.updateSelectedPartRotation && window.updateSelectedPartRotation()">
+                <span id="part-rotation-val" style="width:30px; text-align:right; font-size:0.8rem;">0</span>
+                <button id="btn-delete-part" style="padding:2px 8px; border-color:#ff4444; color:#ff4444; font-size:0.8rem;">Delete</button>
+            </div>
+
             <div class="canvas-container">
                 <canvas id="xy-pad" width="490" height="350"></canvas>
             </div>
@@ -1138,6 +1164,56 @@
         let paths = []; // Array of stroke objects
         let currentStroke = null;
 
+        // --- PCB Components State ---
+        window.pcbComponents = [];
+        window.selectedComponentIndex = -1;
+        
+        const PCB_FOOTPRINTS = {
+            'DIL-8': { pins: 8, rows: 2, pitch: 2.54, rowSpacing: 7.62 },
+            'DIL-14': { pins: 14, rows: 2, pitch: 2.54, rowSpacing: 7.62 },
+            'DIL-16': { pins: 16, rows: 2, pitch: 2.54, rowSpacing: 7.62 }
+        };
+
+        window.updateCanvasMode = function() {
+            const isMoveMode = document.getElementById('mode-move').checked;
+            document.getElementById('part-edit-tools').style.display = (isMoveMode && window.selectedComponentIndex >= 0) ? 'flex' : 'none';
+            if (typeof redrawCanvas === 'function') redrawCanvas();
+        };
+
+        window.updateSelectedPartRotation = function() {
+            if (window.selectedComponentIndex >= 0 && window.selectedComponentIndex < window.pcbComponents.length) {
+                const rot = parseFloat(document.getElementById('part-rotation').value);
+                window.pcbComponents[window.selectedComponentIndex].rotation = rot;
+                if (typeof redrawCanvas === 'function') redrawCanvas();
+            }
+        };
+
+        document.getElementById('btn-add-part').onclick = () => {
+            const type = document.getElementById('pcb-part-type').value;
+            const maxX = parseFloat(document.getElementById('max-x').value);
+            const maxY = parseFloat(document.getElementById('max-y').value);
+            window.pcbComponents.push({
+                type: type,
+                x: maxX / 2, // Center of canvas in mm
+                y: maxY / 2,
+                rotation: 0
+            });
+            window.selectedComponentIndex = window.pcbComponents.length - 1;
+            document.getElementById('mode-move').checked = true;
+            document.getElementById('part-rotation').value = 0;
+            document.getElementById('part-rotation-val').textContent = "0";
+            window.updateCanvasMode();
+        };
+
+        document.getElementById('btn-delete-part').onclick = () => {
+            if (window.selectedComponentIndex >= 0) {
+                window.pcbComponents.splice(window.selectedComponentIndex, 1);
+                window.selectedComponentIndex = -1;
+                window.updateCanvasMode();
+            }
+        };
+
+
         const POTS = {
             'c1': { x: 45, y: 8, color: '#ff00aa', isWash: false, skipDip: false },
             'c2': { x: 90, y: 8, color: '#0066ff', isWash: false, skipDip: false },
@@ -1244,6 +1320,70 @@
 
             ctx.globalAlpha = 1.0;
 
+            // --- Draw PCB Components (Diy-CAD) ---
+            window.pcbComponents.forEach((comp, idx) => {
+                const fp = PCB_FOOTPRINTS[comp.type];
+                if (!fp) return;
+                
+                const cx = (comp.x / maxX) * canvas.width;
+                const cy = canvas.height - (comp.y / maxY) * canvas.height;
+                
+                ctx.save();
+                ctx.translate(cx, cy);
+                // Rotate negatively because HTML canvas Y is down, but physical Y is up
+                ctx.rotate(-comp.rotation * Math.PI / 180);
+                
+                // Draw body
+                const pinsPerCol = fp.pins / 2;
+                const bodyWidth = (fp.rowSpacing / maxX) * canvas.width;
+                const bodyHeight = ((pinsPerCol * fp.pitch) / maxY) * canvas.height;
+                
+                const isSelected = (idx === window.selectedComponentIndex);
+                ctx.fillStyle = isTropical ? (isSelected ? 'rgba(57,255,20,0.2)' : 'rgba(255,255,255,0.1)') : (isSelected ? 'rgba(255,0,127,0.2)' : 'rgba(0,0,0,0.1)');
+                ctx.strokeStyle = isTropical ? (isSelected ? '#39FF14' : '#aaaaaa') : (isSelected ? '#ff00ff' : '#aaaaaa');
+                ctx.lineWidth = isSelected ? 2 : 1;
+                
+                // Center the body
+                ctx.fillRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
+                ctx.strokeRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
+                
+                // Pin 1 Indicator (top-left)
+                ctx.fillStyle = ctx.strokeStyle;
+                ctx.beginPath();
+                ctx.arc(-bodyWidth/2 + 3, -bodyHeight/2 + 3, 2, 0, Math.PI*2);
+                ctx.fill();
+
+                // Draw Pads
+                ctx.fillStyle = isTropical ? '#000' : '#fff';
+                ctx.strokeStyle = isTropical ? '#39FF14' : '#ff00ff';
+                ctx.lineWidth = 1.5;
+                
+                const padRadius = (1.0 / maxX) * canvas.width; // 2mm diameter pad = 1mm radius
+                const holeRadius = (0.4 / maxX) * canvas.width; // 0.8mm drill = 0.4mm radius
+                
+                const startY = -((pinsPerCol - 1) * fp.pitch / 2);
+                
+                for (let col = 0; col < 2; col++) {
+                    const px = (col === 0 ? -fp.rowSpacing/2 : fp.rowSpacing/2) / maxX * canvas.width;
+                    for (let row = 0; row < pinsPerCol; row++) {
+                        const py = (startY + row * fp.pitch) / maxY * canvas.height;
+                        
+                        // Copper Ring
+                        ctx.beginPath();
+                        ctx.arc(px, py, padRadius, 0, Math.PI*2);
+                        ctx.stroke();
+                        
+                        // Drill Hole
+                        ctx.beginPath();
+                        ctx.arc(px, py, holeRadius, 0, Math.PI*2);
+                        ctx.fillStyle = isTropical ? '#051a05' : '#fff';
+                        ctx.fill();
+                    }
+                }
+                
+                ctx.restore();
+            });
+
             // Draw Bottom Warning Area (20mm)
 
             const isPurePen = document.getElementById('pure-pen-mode')?.checked;
@@ -1294,7 +1434,8 @@
             paths.forEach(stroke => {
                 if (stroke.points && stroke.points.length > 0) {
                     ctx.strokeStyle = stroke.color;
-                    ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+                    ctx.lineWidth = 0.8 * (canvas.width / maxX); 
+                    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
                     ctx.beginPath();
                     ctx.moveTo(stroke.points[0].cx, stroke.points[0].cy);
                     for (let i = 1; i < stroke.points.length; i++) ctx.lineTo(stroke.points[i].cx, stroke.points[i].cy);
@@ -1311,7 +1452,7 @@
                     
                     ctx.beginPath();
                     ctx.strokeStyle = stroke.color;
-                    ctx.lineWidth = stroke.isLift ? 1 : 2;
+                    ctx.lineWidth = stroke.isLift ? 1 : 0.8 * (canvas.width / maxX);
                     ctx.setLineDash(stroke.isLift ? [5, 5] : []);
                     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
                     
@@ -1383,6 +1524,49 @@
             redrawCanvas();
         }
 
+        let isDraggingComponent = false;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+
+        function eraseStrokeAt(cx, cy) {
+            const ERASER_RADIUS = 10;
+            let strokeDeleted = false;
+            
+            for (let i = paths.length - 1; i >= 0; i--) {
+                const stroke = paths[i];
+                let hit = false;
+                
+                if (stroke.points.length === 1) {
+                    if (Math.hypot(cx - stroke.points[0].cx, cy - stroke.points[0].cy) <= ERASER_RADIUS) hit = true;
+                } else if (stroke.points.length > 1) {
+                    for (let j = 0; j < stroke.points.length - 1; j++) {
+                        const p1 = stroke.points[j];
+                        const p2 = stroke.points[j+1];
+                        
+                        const l2 = Math.pow(p1.cx - p2.cx, 2) + Math.pow(p1.cy - p2.cy, 2);
+                        let t = 0;
+                        if (l2 !== 0) {
+                            t = Math.max(0, Math.min(1, ((cx - p1.cx) * (p2.cx - p1.cx) + (cy - p1.cy) * (p2.cy - p1.cy)) / l2));
+                        }
+                        const projX = p1.cx + t * (p2.cx - p1.cx);
+                        const projY = p1.cy + t * (p2.cy - p1.cy);
+                        if (Math.hypot(cx - projX, cy - projY) <= ERASER_RADIUS) {
+                            hit = true;
+                            break;
+                        }
+                    }
+                }
+                
+                if (hit) {
+                    paths.splice(i, 1);
+                    strokeDeleted = true;
+                }
+            }
+            if (strokeDeleted) {
+                if (typeof redrawCanvas === 'function') redrawCanvas();
+            }
+        }
+
         canvas.onmousedown = (e) => {
             const r = canvas.getBoundingClientRect();
             const cx = e.clientX - r.left;
@@ -1390,6 +1574,52 @@
 
             const maxX = parseFloat(document.getElementById('max-x').value);
             const maxY = parseFloat(document.getElementById('max-y').value);
+
+            const isMoveMode = document.getElementById('mode-move').checked;
+            const isEraseMode = document.getElementById('mode-erase').checked;
+            
+            if (isMoveMode) {
+                let clickedIdx = -1;
+                for (let i = window.pcbComponents.length - 1; i >= 0; i--) {
+                    const comp = window.pcbComponents[i];
+                    const fp = PCB_FOOTPRINTS[comp.type];
+                    if (!fp) continue;
+                    
+                    const compCx = (comp.x / maxX) * canvas.width;
+                    const compCy = canvas.height - (comp.y / maxY) * canvas.height;
+                    
+                    const pinsPerCol = fp.pins / 2;
+                    const bodyWidth = (fp.rowSpacing / maxX) * canvas.width;
+                    const bodyHeight = ((pinsPerCol * fp.pitch) / maxY) * canvas.height;
+                    
+                    // Simple radius hit test
+                    const hitRadius = Math.max(bodyWidth, bodyHeight) / 2 + 10; 
+                    if (Math.hypot(cx - compCx, cy - compCy) <= hitRadius) {
+                        clickedIdx = i;
+                        break;
+                    }
+                }
+                
+                window.selectedComponentIndex = clickedIdx;
+                if (clickedIdx >= 0) {
+                    isDraggingComponent = true;
+                    document.getElementById('part-rotation').value = window.pcbComponents[clickedIdx].rotation;
+                    document.getElementById('part-rotation-val').textContent = window.pcbComponents[clickedIdx].rotation;
+                    
+                    const compCx = (window.pcbComponents[clickedIdx].x / maxX) * canvas.width;
+                    const compCy = canvas.height - (window.pcbComponents[clickedIdx].y / maxY) * canvas.height;
+                    dragOffsetX = cx - compCx;
+                    dragOffsetY = cy - compCy;
+                }
+                window.updateCanvasMode();
+                return;
+            }
+
+            if (isEraseMode) {
+                isDrawingMouse = true; // Use this flag to track drag erasing
+                eraseStrokeAt(cx, cy);
+                return;
+            }
 
             // Hit detection for virtual paint pots
             if (!document.getElementById('pure-pen-mode')?.checked) {
@@ -1415,8 +1645,39 @@
             currentStroke = stroke.points;
             addPoint(e);
         };
-        canvas.onmousemove = (e) => { if (isDrawingMouse) addPoint(e); };
-        window.onmouseup = () => { isDrawingMouse = false; };
+        
+        canvas.onmousemove = (e) => { 
+            if (isDraggingComponent && window.selectedComponentIndex >= 0) {
+                const r = canvas.getBoundingClientRect();
+                const cx = e.clientX - r.left;
+                const cy = e.clientY - r.top;
+                
+                const maxX = parseFloat(document.getElementById('max-x').value);
+                const maxY = parseFloat(document.getElementById('max-y').value);
+                
+                const newCx = cx - dragOffsetX;
+                const newCy = cy - dragOffsetY;
+                
+                window.pcbComponents[window.selectedComponentIndex].x = (newCx / canvas.width) * maxX;
+                window.pcbComponents[window.selectedComponentIndex].y = ((canvas.height - newCy) / canvas.height) * maxY;
+                
+                if (typeof redrawCanvas === 'function') redrawCanvas();
+                return;
+            }
+            if (isDrawingMouse) {
+                if (document.getElementById('mode-erase').checked) {
+                    const r = canvas.getBoundingClientRect();
+                    eraseStrokeAt(e.clientX - r.left, e.clientY - r.top);
+                } else {
+                    addPoint(e); 
+                }
+            }
+        };
+        
+        window.onmouseup = () => { 
+            isDrawingMouse = false; 
+            isDraggingComponent = false;
+        };
 
         document.getElementById('draw-clear').onclick = () => { paths = []; redrawCanvas(); };
 
