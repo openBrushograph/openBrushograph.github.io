@@ -764,6 +764,13 @@
                     <option value="DIL-8">DIL-8</option>
                     <option value="DIL-14">DIL-14</option>
                     <option value="DIL-16">DIL-16</option>
+                    <option value="1206 Capacitor">1206 Capacitor</option>
+                    <option value="1206 Resistor">1206 Resistor</option>
+                    <option value="2825 TopLED">2825 TopLED</option>
+                    <option value="DIL8-Attiny85">DIL8-Attiny85</option>
+                    <option value="Logo Coconut">Logo Coconut</option>
+                    <option value="THT Capacitor">THT Capacitor</option>
+                    <option value="THT LED">THT LED</option>
                 </select>
                 <button id="btn-add-part" style="padding:2px 8px;">Add</button>
             </div>
@@ -1171,8 +1178,25 @@
         const PCB_FOOTPRINTS = {
             'DIL-8': { pins: 8, rows: 2, pitch: 2.54, rowSpacing: 7.62 },
             'DIL-14': { pins: 14, rows: 2, pitch: 2.54, rowSpacing: 7.62 },
-            'DIL-16': { pins: 16, rows: 2, pitch: 2.54, rowSpacing: 7.62 }
+            'DIL-16': { pins: 16, rows: 2, pitch: 2.54, rowSpacing: 7.62 },
+            '1206 Capacitor': { src: 'components/1206_Capacitor.svg', width: 5.71, height: 2.67 },
+            '1206 Resistor': { src: 'components/1206_Resistor.svg', width: 5.71, height: 2.67 },
+            '2825 TopLED': { src: 'components/2825_TopLED.svg', width: 5.84, height: 3.24 },
+            'DIL8-Attiny85': { src: 'components/DIL8-Attiny85.svg', width: 15.16, height: 10.54 },
+            'Logo Coconut': { src: 'components/Logo_Coconut.svg', width: 6.40, height: 7.57 },
+            'THT Capacitor': { src: 'components/THT_Capacitor.svg', width: 15.73, height: 12.40 },
+            'THT LED': { src: 'components/THT_LED.svg', width: 16.02, height: 12.07 }
         };
+
+        // Preload SVG component images
+        for (let key in PCB_FOOTPRINTS) {
+            if (PCB_FOOTPRINTS[key].src) {
+                const img = new Image();
+                img.onload = () => { if (typeof redrawCanvas === 'function') redrawCanvas(); };
+                img.src = PCB_FOOTPRINTS[key].src;
+                PCB_FOOTPRINTS[key].image = img;
+            }
+        }
 
         window.updateCanvasMode = function() {
             const isMoveMode = document.getElementById('mode-move').checked;
@@ -1333,51 +1357,67 @@
                 // Rotate negatively because HTML canvas Y is down, but physical Y is up
                 ctx.rotate(-comp.rotation * Math.PI / 180);
                 
-                // Draw body
-                const pinsPerCol = fp.pins / 2;
-                const bodyWidth = (fp.rowSpacing / maxX) * canvas.width;
-                const bodyHeight = ((pinsPerCol * fp.pitch) / maxY) * canvas.height;
-                
+                // Draw body or SVG image
                 const isSelected = (idx === window.selectedComponentIndex);
-                ctx.fillStyle = isTropical ? (isSelected ? 'rgba(57,255,20,0.2)' : 'rgba(255,255,255,0.1)') : (isSelected ? 'rgba(255,0,127,0.2)' : 'rgba(0,0,0,0.1)');
-                ctx.strokeStyle = isTropical ? (isSelected ? '#39FF14' : '#aaaaaa') : (isSelected ? '#ff00ff' : '#aaaaaa');
-                ctx.lineWidth = isSelected ? 2 : 1;
                 
-                // Center the body
-                ctx.fillRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
-                ctx.strokeRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
-                
-                // Pin 1 Indicator (top-left)
-                ctx.fillStyle = ctx.strokeStyle;
-                ctx.beginPath();
-                ctx.arc(-bodyWidth/2 + 3, -bodyHeight/2 + 3, 2, 0, Math.PI*2);
-                ctx.fill();
+                if (fp.image && fp.image.complete) {
+                    const drawW = (fp.width / maxX) * canvas.width;
+                    const drawH = (fp.height / maxY) * canvas.height;
+                    
+                    ctx.globalAlpha = 0.8;
+                    ctx.drawImage(fp.image, -drawW/2, -drawH/2, drawW, drawH);
+                    ctx.globalAlpha = 1.0;
+                    
+                    if (isSelected) {
+                        ctx.strokeStyle = isTropical ? '#39FF14' : '#ff00ff';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(-drawW/2, -drawH/2, drawW, drawH);
+                    }
+                } else if (!fp.image) {
+                    const pinsPerCol = fp.pins / 2;
+                    const bodyWidth = (fp.rowSpacing / maxX) * canvas.width;
+                    const bodyHeight = ((pinsPerCol * fp.pitch) / maxY) * canvas.height;
+                    
+                    ctx.fillStyle = isTropical ? (isSelected ? 'rgba(57,255,20,0.2)' : 'rgba(255,255,255,0.1)') : (isSelected ? 'rgba(255,0,127,0.2)' : 'rgba(0,0,0,0.1)');
+                    ctx.strokeStyle = isTropical ? (isSelected ? '#39FF14' : '#aaaaaa') : (isSelected ? '#ff00ff' : '#aaaaaa');
+                    ctx.lineWidth = isSelected ? 2 : 1;
+                    
+                    // Center the body
+                    ctx.fillRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
+                    ctx.strokeRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
+                    
+                    // Pin 1 Indicator (top-left)
+                    ctx.fillStyle = ctx.strokeStyle;
+                    ctx.beginPath();
+                    ctx.arc(-bodyWidth/2 + 3, -bodyHeight/2 + 3, 2, 0, Math.PI*2);
+                    ctx.fill();
 
-                // Draw Pads
-                ctx.fillStyle = isTropical ? '#000' : '#fff';
-                ctx.strokeStyle = isTropical ? '#39FF14' : '#ff00ff';
-                ctx.lineWidth = 1.5;
-                
-                const padRadius = (1.0 / maxX) * canvas.width; // 2mm diameter pad = 1mm radius
-                const holeRadius = (0.4 / maxX) * canvas.width; // 0.8mm drill = 0.4mm radius
-                
-                const startY = -((pinsPerCol - 1) * fp.pitch / 2);
-                
-                for (let col = 0; col < 2; col++) {
-                    const px = (col === 0 ? -fp.rowSpacing/2 : fp.rowSpacing/2) / maxX * canvas.width;
-                    for (let row = 0; row < pinsPerCol; row++) {
-                        const py = (startY + row * fp.pitch) / maxY * canvas.height;
-                        
-                        // Copper Ring
-                        ctx.beginPath();
-                        ctx.arc(px, py, padRadius, 0, Math.PI*2);
-                        ctx.stroke();
-                        
-                        // Drill Hole
-                        ctx.beginPath();
-                        ctx.arc(px, py, holeRadius, 0, Math.PI*2);
-                        ctx.fillStyle = isTropical ? '#051a05' : '#fff';
-                        ctx.fill();
+                    // Draw Pads
+                    ctx.fillStyle = isTropical ? '#000' : '#fff';
+                    ctx.strokeStyle = isTropical ? '#39FF14' : '#ff00ff';
+                    ctx.lineWidth = 1.5;
+                    
+                    const padRadius = (1.0 / maxX) * canvas.width; // 2mm diameter pad = 1mm radius
+                    const holeRadius = (0.4 / maxX) * canvas.width; // 0.8mm drill = 0.4mm radius
+                    
+                    const startY = -((pinsPerCol - 1) * fp.pitch / 2);
+                    
+                    for (let col = 0; col < 2; col++) {
+                        const px = (col === 0 ? -fp.rowSpacing/2 : fp.rowSpacing/2) / maxX * canvas.width;
+                        for (let row = 0; row < pinsPerCol; row++) {
+                            const py = (startY + row * fp.pitch) / maxY * canvas.height;
+                            
+                            // Copper Ring
+                            ctx.beginPath();
+                            ctx.arc(px, py, padRadius, 0, Math.PI*2);
+                            ctx.stroke();
+                            
+                            // Drill Hole
+                            ctx.beginPath();
+                            ctx.arc(px, py, holeRadius, 0, Math.PI*2);
+                            ctx.fillStyle = isTropical ? '#051a05' : '#fff';
+                            ctx.fill();
+                        }
                     }
                 }
                 
@@ -1590,9 +1630,15 @@
                     const compCx = (comp.x / maxX) * canvas.width;
                     const compCy = canvas.height - (comp.y / maxY) * canvas.height;
                     
-                    const pinsPerCol = fp.pins / 2;
-                    const bodyWidth = (fp.rowSpacing / maxX) * canvas.width;
-                    const bodyHeight = ((pinsPerCol * fp.pitch) / maxY) * canvas.height;
+                    let bodyWidth, bodyHeight;
+                    if (fp.image) {
+                        bodyWidth = (fp.width / maxX) * canvas.width;
+                        bodyHeight = (fp.height / maxY) * canvas.height;
+                    } else {
+                        const pinsPerCol = fp.pins / 2;
+                        bodyWidth = (fp.rowSpacing / maxX) * canvas.width;
+                        bodyHeight = ((pinsPerCol * fp.pitch) / maxY) * canvas.height;
+                    }
                     
                     // Simple radius hit test
                     const hitRadius = Math.max(bodyWidth, bodyHeight) / 2 + 10; 

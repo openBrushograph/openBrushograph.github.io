@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="5.8382874mm"
+   height="3.2353899mm"
+   viewBox="0 0 5.8382873 3.23539"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e94, 2025-05-08)"
+   sodipodi:docname="2825_TopLED.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="9.0493769"
+     inkscape:cx="9.8349313"
+     inkscape:cy="-0.66302908"
+     inkscape:window-width="1033"
+     inkscape:window-height="991"
+     inkscape:window-x="26"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-47.361476,-90.714032)">
+    <g
+       style="display:inline;fill:#e9d13a;fill-opacity:1"
+       inkscape:export-ydpi="499.97708"
+       inkscape:export-xdpi="499.97708"
+       inkscape:export-filename="/home/dusjagr/Documents/sgmk/8bit_mixedTape/8BabyMixTape/8BabyMixTape_V04-NEO.png"
+       transform="matrix(-0.00248423,0,0,-0.00280328,201.64758,337.33721)"
+       id="g7065-3-1-3-9">
+      <g
+         id="g21058-6-9"
+         transform="matrix(1.1366741,0,0,1.1259958,-7777.3097,28682.411)"
+         style="fill:#800000;fill-opacity:1">
+        <g
+           style="fill:#800000;fill-opacity:1"
+           id="g25846-5-7-7-4"
+           transform="matrix(8.3333459,0,0,9.3246978,59489.895,51640.26)">
+          <path
+             style="fill:#800000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             d="m 847.42383,98.816406 c -1.57604,9.51e-4 -2.95373,0.340567 -3.35938,0.828125 h -1.42187 v 6.439449 h 9.56445 v -6.439449 h -1.41797 c -0.40622,-0.48823 -1.78702,-0.828021 -3.36523,-0.828125 z m -4.78125,11.736324 v 4.77149 l 1.87878,1.89462 c 0.63256,0.64093 1.69321,0.57054 2.90247,0.58389 1.55372,-4.9e-4 2.91857,-0.33034 3.3457,-0.80859 h 1.4375 v -6.44141 z"
+             transform="matrix(0,9.3839928,-11.73761,0,1382.6702,-7897.8952)"
+             id="path25848-25-2-5-9"
+             inkscape:connector-curvature="0"
+             sodipodi:nodetypes="cccccccccccccccc" />
+        </g>
+        <g
+           style="fill:#800000;fill-opacity:1"
+           id="g25850-47-2-3-8"
+           transform="matrix(8.3333459,0,0,9.3246978,59336.42,51640.26)" />
+      </g>
+      <rect
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff00ff;stroke-width:31.3992;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+         id="rect23145-6-5-1"
+         width="1122.7452"
+         height="2318.7405"
+         x="86838.203"
+         y="-62090.508"
+         transform="rotate(90)" />
+    </g>
+    <g
+       inkscape:export-ydpi="201.05579"
+       inkscape:export-xdpi="201.05579"
+       inkscape:export-filename="/home/dusjagr/Documents/sgmk/Attiny8Step/8StepMixTape/8StepMixTape_PCB-design/8Step-MixTape_partLayoutNew.png"
+       style="display:inline;opacity:0.7"
+       transform="matrix(7.7870857e-6,0.05823579,-0.05829468,7.7792177e-6,72.786716,62.312505)"
+       id="g22984-0">
+      <g
+         transform="matrix(1.0815249,0,0,1.0815249,-42.282868,-31.268861)"
+         id="g22986-3">
+        <path
+           transform="matrix(1,-1.9808068e-5,-1.725014e-5,1,0,0)"
+           style="fill:#f2f2f2;stroke:#000000;stroke-width:1.87133;stroke-miterlimit:10"
+           d="m 494.24185,359.14548 h 33.26123 l 9.26079,9.55558 10e-4,39.27307 h -42.52313 z"
+           id="path22988-0"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccccc" />
+        <circle
+           cx="518.59998"
+           cy="383.5"
+           r="18"
+           id="circle22990-0"
+           style="fill:#ff41d9;fill-opacity:1"
+           transform="matrix(0.94994949,0,0,0.94994949,22.352495,19.644342)" />
+      </g>
+    </g>
+  </g>
+</svg>
