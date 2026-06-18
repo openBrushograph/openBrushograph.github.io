@@ -503,12 +503,17 @@
                 <div style="display:flex; flex-direction:column; gap: 10px; margin-top: 10px;">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <input type="file" id="stream-file" accept=".gcode,.nc" style="display:none;">
-                        <button id="btn-stream-file" class="btn-blue" style="flex-grow:1; margin-right: 10px;" onclick="document.getElementById('stream-file').click();">Select File</button>
-                        <span id="stream-filename" style="font-size: 0.7rem; color: var(--text-light); text-align: right; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">No file selected</span>
+                        <button id="btn-stream-file" class="btn-blue" style="flex-grow:1; margin-right: 10px;"
+                            onclick="document.getElementById('stream-file').click();">Select File</button>
+                        <span id="stream-filename"
+                            style="font-size: 0.7rem; color: var(--text-light); text-align: right; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">No
+                            file selected</span>
                     </div>
                     <div style="margin-top: 5px; text-align: center;">
-                        <canvas id="stream-preview" width="300" height="214" style="background: #fff; border: 1px solid var(--border); border-radius: 4px; width: 100%; height: auto;"></canvas>
-                        <div id="stream-dims" style="font-size: 0.7rem; color: var(--text-light); margin-top: 2px;"></div>
+                        <canvas id="stream-preview" width="300" height="214"
+                            style="background: #fff; border: 1px solid var(--border); border-radius: 4px; width: 100%; height: auto;"></canvas>
+                        <div id="stream-dims" style="font-size: 0.7rem; color: var(--text-light); margin-top: 2px;">
+                        </div>
                     </div>
                     <div style="display:flex; flex-direction:column; gap: 5px;">
                         <progress id="stream-progress" value="0" max="100" style="width:100%; height: 10px;"></progress>
@@ -520,58 +525,87 @@
                             <input type="checkbox" id="live-trace-check" checked> Live Preview on Drawing Pad
                         </label>
                     </div>
-                    
+
                     <div style="border-top: 1px solid var(--border); margin-top: 10px; padding-top: 10px;">
-                        <label style="display:flex; align-items:center; gap:5px; font-size:0.75rem; color:var(--text-main); font-weight:bold;">
-                            <input type="checkbox" id="apply-raster" onchange="document.getElementById('raster-options').style.display = this.checked ? 'flex' : 'none'; window.processStreamLines && window.processStreamLines();"> Apply Raster Fix (G91 &rarr; G90) & Z-Lift
+                        <label
+                            style="display:flex; align-items:center; gap:5px; font-size:0.75rem; color:var(--text-main); font-weight:bold;">
+                            <input type="checkbox" id="apply-raster"
+                                onchange="document.getElementById('raster-options').style.display = this.checked ? 'flex' : 'none'; window.processStreamLines && window.processStreamLines();">
+                            Apply Raster Fix (G91 &rarr; G90) & Z-Lift
                         </label>
-                        <div id="raster-options" style="display:none; flex-direction:column; gap:5px; margin-top:5px; padding-left:20px;">
+                        <div id="raster-options"
+                            style="display:none; flex-direction:column; gap:5px; margin-top:5px; padding-left:20px;">
                             <div class="input-group" style="padding:0;">
                                 <label style="font-size:0.7rem; flex:1;">Z Lift (Up):</label>
-                                <input type="number" id="raster-z-up" value="2.5" step="0.1" style="width:50px; font-size:0.7rem; padding:2px;" onchange="window.processStreamLines && window.processStreamLines()">
+                                <input type="number" id="raster-z-up" value="2.5" step="0.1"
+                                    style="width:50px; font-size:0.7rem; padding:2px;"
+                                    onchange="window.processStreamLines && window.processStreamLines()">
                                 <label style="font-size:0.7rem; flex:1; margin-left:5px;">Z Paint (Down):</label>
-                                <input type="number" id="raster-z-down" value="0" step="0.1" style="width:50px; font-size:0.7rem; padding:2px;" onchange="window.processStreamLines && window.processStreamLines()">
+                                <input type="number" id="raster-z-down" value="0" step="0.1"
+                                    style="width:50px; font-size:0.7rem; padding:2px;"
+                                    onchange="window.processStreamLines && window.processStreamLines()">
                             </div>
                             <div class="input-group" style="padding:0;">
                                 <label style="font-size:0.7rem; flex:1;">Z Feedrate (F):</label>
-                                <input type="number" id="raster-z-feed" value="800" step="10" style="width:60px; font-size:0.7rem; padding:2px;" onchange="window.processStreamLines && window.processStreamLines()">
+                                <input type="number" id="raster-z-feed" value="800" step="10"
+                                    style="width:60px; font-size:0.7rem; padding:2px;"
+                                    onchange="window.processStreamLines && window.processStreamLines()">
                             </div>
                             <div style="display:flex; gap:10px;">
                                 <label style="display:flex; align-items:center; gap:3px; font-size:0.7rem;">
-                                    <input type="checkbox" id="raster-use-g0" onchange="window.processStreamLines && window.processStreamLines()"> Use G0 for Z
+                                    <input type="checkbox" id="raster-use-g0"
+                                        onchange="window.processStreamLines && window.processStreamLines()"> Use G0 for
+                                    Z
                                 </label>
                                 <label style="display:flex; align-items:center; gap:3px; font-size:0.7rem;">
-                                    <input type="checkbox" id="raster-remove-s" checked onchange="window.processStreamLines && window.processStreamLines()"> Remove S
+                                    <input type="checkbox" id="raster-remove-s" checked
+                                        onchange="window.processStreamLines && window.processStreamLines()"> Remove S
                                 </label>
                             </div>
-                            <div class="input-group" style="padding:0; margin-top:5px; border-top: 1px dotted var(--border); padding-top:5px;">
+                            <div class="input-group"
+                                style="padding:0; margin-top:5px; border-top: 1px dotted var(--border); padding-top:5px;">
                                 <label style="font-size:0.7rem; flex:1;">Global Feed (Scan):</label>
-                                <input type="number" id="raster-scan-feed" placeholder="auto" step="10" style="width:60px; font-size:0.7rem; padding:2px;" title="Override mm/min for scan moves" onchange="window.processStreamLines && window.processStreamLines()">
+                                <input type="number" id="raster-scan-feed" placeholder="auto" step="10"
+                                    style="width:60px; font-size:0.7rem; padding:2px;"
+                                    title="Override mm/min for scan moves"
+                                    onchange="window.processStreamLines && window.processStreamLines()">
                             </div>
                         </div>
                     </div>
 
                     <div style="border-top: 1px dotted var(--border); margin-top: 10px; padding-top: 10px;">
-                        <label style="display:flex; align-items:center; gap:5px; font-size:0.75rem; color:var(--text-main); font-weight:bold;">
-                            <input type="checkbox" id="apply-backlash" onchange="document.getElementById('backlash-options').style.display = this.checked ? 'flex' : 'none'; window.processStreamLines && window.processStreamLines();"> Apply Backlash Compensation
+                        <label
+                            style="display:flex; align-items:center; gap:5px; font-size:0.75rem; color:var(--text-main); font-weight:bold;">
+                            <input type="checkbox" id="apply-backlash"
+                                onchange="document.getElementById('backlash-options').style.display = this.checked ? 'flex' : 'none'; window.processStreamLines && window.processStreamLines();">
+                            Apply Backlash Compensation
                         </label>
-                        <div id="backlash-options" style="display:none; flex-direction:column; gap:5px; margin-top:5px; padding-left:20px;">
+                        <div id="backlash-options"
+                            style="display:none; flex-direction:column; gap:5px; margin-top:5px; padding-left:20px;">
                             <div class="input-group" style="padding:0;">
                                 <label style="font-size:0.7rem; flex:1;">X (mm):</label>
-                                <input type="number" id="backlash-x" value="0.30" step="0.05" style="width:50px; font-size:0.7rem; padding:2px;" onchange="window.processStreamLines && window.processStreamLines()">
+                                <input type="number" id="backlash-x" value="0.30" step="0.05"
+                                    style="width:50px; font-size:0.7rem; padding:2px;"
+                                    onchange="window.processStreamLines && window.processStreamLines()">
                                 <label style="font-size:0.7rem; flex:1; margin-left:5px;">Y (mm):</label>
-                                <input type="number" id="backlash-y" value="0.30" step="0.05" style="width:50px; font-size:0.7rem; padding:2px;" onchange="window.processStreamLines && window.processStreamLines()">
+                                <input type="number" id="backlash-y" value="0.30" step="0.05"
+                                    style="width:50px; font-size:0.7rem; padding:2px;"
+                                    onchange="window.processStreamLines && window.processStreamLines()">
                             </div>
                             <div class="input-group" style="padding:0;">
                                 <label style="font-size:0.7rem; flex:1;">Safe Feed (F):</label>
-                                <input type="number" id="backlash-f" value="500" step="100" style="width:60px; font-size:0.7rem; padding:2px;" onchange="window.processStreamLines && window.processStreamLines()">
+                                <input type="number" id="backlash-f" value="500" step="100"
+                                    style="width:60px; font-size:0.7rem; padding:2px;"
+                                    onchange="window.processStreamLines && window.processStreamLines()">
                             </div>
                         </div>
                     </div>
 
                     <div style="display:flex; gap: 10px; margin-top: 10px;">
-                        <button id="btn-start-stream" class="btn-green" style="flex-grow: 1;" disabled>Stream G-Code</button>
-                        <button id="btn-save-stream" class="btn-blue" style="flex-grow: 1;" disabled>Save G-Code</button>
+                        <button id="btn-start-stream" class="btn-green" style="flex-grow: 1;" disabled>Stream
+                            G-Code</button>
+                        <button id="btn-save-stream" class="btn-blue" style="flex-grow: 1;" disabled>Save
+                            G-Code</button>
                     </div>
                 </div>
             </div>
@@ -629,13 +663,15 @@
                     style="flex:1; border-color: var(--accent-pink); color: var(--accent-pink);">Flush / Reset</button>
             </div>
 
-            <h3 style="margin-top:20px; font-size:0.8rem; color:var(--accent-blue); text-transform:uppercase; font-family:var(--font-head); border-bottom: 1px dashed var(--border); padding-bottom:3px;">
+            <h3
+                style="margin-top:20px; font-size:0.8rem; color:var(--accent-blue); text-transform:uppercase; font-family:var(--font-head); border-bottom: 1px dashed var(--border); padding-bottom:3px;">
                 Manual Jog Control
             </h3>
-            
+
             <div class="input-group" style="margin-top: 5px;">
                 <label style="font-size: 0.8rem;">Distance:</label>
-                <select id="jog-dist" style="background:var(--input-bg); color:var(--input-text); border:var(--border-width) solid var(--border); padding:3px; font-family:var(--font-main); border-radius:var(--border-radius); font-size: 0.8rem;">
+                <select id="jog-dist"
+                    style="background:var(--input-bg); color:var(--input-text); border:var(--border-width) solid var(--border); padding:3px; font-family:var(--font-main); border-radius:var(--border-radius); font-size: 0.8rem;">
                     <option value="0.1">0.1 mm</option>
                     <option value="1">1 mm</option>
                     <option value="10" selected>10 mm</option>
@@ -647,15 +683,18 @@
 
             <div style="display: flex; gap: 15px; align-items: center; justify-content: center; margin-top: 10px;">
                 <!-- X/Y D-PAD -->
-                <div style="display: grid; grid-template-columns: 35px 35px 35px; grid-template-rows: 35px 35px 35px; gap: 4px;">
+                <div
+                    style="display: grid; grid-template-columns: 35px 35px 35px; grid-template-rows: 35px 35px 35px; gap: 4px;">
                     <div></div>
                     <button id="jog-y-plus" class="btn-blue" style="padding:0; font-size:0.8rem;">Y+</button>
                     <div></div>
-                    
+
                     <button id="jog-x-minus" class="btn-blue" style="padding:0; font-size:0.8rem;">X-</button>
-                    <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-pink); font-weight:bold; font-size: 0.8rem;">XY</div>
+                    <div
+                        style="display:flex; align-items:center; justify-content:center; color:var(--accent-pink); font-weight:bold; font-size: 0.8rem;">
+                        XY</div>
                     <button id="jog-x-plus" class="btn-blue" style="padding:0; font-size:0.8rem;">X+</button>
-                    
+
                     <div></div>
                     <button id="jog-y-minus" class="btn-blue" style="padding:0; font-size:0.8rem;">Y-</button>
                     <div></div>
@@ -663,26 +702,44 @@
 
                 <!-- Z CONTROLS -->
                 <div style="display: flex; flex-direction: column; gap: 4px;">
-                    <button id="jog-z-plus" class="btn-green" style="height: 35px; width: 35px; padding:0; font-size:0.8rem;">Z+</button>
-                    <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-pink); font-weight:bold; height: 35px; font-size: 0.8rem;">Z</div>
-                    <button id="jog-z-minus" class="btn-green" style="height: 35px; width: 35px; padding:0; font-size:0.8rem;">Z-</button>
+                    <button id="jog-z-plus" class="btn-green"
+                        style="height: 35px; width: 35px; padding:0; font-size:0.8rem;">Z+</button>
+                    <div
+                        style="display:flex; align-items:center; justify-content:center; color:var(--accent-pink); font-weight:bold; height: 35px; font-size: 0.8rem;">
+                        Z</div>
+                    <button id="jog-z-minus" class="btn-green"
+                        style="height: 35px; width: 35px; padding:0; font-size:0.8rem;">Z-</button>
                 </div>
-                
+
                 <!-- BABYSTEP CONTROLS -->
-                <div style="display: flex; flex-direction: column; gap: 4px; margin-left: 5px; border-left: 1px dashed var(--border); padding-left: 10px;">
-                    <button id="babystep-z-plus" class="btn-green" style="height: 35px; padding:0 8px; font-size:0.7rem; background: var(--accent-pink); border-color: var(--accent-pink); color: #fff;" title="Live adjust height +0.1mm during streaming">Z+ 0.1</button>
-                    <div style="display:flex; align-items:center; justify-content:center; color:var(--text-light); font-size: 0.6rem; height: 35px; text-transform:uppercase; text-align:center;">Baby<br>step</div>
-                    <button id="babystep-z-minus" class="btn-green" style="height: 35px; padding:0 8px; font-size:0.7rem; background: var(--accent-pink); border-color: var(--accent-pink); color: #fff;" title="Live adjust height -0.1mm during streaming">Z- 0.1</button>
+                <div
+                    style="display: flex; flex-direction: column; gap: 4px; margin-left: 5px; border-left: 1px dashed var(--border); padding-left: 10px;">
+                    <button id="babystep-z-plus" class="btn-green"
+                        style="height: 35px; padding:0 8px; font-size:0.7rem; background: var(--accent-pink); border-color: var(--accent-pink); color: #fff;"
+                        title="Live adjust height +0.1mm during streaming">Z+ 0.1</button>
+                    <div
+                        style="display:flex; align-items:center; justify-content:center; color:var(--text-light); font-size: 0.6rem; height: 35px; text-transform:uppercase; text-align:center;">
+                        Baby<br>step</div>
+                    <button id="babystep-z-minus" class="btn-green"
+                        style="height: 35px; padding:0 8px; font-size:0.7rem; background: var(--accent-pink); border-color: var(--accent-pink); color: #fff;"
+                        title="Live adjust height -0.1mm during streaming">Z- 0.1</button>
                 </div>
             </div>
 
-            <h3 style="margin-top:15px; font-size:0.75rem; color:var(--accent-blue); text-transform:uppercase; font-family:var(--font-head); border-bottom: 1px dashed var(--border); padding-bottom:3px;">
+            <h3
+                style="margin-top:15px; font-size:0.75rem; color:var(--accent-blue); text-transform:uppercase; font-family:var(--font-head); border-bottom: 1px dashed var(--border); padding-bottom:3px;">
                 Set Work Coordinates (Zero)
             </h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top: 8px;">
-                <button id="zero-x" style="border-color:var(--accent-blue); color:var(--accent-blue); font-size:0.7rem; padding:4px;">Zero X</button>
-                <button id="zero-y" style="border-color:var(--accent-blue); color:var(--accent-blue); font-size:0.7rem; padding:4px;">Zero Y</button>
-                <button id="zero-z" style="border-color:var(--accent-green); color:var(--accent-green); font-size:0.7rem; padding:4px;">Zero Z</button>
+                <button id="zero-x"
+                    style="border-color:var(--accent-blue); color:var(--accent-blue); font-size:0.7rem; padding:4px;">Zero
+                    X</button>
+                <button id="zero-y"
+                    style="border-color:var(--accent-blue); color:var(--accent-blue); font-size:0.7rem; padding:4px;">Zero
+                    Y</button>
+                <button id="zero-z"
+                    style="border-color:var(--accent-green); color:var(--accent-green); font-size:0.7rem; padding:4px;">Zero
+                    Z</button>
             </div>
 
             <h3
@@ -739,47 +796,44 @@
 
             <div class="input-group">
                 <label>Canvas Size:</label>
-                <select id="canvas-preset" style="background:var(--input-bg); color:var(--input-text); border:var(--border-width) solid var(--border); padding:3px; font-family:var(--font-main); border-radius:var(--border-radius); flex-grow:1;" onchange="applyCanvasPreset()">
+                <select id="canvas-preset"
+                    style="background:var(--input-bg); color:var(--input-text); border:var(--border-width) solid var(--border); padding:3px; font-family:var(--font-main); border-radius:var(--border-radius); flex-grow:1;"
+                    onchange="applyCanvasPreset()">
                     <option value="70x50">70x50 mm (PCB)</option>
                     <option value="150x140">150x140 mm (Large)</option>
                     <option value="custom">Custom</option>
                 </select>
-                <label style="margin-left:10px;">X:</label><input type="number" id="max-x" value="70" style="width:50px;" oninput="document.getElementById('canvas-preset').value='custom'; updateCanvasDimensions()">
-                <label>Y:</label><input type="number" id="max-y" value="50" style="width:50px;" oninput="document.getElementById('canvas-preset').value='custom'; updateCanvasDimensions()">
+                <label style="margin-left:10px;">X:</label><input type="number" id="max-x" value="70"
+                    style="width:50px;"
+                    oninput="document.getElementById('canvas-preset').value='custom'; updateCanvasDimensions()">
+                <label>Y:</label><input type="number" id="max-y" value="50" style="width:50px;"
+                    oninput="document.getElementById('canvas-preset').value='custom'; updateCanvasDimensions()">
             </div>
 
-            <h3 style="margin-top:20px; margin-bottom:10px; font-size:1rem; border-bottom:1px solid var(--border); padding-bottom:5px;">Diy-CAD Components</h3>
+            <h3
+                style="margin-top:20px; margin-bottom:10px; font-size:1rem; border-bottom:1px solid var(--border); padding-bottom:5px;">
+                Diy-CAD Components</h3>
             <div class="input-group" style="gap:5px; flex-wrap:wrap;">
                 <label style="display:flex; align-items:center; gap:5px; font-weight:bold;">
-                    <input type="radio" name="canvas-mode" id="mode-draw" value="draw" checked onchange="window.updateCanvasMode && window.updateCanvasMode()"> Draw
+                    <input type="radio" name="canvas-mode" id="mode-draw" value="draw" checked
+                        onchange="window.updateCanvasMode && window.updateCanvasMode()"> Draw
                 </label>
                 <label style="display:flex; align-items:center; gap:5px; font-weight:bold; color:var(--accent-pink);">
-                    <input type="radio" name="canvas-mode" id="mode-move" value="move" onchange="window.updateCanvasMode && window.updateCanvasMode()"> Move Parts
+                    <input type="radio" name="canvas-mode" id="mode-move" value="move"
+                        onchange="window.updateCanvasMode && window.updateCanvasMode()"> Move Parts
                 </label>
                 <label style="display:flex; align-items:center; gap:5px; font-weight:bold; color:#ff4444;">
-                    <input type="radio" name="canvas-mode" id="mode-erase" value="erase" onchange="window.updateCanvasMode && window.updateCanvasMode()"> Eraser
+                    <input type="radio" name="canvas-mode" id="mode-erase" value="erase"
+                        onchange="window.updateCanvasMode && window.updateCanvasMode()"> Eraser
                 </label>
                 <div style="width:10px;"></div>
-                <select id="pcb-part-type" style="background:var(--input-bg); color:var(--input-text); border:var(--border-width) solid var(--border); padding:3px; font-family:var(--font-main); border-radius:var(--border-radius);">
-                    <option value="DIL-8">DIL-8</option>
-                    <option value="DIL-14">DIL-14</option>
-                    <option value="DIL-16">DIL-16</option>
-                    <option value="1206 Capacitor">1206 Capacitor</option>
-                    <option value="1206 Resistor">1206 Resistor</option>
-                    <option value="2825 TopLED">2825 TopLED</option>
-                    <option value="DIL8-Attiny85">DIL8-Attiny85</option>
-                    <option value="SOIC8-Attiny85">SOIC8-Attiny85</option>
-                    <option value="Logo Coconut">Logo Coconut</option>
-                    <option value="THT Capacitor">THT Capacitor</option>
-                    <option value="THT LED">THT LED</option>
-                </select>
-                <button id="btn-add-part" style="padding:2px 8px;">Add</button>
+                <button id="btn-delete-part"
+                    style="padding:2px 8px; border-color:#ff4444; color:#ff4444; font-size:0.8rem; margin-left:auto; display:none;">Delete
+                    Selected</button>
             </div>
-            <div class="input-group" id="part-edit-tools" style="display:none; gap:5px; background:rgba(255,0,127,0.1); padding:5px; border-radius:4px; margin-top:5px; align-items:center;">
-                <label style="font-size:0.8rem;">Rot (&deg;):</label>
-                <input type="range" id="part-rotation" min="-180" max="180" value="0" step="1" style="flex:1;" oninput="document.getElementById('part-rotation-val').textContent = this.value; window.updateSelectedPartRotation && window.updateSelectedPartRotation()">
-                <span id="part-rotation-val" style="width:30px; text-align:right; font-size:0.8rem;">0</span>
-                <button id="btn-delete-part" style="padding:2px 8px; border-color:#ff4444; color:#ff4444; font-size:0.8rem;">Delete</button>
+            <div id="pcb-part-icons"
+                style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; align-items:center;">
+                <!-- Filled dynamically by JS -->
             </div>
 
             <div class="canvas-container">
@@ -939,7 +993,7 @@
                                 let px = parseFloat(posMatch[2]);
                                 let py = parseFloat(posMatch[3]);
                                 let pz = parseFloat(posMatch[4]);
-                                
+
                                 if (posMatch[1] === 'MPos') {
                                     px -= this.wco.x;
                                     py -= this.wco.y;
@@ -964,7 +1018,7 @@
                                     const x = this.lastWPos ? this.lastWPos.x.toFixed(2) : "0.00";
                                     const y = this.lastWPos ? this.lastWPos.y.toFixed(2) : "0.00";
                                     const z = this.lastWPos ? this.lastWPos.z.toFixed(2) : "0.00";
-                                    
+
                                     wposEl.innerHTML = `STATUS: <span style="color:${color}; font-weight:bold;">${stateDisplay}</span> | X: ${x} Y: ${y} Z: ${z}`;
                                 }
                                 if (typeof redrawCanvas === 'function') redrawCanvas();
@@ -1137,7 +1191,7 @@
             await sendCommand('$X'); // Kill Alarm
         };
         document.getElementById('btn-home').onclick = async () => {
-            const rawSeq = "$X; G10 P0 L20 X0 Y0 Z0; G90; G1 Z10 F1800; G1 X160 Y160 Z32 F1800; G1 X0 Y0 Z22 F1800; G10 P0 L20 X0 Y0 Z10; G1 Z15 F600; G1 Z10 F600; G1 X-10 Y-10 F1000; G1 X-6 Y-6 F1000; G10 P0 L20 X0 Y0 Z10;";
+            const rawSeq = "$X; G10 P0 L20 X0 Y0 Z0; G90; G1 Z10 F1800; G1 X80 Y65 Z32 F1800; G1 X0 Y0 Z22 F1800; G10 P0 L20 X0 Y0 Z10; G1 Z15 F600; G1 Z10 F600; G1 X-10 Y-10 F1000; G1 X-8 Y-8 F1000; G10 P0 L20 X0 Y0 Z10;";
             const cmds = rawSeq.split(';').map(c => c.trim()).filter(c => c.length > 0);
 
             log('Initializing & Homing Robot...', 'info');
@@ -1175,7 +1229,7 @@
         // --- PCB Components State ---
         window.pcbComponents = [];
         window.selectedComponentIndex = -1;
-        
+
         const PCB_FOOTPRINTS = {
             'DIL-8': { pins: 8, rows: 2, pitch: 2.54, rowSpacing: 7.62 },
             'DIL-14': { pins: 14, rows: 2, pitch: 2.54, rowSpacing: 7.62 },
@@ -1187,49 +1241,77 @@
             'SOIC8-Attiny85': { src: 'components/SOIC8-Attiny85.svg', width: 13.02, height: 5.96 },
             'Logo Coconut': { src: 'components/Logo_Coconut.svg', width: 6.40, height: 7.57 },
             'THT Capacitor': { src: 'components/THT_Capacitor.svg', width: 15.73, height: 12.40 },
-            'THT LED': { src: 'components/THT_LED.svg', width: 16.02, height: 12.07 }
+            'THT LED': { src: 'components/THT_LED.svg', width: 16.02, height: 12.07 },
+            'THT Resistor': { src: 'components/THT_Resistor.svg', width: 14.93, height: 5.44 }
         };
 
-        // Preload SVG component images
-        for (let key in PCB_FOOTPRINTS) {
-            if (PCB_FOOTPRINTS[key].src) {
-                const img = new Image();
-                img.onload = () => { if (typeof redrawCanvas === 'function') redrawCanvas(); };
-                img.src = PCB_FOOTPRINTS[key].src;
-                PCB_FOOTPRINTS[key].image = img;
-            }
-        }
-
-        window.updateCanvasMode = function() {
-            const isMoveMode = document.getElementById('mode-move').checked;
-            document.getElementById('part-edit-tools').style.display = (isMoveMode && window.selectedComponentIndex >= 0) ? 'flex' : 'none';
-            if (typeof redrawCanvas === 'function') redrawCanvas();
-        };
-
-        window.updateSelectedPartRotation = function() {
-            if (window.selectedComponentIndex >= 0 && window.selectedComponentIndex < window.pcbComponents.length) {
-                const rot = parseFloat(document.getElementById('part-rotation').value);
-                window.pcbComponents[window.selectedComponentIndex].rotation = rot;
-                if (typeof redrawCanvas === 'function') redrawCanvas();
-            }
-        };
-
-        document.getElementById('btn-add-part').onclick = () => {
-            const type = document.getElementById('pcb-part-type').value;
+        window.addPcbPart = function (type) {
             const maxX = parseFloat(document.getElementById('max-x').value);
             const maxY = parseFloat(document.getElementById('max-y').value);
+
+            // Random position with 10% margin
+            const randX = (maxX * 0.1) + Math.random() * (maxX * 0.8);
+            const randY = (maxY * 0.1) + Math.random() * (maxY * 0.8);
+            const randRot = Math.floor(Math.random() * 361) - 180; // -180 to +180
+
             window.pcbComponents.push({
                 type: type,
-                x: maxX / 2, // Center of canvas in mm
-                y: maxY / 2,
-                rotation: 0
+                x: randX,
+                y: randY,
+                rotation: randRot
             });
             window.selectedComponentIndex = window.pcbComponents.length - 1;
             document.getElementById('mode-move').checked = true;
-            document.getElementById('part-rotation').value = 0;
-            document.getElementById('part-rotation-val').textContent = "0";
             window.updateCanvasMode();
         };
+
+        // Preload SVG component images and build UI
+        const pcbIconsContainer = document.getElementById('pcb-part-icons');
+        if (pcbIconsContainer) pcbIconsContainer.innerHTML = '';
+
+        for (let key in PCB_FOOTPRINTS) {
+            const fp = PCB_FOOTPRINTS[key];
+
+            // Build UI Element
+            const el = document.createElement('div');
+            el.style.cursor = 'pointer';
+            el.style.border = '1px solid var(--border)';
+            el.style.borderRadius = '4px';
+            el.style.padding = '4px';
+            el.style.background = 'var(--bg-card)';
+            el.style.display = 'flex';
+            el.style.alignItems = 'center';
+            el.style.justifyContent = 'center';
+            el.style.height = '32px';
+            el.style.minWidth = '32px';
+            el.title = key;
+            el.onclick = () => window.addPcbPart(key);
+
+            if (fp.src) {
+                const img = new Image();
+                img.onload = () => { if (typeof redrawCanvas === 'function') redrawCanvas(); };
+                img.src = fp.src;
+                img.style.maxHeight = '24px';
+                img.style.maxWidth = '40px';
+                img.style.display = 'block';
+                fp.image = img;
+                el.appendChild(img);
+            } else {
+                el.textContent = key;
+                el.style.fontSize = '0.8rem';
+                el.style.fontWeight = 'bold';
+                el.style.color = 'var(--text-main)';
+            }
+
+            if (pcbIconsContainer) pcbIconsContainer.appendChild(el);
+        }
+
+        window.updateCanvasMode = function () {
+            const isMoveMode = document.getElementById('mode-move').checked;
+            document.getElementById('btn-delete-part').style.display = (isMoveMode && window.selectedComponentIndex >= 0) ? 'block' : 'none';
+            if (typeof redrawCanvas === 'function') redrawCanvas();
+        };
+
 
         document.getElementById('btn-delete-part').onclick = () => {
             if (window.selectedComponentIndex >= 0) {
@@ -1350,79 +1432,119 @@
             window.pcbComponents.forEach((comp, idx) => {
                 const fp = PCB_FOOTPRINTS[comp.type];
                 if (!fp) return;
-                
+
                 const cx = (comp.x / maxX) * canvas.width;
                 const cy = canvas.height - (comp.y / maxY) * canvas.height;
-                
+
                 ctx.save();
                 ctx.translate(cx, cy);
                 // Rotate negatively because HTML canvas Y is down, but physical Y is up
                 ctx.rotate(-comp.rotation * Math.PI / 180);
-                
+
                 // Draw body or SVG image
                 const isSelected = (idx === window.selectedComponentIndex);
-                
+
                 if (fp.image && fp.image.complete) {
                     const drawW = (fp.width / maxX) * canvas.width;
                     const drawH = (fp.height / maxY) * canvas.height;
-                    
+
                     ctx.globalAlpha = 0.8;
-                    ctx.drawImage(fp.image, -drawW/2, -drawH/2, drawW, drawH);
+                    ctx.drawImage(fp.image, -drawW / 2, -drawH / 2, drawW, drawH);
                     ctx.globalAlpha = 1.0;
-                    
+
                     if (isSelected) {
                         ctx.strokeStyle = isTropical ? '#39FF14' : '#ff00ff';
                         ctx.lineWidth = 1;
-                        ctx.strokeRect(-drawW/2, -drawH/2, drawW, drawH);
+                        ctx.strokeRect(-drawW / 2, -drawH / 2, drawW, drawH);
+
+                        // Rotation Handle
+                        ctx.beginPath();
+                        ctx.moveTo(0, -drawH / 2);
+                        ctx.lineTo(0, -drawH / 2 - 25);
+                        ctx.stroke();
+                        
+                        if (window.hoveredRotationHandleIdx === idx) {
+                            ctx.fillStyle = isTropical ? '#fff' : '#fff';
+                            ctx.beginPath();
+                            ctx.arc(0, -drawH / 2 - 25, 8, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.stroke();
+                        } else {
+                            ctx.fillStyle = ctx.strokeStyle;
+                            ctx.beginPath();
+                            ctx.arc(0, -drawH / 2 - 25, 5, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
                     }
                 } else if (!fp.image) {
                     const pinsPerCol = fp.pins / 2;
                     const bodyWidth = (fp.rowSpacing / maxX) * canvas.width;
                     const bodyHeight = ((pinsPerCol * fp.pitch) / maxY) * canvas.height;
-                    
+
                     ctx.fillStyle = isTropical ? (isSelected ? 'rgba(57,255,20,0.2)' : 'rgba(255,255,255,0.1)') : (isSelected ? 'rgba(255,0,127,0.2)' : 'rgba(0,0,0,0.1)');
                     ctx.strokeStyle = isTropical ? (isSelected ? '#39FF14' : '#aaaaaa') : (isSelected ? '#ff00ff' : '#aaaaaa');
                     ctx.lineWidth = isSelected ? 2 : 1;
-                    
+
                     // Center the body
-                    ctx.fillRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
-                    ctx.strokeRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
-                    
+                    ctx.fillRect(-bodyWidth / 2, -bodyHeight / 2, bodyWidth, bodyHeight);
+                    ctx.strokeRect(-bodyWidth / 2, -bodyHeight / 2, bodyWidth, bodyHeight);
+
+                    if (isSelected) {
+                        // Rotation Handle
+                        ctx.beginPath();
+                        ctx.moveTo(0, -bodyHeight / 2);
+                        ctx.lineTo(0, -bodyHeight / 2 - 25);
+                        ctx.stroke();
+                        
+                        if (window.hoveredRotationHandleIdx === idx) {
+                            ctx.fillStyle = isTropical ? '#fff' : '#fff';
+                            ctx.beginPath();
+                            ctx.arc(0, -bodyHeight / 2 - 25, 8, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.stroke();
+                        } else {
+                            ctx.fillStyle = ctx.strokeStyle;
+                            ctx.beginPath();
+                            ctx.arc(0, -bodyHeight / 2 - 25, 5, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+
                     // Pin 1 Indicator (top-left)
                     ctx.fillStyle = ctx.strokeStyle;
                     ctx.beginPath();
-                    ctx.arc(-bodyWidth/2 + 3, -bodyHeight/2 + 3, 2, 0, Math.PI*2);
+                    ctx.arc(-bodyWidth / 2 + 3, -bodyHeight / 2 + 3, 2, 0, Math.PI * 2);
                     ctx.fill();
 
                     // Draw Pads
                     ctx.fillStyle = isTropical ? '#000' : '#fff';
                     ctx.strokeStyle = isTropical ? '#39FF14' : '#ff00ff';
                     ctx.lineWidth = 1.5;
-                    
+
                     const padRadius = (1.0 / maxX) * canvas.width; // 2mm diameter pad = 1mm radius
                     const holeRadius = (0.4 / maxX) * canvas.width; // 0.8mm drill = 0.4mm radius
-                    
+
                     const startY = -((pinsPerCol - 1) * fp.pitch / 2);
-                    
+
                     for (let col = 0; col < 2; col++) {
-                        const px = (col === 0 ? -fp.rowSpacing/2 : fp.rowSpacing/2) / maxX * canvas.width;
+                        const px = (col === 0 ? -fp.rowSpacing / 2 : fp.rowSpacing / 2) / maxX * canvas.width;
                         for (let row = 0; row < pinsPerCol; row++) {
                             const py = (startY + row * fp.pitch) / maxY * canvas.height;
-                            
+
                             // Copper Ring
                             ctx.beginPath();
-                            ctx.arc(px, py, padRadius, 0, Math.PI*2);
+                            ctx.arc(px, py, padRadius, 0, Math.PI * 2);
                             ctx.stroke();
-                            
+
                             // Drill Hole
                             ctx.beginPath();
-                            ctx.arc(px, py, holeRadius, 0, Math.PI*2);
+                            ctx.arc(px, py, holeRadius, 0, Math.PI * 2);
                             ctx.fillStyle = isTropical ? '#051a05' : '#fff';
                             ctx.fill();
                         }
                     }
                 }
-                
+
                 ctx.restore();
             });
 
@@ -1478,7 +1600,7 @@
             paths.forEach(stroke => {
                 if (stroke.points && stroke.points.length > 0) {
                     ctx.strokeStyle = isPurePen ? themeOppositeColor : stroke.color;
-                    ctx.lineWidth = 0.8 * (canvas.width / maxX); 
+                    ctx.lineWidth = 0.8 * (canvas.width / maxX);
                     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
                     ctx.beginPath();
                     ctx.moveTo(stroke.points[0].cx, stroke.points[0].cy);
@@ -1493,17 +1615,17 @@
                 window.globalPreviewPaths.forEach(stroke => {
                     const validPoints = stroke.points.filter(p => p.line <= window.currentStreamLine);
                     if (validPoints.length < 2) return;
-                    
+
                     ctx.beginPath();
                     ctx.strokeStyle = isPurePen ? themeOppositeColor : stroke.color;
                     ctx.lineWidth = stroke.isLift ? 1 : 0.8 * (canvas.width / maxX);
                     ctx.setLineDash(stroke.isLift ? [5, 5] : []);
                     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-                    
+
                     const sx = (validPoints[0].x / maxX) * canvas.width;
                     const sy = canvas.height - (validPoints[0].y / maxY) * canvas.height;
                     ctx.moveTo(sx, sy);
-                    
+
                     for (let i = 1; i < validPoints.length; i++) {
                         const px = (validPoints[i].x / maxX) * canvas.width;
                         const py = canvas.height - (validPoints[i].y / maxY) * canvas.height;
@@ -1575,18 +1697,18 @@
         function eraseStrokeAt(cx, cy) {
             const ERASER_RADIUS = 10;
             let strokeDeleted = false;
-            
+
             for (let i = paths.length - 1; i >= 0; i--) {
                 const stroke = paths[i];
                 let hit = false;
-                
+
                 if (stroke.points.length === 1) {
                     if (Math.hypot(cx - stroke.points[0].cx, cy - stroke.points[0].cy) <= ERASER_RADIUS) hit = true;
                 } else if (stroke.points.length > 1) {
                     for (let j = 0; j < stroke.points.length - 1; j++) {
                         const p1 = stroke.points[j];
-                        const p2 = stroke.points[j+1];
-                        
+                        const p2 = stroke.points[j + 1];
+
                         const l2 = Math.pow(p1.cx - p2.cx, 2) + Math.pow(p1.cy - p2.cy, 2);
                         let t = 0;
                         if (l2 !== 0) {
@@ -1600,7 +1722,7 @@
                         }
                     }
                 }
-                
+
                 if (hit) {
                     paths.splice(i, 1);
                     strokeDeleted = true;
@@ -1621,17 +1743,17 @@
 
             const isMoveMode = document.getElementById('mode-move').checked;
             const isEraseMode = document.getElementById('mode-erase').checked;
-            
+
             if (isMoveMode) {
                 let clickedIdx = -1;
                 for (let i = window.pcbComponents.length - 1; i >= 0; i--) {
                     const comp = window.pcbComponents[i];
                     const fp = PCB_FOOTPRINTS[comp.type];
                     if (!fp) continue;
-                    
+
                     const compCx = (comp.x / maxX) * canvas.width;
                     const compCy = canvas.height - (comp.y / maxY) * canvas.height;
-                    
+
                     let bodyWidth, bodyHeight;
                     if (fp.image) {
                         bodyWidth = (fp.width / maxX) * canvas.width;
@@ -1641,21 +1763,35 @@
                         bodyWidth = (fp.rowSpacing / maxX) * canvas.width;
                         bodyHeight = ((pinsPerCol * fp.pitch) / maxY) * canvas.height;
                     }
-                    
-                    // Simple radius hit test
-                    const hitRadius = Math.max(bodyWidth, bodyHeight) / 2 + 10; 
+
+                    if (window.selectedComponentIndex === i) {
+                        const dx = cx - compCx;
+                        const dy = cy - compCy;
+                        const rotRad = -comp.rotation * Math.PI / 180;
+                        const localX = dx * Math.cos(-rotRad) - dy * Math.sin(-rotRad);
+                        const localY = dx * Math.sin(-rotRad) + dy * Math.cos(-rotRad);
+                        const imgHeightPx = fp.image ? (fp.height / maxY) * canvas.height : 0;
+                        const handleY = -(fp.image ? imgHeightPx / 2 : bodyHeight / 2) - 25;
+                        if (Math.hypot(localX, localY - handleY) <= 12) {
+                            window.isRotatingComponent = true;
+                            clickedIdx = i;
+                            break;
+                        }
+                    }
+
+                    const hitRadius = Math.max(bodyWidth, bodyHeight) / 2 + 10;
                     if (Math.hypot(cx - compCx, cy - compCy) <= hitRadius) {
                         clickedIdx = i;
                         break;
                     }
                 }
-                
+
                 window.selectedComponentIndex = clickedIdx;
                 if (clickedIdx >= 0) {
-                    isDraggingComponent = true;
-                    document.getElementById('part-rotation').value = window.pcbComponents[clickedIdx].rotation;
-                    document.getElementById('part-rotation-val').textContent = window.pcbComponents[clickedIdx].rotation;
-                    
+                    if (!window.isRotatingComponent) {
+                        isDraggingComponent = true;
+                    }
+                    window.updateCanvasMode();
                     const compCx = (window.pcbComponents[clickedIdx].x / maxX) * canvas.width;
                     const compCy = canvas.height - (window.pcbComponents[clickedIdx].y / maxY) * canvas.height;
                     dragOffsetX = cx - compCx;
@@ -1695,22 +1831,88 @@
             currentStroke = stroke.points;
             addPoint(e);
         };
-        
-        canvas.onmousemove = (e) => { 
-            if (isDraggingComponent && window.selectedComponentIndex >= 0) {
-                const r = canvas.getBoundingClientRect();
-                const cx = e.clientX - r.left;
-                const cy = e.clientY - r.top;
-                
+
+        canvas.onmousemove = (e) => {
+            const r = canvas.getBoundingClientRect();
+            const cx = e.clientX - r.left;
+            const cy = e.clientY - r.top;
+            
+            // Hover logic for cursor styling and highlighting
+            let cursorStyle = 'default';
+            let prevHoveredIdx = window.hoveredRotationHandleIdx;
+            window.hoveredRotationHandleIdx = -1;
+            
+            if (document.getElementById('mode-move').checked && !isDraggingComponent && !window.isRotatingComponent) {
+                cursorStyle = 'crosshair';
+                if (window.selectedComponentIndex >= 0) {
+                    const maxX = parseFloat(document.getElementById('max-x').value);
+                    const maxY = parseFloat(document.getElementById('max-y').value);
+                    const comp = window.pcbComponents[window.selectedComponentIndex];
+                    const fp = PCB_FOOTPRINTS[comp.type];
+                    if (fp) {
+                        const compCx = (comp.x / maxX) * canvas.width;
+                        const compCy = canvas.height - (comp.y / maxY) * canvas.height;
+                        const dx = cx - compCx;
+                        const dy = cy - compCy;
+                        const rotRad = -comp.rotation * Math.PI / 180;
+                        const localX = dx * Math.cos(-rotRad) - dy * Math.sin(-rotRad);
+                        const localY = dx * Math.sin(-rotRad) + dy * Math.cos(-rotRad);
+                        
+                        let imgH = fp.height ? (fp.height / maxY) * canvas.height : 0;
+                        let imgW = fp.width ? (fp.width / maxX) * canvas.width : 0;
+                        
+                        const pinsPerCol = fp.pins ? fp.pins / 2 : 0;
+                        let bodyWidth = fp.rowSpacing ? (fp.rowSpacing / maxX) * canvas.width : 0;
+                        let bodyHeight = fp.pitch ? ((pinsPerCol * fp.pitch) / maxY) * canvas.height : 0;
+                        
+                        const handleY = -(fp.image ? imgH / 2 : bodyHeight / 2) - 25;
+                        
+                        if (Math.hypot(localX, localY - handleY) <= 15) {
+                            window.hoveredRotationHandleIdx = window.selectedComponentIndex;
+                            cursorStyle = 'grab';
+                        } else {
+                            const hitRadius = Math.max(fp.image ? imgW : bodyWidth, fp.image ? imgH : bodyHeight) / 2 + 10;
+                            if (Math.hypot(dx, dy) <= hitRadius) {
+                                cursorStyle = 'move';
+                            }
+                        }
+                    }
+                }
+            } else if (window.isRotatingComponent) {
+                cursorStyle = 'grabbing';
+            } else if (isDraggingComponent) {
+                cursorStyle = 'move';
+            }
+            
+            if (canvas.style.cursor !== cursorStyle) canvas.style.cursor = cursorStyle;
+            if (prevHoveredIdx !== window.hoveredRotationHandleIdx && typeof redrawCanvas === 'function') redrawCanvas();
+
+            if (window.isRotatingComponent && window.selectedComponentIndex >= 0) {
                 const maxX = parseFloat(document.getElementById('max-x').value);
                 const maxY = parseFloat(document.getElementById('max-y').value);
-                
+                const comp = window.pcbComponents[window.selectedComponentIndex];
+                const compCx = (comp.x / maxX) * canvas.width;
+                const compCy = canvas.height - (comp.y / maxY) * canvas.height;
+
+                // Calculate angle from component center to mouse
+                // Canvas Y is down, but our rotation is negative in drawing, so Math.atan2(dx, -dy) aligns 0deg to UP
+                const angleRad = Math.atan2(cx - compCx, -(cy - compCy));
+                comp.rotation = -Math.round(angleRad * 180 / Math.PI);
+                if (typeof redrawCanvas === 'function') redrawCanvas();
+                return;
+            }
+
+            if (isDraggingComponent && window.selectedComponentIndex >= 0) {
+
+                const maxX = parseFloat(document.getElementById('max-x').value);
+                const maxY = parseFloat(document.getElementById('max-y').value);
+
                 const newCx = cx - dragOffsetX;
                 const newCy = cy - dragOffsetY;
-                
+
                 window.pcbComponents[window.selectedComponentIndex].x = (newCx / canvas.width) * maxX;
                 window.pcbComponents[window.selectedComponentIndex].y = ((canvas.height - newCy) / canvas.height) * maxY;
-                
+
                 if (typeof redrawCanvas === 'function') redrawCanvas();
                 return;
             }
@@ -1719,14 +1921,15 @@
                     const r = canvas.getBoundingClientRect();
                     eraseStrokeAt(e.clientX - r.left, e.clientY - r.top);
                 } else {
-                    addPoint(e); 
+                    addPoint(e);
                 }
             }
         };
-        
-        window.onmouseup = () => { 
-            isDrawingMouse = false; 
+
+        window.onmouseup = () => {
+            isDrawingMouse = false;
             isDraggingComponent = false;
+            window.isRotatingComponent = false;
         };
 
         document.getElementById('draw-clear').onclick = () => { paths = []; redrawCanvas(); };
@@ -2012,10 +2215,10 @@
             const dist = parseFloat(document.getElementById('jog-dist').value);
             const speed = parseInt(document.getElementById('jog-speed').value);
             if (isNaN(dist) || isNaN(speed)) return;
-            
+
             const move = direction === '+' ? dist : -dist;
             log(`Jogging ${axis.toUpperCase()}${direction} ${dist}mm at F${speed}...`, 'info');
-            
+
             await sendCommand(`G91`); // Relative positioning
             await sendCommand(`G1 ${axis.toUpperCase()}${move.toFixed(3)} F${speed}`);
             await sendCommand(`G90`); // Absolute positioning
@@ -2027,7 +2230,7 @@
         document.getElementById('jog-y-minus').onclick = () => jogAxis('Y', '-');
         document.getElementById('jog-z-plus').onclick = () => jogAxis('Z', '+');
         document.getElementById('jog-z-minus').onclick = () => jogAxis('Z', '-');
-        
+
         document.getElementById('babystep-z-plus').onclick = () => {
             if (!machine.isConnected) return;
             // 1. Instant Physical Nudge (Zero Latency)
@@ -2053,9 +2256,9 @@
             log(`Live Z- 0.1mm (Nudge + WCS Shift)`, 'sent');
         };
 
-        document.getElementById('zero-x').onclick = async () => { if(isDrawing) return; log('Setting X to 0', 'info'); await sendCommand('G10 P0 L20 X0'); };
-        document.getElementById('zero-y').onclick = async () => { if(isDrawing) return; log('Setting Y to 0', 'info'); await sendCommand('G10 P0 L20 Y0'); };
-        document.getElementById('zero-z').onclick = async () => { if(isDrawing) return; log('Setting Z to 0', 'info'); await sendCommand('G10 P0 L20 Z0'); };
+        document.getElementById('zero-x').onclick = async () => { if (isDrawing) return; log('Setting X to 0', 'info'); await sendCommand('G10 P0 L20 X0'); };
+        document.getElementById('zero-y').onclick = async () => { if (isDrawing) return; log('Setting Y to 0', 'info'); await sendCommand('G10 P0 L20 Y0'); };
+        document.getElementById('zero-z').onclick = async () => { if (isDrawing) return; log('Setting Z to 0', 'info'); await sendCommand('G10 P0 L20 Z0'); };
 
         // --- G-Code Streaming Logic ---
         let streamLines = [];
@@ -2142,11 +2345,11 @@
                 let content = trimmed, comment = "";
                 let semiIdx = trimmed.indexOf(';');
                 if (semiIdx >= 0) { content = trimmed.substring(0, semiIdx).trim(); comment = trimmed.substring(semiIdx); }
-                
+
                 if (!content) { out.push(comment); continue; }
                 if (/\bG90\b/i.test(content)) isRelative = false;
                 if (/\bG91\b/i.test(content)) isRelative = true;
-                
+
                 let sMatch = content.match(/S\s*([-\d.]+)/i);
                 let sBasedZ = null;
                 if (sMatch) {
@@ -2159,7 +2362,7 @@
                     else if (needsUp && isRaised) { sBasedZ = zUp; }
                     else if (needsDown && !isRaised) { sBasedZ = zDown; }
                 }
-                
+
                 let moveMatch = content.match(/\b(G0|G1)\b/i);
                 if (moveMatch) {
                     let type = moveMatch[1].toUpperCase();
@@ -2205,11 +2408,11 @@
             return out;
         }
 
-        window.processStreamLines = function() {
+        window.processStreamLines = function () {
             if (!originalStreamLines || originalStreamLines.length === 0) return;
-            
+
             let processingLines = [...originalStreamLines];
-            
+
             const applyRaster = document.getElementById('apply-raster').checked;
             if (applyRaster) {
                 let scanFeed = null;
@@ -2245,16 +2448,16 @@
                 });
                 processingLines = processed;
             }
-            
+
             streamLines = processingLines;
-            
+
             document.getElementById('stream-lines').textContent = `${streamLines.length} lines`;
             document.getElementById('stream-progress').max = streamLines.length;
             document.getElementById('stream-progress').value = 0;
             document.getElementById('stream-status').textContent = 'Ready to stream';
             document.getElementById('btn-start-stream').disabled = false;
             if (document.getElementById('btn-save-stream')) document.getElementById('btn-save-stream').disabled = false;
-            
+
             // Clear live preview from drawing pad tracking
             window.currentStreamLine = -1;
 
@@ -2269,12 +2472,12 @@
                 const l = line.toUpperCase();
                 return l.includes('COLOR PICKING SEQUENCE') || l.includes('TOOL CHANGE');
             });
-            
+
             let currentStroke = null;
             const isTropical = document.body.classList.contains('theme-tropical');
             let activeColor = hasColorPicking ? '#333333' : (isTropical ? '#ff00ff' : '#39FF14');
             let minX = Infinity, maxXParsed = -Infinity, minY = Infinity, maxYParsed = -Infinity;
-            
+
             streamLines.forEach((line, index) => {
                 const l = line.trim().toUpperCase();
                 if (l.startsWith(';')) return;
@@ -2303,7 +2506,7 @@
                             else if (newX < 67.5) activeColor = POTS['c1'].color;
                             else if (newX < 112.5) activeColor = POTS['c2'].color;
                             else activeColor = POTS['c3'].color;
-                            
+
                             if (!currentStroke || currentStroke.color !== activeColor || currentStroke.isLift) {
                                 currentStroke = { color: activeColor, isLift: false, points: [{ x: currentX, y: currentY, line: index }] };
                                 previewPaths.push(currentStroke);
@@ -2330,16 +2533,16 @@
                 }
                 currentZ = newZ;
             });
-            
+
             window.globalPreviewPaths = previewPaths;
-            
+
             const previewCanvas = document.getElementById('stream-preview');
             previewCanvas.width = 300;
             previewCanvas.height = Math.round(300 * (maxY / maxX));
             const pCtx = previewCanvas.getContext('2d');
             pCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
             pCtx.lineCap = 'round'; pCtx.lineJoin = 'round'; pCtx.lineWidth = 1;
-            
+
             previewPaths.forEach(stroke => {
                 if (stroke.points && stroke.points.length > 0) {
                     pCtx.strokeStyle = stroke.color; pCtx.beginPath();
@@ -2352,7 +2555,7 @@
                     pCtx.stroke();
                 }
             });
-            
+
             const dimsEl = document.getElementById('stream-dims');
             if (dimsEl) {
                 if (minX !== Infinity) {
@@ -2361,17 +2564,17 @@
                     dimsEl.textContent = `Drawing Size: N/A`;
                 }
             }
-            
+
             // Redraw main drawing pad now that globalPreviewPaths is updated
             if (typeof redrawCanvas === 'function') redrawCanvas();
         };
 
-        document.getElementById('stream-file').addEventListener('change', function(e) {
+        document.getElementById('stream-file').addEventListener('change', function (e) {
             const file = e.target.files[0];
             if (!file) return;
             document.getElementById('stream-filename').textContent = file.name;
             const reader = new FileReader();
-            reader.onload = function(evt) {
+            reader.onload = function (evt) {
                 const contents = evt.target.result;
                 originalStreamLines = contents.split(/\r?\n/).filter(line => line.trim().length > 0);
                 window.processStreamLines();
@@ -2386,12 +2589,12 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            
+
             let filename = document.getElementById('stream-filename').textContent;
             if (filename === 'No file selected' || !filename) filename = 'stream.gcode';
             filename = filename.replace(/\.(gcode|nc)$/i, '_processed.$1');
             if (!filename.includes('_processed')) filename += '_processed.gcode';
-            
+
             a.download = filename;
             a.click();
             URL.revokeObjectURL(url);
@@ -2429,18 +2632,18 @@
             for (let i = 0; i < streamLines.length; i++) {
                 if (!isStreaming) break;
                 const line = streamLines[i].trim();
-                
+
                 if (line.startsWith(';')) {
                     document.getElementById('stream-progress').value = i + 1;
                     continue; // Skip comments entirely
                 }
-                
+
                 document.getElementById('stream-status').textContent = `Sending line ${i + 1} of ${streamLines.length}`;
-                
+
                 // sendCommand naturally waits for the 'ok' from FluidNC because it returns a Promise resolved in onmessage
                 await sendCommand(line);
                 document.getElementById('stream-progress').value = i + 1;
-                
+
                 // Update live trace on right panel
                 window.currentStreamLine = i;
                 const liveCheck = document.getElementById('live-trace-check');
