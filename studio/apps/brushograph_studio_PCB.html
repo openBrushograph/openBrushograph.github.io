@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sequencer Platinum</title>
+    <title>BrusoCAD PCB Painter Deluxe Pro</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Bungee&display=swap');
 
@@ -486,7 +486,7 @@
         <a href="https://openbrushograph.github.io/" target="_blank">
             <img src="../../img/arai-icon.svg" alt="Logo" class="logo-img" id="dynamic-logo">
         </a>
-        <h1 style="margin:0; text-shadow:none;">Brushograph Studio Pro Deluxe</h1>
+        <h1 style="margin:0; text-shadow:none;">BrusoCAD PCB Painter Deluxe Pro</h1>
         <div class="theme-toggle">
             <button class="theme-btn" onclick="setTheme('light')" title="Light Mode">☀️</button>
             <button class="theme-btn" onclick="setTheme('tropical')" title="Tropical Mode"
@@ -1237,13 +1237,17 @@
             '1206 Capacitor': { src: 'components/1206_Capacitor.svg', width: 5.71, height: 2.67 },
             '1206 Resistor': { src: 'components/1206_Resistor.svg', width: 5.71, height: 2.67 },
             '2825 TopLED': { src: 'components/2825_TopLED.svg', width: 5.84, height: 3.24 },
+            '5050 NeoPixel': { src: 'components/5050_NeoPixel.svg', width: 10.45, height: 6.04 },
             'DIL8-Attiny85': { src: 'components/DIL8-Attiny85.svg', width: 15.16, height: 10.54 },
             'DIL14-4093': { src: 'components/DIL14-4093.svg', width: 15.16, height: 18.00 },
             'SOIC8-Attiny85': { src: 'components/SOIC8-Attiny85.svg', width: 13.02, height: 5.96 },
+            'SMD miniJack': { src: 'components/SMD_miniJack.svg', width: 13.38, height: 10.64 },
             'Logo Coconut': { src: 'components/Logo_Coconut.svg', width: 6.40, height: 7.57 },
             'THT Capacitor': { src: 'components/THT_Capacitor.svg', width: 15.73, height: 12.40 },
+            'THT PolCapacitor': { src: 'components/THT_PolCapacitor.svg', width: 11.93, height: 15.53 },
             'THT LED': { src: 'components/THT_LED.svg', width: 16.02, height: 12.07 },
-            'THT Resistor': { src: 'components/THT_Resistor.svg', width: 14.93, height: 5.44 }
+            'THT Resistor': { src: 'components/THT_Resistor.svg', width: 14.93, height: 5.44 },
+            'THT LDR': { src: 'components/THT_LDR.svg', width: 10.87, height: 12.09 }
         };
 
         window.addPcbPart = function (type) {
@@ -1463,7 +1467,7 @@
                         ctx.moveTo(0, -drawH / 2);
                         ctx.lineTo(0, -drawH / 2 - 25);
                         ctx.stroke();
-                        
+
                         if (window.hoveredRotationHandleIdx === idx) {
                             ctx.fillStyle = isTropical ? '#fff' : '#fff';
                             ctx.beginPath();
@@ -1496,7 +1500,7 @@
                         ctx.moveTo(0, -bodyHeight / 2);
                         ctx.lineTo(0, -bodyHeight / 2 - 25);
                         ctx.stroke();
-                        
+
                         if (window.hoveredRotationHandleIdx === idx) {
                             ctx.fillStyle = isTropical ? '#fff' : '#fff';
                             ctx.beginPath();
@@ -1837,12 +1841,12 @@
             const r = canvas.getBoundingClientRect();
             const cx = e.clientX - r.left;
             const cy = e.clientY - r.top;
-            
+
             // Hover logic for cursor styling and highlighting
             let cursorStyle = 'default';
             let prevHoveredIdx = window.hoveredRotationHandleIdx;
             window.hoveredRotationHandleIdx = -1;
-            
+
             if (document.getElementById('mode-move').checked && !isDraggingComponent && !window.isRotatingComponent) {
                 cursorStyle = 'crosshair';
                 if (window.selectedComponentIndex >= 0) {
@@ -1858,16 +1862,16 @@
                         const rotRad = -comp.rotation * Math.PI / 180;
                         const localX = dx * Math.cos(-rotRad) - dy * Math.sin(-rotRad);
                         const localY = dx * Math.sin(-rotRad) + dy * Math.cos(-rotRad);
-                        
+
                         let imgH = fp.height ? (fp.height / maxY) * canvas.height : 0;
                         let imgW = fp.width ? (fp.width / maxX) * canvas.width : 0;
-                        
+
                         const pinsPerCol = fp.pins ? fp.pins / 2 : 0;
                         let bodyWidth = fp.rowSpacing ? (fp.rowSpacing / maxX) * canvas.width : 0;
                         let bodyHeight = fp.pitch ? ((pinsPerCol * fp.pitch) / maxY) * canvas.height : 0;
-                        
+
                         const handleY = -(fp.image ? imgH / 2 : bodyHeight / 2) - 25;
-                        
+
                         if (Math.hypot(localX, localY - handleY) <= 15) {
                             window.hoveredRotationHandleIdx = window.selectedComponentIndex;
                             cursorStyle = 'grab';
@@ -1884,7 +1888,7 @@
             } else if (isDraggingComponent) {
                 cursorStyle = 'move';
             }
-            
+
             if (canvas.style.cursor !== cursorStyle) canvas.style.cursor = cursorStyle;
             if (prevHoveredIdx !== window.hoveredRotationHandleIdx && typeof redrawCanvas === 'function') redrawCanvas();
 
