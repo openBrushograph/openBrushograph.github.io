@@ -695,7 +695,9 @@
                 <h2 style="color: var(--accent-blue);">Webcam</h2>
                 <div style="margin-top: 10px; text-align: center;">
                     <video id="webcam-video" autoplay playsinline onclick="this.classList.toggle('fullscreen-video')" style="width: 100%; height: auto; background: #000; border: 1px solid var(--border); border-radius: 4px; display: none;"></video>
-                    <button id="btn-start-webcam" class="btn-blue" style="width: 100%; margin-top: 10px;" onclick="toggleWebcam()">Start Webcam</button>
+                    <select id="webcam-selector" style="width: 100%; margin-top: 10px; padding: 5px; background: var(--input-bg); color: var(--input-text); border: var(--border-width) solid var(--border); border-radius: var(--border-radius); font-family: var(--font-main); display: none;"></select>
+                    <button id="btn-start-webcam" class="btn-blue" style="width: 100%; margin-top: 5px;" onclick="toggleWebcam()">Start Webcam</button>
+                    <button id="btn-send-ai" class="btn-pink" style="width: 100%; margin-top: 5px; font-weight:bold;" onclick="sendToAI()">🧠 Send Frame to AI</button>
                 </div>
             </div>
         </div>
@@ -709,7 +711,7 @@
                 0.00 Z: 0.00
             </div>
             <div class="input-group" style="margin-bottom: 8px;">
-                <input type="text" id="ip-input" value="brushparang.local" placeholder="Address" style="flex-grow: 1;">
+                <input type="text" id="ip-input" value="brushographpro.local" placeholder="Address" style="flex-grow: 1;">
                 <input type="number" id="port-input" value="81" style="width: 50px;" title="Port">
                 <input type="text" id="path-input" value="" placeholder="/" style="width: 40px;"
                     title="Path (e.g. /ws)">
@@ -725,10 +727,10 @@
             <div
                 style="display: flex; gap: 15px; margin-bottom: 15px; font-size: 0.75rem; color: var(--accent-blue); font-family: var(--font-head); text-transform: uppercase; flex-wrap: wrap;">
                 <label style="cursor:pointer; display:flex; align-items:center; gap:4px;"><input type="radio"
-                        name="ip-choice" value="brushparang.local"
+                        name="ip-choice" value="brushographpro.local"
                         onchange="document.getElementById('ip-input').value = this.value; if(typeof saveSettings === 'function') saveSettings();"
                         checked>
-                    brushparang.local</label>
+                    brushographpro.local</label>
                 <label style="cursor:pointer; display:flex; align-items:center; gap:4px;"><input type="radio"
                         name="ip-choice" value="fluidnc.local"
                         onchange="document.getElementById('ip-input').value = this.value; if(typeof saveSettings === 'function') saveSettings();">
@@ -905,9 +907,13 @@
                             oninput="document.getElementById('canvas-preset').value='custom'; updateCanvasDimensions()">
                     </div>
 
-                    <h3
-                        style="margin-top:20px; margin-bottom:10px; font-size:1rem; border-bottom:1px solid var(--border); padding-bottom:5px;">
-                        Diy-CAD Components</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top:20px; margin-bottom:10px; border-bottom:1px solid var(--border); padding-bottom:5px;">
+                        <h3 style="margin:0; font-size:1rem;">Diy-CAD Components</h3>
+                        <div style="display:flex; gap:5px;">
+                            <button id="draw-undo" style="border-color: #fca311; color: #fca311; padding: 2px 8px; font-size: 0.8rem; background: transparent; cursor: pointer; border-radius: 4px; border: 1px solid #fca311;">Undo</button>
+                            <button id="draw-redo" style="border-color: #fca311; color: #fca311; padding: 2px 8px; font-size: 0.8rem; background: transparent; cursor: pointer; border-radius: 4px; border: 1px solid #fca311;">Redo</button>
+                        </div>
+                    </div>
                     <div class="input-group" style="gap:5px; flex-wrap:wrap;">
                         <label style="display:flex; align-items:center; gap:5px; font-weight:bold;">
                             <input type="radio" name="canvas-mode" id="mode-draw" value="draw" checked
@@ -1369,6 +1375,7 @@
             window.selectedComponentIndex = window.pcbComponents.length - 1;
             document.getElementById('mode-move').checked = true;
             window.updateCanvasMode();
+            if (typeof window.commitState === 'function') window.commitState();
         };
 
         // Preload SVG component images and build UI
@@ -1424,6 +1431,7 @@
                 window.pcbComponents.splice(window.selectedComponentIndex, 1);
                 window.selectedComponentIndex = -1;
                 window.updateCanvasMode();
+                if (typeof window.commitState === 'function') window.commitState();
             }
         };
 
@@ -2043,9 +2051,10 @@
             isDrawingMouse = false;
             isDraggingComponent = false;
             window.isRotatingComponent = false;
+            if (typeof window.commitState === 'function') window.commitState();
         };
 
-        document.getElementById('draw-clear').onclick = () => { paths = []; redrawCanvas(); };
+        document.getElementById('draw-clear').onclick = () => { paths = []; redrawCanvas(); if (typeof window.commitState === 'function') window.commitState(); };
 
         document.getElementById('draw-upload').onclick = () => document.getElementById('upload-gcode').click();
 
@@ -2109,6 +2118,7 @@
                 redrawCanvas();
                 log('G-Code Loaded', 'info');
                 e.target.value = '';
+                if (typeof window.commitState === 'function') window.commitState();
             };
             reader.readAsText(file);
         };
@@ -2791,9 +2801,45 @@
 
         // --- Webcam Logic ---
         let webcamStream = null;
+        
+        async function populateWebcams() {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                const selector = document.getElementById('webcam-selector');
+                
+                if (videoDevices.length > 0) {
+                    const currentVal = selector.value;
+                    selector.innerHTML = '';
+                    selector.style.display = 'block';
+                    videoDevices.forEach(device => {
+                        const option = document.createElement('option');
+                        option.value = device.deviceId;
+                        option.text = device.label || `Camera ${selector.length + 1}`;
+                        selector.appendChild(option);
+                    });
+                    if (currentVal && Array.from(selector.options).some(o => o.value === currentVal)) {
+                        selector.value = currentVal;
+                    }
+                }
+            } catch (err) {
+                console.warn('Could not populate webcams:', err);
+            }
+        }
+        
+        populateWebcams();
+
+        document.getElementById('webcam-selector').onchange = async () => {
+            if (webcamStream) {
+                await toggleWebcam(); // Turn off
+                await toggleWebcam(); // Turn back on with new select
+            }
+        };
+
         async function toggleWebcam() {
             const video = document.getElementById('webcam-video');
             const btn = document.getElementById('btn-start-webcam');
+            const selector = document.getElementById('webcam-selector');
             
             if (webcamStream) {
                 const tracks = webcamStream.getTracks();
@@ -2805,17 +2851,136 @@
                 btn.className = 'btn-blue';
             } else {
                 try {
-                    webcamStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    const constraints = { video: true };
+                    if (selector.value) {
+                        constraints.video = { deviceId: { exact: selector.value } };
+                    }
+                    webcamStream = await navigator.mediaDevices.getUserMedia(constraints);
                     video.srcObject = webcamStream;
                     video.style.display = 'block';
                     btn.textContent = 'Stop Webcam';
                     btn.className = 'btn-green';
+                    
+                    populateWebcams();
                 } catch (err) {
                     console.error("Error accessing webcam:", err);
                     alert("Could not access webcam. Please ensure you have given permission.");
                 }
             }
         }
+
+        async function sendToAI() {
+            const video = document.getElementById('webcam-video');
+            if (!video.srcObject || video.style.display === 'none') {
+                alert("Please start the webcam first!");
+                return;
+            }
+            const btn = document.getElementById('btn-send-ai');
+            const originalText = btn.textContent;
+            btn.textContent = "Sending...";
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            const dataURL = canvas.toDataURL('image/png');
+            
+            try {
+                const response = await fetch('http://localhost:8080/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: dataURL })
+                });
+                if (response.ok) {
+                    btn.textContent = "✅ Sent to AI!";
+                    setTimeout(() => btn.textContent = originalText, 2000);
+                } else {
+                    throw new Error("Server responded with error");
+                }
+            } catch (err) {
+                console.error(err);
+                btn.textContent = "❌ Error";
+                setTimeout(() => btn.textContent = originalText, 2000);
+                alert("Could not reach AI Vision Server. Is the Python script running?");
+            }
+        }
+        // --- Undo System ---
+        window.undoStack = [];
+        window.redoStack = [];
+        let currentPathsState = JSON.stringify(paths);
+        let currentCompsState = JSON.stringify(window.pcbComponents);
+
+        window.commitState = function(clearRedo = true) {
+            const newPaths = JSON.stringify(paths);
+            const newComps = JSON.stringify(window.pcbComponents);
+            if (newPaths !== currentPathsState || newComps !== currentCompsState) {
+                window.undoStack.push({ paths: currentPathsState, pcbComponents: currentCompsState });
+                if (window.undoStack.length > 50) window.undoStack.shift();
+                currentPathsState = newPaths;
+                currentCompsState = newComps;
+                if (clearRedo) window.redoStack = [];
+            }
+        };
+
+        window.performUndo = function() {
+            if (window.undoStack.length > 0) {
+                window.redoStack.push({ paths: currentPathsState, pcbComponents: currentCompsState });
+                const state = window.undoStack.pop();
+                paths = JSON.parse(state.paths);
+                window.pcbComponents = JSON.parse(state.pcbComponents);
+                window.selectedComponentIndex = -1;
+                
+                currentPathsState = state.paths;
+                currentCompsState = state.pcbComponents;
+                
+                if (typeof redrawCanvas === 'function') redrawCanvas();
+                log('Undo performed', 'info');
+            } else {
+                log('Nothing to undo', 'info');
+            }
+        };
+
+        window.performRedo = function() {
+            if (window.redoStack.length > 0) {
+                window.undoStack.push({ paths: currentPathsState, pcbComponents: currentCompsState });
+                const state = window.redoStack.pop();
+                paths = JSON.parse(state.paths);
+                window.pcbComponents = JSON.parse(state.pcbComponents);
+                window.selectedComponentIndex = -1;
+                
+                currentPathsState = state.paths;
+                currentCompsState = state.pcbComponents;
+                
+                if (typeof redrawCanvas === 'function') redrawCanvas();
+                log('Redo performed', 'info');
+            } else {
+                log('Nothing to redo', 'info');
+            }
+        };
+
+        const undoBtn = document.getElementById('draw-undo');
+        if (undoBtn) undoBtn.addEventListener('click', window.performUndo);
+        
+        const redoBtn = document.getElementById('draw-redo');
+        if (redoBtn) redoBtn.addEventListener('click', window.performRedo);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+                e.preventDefault();
+                if (e.shiftKey) {
+                    window.performRedo();
+                } else {
+                    window.performUndo();
+                }
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+                e.preventDefault();
+                window.performRedo();
+            }
+        });
+
     </script>
 </body>
 
