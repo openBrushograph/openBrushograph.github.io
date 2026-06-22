@@ -1,0 +1,21 @@
+;LightBurn 1.6.04
+;Custom GCode device profile, absolute coords
+;Bounds: X17 Y15 to X60 Y39
+G00 G17 G40 G21 G54
+G90
+M4
+;Cut @ 1000 mm/min, 90% power
+
+M8
+G0 Z3.5F1000
+G0 X17Y15Z3.5
+G1 Z0F1000
+;Layer Blue
+G1 Y39Z0S900F1000
+G1 X60Z0F1000
+G1 Y15Z0F1000
+G1 X17Z0F1000
+M9
+
+G90
+G1 Z10 F800

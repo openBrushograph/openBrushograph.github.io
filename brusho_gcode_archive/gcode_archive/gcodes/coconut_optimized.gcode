@@ -1,0 +1,559 @@
+
+G0 Z10 F500;      ; Move to clearance level - Z motion limited to 500
+; G0 X-10 Y-10 F1200; Homing
+; G0 X-5 Y-5 F1200; go in
+; G10 P0 L20 X0 Y0; set to zero
+G1 F1200;           ; Set feed rate to 1000
+;LightBurn 1.6.04
+;Custom GCode device profile, absolute coords
+;Bounds: X6.68 Y12.44 to X108.37 Y102.44
+G00 G17 G40 G21 G54
+G90
+M3
+G1 Z10 F500
+;Cut @ 1200 mm/min, 90% power
+
+M8
+
+; Washing sequence (no color)
+G1 Z10 F1000;        ; Raise brush to safe height
+G0 X2 Y0 F1200;     ; Rapid move to brush cleaning position
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z10 F500;         ; Raise brush slightly - controlled movement
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z2 F500;         ; Raise brush slightly - controlled movement
+G1 X22 Y0 Z8 F500;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G1 X2 Y0 Z8 F1000;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G0 X2 Y0 F1200;     ; Rapid move to brush cleaning position
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z10 F500;         ; Raise brush slightly - controlled movement
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z2 F500;         ; Raise brush slightly - controlled movement
+G1 X22 Y0 Z8 F500;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G1 X2 Y0 Z8 F1000;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+
+; Color 1 picking sequence
+G1 Z10 F500;         ; Raise brush to safe height
+;G0 X2 Y0 F1000;     ; Rapid move to brush cleaning position
+;G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+;G1 Z2 F500;         ; Raise brush slightly - controlled movement
+;G1 X22 Y0 Z8 F800;     ; Move across cleaning area - controlled movement
+;G1 Z8 F500;         ; Maintain brush height - controlled movement
+G0 X85 Y0 F1200;    ; Rapid move to color 1 position
+G1 Z0 F500;         ; Lower into color - controlled movement
+G1 X79 Y1 F500;     ; Small movement in paint - controlled movement
+G1 Z7 F500;         ; Raise from color - controlled movement
+G1 X82 Y1 F500;     ; Movement in paint - controlled movement
+G1 Z1 F500;         ; Lower slightly - controlled movement
+G1 X71 Y10 Z10 F500;     ; Move in paint - controlled movement
+;G1 Z8 F500;         ; Raise brush - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+G0 Z2.8F500
+G0 X45.705Y23.897Z2.8F1500
+G1 Z0F500
+;Layer Blue
+G1 X44.375Y20.794Z0S900F1200
+G1 X42.915Y17.237Z0F1200
+G1 X42.79Y17.06Z0F1200
+G1 X42.613Y16.952Z0F1200
+G1 X42.407Y16.921Z0F1200
+G1 X42.194Y16.983Z0F1200
+G1 X37.833Y19.283Z0F1200
+G1 X37.607Y19.366Z0F1200
+G1 X37.352Y19.387Z0F1200
+G1 X37.1Y19.346Z0F1200
+G1 X36.882Y19.242Z0F1200
+G1 X26.98Y12.557Z0F1200
+G1 X26.767Y12.464Z0F1200
+G1 X26.533Y12.443Z0F1200
+G1 X26.306Y12.495Z0F1200
+G1 X26.113Y12.62Z0F1200
+G1 X17.02Y21.557Z0F1200
+G1 X16.891Y21.744Z0F1200
+G1 X16.833Y21.968Z0F1200
+G1 X16.849Y22.199Z0F1200
+G1 X16.943Y22.408Z0F1200
+G1 X23.858Y32.321Z0F1200
+G1 X23.964Y32.536Z0F1200
+G1 X24.015Y32.786Z0F1200
+G1 X24.008Y33.04Z0F1200
+G1 X23.938Y33.268Z0F1200
+G1 X20.136Y42.616Z0F1200
+G1 X20.028Y42.828Z0F1200
+G1 X19.857Y43.017Z0F1200
+G1 X19.645Y43.161Z0F1200
+G1 X19.416Y43.244Z0F1200
+G1 X7.236Y45.466Z0F1200
+G1 X7.021Y45.55Z0F1200
+G1 X6.843Y45.702Z0F1200
+G1 X6.722Y45.903Z0F1200
+G1 X6.677Y46.128Z0F1200
+G1 Y58.76Z0F1200
+G1 X6.72Y58.985Z0F1200
+G1 X6.837Y59.184Z0F1200
+G1 X7.011Y59.337Z0F1200
+G1 X7.225Y59.42Z0F1200
+G1 X19.718Y61.704Z0F1200
+G1 X19.95Y61.787Z0F1200
+G1 X20.167Y61.93Z0F1200
+G1 X20.345Y62.117Z0F1200
+
+; Color 1 picking sequence
+G1 Z10 F500;         ; Raise brush to safe height
+;G0 X2 Y0 F1000;     ; Rapid move to brush cleaning position
+;G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+;G1 Z2 F500;         ; Raise brush slightly - controlled movement
+;G1 X22 Y0 Z8 F800;     ; Move across cleaning area - controlled movement
+;G1 Z8 F500;         ; Maintain brush height - controlled movement
+G0 X85 Y0 F1200;    ; Rapid move to color 1 position
+G1 Z0 F500;         ; Lower into color - controlled movement
+G1 X79 Y1 F500;     ; Small movement in paint - controlled movement
+G1 Z7 F500;         ; Raise from color - controlled movement
+G1 X82 Y1 F500;     ; Movement in paint - controlled movement
+G1 Z1 F500;         ; Lower slightly - controlled movement
+G1 X71 Y10 Z10 F500;     ; Move in paint - controlled movement
+;G1 Z8 F500;         ; Raise brush - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+
+; Return to drawing position
+G0 X20.345 Y62.117 F1200;  ; Return to position with raised Z
+G1 Z0 F500;                       ; Lower Z to drawing position
+G1 X20.46Y62.329Z0F1200
+G1 X24.288Y71.112Z0F1200
+G1 X24.363Y71.339Z0F1200
+G1 X24.377Y71.595Z0F1200
+G1 X24.332Y71.847Z0F1200
+G1 X24.231Y72.063Z0F1200
+G1 X16.956Y82.487Z0F1200
+G1 X16.861Y82.694Z0F1200
+G1 X16.845Y82.926Z0F1200
+G1 X16.901Y83.15Z0F1200
+G1 X17.03Y83.338Z0F1200
+G1 X26.118Y92.27Z0F1200
+G1 X26.311Y92.397Z0F1200
+G1 X26.539Y92.449Z0F1200
+G1 X26.772Y92.428Z0F1200
+G1 X26.985Y92.334Z0F1200
+G1 X37.776Y85.059Z0F1200
+G1 X37.997Y84.955Z0F1200
+G1 X38.254Y84.903Z0F1200
+G1 X38.514Y84.913Z0F1200
+G1 X38.747Y84.986Z0F1200
+G1 X47.396Y88.471Z0F1200
+G1 X47.61Y88.579Z0F1200
+G1 X47.801Y88.751Z0F1200
+G1 X47.946Y88.961Z0F1200
+G1 X48.029Y89.187Z0F1200
+G1 X50.447Y101.884Z0F1200
+G1 X50.529Y102.097Z0F1200
+G1 X50.678Y102.273Z0F1200
+G1 X50.875Y102.391Z0F1200
+G1 X51.099Y102.433Z0F1200
+G1 X51.088Y102.443Z0F1200
+G1 X63.944Z0F1200
+G1 X64.172Y102.402Z0F1200
+G1 X64.374Y102.283Z0F1200
+G1 X64.528Y102.108Z0F1200
+G1 X64.612Y101.894Z0F1200
+G1 X67.015Y89.197Z0F1200
+G1 X67.097Y88.971Z0F1200
+G1 X67.244Y88.76Z0F1200
+G1 X67.436Y88.589Z0F1200
+G1 X67.652Y88.481Z0F1200
+G1 X76.312Y84.995Z0F1200
+
+; Color 1 picking sequence
+G1 Z10 F500;         ; Raise brush to safe height
+;G0 X2 Y0 F1000;     ; Rapid move to brush cleaning position
+;G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+;G1 Z2 F500;         ; Raise brush slightly - controlled movement
+;G1 X22 Y0 Z8 F800;     ; Move across cleaning area - controlled movement
+;G1 Z8 F500;         ; Maintain brush height - controlled movement
+G0 X85 Y0 F1200;    ; Rapid move to color 1 position
+G1 Z0 F500;         ; Lower into color - controlled movement
+G1 X79 Y1 F500;     ; Small movement in paint - controlled movement
+G1 Z7 F500;         ; Raise from color - controlled movement
+G1 X82 Y1 F500;     ; Movement in paint - controlled movement
+G1 Z1 F500;         ; Lower slightly - controlled movement
+G1 X71 Y10 Z10 F500;     ; Move in paint - controlled movement
+;G1 Z8 F500;         ; Raise brush - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+
+; Return to drawing position
+G0 X76.312 Y84.995 F1200;  ; Return to position with raised Z
+G1 Z0 F500;                       ; Lower Z to drawing position
+G1 X76.545Y84.923Z0F1200
+G1 X76.807Y84.913Z0F1200
+G1 X77.064Y84.965Z0F1200
+G1 X77.283Y85.069Z0F1200
+G1 X88.074Y92.344Z0F1200
+G1 X88.283Y92.437Z0F1200
+G1 X88.513Y92.458Z0F1200
+G1 X88.738Y92.406Z0F1200
+G1 X88.93Y92.28Z0F1200
+G1 X98.018Y83.348Z0F1200
+G1 X98.148Y83.161Z0F1200
+G1 X98.208Y82.936Z0F1200
+G1 X98.195Y82.705Z0F1200
+G1 X98.102Y82.498Z0F1200
+G1 X90.816Y72.074Z0F1200
+G1 X90.713Y71.858Z0F1200
+G1 X90.67Y71.606Z0F1200
+G1 X90.687Y71.35Z0F1200
+G1 X90.763Y71.123Z0F1200
+G1 X94.581Y62.341Z0F1200
+G1 X94.697Y62.129Z0F1200
+G1 X94.877Y61.942Z0F1200
+G1 X95.095Y61.799Z0F1200
+G1 X95.329Y61.716Z0F1200
+G1 X107.817Y59.433Z0F1200
+G1 X108.031Y59.349Z0F1200
+G1 X108.208Y59.197Z0F1200
+G1 X108.328Y58.997Z0F1200
+G1 X108.37Y58.773Z0F1200
+G1 X108.362Y46.141Z0F1200
+G1 X108.32Y45.916Z0F1200
+G1 X108.202Y45.717Z0F1200
+G1 X108.028Y45.564Z0F1200
+G1 X107.814Y45.481Z0F1200
+G1 X95.634Y43.259Z0F1200
+G1 X95.405Y43.176Z0F1200
+G1 X95.195Y43.031Z0F1200
+G1 X95.024Y42.842Z0F1200
+G1 X94.913Y42.629Z0F1200
+G1 X91.116Y33.281Z0F1200
+G1 X91.046Y33.052Z0F1200
+G1 X91.036Y32.798Z0F1200
+G1 X91.085Y32.548Z0F1200
+G1 X91.19Y32.335Z0F1200
+G1 X98.11Y22.421Z0F1200
+
+; Color 1 picking sequence
+G1 Z10 F500;         ; Raise brush to safe height
+;G0 X2 Y0 F1000;     ; Rapid move to brush cleaning position
+;G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+;G1 Z2 F500;         ; Raise brush slightly - controlled movement
+;G1 X22 Y0 Z8 F800;     ; Move across cleaning area - controlled movement
+;G1 Z8 F500;         ; Maintain brush height - controlled movement
+G0 X85 Y0 F1200;    ; Rapid move to color 1 position
+G1 Z0 F500;         ; Lower into color - controlled movement
+G1 X79 Y1 F500;     ; Small movement in paint - controlled movement
+G1 Z7 F500;         ; Raise from color - controlled movement
+G1 X82 Y1 F500;     ; Movement in paint - controlled movement
+G1 Z1 F500;         ; Lower slightly - controlled movement
+G1 X71 Y10 Z10 F500;     ; Move in paint - controlled movement
+;G1 Z8 F500;         ; Raise brush - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+
+; Return to drawing position
+G0 X98.110 Y22.421 F1200;  ; Return to position with raised Z
+G1 Z0 F500;                       ; Lower Z to drawing position
+G1 X98.203Y22.212Z0F1200
+G1 X98.216Y21.981Z0F1200
+G1 X98.156Y21.758Z0F1200
+G1 X98.027Y21.571Z0F1200
+G1 X88.939Y12.633Z0F1200
+G1 X88.747Y12.507Z0F1200
+G1 X88.518Y12.444Z0F1200
+G1 X88.281Y12.455Z0F1200
+G1 X88.066Y12.549Z0F1200
+G1 X78.164Y19.233Z0F1200
+G1 X77.946Y19.337Z0F1200
+G1 X77.694Y19.378Z0F1200
+G1 X77.439Y19.358Z0F1200
+G1 X77.213Y19.274Z0F1200
+G1 X72.852Y16.974Z0F1200
+G1 X72.639Y16.912Z0F1200
+G1 X72.433Y16.943Z0F1200
+G1 X72.256Y17.05Z0F1200
+G1 X72.131Y17.229Z0F1200
+G1 X70.785Y20.229Z0F1200
+G1 X69.01Y24.233Z0F1200
+;Cut @ 1200 mm/min, 90% power
+
+M8
+
+; Washing sequence (no color)
+G1 Z10 F1000;        ; Raise brush to safe height
+G0 X2 Y0 F1200;     ; Rapid move to brush cleaning position
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z10 F500;         ; Raise brush slightly - controlled movement
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z2 F500;         ; Raise brush slightly - controlled movement
+G1 X22 Y0 Z8 F500;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G1 X2 Y0 Z8 F1000;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G0 X2 Y0 F1200;     ; Rapid move to brush cleaning position
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z10 F500;         ; Raise brush slightly - controlled movement
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z2 F500;         ; Raise brush slightly - controlled movement
+G1 X22 Y0 Z8 F500;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G1 X2 Y0 Z8 F1000;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+
+; Color 1 picking sequence
+G1 Z10 F500;         ; Raise brush to safe height
+;G0 X2 Y0 F1000;     ; Rapid move to brush cleaning position
+;G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+;G1 Z2 F500;         ; Raise brush slightly - controlled movement
+;G1 X22 Y0 Z8 F800;     ; Move across cleaning area - controlled movement
+;G1 Z8 F500;         ; Maintain brush height - controlled movement
+G0 X41 Y0 F1200;    ; Rapid move to color 1 position
+G1 Z0 F500;         ; Lower into color - controlled movement
+G1 X35 Y1 F500;     ; Small movement in paint - controlled movement
+G1 Z7 F500;         ; Raise from color - controlled movement
+G1 X38 Y1 F500;     ; Movement in paint - controlled movement
+G1 Z1 F500;         ; Lower slightly - controlled movement
+G1 X27 Y10 Z10 F500;     ; Move in paint - controlled movement
+;G1 Z8 F500;         ; Raise brush - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+G0 Z2.8F500
+G0 X68.942Y24.932Z2.8F1500
+G1 Z0F500
+;Layer Green
+G1 X72.816Y28.368Z0F1200
+G1 X76.29Y32.093Z0F1200
+G1 X79.176Y36.459Z0F1200
+G1 X81.397Y41.391Z0F1200
+G1 X81.897Y43.011Z0F1200
+G1 X82.389Y44.973Z0F1200
+G1 X82.798Y46.955Z0F1200
+G1 X83.053Y48.641Z0F1200
+G1 X83.139Y52.593Z0F1200
+G1 X82.52Y56.208Z0F1200
+G1 X81.2Y59.472Z0F1200
+G1 X79.183Y62.37Z0F1200
+G1 X78.662Y62.931Z0F1200
+G1 X78.091Y63.5Z0F1200
+G1 X77.619Y63.932Z0F1200
+G1 X77.396Y64.082Z0F1200
+G1 X76.963Y63.567Z0F1200
+G1 X76.1Y62.495Z0F1200
+G1 X75.252Y61.423Z0F1200
+G1 X74.863Y60.909Z0F1200
+G1 X74.898Y60.836Z0F1200
+G1 X75Y60.698Z0F1200
+G1 X75.155Y60.51Z0F1200
+G1 X75.349Y60.295Z0F1200
+G1 X76.008Y59.481Z0F1200
+G1 X76.458Y58.676Z0F1200
+G1 X76.693Y57.892Z0F1200
+G1 X76.707Y57.142Z0F1200
+G1 X75.517Y55.298Z0F1200
+G1 X72.696Y54.074Z0F1200
+G1 X68.514Y53.535Z0F1200
+G1 X63.242Y53.752Z0F1200
+G1 X62.072Y53.876Z0F1200
+G1 X61.246Y53.007Z0F1200
+G1 X60.13Y51.845Z0F1200
+G1 X58.882Y50.561Z0F1200
+G1 X57.821Y49.482Z0F1200
+G1 X57.266Y48.932Z0F1200
+G1 X57.153Y48.88Z0F1200
+G1 X57.167Y49.174Z0F1200
+G1 X57.338Y50.03Z0F1200
+G1 X58.36Y54.603Z0F1200
+G1 X57.676Y54.77Z0F1200
+G1 X54.302Y48.982Z0F1200
+G1 X52.982Y46.725Z0F1200
+G1 X51.883Y44.855Z0F1200
+G1 X51.12Y43.569Z0F1200
+G1 X50.808Y43.059Z0F1200
+G1 X50.879Y43.526Z0F1200
+G1 X51.161Y44.897Z0F1200
+G1 X51.611Y46.96Z0F1200
+G1 X52.754Y52.06Z0F1200
+
+; Color 1 picking sequence
+G1 Z10 F500;         ; Raise brush to safe height
+;G0 X2 Y0 F1000;     ; Rapid move to brush cleaning position
+;G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+;G1 Z2 F500;         ; Raise brush slightly - controlled movement
+;G1 X22 Y0 Z8 F800;     ; Move across cleaning area - controlled movement
+;G1 Z8 F500;         ; Maintain brush height - controlled movement
+G0 X41 Y0 F1200;    ; Rapid move to color 1 position
+G1 Z0 F500;         ; Lower into color - controlled movement
+G1 X35 Y1 F500;     ; Small movement in paint - controlled movement
+G1 Z7 F500;         ; Raise from color - controlled movement
+G1 X38 Y1 F500;     ; Movement in paint - controlled movement
+G1 Z1 F500;         ; Lower slightly - controlled movement
+G1 X27 Y10 Z10 F500;     ; Move in paint - controlled movement
+;G1 Z8 F500;         ; Raise brush - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+
+; Return to drawing position
+G0 X52.754 Y52.060 F1200;  ; Return to position with raised Z
+G1 Z0 F500;                       ; Lower Z to drawing position
+G1 X53.211Y54.156Z0F1200
+G1 X53.506Y55.575Z0F1200
+G1 X53.592Y56.097Z0F1200
+G1 X53.052Y56.294Z0F1200
+G1 X52.104Y56.686Z0F1200
+G1 X51.098Y57.124Z0F1200
+G1 X50.385Y57.46Z0F1200
+G1 X48.928Y58.263Z0F1200
+G1 X47.712Y59.031Z0F1200
+G1 X46.699Y59.787Z0F1200
+G1 X45.851Y60.559Z0F1200
+G1 X44.916Y61.687Z0F1200
+G1 X44.409Y62.748Z0F1200
+G1 X44.326Y63.763Z0F1200
+G1 X44.661Y64.75Z0F1200
+G1 X44.85Y65.05Z0F1200
+G1 X45.074Y65.303Z0F1200
+G1 X45.383Y65.555Z0F1200
+G1 X45.826Y65.856Z0F1200
+G1 X46.201Y66.087Z0F1200
+G1 X46.59Y66.306Z0F1200
+G1 X46.945Y66.488Z0F1200
+G1 X47.22Y66.608Z0F1200
+G1 X50.009Y67.272Z0F1200
+G1 X53.387Y67.511Z0F1200
+G1 X57.176Y67.325Z0F1200
+G1 X61.197Y66.713Z0F1200
+G1 X63.208Y66.297Z0F1200
+G1 X64.56Y67.955Z0F1200
+G1 X65.089Y68.608Z0F1200
+G1 X65.527Y69.162Z0F1200
+G1 X65.828Y69.56Z0F1200
+G1 X65.949Y69.743Z0F1200
+G1 X64.864Y70.098Z0F1200
+G1 X62.265Y70.659Z0F1200
+G1 X59.263Y71.207Z0F1200
+G1 X56.971Y71.521Z0F1200
+G1 X55.918Y71.594Z0F1200
+G1 X54.955Y71.646Z0F1200
+G1 X54.064Y71.677Z0F1200
+G1 X53.226Y71.684Z0F1200
+G1 X52.425Y71.663Z0F1200
+G1 X51.644Y71.622Z0F1200
+G1 X50.865Y71.559Z0F1200
+G1 X50.072Y71.466Z0F1200
+G1 X45.634Y70.429Z0F1200
+G1 X41.858Y68.531Z0F1200
+G1 X38.744Y65.774Z0F1200
+G1 X36.293Y62.158Z0F1200
+G1 X35.502Y60.444Z0F1200
+G1 X34.766Y58.48Z0F1200
+G1 X34.157Y56.475Z0F1200
+G1 X33.744Y54.638Z0F1200
+G1 X33.18Y48.832Z0F1200
+G1 X33.536Y43.337Z0F1200
+G1 X34.813Y38.165Z0F1200
+G1 X37.009Y33.323Z0F1200
+G1 X37.598Y32.367Z0F1200
+
+; Color 1 picking sequence
+G1 Z10 F500;         ; Raise brush to safe height
+;G0 X2 Y0 F1000;     ; Rapid move to brush cleaning position
+;G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+;G1 Z2 F500;         ; Raise brush slightly - controlled movement
+;G1 X22 Y0 Z8 F800;     ; Move across cleaning area - controlled movement
+;G1 Z8 F500;         ; Maintain brush height - controlled movement
+G0 X41 Y0 F1200;    ; Rapid move to color 1 position
+G1 Z0 F500;         ; Lower into color - controlled movement
+G1 X35 Y1 F500;     ; Small movement in paint - controlled movement
+G1 Z7 F500;         ; Raise from color - controlled movement
+G1 X38 Y1 F500;     ; Movement in paint - controlled movement
+G1 Z1 F500;         ; Lower slightly - controlled movement
+G1 X27 Y10 Z10 F500;     ; Move in paint - controlled movement
+;G1 Z8 F500;         ; Raise brush - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+
+; Return to drawing position
+G0 X37.598 Y32.367 F1200;  ; Return to position with raised Z
+G1 Z0 F500;                       ; Lower Z to drawing position
+G1 X38.347Y31.259Z0F1200
+G1 X39.121Y30.192Z0F1200
+G1 X39.787Y29.357Z0F1200
+G1 X41.123Y27.959Z0F1200
+G1 X42.596Y26.669Z0F1200
+G1 X44.178Y25.499Z0F1200
+G1 X45.836Y24.461Z0F1200
+;Cut @ 1200 mm/min, 80% power
+
+M8
+
+; Washing sequence (no color)
+G1 Z10 F1000;        ; Raise brush to safe height
+G0 X2 Y0 F1200;     ; Rapid move to brush cleaning position
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z10 F500;         ; Raise brush slightly - controlled movement
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z2 F500;         ; Raise brush slightly - controlled movement
+G1 X22 Y0 Z8 F500;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G1 X2 Y0 Z8 F1000;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G0 X2 Y0 F1200;     ; Rapid move to brush cleaning position
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z10 F500;         ; Raise brush slightly - controlled movement
+G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+G1 Z2 F500;         ; Raise brush slightly - controlled movement
+G1 X22 Y0 Z8 F500;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G1 X2 Y0 Z8 F1000;     ; Move across cleaning area - controlled movement
+G1 Z10 F500;         ; Maintain brush height - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+
+; Color 1 picking sequence
+G1 Z10 F500;         ; Raise brush to safe height
+;G0 X2 Y0 F1000;     ; Rapid move to brush cleaning position
+;G1 Z0 F500;         ; Lower brush for cleaning - controlled movement
+;G1 Z2 F500;         ; Raise brush slightly - controlled movement
+;G1 X22 Y0 Z8 F800;     ; Move across cleaning area - controlled movement
+;G1 Z8 F500;         ; Maintain brush height - controlled movement
+G0 X126 Y0 F1200;    ; Rapid move to color 1 position
+G1 Z0 F500;         ; Lower into color - controlled movement
+G1 X123 Y1 F500;     ; Small movement in paint - controlled movement
+G1 Z7 F500;         ; Raise from color - controlled movement
+G1 X126 Y1 F500;     ; Movement in paint - controlled movement
+G1 Z1 F500;         ; Lower slightly - controlled movement
+G1 X115 Y10 Z10 F500;     ; Move in paint - controlled movement
+;G1 Z8 F500;         ; Raise brush - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+G0 Z2.8F500
+G0 X64.122Y58.717Z2.8F1500
+G1 Z0F500
+;Layer Red
+G1 X63.275Y59.347Z0S800F1200
+G1 X62.84Y59.976Z0F1200
+G1 X62.718Y60.262Z0F1200
+G1 X86.963Y83.984Z0F1200
+G1 Y83.97Z0F1200
+G1 X89.647Y81.811Z0F1200
+G1 X67.747Y58.574Z0F1200
+G1 X67.023Y58.501Z0F1200
+G1 X66.295Y58.449Z0F1200
+G1 X65.481Y58.429Z0F1200
+G1 X64.122Y58.717Z0F1200
+M9
+M5
+G1 Z10 F500
+G90
+G1 Z10 F500
+G1 Y100 F1000
+
+; Return to 2,0 wash and park
+G1 Z10 F500;         ; Raise brush to safe height
+G0 X2 Y0 F1000;     ; Return to cleaning position
+G1 Z0 F500;         ; Lower brush for cleaning
+G1 Z2 F500;         ; Raise brush slightly
+G1 X22 Y0 Z8 F500;     ; Move across cleaning area
+G1 Z10 F500;         ; Raise brush to safe height
+G0 X2 Y0 F1000;     ; Return to wash position
+G1 Z0 F500;         ; Lower brush for cleaning
+G1 Z2 F500;         ; Raise brush slightly
+G1 X22 Y0 Z8 F500;     ; Move across cleaning area
+G1 Z10 F500;         ; Raise brush completely
+G0 X20 Y120 Z10 F500;; Move to parking position with Z at safe height
+M2;                 ; End program
