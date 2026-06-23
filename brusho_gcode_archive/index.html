@@ -23483,23 +23483,19 @@
             try {
                 // Check if running locally (fetch will fail due to CORS on file://)
                 if (window.location.protocol === 'file:') {
-                    alert("Local testing detected! Browsers block local zipping for security reasons. Instead, your browser will now download the files individually. Please click 'Allow' if your browser warns about multiple downloads. (Once uploaded to GitHub, this will beautifully download as a single .zip file!)");
+                    const bashCommand = `mkdir -p brusho_favorites && cp ` + favorites.map(f => `'gcodes/${f.replace(/'/g, "'\''")}'`).join(' ') + ` brusho_favorites/`;
                     
-                    let count = 0;
-                    for (const filename of favorites) {
-                        count++;
-                        btn.innerText = `⏳ Triggering DL (${count}/${favorites.length})...`;
-                        
-                        const a = document.createElement('a');
-                        a.href = 'gcodes/' + encodeURIComponent(filename);
-                        a.download = filename;
-                        a.style.display = 'none';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        
-                        // Add a tiny delay between clicks to help the browser process them
-                        await new Promise(r => setTimeout(r, 100));
+                    try {
+                        await navigator.clipboard.writeText(bashCommand);
+                        alert(`Local testing detected! Browsers block local background zipping for security reasons.
+
+Since you are running this locally on your hard drive, I have copied a bash command to your clipboard!
+
+Just paste it into your terminal (in the brusho_gcode_archive directory) and it will instantly copy all ${favorites.length} of your favorites into a new 'brusho_favorites' folder.
+
+(Once uploaded to GitHub, the normal .zip download will work!)`);
+                    } catch (err) {
+                        prompt("Local testing detected! Browsers block local background zipping. Copy and run this command in your terminal to get your favorites:", bashCommand);
                     }
                     
                     btn.innerText = originalText;
