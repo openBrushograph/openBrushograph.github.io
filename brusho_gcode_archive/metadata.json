@@ -1,0 +1,2981 @@
+{
+  "LeeUfan_circ.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (71).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_pin_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "watercolor (3).gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (1).gcode": {
+    "author": "dusjagr"
+  },
+  "kawan-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "coconutLogo2.gcode": {
+    "author": "dusjagr"
+  },
+  "output (6).gcode": {
+    "author": "dusjagr"
+  },
+  "dots_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "output_roland_doms.gcode": {
+    "author": "doms"
+  },
+  "output_dusjagr2.gcode": {
+    "author": "dusjagr"
+  },
+  "brushographLogo.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_nonblok.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTree_fixed.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_piezoAmp_offset2.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_techDraw.gcode": {
+    "author": "dusjagr"
+  },
+  "tilo_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "dusjagr_3color_optimized (2).gcode": {
+    "author": "dusjagr"
+  },
+  "wurst_pin.gcode": {
+    "author": "dusjagr"
+  },
+  "MAG_new.gcode": {
+    "author": "dusjagr"
+  },
+  "SimpleCatSlowerZ.gcode": {
+    "author": "dusjagr"
+  },
+  "bidenFix.gcode": {
+    "author": "dusjagr"
+  },
+  "DIWO_full_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "savac.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (26).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_microF_2pass.gcode": {
+    "author": "dusjagr"
+  },
+  "peace.gcode": {
+    "author": "dusjagr"
+  },
+  "output_adam_100.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (3).gcode": {
+    "author": "dusjagr"
+  },
+  "backlash_text_fixed.gcode": {
+    "author": "dusjagr"
+  },
+  "atest.gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_logo_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "dots3.gcode": {
+    "author": "dusjagr"
+  },
+  "fluidNC-logo.gcode": {
+    "author": "dusjagr"
+  },
+  "joebiden2.gcode": {
+    "author": "dusjagr"
+  },
+  "velis.gcode": {
+    "author": "dusjagr"
+  },
+  "marc-batak (1).gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_rasterZ_Logo_rasterTest.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (20).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_3.gcode": {
+    "author": "dusjagr"
+  },
+  "bial4_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (7).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_heart.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_coconutLogo.gcode": {
+    "author": "dusjagr"
+  },
+  "test_c_processed.gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (10).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (15).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_pin.gcode": {
+    "author": "dusjagr"
+  },
+  "biden.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (25).gcode": {
+    "author": "dusjagr"
+  },
+  "output_roland_fun.gcode": {
+    "author": "dusjagr"
+  },
+  "trumgSig_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brushograph_benchy (4).gcode": {
+    "author": "dusjagr"
+  },
+  "20Velis.gcode": {
+    "author": "dusjagr"
+  },
+  "reka2.gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_logo_raster (3).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_fixed_Logo_rasterTest.gcode": {
+    "author": "dusjagr"
+  },
+  "batak_assembled (8).gcode": {
+    "author": "dusjagr"
+  },
+  "4093_text.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (4).gcode": {
+    "author": "dusjagr"
+  },
+  "MAG_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_3.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTree_small.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_4 (1).gcode": {
+    "author": "dusjagr"
+  },
+  "smallCoco.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_benchy_0backlash (1).gcode": {
+    "author": "dusjagr"
+  },
+  "DIWO_fast_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (6).gcode": {
+    "author": "dusjagr"
+  },
+  "pin_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_Logo_rasterTest.gcode": {
+    "author": "dusjagr"
+  },
+  "amangboru-batak (1).gcode": {
+    "author": "dusjagr"
+  },
+  "bialetti.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_fixed_spiral.gcode": {
+    "author": "dusjagr"
+  },
+  "e9846188-6847-4ff4-9cdb-d0ed427c2d17.gcode": {
+    "author": "dusjagr"
+  },
+  "CocoLogoSM.gcode": {
+    "author": "dusjagr"
+  },
+  "cat6.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_micronoise_new_riksha.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_horas_single_stroke.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTree_07_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_pakde (2).gcode": {
+    "author": "dusjagr"
+  },
+  "a-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (20)_processed.gcode": {
+    "author": "dusjagr"
+  },
+  "watercolor (1).gcode": {
+    "author": "dusjagr"
+  },
+  "e-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "output_adam.gcode": {
+    "author": "dusjagr"
+  },
+  "p22g_20251205_133032.gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_spiral.gcode": {
+    "author": "dusjagr"
+  },
+  "brusho_PCB_micro.gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (6).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_20251207_155113.gcode": {
+    "author": "doms"
+  },
+  "gcode (44).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (60).gcode": {
+    "author": "dusjagr"
+  },
+  "bial3_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "doms2.gcode": {
+    "author": "doms"
+  },
+  "gcode (31).gcode": {
+    "author": "dusjagr"
+  },
+  "brusho_PCB_riksha.gcode": {
+    "author": "dusjagr"
+  },
+  "PCB_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_heart_processed.gcode": {
+    "author": "dusjagr"
+  },
+  "smallCoco_bl.gcode": {
+    "author": "dusjagr"
+  },
+  "dots3_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_20Velis.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (43).gcode": {
+    "author": "dusjagr"
+  },
+  "logo_rastertest.gcode": {
+    "author": "dusjagr"
+  },
+  "c8bd4092-ce69-4381-abc3-f1abfe36bfd8.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (11).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_techDraw_new (1).gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_gaggi100 (1).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (35).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_piezoAmp_offset.gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_colour_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTreeSmall_Volcano_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (6).gcode": {
+    "author": "doms"
+  },
+  "p22g_20251205_132753.gcode": {
+    "author": "dusjagr"
+  },
+  "presents.gcode": {
+    "author": "dusjagr"
+  },
+  "test_color_integration.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_optimized_piezoAmp_offset3.gcode": {
+    "author": "dusjagr"
+  },
+  "pakde.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brushographLogo (2).gcode": {
+    "author": "dusjagr"
+  },
+  "brusho_riksha3.gcode": {
+    "author": "dusjagr"
+  },
+  "dusjagr_3color_optimized (7).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brushograph_benchy_var.gcode": {
+    "author": "dusjagr"
+  },
+  "brusho_shard4_line.gcode": {
+    "author": "dusjagr"
+  },
+  "grid_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "output (3).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_continuous_line_paint.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_CocoLogoNew.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (8).gcode": {
+    "author": "dusjagr"
+  },
+  "joker_karo-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (28).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (1).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brushograph_benchy (1).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (42).gcode": {
+    "author": "dusjagr"
+  },
+  "Ender3_LEVEL_psd.gcode": {
+    "author": "dusjagr"
+  },
+  "output (4).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (11).gcode": {
+    "author": "dusjagr"
+  },
+  "testPattern.gcode": {
+    "author": "dusjagr"
+  },
+  "dots4_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_20250904_155145.gcode": {
+    "author": "doms"
+  },
+  "gcode (17).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_FluidNC-logo-raster (1).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_raster_G90_Z (2).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_dusjagr_3color (3).gcode": {
+    "author": "dusjagr"
+  },
+  "brushographLogo_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "dusjagr-batak (1).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (1).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (7).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (62).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_micronoise_corner.gcode": {
+    "author": "dusjagr"
+  },
+  "output_dusjagr1_2.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (67).gcode": {
+    "author": "dusjagr"
+  },
+  "output (1).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_RandenTreeSmall (1).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_test1.gcode": {
+    "author": "dusjagr"
+  },
+  "peace_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "MAG_new_optimized (5).gcode": {
+    "author": "dusjagr"
+  },
+  "batak_assembled (1).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_micronoise_new_riksha (1).gcode": {
+    "author": "dusjagr"
+  },
+  "wide2depth_20251207_193753.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_4 (2).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (10).gcode": {
+    "author": "dusjagr"
+  },
+  "watercolor (4).gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_4.gcode": {
+    "author": "dusjagr"
+  },
+  "kreistest.gcode": {
+    "author": "dusjagr"
+  },
+  "DIWO_fast.gcode": {
+    "author": "dusjagr"
+  },
+  "ultraslow.gcode": {
+    "author": "dusjagr"
+  },
+  "Hello_World_AIgenerated.gcode": {
+    "author": "dusjagr"
+  },
+  "coconut.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_test1.gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_logo_raster (1).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (2).gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_raster.gcode": {
+    "author": "dusjagr"
+  },
+  "4093_all.gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak (2).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (19).gcode": {
+    "author": "dusjagr"
+  },
+  "krane.gcode": {
+    "author": "dusjagr"
+  },
+  "micronoise_new_riksha.gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "FluidNC-logo.gcode": {
+    "author": "dusjagr"
+  },
+  "fdbda387-5891-4378-a033-c16ad1fba276.gcode": {
+    "author": "dusjagr"
+  },
+  "1_1.gcode": {
+    "author": "dusjagr"
+  },
+  "dusjagr_3color.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_piezoAmp_brusho (1).gcode": {
+    "author": "dusjagr"
+  },
+  "MAO.gcode": {
+    "author": "dusjagr"
+  },
+  "watercolor (2).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (39).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (7).gcode": {
+    "author": "dusjagr"
+  },
+  "bial4.gcode": {
+    "author": "dusjagr"
+  },
+  "SimpleCatFaster3.gcode": {
+    "author": "dusjagr"
+  },
+  "test2.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_rasterfix_logo_brushograph_raster (1).gcode": {
+    "author": "dusjagr"
+  },
+  "saava.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (73).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_pin (1).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (55).gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (8).gcode": {
+    "author": "dusjagr"
+  },
+  "techDraw_fix.gcode": {
+    "author": "dusjagr"
+  },
+  "doms.gcode": {
+    "author": "doms"
+  },
+  "gcode (33).gcode": {
+    "author": "dusjagr"
+  },
+  "krane_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "piezoAmp_brusho_new.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (32).gcode": {
+    "author": "dusjagr"
+  },
+  "OUTPUT.gcode": {
+    "author": "dusjagr"
+  },
+  "cloud_03_fast.gcode": {
+    "author": "dusjagr"
+  },
+  "OsterBitHack.gcode": {
+    "author": "dusjagr"
+  },
+  "watercolor (7).gcode": {
+    "author": "dusjagr"
+  },
+  "nonblok.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (16).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (4).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_logo_brushograph_raster.gcode": {
+    "author": "dusjagr"
+  },
+  "domsSelfportretWithSignature.gcode": {
+    "author": "doms"
+  },
+  "output1.gcode": {
+    "author": "dusjagr"
+  },
+  "long_run_test.gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter.gcode": {
+    "author": "doms"
+  },
+  "output_roland_doms3.gcode": {
+    "author": "doms"
+  },
+  "lightburn_logo.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_testPattern (2).gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_logo_raster (4).gcode": {
+    "author": "dusjagr"
+  },
+  "output_dusjagr3.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brusho_shard1.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (24).gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (3).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brushograph_benchy_var (1).gcode": {
+    "author": "dusjagr"
+  },
+  "marc-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (50).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_benchy_0backlash.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTreeSmall_Volcano.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_dusjagr_3color (3) (1).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (13).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (7).gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak.gcode": {
+    "author": "dusjagr"
+  },
+  "brusho_shard2.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (61).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (65).gcode": {
+    "author": "dusjagr"
+  },
+  "rose_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (75).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak (1).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak-batak (7).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (4).gcode": {
+    "author": "dusjagr"
+  },
+  "duseeiller.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTree_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "sig.gcode": {
+    "author": "dusjagr"
+  },
+  "p22g_20251205_132901.gcode": {
+    "author": "dusjagr"
+  },
+  "p22g_20251205_133052.gcode": {
+    "author": "dusjagr"
+  },
+  "94b8407f-45fc-4b7f-80e4-b7060654ff89.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph.gcode": {
+    "author": "dusjagr"
+  },
+  "a_tuak-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "9.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (26).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_dusjagr_3color.gcode": {
+    "author": "dusjagr"
+  },
+  "marcjono_batak (8).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_micronoise_brushodabbel.gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (4).gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (4).gcode": {
+    "author": "doms"
+  },
+  "fixed_gaggi100_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (12).gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTreeSingleLines_small_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_gaggi100.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_optimized_logo_brushograph_raster (1).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (20).gcode": {
+    "author": "dusjagr"
+  },
+  "batak_assembled (4).gcode": {
+    "author": "dusjagr"
+  },
+  "homing_sequence.gcode": {
+    "author": "dusjagr"
+  },
+  "a21fe84c-a8d9-420b-b2f8-cf177360e116.gcode": {
+    "author": "dusjagr"
+  },
+  "doms-batak.gcode": {
+    "author": "doms"
+  },
+  "rasterZ_backlash_fluidNC-logo3.gcode": {
+    "author": "dusjagr"
+  },
+  "color2_sequence.gcode": {
+    "author": "dusjagr"
+  },
+  "test_raster (1).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (52).gcode": {
+    "author": "dusjagr"
+  },
+  "cloud_03_fast_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_raster (3).gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_raster.gcode": {
+    "author": "dusjagr"
+  },
+  "kreistest_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (10).gcode": {
+    "author": "dusjagr"
+  },
+  "color2_3_sequences.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (18).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (40).gcode": {
+    "author": "dusjagr"
+  },
+  "output (2).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_Logo_rasterTest (1).gcode": {
+    "author": "dusjagr"
+  },
+  "4093.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (11).gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_logo_raster (6).gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTreeSmall_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "dots.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (6).gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_raster_G90_Z.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_techDraw2.gcode": {
+    "author": "dusjagr"
+  },
+  "coconut_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (2).gcode": {
+    "author": "dusjagr"
+  },
+  "SimpleCatSlower.gcode": {
+    "author": "dusjagr"
+  },
+  "trumgSigIn_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brushograph_benchy (3).gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_raster_G90_Z (4).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_BitsnBrushes.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (48).gcode": {
+    "author": "dusjagr"
+  },
+  "dusjagr_3color_optimized (1).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_microT (1).gcode": {
+    "author": "dusjagr"
+  },
+  "batak_assembled (7).gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_spiral_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "techDraw_new.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_bacterial_painter (2).gcode": {
+    "author": "doms"
+  },
+  "rasterZ_test1_fixed.gcode": {
+    "author": "dusjagr"
+  },
+  "watercolor (6).gcode": {
+    "author": "dusjagr"
+  },
+  "cnc_pike (1).gcode": {
+    "author": "dusjagr"
+  },
+  "BitsnBrushes.gcode": {
+    "author": "dusjagr"
+  },
+  "87c2346a-b52a-474f-8237-e9e84ed32a38.gcode": {
+    "author": "dusjagr"
+  },
+  "dusjagr_batak.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_fluidNC-logo3 (1).gcode": {
+    "author": "dusjagr"
+  },
+  "hello_world_performance.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_test2.gcode": {
+    "author": "dusjagr"
+  },
+  "chabis.gcode": {
+    "author": "dusjagr"
+  },
+  "offsetTest.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_raster (1).gcode": {
+    "author": "dusjagr"
+  },
+  "backlash_text.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (4).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (3).gcode": {
+    "author": "dusjagr"
+  },
+  "bial2.gcode": {
+    "author": "dusjagr"
+  },
+  "einhorn60.gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (9).gcode": {
+    "author": "dusjagr"
+  },
+  "a_test_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTree.gcode": {
+    "author": "dusjagr"
+  },
+  "dBm.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (63).gcode": {
+    "author": "dusjagr"
+  },
+  "coconutLogo.gcode": {
+    "author": "dusjagr"
+  },
+  "rose.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_benchy.gcode": {
+    "author": "dusjagr"
+  },
+  "brusho_PCB_riksha2.gcode": {
+    "author": "dusjagr"
+  },
+  "4093_2_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_4 (3).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_RandenTreeSmall (5).gcode": {
+    "author": "dusjagr"
+  },
+  "Schmitt.gcode": {
+    "author": "dusjagr"
+  },
+  "SimpleCat (1).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak (4).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (5).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak (6).gcode": {
+    "author": "dusjagr"
+  },
+  "atest_bfix.gcode": {
+    "author": "dusjagr"
+  },
+  "test2_brush.gcode": {
+    "author": "dusjagr"
+  },
+  "test3.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (14).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_Logo_rasterTest.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (1).gcode": {
+    "author": "dusjagr"
+  },
+  "trumgSigIn.gcode": {
+    "author": "dusjagr"
+  },
+  "test_c.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (5).gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (2).gcode": {
+    "author": "doms"
+  },
+  "optimized_CocoLogoNew (1).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_pakde (1).gcode": {
+    "author": "dusjagr"
+  },
+  "marcjono_batak (3).gcode": {
+    "author": "dusjagr"
+  },
+  "becek-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "gabs-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "d75602eb-6027-4021-91dc-b58a0186ab31.gcode": {
+    "author": "dusjagr"
+  },
+  "marcjono_batak (2).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (21).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (64).gcode": {
+    "author": "dusjagr"
+  },
+  "DIWO_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_arai-eek_logo_text.gcode": {
+    "author": "dusjagr"
+  },
+  "d-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_raster.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_optimized_brushograph_benchy_var (1).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_pakde.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brushograph_benchy.gcode": {
+    "author": "dusjagr"
+  },
+  "brusho_shard3_line.gcode": {
+    "author": "dusjagr"
+  },
+  "dusjagr-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_nonblokColour.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_BitsnBrushes (1).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak-batak (4).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_raster (2).gcode": {
+    "author": "dusjagr"
+  },
+  "4093_all_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "piezoAmp_offset.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brushographLogo (1).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (13).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (23).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (37).gcode": {
+    "author": "dusjagr"
+  },
+  "batak_assembled (5).gcode": {
+    "author": "dusjagr"
+  },
+  "test_raster (4).gcode": {
+    "author": "dusjagr"
+  },
+  "batak_assembled (3).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_optimized_micronoise_corner.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (49).gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_logo_tat.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_micronoise_cornrer.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (45).gcode": {
+    "author": "dusjagr"
+  },
+  "4093_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "spiral.gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_raster_G90_Z (2).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_test3.gcode": {
+    "author": "dusjagr"
+  },
+  "pin.gcode": {
+    "author": "dusjagr"
+  },
+  "piezoAmp_brusho.gcode": {
+    "author": "dusjagr"
+  },
+  "continuous_line_paint (2).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brusho_riksha3.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_sausageFlag_new.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (6).gcode": {
+    "author": "dusjagr"
+  },
+  "iyok_batak.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (9).gcode": {
+    "author": "dusjagr"
+  },
+  "horas-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "saave_fix.gcode": {
+    "author": "dusjagr"
+  },
+  "output_roland.gcode": {
+    "author": "dusjagr"
+  },
+  "DIWO.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (38).gcode": {
+    "author": "dusjagr"
+  },
+  "marcjono-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "b95a548c-1d27-4b75-b72b-5ea4220a3a65.gcode": {
+    "author": "dusjagr"
+  },
+  "test1_pen.gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_raster_raster.gcode": {
+    "author": "dusjagr"
+  },
+  "bir-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (29).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (2).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_horas_single_stroke (3).gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTreeSmall_new.gcode": {
+    "author": "dusjagr"
+  },
+  "CocoLogo.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_fixed_RandenTreeSmall_New (1).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (9).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_piezoAmp_brusho.gcode": {
+    "author": "dusjagr"
+  },
+  "VeliMoney100.gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph.gcode": {
+    "author": "dusjagr"
+  },
+  "techDraw2.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTree_operations.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterTest_z_rel.gcode": {
+    "author": "dusjagr"
+  },
+  "layout_lightburn.gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (1).gcode": {
+    "author": "doms"
+  },
+  "optimized_logo_brushograph_raster (4).gcode": {
+    "author": "dusjagr"
+  },
+  "coconutLogoPink_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "microT.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (27).gcode": {
+    "author": "dusjagr"
+  },
+  "test_b.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTreeSmall_new_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "sausageFlag_new.gcode": {
+    "author": "dusjagr"
+  },
+  "drawing-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "test_d.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_pakde.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (8).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (9).gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTree_colors_updated_operation_pickups.gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_optimized_RandenTreeSmall.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (25).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_microT.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (12).gcode": {
+    "author": "dusjagr"
+  },
+  "dots_halftone (2).gcode": {
+    "author": "dusjagr"
+  },
+  "test1.gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (11).gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTree_colors_updated.gcode": {
+    "author": "dusjagr"
+  },
+  "ValiRanden.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_FluidNC-logo.gcode": {
+    "author": "dusjagr"
+  },
+  "araieek_logo.gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_RandenTreeSmall.gcode": {
+    "author": "dusjagr"
+  },
+  "watercolor.gcode": {
+    "author": "dusjagr"
+  },
+  "spiral_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_rasterZ_test1.gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak-batak (2).gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_raster_G90_Z (1).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_20250904_160755.gcode": {
+    "author": "doms"
+  },
+  "rasterZ_backlash_test1 (1).gcode": {
+    "author": "dusjagr"
+  },
+  "nonblokColour.gcode": {
+    "author": "dusjagr"
+  },
+  "p22g_20251205_134247.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (24).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak (7).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_techDraw2 (1).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (41).gcode": {
+    "author": "dusjagr"
+  },
+  "e78250c7-6048-46f2-a6d8-21155a06a1ca.gcode": {
+    "author": "dusjagr"
+  },
+  "continuous_line_paint.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (6).gcode": {
+    "author": "dusjagr"
+  },
+  "SimpleCatSlower2.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_3 (2).gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_plot (1).gcode": {
+    "author": "doms"
+  },
+  "optimized_fixed_RandenTreeSmall.gcode": {
+    "author": "dusjagr"
+  },
+  "microF_2pass.gcode": {
+    "author": "dusjagr"
+  },
+  "batak_assembled (6).gcode": {
+    "author": "dusjagr"
+  },
+  "b-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (23).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_test1 (1).gcode": {
+    "author": "dusjagr"
+  },
+  "CocoLogoNew.gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_logo_brushograph_g.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (3).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (72).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (12).gcode": {
+    "author": "dusjagr"
+  },
+  "DIWO_full.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (36).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_3 (1).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (68).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_Arai.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (22).gcode": {
+    "author": "dusjagr"
+  },
+  "CocoLogo_bl.gcode": {
+    "author": "dusjagr"
+  },
+  "p22g_20251205_133909.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (1).gcode": {
+    "author": "dusjagr"
+  },
+  "batak_assembled.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (53).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_microT (2).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_testPattern.gcode": {
+    "author": "dusjagr"
+  },
+  "micronoise_riksha.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_sausageFlag_new.gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak_batak.gcode": {
+    "author": "dusjagr"
+  },
+  "grid.gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_logo_optimized_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_FluidNC-logo (2).gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (5).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (14).gcode": {
+    "author": "dusjagr"
+  },
+  "BitsnBrushes_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "test_fill.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterTest_z.gcode": {
+    "author": "dusjagr"
+  },
+  "dBm_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "kreisli.gcode": {
+    "author": "dusjagr"
+  },
+  "kawan_pustaha-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_logo_raster (2).gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_g.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_lightburn_logo_raster.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (16).gcode": {
+    "author": "dusjagr"
+  },
+  "continuous_line_paint (1).gcode": {
+    "author": "dusjagr"
+  },
+  "bial3.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_benchy (1).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (8).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (59).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (30).gcode": {
+    "author": "dusjagr"
+  },
+  "Retraction_test_with_abl.gcode": {
+    "author": "dusjagr"
+  },
+  "multicolor_paint.gcode": {
+    "author": "doms"
+  },
+  "MAG.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTree_colors_updated_with_pickups.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_test4 (1).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (66).gcode": {
+    "author": "dusjagr"
+  },
+  "dots_halftone.gcode": {
+    "author": "dusjagr"
+  },
+  "gcodeview.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_Logo_rasterTest (2).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brusho_shard4_line.gcode": {
+    "author": "dusjagr"
+  },
+  "asik-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "watercolor (8).gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_2.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (3).gcode": {
+    "author": "dusjagr"
+  },
+  "marcjono_batak.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (47).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_horas_single_stroke (4).gcode": {
+    "author": "dusjagr"
+  },
+  "PCB.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (5).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (21).gcode": {
+    "author": "dusjagr"
+  },
+  "test4.gcode": {
+    "author": "dusjagr"
+  },
+  "sausageFlag_new_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (11).gcode": {
+    "author": "dusjagr"
+  },
+  "bial2_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "4093_2.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brusho_riksha2.gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_logo_raster (5).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (5).gcode": {
+    "author": "dusjagr"
+  },
+  "output.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode.gcode": {
+    "author": "dusjagr"
+  },
+  "micronoise_hindiriksha.gcode": {
+    "author": "dusjagr"
+  },
+  "bosh-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "marcjono_batak (5).gcode": {
+    "author": "dusjagr"
+  },
+  "test1_pen_fixed.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brusho_shard2.gcode": {
+    "author": "dusjagr"
+  },
+  "gaggi_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "a_a-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "marcjono_batak (1).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (69).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (15).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_fluidNC-logo3 (2).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (15).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brushographLogo_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "output_roland_hair.gcode": {
+    "author": "dusjagr"
+  },
+  "c3651306-0779-4bc4-b05f-165aa3f521b0.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (51).gcode": {
+    "author": "dusjagr"
+  },
+  "dBm_all.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_piezoAmp_offset3.gcode": {
+    "author": "dusjagr"
+  },
+  "batak-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (9).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (46).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (34).gcode": {
+    "author": "dusjagr"
+  },
+  "SimpleCat.gcode": {
+    "author": "dusjagr"
+  },
+  "marcjono_batak (7).gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_RandenTreeSmall_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (56).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (13).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_micronoise_hindiriksha.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_FluidNC-logo (1).gcode": {
+    "author": "dusjagr"
+  },
+  "petrik_batak (1).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brushograph_benchy (2).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_nonblokColour (1).gcode": {
+    "author": "dusjagr"
+  },
+  "brusho_riksha2.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_bialetti_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "batak_assembled (2).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (8).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brusho_shard3_line.gcode": {
+    "author": "dusjagr"
+  },
+  "marcjono_batak (6).gcode": {
+    "author": "dusjagr"
+  },
+  "melody.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (2).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_slowDrone.gcode": {
+    "author": "dusjagr"
+  },
+  "presents_bl.gcode": {
+    "author": "dusjagr"
+  },
+  "test2_brush_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTreeSmall.gcode": {
+    "author": "dusjagr"
+  },
+  "MAG_new_optimized (2).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak-batak (6).gcode": {
+    "author": "dusjagr"
+  },
+  "duseeiller (1).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_ValiRanden.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_tag.gcode": {
+    "author": "dusjagr"
+  },
+  "testPattern_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "test_raster.gcode": {
+    "author": "dusjagr"
+  },
+  "output_roland_doms4.gcode": {
+    "author": "doms"
+  },
+  "RandenTree_with_colors.gcode": {
+    "author": "dusjagr"
+  },
+  "coconutLogoMid_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "FluidNC-logo-raster.gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_logo_raster.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_pakde (1) (1).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "cnc_pike.gcode": {
+    "author": "dusjagr"
+  },
+  "Schmitt_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "color3_washing.gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_raster_G90.gcode": {
+    "author": "dusjagr"
+  },
+  "output_08764.gcode": {
+    "author": "dusjagr"
+  },
+  "dots_halftone (1).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_sausageFlag_new (1).gcode": {
+    "author": "dusjagr"
+  },
+  "CocoLogoNew_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "dots4.gcode": {
+    "author": "dusjagr"
+  },
+  "analyzed_gaggi100.gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak (3).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (70).gcode": {
+    "author": "dusjagr"
+  },
+  "MAG_new_optimized (4).gcode": {
+    "author": "dusjagr"
+  },
+  "lightburn_logo_raster (7).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterTest.gcode": {
+    "author": "dusjagr"
+  },
+  "micronoise_cornrer.gcode": {
+    "author": "dusjagr"
+  },
+  "gaggi.gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (3).gcode": {
+    "author": "doms"
+  },
+  "coconutLogoPink.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_RandenTreeSmall (2).gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_plot.gcode": {
+    "author": "doms"
+  },
+  "dusjagr_3color_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (5).gcode": {
+    "author": "doms"
+  },
+  "logo_brushograph_colour.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_horas_single_stroke (2).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (12).gcode": {
+    "author": "dusjagr"
+  },
+  "Phaistosdisk_0.4n_0.2mm_PLA_MK4IS_16h24m.gcode": {
+    "author": "dusjagr"
+  },
+  "test_raster (3).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (74).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_dusjagr_3color (2).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak-batak (3).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (17).gcode": {
+    "author": "dusjagr"
+  },
+  "p22g_20251205_131824.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (22).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak-batak (5).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_brushographLogo.gcode": {
+    "author": "dusjagr"
+  },
+  "Logo_rasterTest.gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak.gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_gaggi100.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_raster (5).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_sausageFlag_new_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTree_07.gcode": {
+    "author": "dusjagr"
+  },
+  "4093_text_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "out.gcode": {
+    "author": "dusjagr"
+  },
+  "dusjagr_3color_optimized (4).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_test4.gcode": {
+    "author": "dusjagr"
+  },
+  "joebiden.gcode": {
+    "author": "dusjagr"
+  },
+  "_new.gcode": {
+    "author": "dusjagr"
+  },
+  "fluidNC-logo3.gcode": {
+    "author": "dusjagr"
+  },
+  "fluidNC-logo2.gcode": {
+    "author": "dusjagr"
+  },
+  "gaggi100.gcode": {
+    "author": "dusjagr"
+  },
+  "MAG_new_optimized (1).gcode": {
+    "author": "dusjagr"
+  },
+  "output_haku.gcode": {
+    "author": "dusjagr"
+  },
+  "19fce046-e143-46c5-8d9c-b6751b73f516.gcode": {
+    "author": "dusjagr"
+  },
+  "petrik-batak (1).gcode": {
+    "author": "dusjagr"
+  },
+  "test_d_processed (1).gcode": {
+    "author": "dusjagr"
+  },
+  "SnailPorn.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_araieek_logo.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (19).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (58).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_benchy_var.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_RandenTreeSmall (3).gcode": {
+    "author": "dusjagr"
+  },
+  "coconutLogo2_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_araieek_logo (1).gcode": {
+    "author": "dusjagr"
+  },
+  "House-red-black.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph (1).gcode": {
+    "author": "dusjagr"
+  },
+  "c362affc-9ecd-4476-b6c3-cdba08355f4d.gcode": {
+    "author": "dusjagr"
+  },
+  "marcjono_tuak_batak.gcode": {
+    "author": "dusjagr"
+  },
+  "output (5).gcode": {
+    "author": "dusjagr"
+  },
+  "output_dusjagr1.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_RandenTreeSmall (4).gcode": {
+    "author": "dusjagr"
+  },
+  "g-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "RandenTree_small_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing (10).gcode": {
+    "author": "dusjagr"
+  },
+  "MAG_new_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "petrik-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "arai-eek_logo_text.gcode": {
+    "author": "dusjagr"
+  },
+  "Macka5Grbl.gcode": {
+    "author": "dusjagr"
+  },
+  "cnc_pike (2).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_benchy_invert_backlash.gcode": {
+    "author": "dusjagr"
+  },
+  "jabu_bolon-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_raster (6).gcode": {
+    "author": "dusjagr"
+  },
+  "signatur_letters.gcode": {
+    "author": "dusjagr"
+  },
+  "startup.gcode": {
+    "author": "dusjagr"
+  },
+  "gg-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak-batak (1).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_4.gcode": {
+    "author": "dusjagr"
+  },
+  "c-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "watercolor (5).gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (18).gcode": {
+    "author": "dusjagr"
+  },
+  "amangboru-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "dusjagr_3color_optimized (3).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster.gcode": {
+    "author": "dusjagr"
+  },
+  "test_d_processed.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_20250904_161033.gcode": {
+    "author": "doms"
+  },
+  "tag.gcode": {
+    "author": "dusjagr"
+  },
+  "seppli.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_fluidNC-logo3 (1).gcode": {
+    "author": "dusjagr"
+  },
+  "test_raster (5).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak (5).gcode": {
+    "author": "dusjagr"
+  },
+  "gaggi100_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "Retraction_test_without_abl.gcode": {
+    "author": "dusjagr"
+  },
+  "bialetti_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "batak_assembled (9).gcode": {
+    "author": "dusjagr"
+  },
+  "brusho_shard1.gcode": {
+    "author": "dusjagr"
+  },
+  "petrik_batak.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_pinkBlue_slow.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (10).gcode": {
+    "author": "dusjagr"
+  },
+  "techDraw.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (14).gcode": {
+    "author": "dusjagr"
+  },
+  "SnailPorn_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "logo_brushograph_raster_G90_Z (3).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_fluidNC-logo3.gcode": {
+    "author": "dusjagr"
+  },
+  "28bfb84b-5a11-4bf9-9b24-9be736c873ac.gcode": {
+    "author": "dusjagr"
+  },
+  "horas_batak (2).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_piezoAmp_brusho_new.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (54).gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_bagot-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "959bfa77-4481-4cb5-949c-a5310b76e682.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_dusjagr_3color (1).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_logo_brushograph_2 (7).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_RandenTreeSmall.gcode": {
+    "author": "dusjagr"
+  },
+  "marcjono_batak (4).gcode": {
+    "author": "dusjagr"
+  },
+  "rasterZ_backlash_techDraw_new.gcode": {
+    "author": "dusjagr"
+  },
+  "coconutLogo_optimized.gcode": {
+    "author": "dusjagr"
+  },
+  "tomato-batak.gcode": {
+    "author": "dusjagr"
+  },
+  "coconutLogoMid.gcode": {
+    "author": "dusjagr"
+  },
+  "micronoise_brushodabbel.gcode": {
+    "author": "dusjagr"
+  },
+  "rasterfix_logo_brushograph_raster (12).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_testPattern (1).gcode": {
+    "author": "dusjagr"
+  },
+  "piezoAmp_offset2.gcode": {
+    "author": "dusjagr"
+  },
+  "gcode (57).gcode": {
+    "author": "dusjagr"
+  },
+  "a_test.gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_micronoise_riksha.gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_logo_brushograph_g (1).gcode": {
+    "author": "dusjagr"
+  },
+  "tilo.gcode": {
+    "author": "dusjagr"
+  },
+  "trumgSig.gcode": {
+    "author": "dusjagr"
+  },
+  "color1_sequence.gcode": {
+    "author": "dusjagr"
+  },
+  "tuak_batak-batak (8).gcode": {
+    "author": "dusjagr"
+  },
+  "optimized_horas_single_stroke (1).gcode": {
+    "author": "dusjagr"
+  },
+  "dots_halftone (3).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_20251117_105552.gcode": {
+    "author": "doms"
+  },
+  "fluid_painting (1).gcode": {
+    "author": "dusjagr"
+  },
+  "dots_stamp_v4.gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_interleaved_safe.gcode": {
+    "author": "doms"
+  },
+  "brushograph_20260126_224852.gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (24).gcode": {
+    "author": "doms"
+  },
+  "stamp_scaled.gcode": {
+    "author": "dusjagr"
+  },
+  "multicolor_paint(1).gcode": {
+    "author": "doms"
+  },
+  "output (9).gcode": {
+    "author": "dusjagr"
+  },
+  "t10.gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_pro_V06_fixed (3).gcode": {
+    "author": "doms"
+  },
+  "custom_cmyk_multidish.gcode": {
+    "author": "doms"
+  },
+  "kro.gcode": {
+    "author": "dusjagr"
+  },
+  "plot_cmyk (4).gcode": {
+    "author": "doms"
+  },
+  "drawing(2).gcode": {
+    "author": "dusjagr"
+  },
+  "t7.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_20251121_212728.gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (1).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (29).gcode": {
+    "author": "doms"
+  },
+  "plot (2).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (34).gcode": {
+    "author": "doms"
+  },
+  "cmyk_pro_V06_fixed.gcode": {
+    "author": "doms"
+  },
+  "cmyk_pro_V06_fixed (2).gcode": {
+    "author": "doms"
+  },
+  "cmyk_pro_V20_fix (1).gcode": {
+    "author": "doms"
+  },
+  "t6.gcode": {
+    "author": "dusjagr"
+  },
+  "multicolor_paint (52).gcode": {
+    "author": "doms"
+  },
+  "cmyk_interleaved_safe (2).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (27).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (26).gcode": {
+    "author": "doms"
+  },
+  "CE1.gcode": {
+    "author": "dusjagr"
+  },
+  "skeleton_paint_BACKLASH_FIXED.gcode": {
+    "author": "doms"
+  },
+  "brushograph_20260126_223445.gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (41).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (14).gcode": {
+    "author": "doms"
+  },
+  "krog.gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (23).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter_grbl (8).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (37).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (32).gcode": {
+    "author": "doms"
+  },
+  "painting.gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (16).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (17).gcode": {
+    "author": "doms"
+  },
+  "t4.gcode": {
+    "author": "dusjagr"
+  },
+  "multicolor_paint (46).gcode": {
+    "author": "doms"
+  },
+  "cmyk_pro_V10_nan_fix (1).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (44).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (4).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (31).gcode": {
+    "author": "doms"
+  },
+  "brushograph_20251125_231053.gcode": {
+    "author": "doms"
+  },
+  "jesus_1m_x_1m.gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_pro.gcode": {
+    "author": "doms"
+  },
+  "cmyk_pro_V21_fix.gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (6).gcode": {
+    "author": "doms"
+  },
+  "cnc_pike (4).gcode": {
+    "author": "dusjagr"
+  },
+  "plot (4).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter_grbl (6).gcode": {
+    "author": "doms"
+  },
+  "plot_cmyk (7).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (35).gcode": {
+    "author": "doms"
+  },
+  "cmyk_pro_V21_fix (1).gcode": {
+    "author": "doms"
+  },
+  "brushograph_20251122_120013.gcode": {
+    "author": "doms"
+  },
+  "vhm_1770367299.gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_brushograph_20251125_231053.gcode": {
+    "author": "doms"
+  },
+  "brushograph_20251121_190408.gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (50).gcode": {
+    "author": "doms"
+  },
+  "custom_cmyk_multidish (2).gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot (10).gcode": {
+    "author": "doms"
+  },
+  "plot_cmyk.gcode": {
+    "author": "doms"
+  },
+  "cnc_pike (3).gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (21).gcode": {
+    "author": "doms"
+  },
+  "skeleton_paint_BACKLASH_FIXED (8).gcode": {
+    "author": "doms"
+  },
+  "multico.gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_pro_V22_random_fix (1).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (19).gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot (5).gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot_V26_maxtravel.gcode": {
+    "author": "doms"
+  },
+  "t0.gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_pro_V09_dual_mode.gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (15).gcode": {
+    "author": "doms"
+  },
+  "t2.gcode": {
+    "author": "dusjagr"
+  },
+  "palmPrint.gcode": {
+    "author": "dusjagr"
+  },
+  "stipple_1769270165862.gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (10).gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot_V25_multi.gcode": {
+    "author": "doms"
+  },
+  "generirane_pike.gcode": {
+    "author": "dusjagr"
+  },
+  "multicolor_paint (33).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (45).gcode": {
+    "author": "doms"
+  },
+  "robot_art.gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (13).gcode": {
+    "author": "doms"
+  },
+  "skeleton_paint_BACKLASH_FIXED (11).gcode": {
+    "author": "doms"
+  },
+  "skeleton_paint_BACKLASH_FIXED (6).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (9).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (29).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (25).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (28).gcode": {
+    "author": "doms"
+  },
+  "brushograph_20251121_213856.gcode": {
+    "author": "doms"
+  },
+  "risba (1).gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_plot (6).gcode": {
+    "author": "doms"
+  },
+  "plot.gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (23).gcode": {
+    "author": "doms"
+  },
+  "continuous_line_paint (3).gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter_grbl (2).gcode": {
+    "author": "doms"
+  },
+  "brushograph_20251118_093217.gcode": {
+    "author": "doms"
+  },
+  "m.gcode": {
+    "author": "dusjagr"
+  },
+  "skeleton_paint_BACKLASH_FIXED (10).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (38).gcode": {
+    "author": "doms"
+  },
+  "watercolor(1).gcode": {
+    "author": "dusjagr"
+  },
+  "multicolor_paint (11).gcode": {
+    "author": "doms"
+  },
+  "skeleton_paint_BACKLASH_FIXED (2).gcode": {
+    "author": "doms"
+  },
+  "5t.gcode": {
+    "author": "dusjagr"
+  },
+  "skeleton_paint_LITE (1).gcode": {
+    "author": "doms"
+  },
+  "custom_cmyk_multidish (3).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (22).gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot_V25_multi (2).gcode": {
+    "author": "doms"
+  },
+  "halftone_scaled.gcode": {
+    "author": "dusjagr"
+  },
+  "skeleton_paint_BACKLASH_FIXED (5).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (18).gcode": {
+    "author": "doms"
+  },
+  "skeleton_paint_BACKLASH_FIXED (4).gcode": {
+    "author": "doms"
+  },
+  "optimized_dip_paint.gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_pro_fixed.gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot (7).gcode": {
+    "author": "doms"
+  },
+  "painter_pro.gcode": {
+    "author": "dusjagr"
+  },
+  "robot_art (1).gcode": {
+    "author": "doms"
+  },
+  "plot_cmyk (8).gcode": {
+    "author": "doms"
+  },
+  "rr.gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_pro_V09_dual_mode (1).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter_grbl (1).gcode": {
+    "author": "doms"
+  },
+  "cmyk_interleaved_safe (1).gcode": {
+    "author": "doms"
+  },
+  "copicograf_852_pik.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing(1).gcode": {
+    "author": "dusjagr"
+  },
+  "stamp_v5.gcode": {
+    "author": "dusjagr"
+  },
+  "custom_cmyk_multidish_safe (1).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (25).gcode": {
+    "author": "doms"
+  },
+  "brushograph_20260126_223037.gcode": {
+    "author": "doms"
+  },
+  "cat.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_V_simple.gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_pro_V20_fix.gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (47).gcode": {
+    "author": "doms"
+  },
+  "CE3_podlagaKontroler.gcode": {
+    "author": "dusjagr"
+  },
+  "halftone_painting.gcode": {
+    "author": "dusjagr"
+  },
+  "copicograf.gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_plot_V26_maxtravel (4).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (8).gcode": {
+    "author": "doms"
+  },
+  "drawing.gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (18).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (30).gcode": {
+    "author": "doms"
+  },
+  "plot_cmyk (9).gcode": {
+    "author": "doms"
+  },
+  "t52.gcode": {
+    "author": "dusjagr"
+  },
+  "multicolor_paint (15).gcode": {
+    "author": "doms"
+  },
+  "cmyk_pro_V06_fixed (1).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (20).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint(3).gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot (3).gcode": {
+    "author": "doms"
+  },
+  "risba.gcode": {
+    "author": "dusjagr"
+  },
+  "output (8).gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_plot (9).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (7).gcode": {
+    "author": "doms"
+  },
+  "plot_cmyk (3).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (39).gcode": {
+    "author": "doms"
+  },
+  "plot_cmyk (1).gcode": {
+    "author": "doms"
+  },
+  "plot (1).gcode": {
+    "author": "doms"
+  },
+  "skeleton_paint_BACKLASH_FIXED (7).gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot (8).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (21).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (26).gcode": {
+    "author": "doms"
+  },
+  "brushograph_20251117_105640.gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot (11).gcode": {
+    "author": "doms"
+  },
+  "brushograph_20251117_121639.gcode": {
+    "author": "doms"
+  },
+  "men_washing_clothes_2_horizont.gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_pro_V23_diag_fix.gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (8).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (22).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (27).gcode": {
+    "author": "doms"
+  },
+  "text5.gcode": {
+    "author": "dusjagr"
+  },
+  "skeleton_paint_BACKLASH_FIXED (1).gcode": {
+    "author": "doms"
+  },
+  "skeleton_paint_BACKLASH_FIXED (9).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter_grbl (7).gcode": {
+    "author": "doms"
+  },
+  "mul.gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (13).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (2).gcode": {
+    "author": "doms"
+  },
+  "a.gcode": {
+    "author": "dusjagr"
+  },
+  "drawing(1).gcode": {
+    "author": "dusjagr"
+  },
+  "custom_cmyk_multidish (1).gcode": {
+    "author": "doms"
+  },
+  "fluid_painting (2).gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_plot (4).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (9).gcode": {
+    "author": "doms"
+  },
+  "text3.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_20251121_213943.gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (10).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (42).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (40).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter_grbl.gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (36).gcode": {
+    "author": "doms"
+  },
+  "multicolor_pain24.gcode": {
+    "author": "doms"
+  },
+  "plot_cmyk (2).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (11).gcode": {
+    "author": "doms"
+  },
+  "plot (3).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (49).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (16).gcode": {
+    "author": "doms"
+  },
+  "jesus_1m_x_1m_smooth_2.gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (24).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (14).gcode": {
+    "author": "doms"
+  },
+  "risba (2).gcode": {
+    "author": "dusjagr"
+  },
+  "plot_cmyk (6).gcode": {
+    "author": "doms"
+  },
+  "k.gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_centerline_V7.gcode": {
+    "author": "dusjagr"
+  },
+  "tay500.gcode": {
+    "author": "dusjagr"
+  },
+  "multicolor_paint (17).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (3).gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot_V26_maxtravel (1).gcode": {
+    "author": "doms"
+  },
+  "vhm_1770367299 (1).gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_pro_V22_random_fix.gcode": {
+    "author": "doms"
+  },
+  "brushograph_20251121_222436.gcode": {
+    "author": "doms"
+  },
+  "fluid_painting.gcode": {
+    "author": "dusjagr"
+  },
+  "sc.gcode": {
+    "author": "dusjagr"
+  },
+  "copicograf(1).gcode": {
+    "author": "dusjagr"
+  },
+  "custom_cmyk_multidish_safe.gcode": {
+    "author": "doms"
+  },
+  "IMG_20250301_162120.gcode": {
+    "author": "dusjagr"
+  },
+  "multicolor_paint(2).gcode": {
+    "author": "doms"
+  },
+  "continuous_line_paint (4).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_infill_V6.gcode": {
+    "author": "dusjagr"
+  },
+  "skeleton_paint_LITE (2).gcode": {
+    "author": "doms"
+  },
+  "cmyk_pro_V10_nan_fix.gcode": {
+    "author": "doms"
+  },
+  "skeleton_paint_BACKLASH_FIXED (3).gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot (2).gcode": {
+    "author": "doms"
+  },
+  "krog (1).gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter (12).gcode": {
+    "author": "doms"
+  },
+  "cmyk_pro (1).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (5).gcode": {
+    "author": "doms"
+  },
+  "plot_cmyk (10).gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot_V25_multi (1).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (19).gcode": {
+    "author": "doms"
+  },
+  "cmyk_plot_V26_maxtravel (2).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (20).gcode": {
+    "author": "doms"
+  },
+  "3.gcode": {
+    "author": "dusjagr"
+  },
+  "fixed_brushograph_20251122_120013.gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter (28).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (48).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (12).gcode": {
+    "author": "doms"
+  },
+  "multicolo.gcode": {
+    "author": "dusjagr"
+  },
+  "cmyk_plot_V26_maxtravel (3).gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter_grbl (4).gcode": {
+    "author": "doms"
+  },
+  "cat(1).gcode": {
+    "author": "dusjagr"
+  },
+  "brushograph_drawing(2).gcode": {
+    "author": "dusjagr"
+  },
+  "bacterial_painter_grbl (3).gcode": {
+    "author": "doms"
+  },
+  "robot_painting.gcode": {
+    "author": "doms"
+  },
+  "cmyk_pro_V20_fix (2).gcode": {
+    "author": "doms"
+  },
+  "fixed_b.gcode": {
+    "author": "dusjagr"
+  },
+  "plot_cmyk (5).gcode": {
+    "author": "doms"
+  },
+  "output (7).gcode": {
+    "author": "dusjagr"
+  },
+  "multicolor_paint (7).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (43).gcode": {
+    "author": "doms"
+  },
+  "skeleton_paint_LITE.gcode": {
+    "author": "doms"
+  },
+  "bacterial_painter_grbl (5).gcode": {
+    "author": "doms"
+  },
+  "multicolor_paint (51).gcode": {
+    "author": "doms"
+  }
+}
