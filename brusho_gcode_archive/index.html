@@ -242,6 +242,7 @@
         }
 
         .chart-container {
+            position: relative;
             width: 100%;
             height: 200px;
             margin-bottom: 2rem;
@@ -284,16 +285,876 @@
                 <option value="size-asc">Smallest First</option>
                 <option value="hash-asc">Group Duplicates</option>
             </select>
+            <select id="timeRangeSelect">
+                <option value="1year">Graph: Last 12 Months</option>
+                <option value="alltime">Graph: All Time</option>
+            </select>
             <button id="viewToggle" class="btn btn-secondary" style="padding: 0.5rem 1rem; flex: none;">Dense View</button>
         </div>
     </header>
 
     <div class="chart-container">
+        <button id="clearWeekBtn" class="btn btn-secondary" style="position: absolute; top: 10px; right: 10px; display: none; padding: 0.25rem 0.5rem; font-size: 0.8rem; z-index: 10; background: rgba(15, 22, 35, 0.8); backdrop-filter: blur(4px);">Clear Week Selection</button>
         <canvas id="weeklyChart"></canvas>
     </div>
 
     <div class="gallery" id="gallery">
 
+        <div class="card" data-name="tomato-batak.gcode" data-size="93859" data-date="1782206263.5489728" data-author="dusjagr" data-hash="76c22b5beff5be163e4bb1d6e92f3fed" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/tomato-batak_preview.png" alt="tomato-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/tomato-batak.gcode" class="file-name" target="_blank">tomato-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>91.7 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/tomato-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/tomato-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="c-batak.gcode" data-size="6744" data-date="1782206263.5488138" data-author="dusjagr" data-hash="61f6f8c368adc88fb127ec90f427a509" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/c-batak_preview.png" alt="c-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/c-batak.gcode" class="file-name" target="_blank">c-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>6.6 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/c-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/c-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="gg-batak.gcode" data-size="7510" data-date="1782206263.54878" data-author="dusjagr" data-hash="c0552a9a894693e6d6acbf4cd534d5fb" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/gg-batak_preview.png" alt="gg-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/gg-batak.gcode" class="file-name" target="_blank">gg-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>7.3 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/gg-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/gg-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="brushograph_benchy_invert_backlash.gcode" data-size="153567" data-date="1782206263.5487201" data-author="dusjagr" data-hash="10d385dd20bb54457f54b26eb15af301" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/brushograph_benchy_invert_backlash_preview.png" alt="brushograph_benchy_invert_backlash.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/brushograph_benchy_invert_backlash.gcode" class="file-name" target="_blank">brushograph_benchy_invert_backlash.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>150.0 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/brushograph_benchy_invert_backlash.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/brushograph_benchy_invert_backlash.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="g-batak.gcode" data-size="6629" data-date="1782206263.548653" data-author="dusjagr" data-hash="8d8f198b11e8624ff8e48f49e87666b0" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/g-batak_preview.png" alt="g-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/g-batak.gcode" class="file-name" target="_blank">g-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>6.5 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/g-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/g-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="joebiden.gcode" data-size="277369" data-date="1782206263.5485294" data-author="dusjagr" data-hash="ac63d5494717a033145b51dd4a7341eb" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/joebiden_preview.png" alt="joebiden.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/joebiden.gcode" class="file-name" target="_blank">joebiden.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>270.9 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/joebiden.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/joebiden.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="rasterz_backlash_sausageflag_new_optimized.gcode" data-size="202238" data-date="1782206263.5484755" data-author="dusjagr" data-hash="a085cedbb3576b7aee8aa3738b51ff2e" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/rasterZ_backlash_sausageFlag_new_optimized_preview.png" alt="rasterZ_backlash_sausageFlag_new_optimized.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/rasterZ_backlash_sausageFlag_new_optimized.gcode" class="file-name" target="_blank">rasterZ_backlash_sausageFlag_new_optimized.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>197.5 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/rasterZ_backlash_sausageFlag_new_optimized.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/rasterZ_backlash_sausageFlag_new_optimized.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="bacterial_painter (5).gcode" data-size="873281" data-date="1782206263.548355" data-author="dusjagr" data-hash="1d27ab6dd9369d0490bf8901ed638245" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/bacterial_painter (5)_preview.png" alt="bacterial_painter (5).gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/bacterial_painter (5).gcode" class="file-name" target="_blank">bacterial_painter (5).gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>852.8 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/bacterial_painter (5).gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/bacterial_painter (5).gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="dusjagr_3color_optimized.gcode" data-size="520916" data-date="1782206263.5483327" data-author="dusjagr" data-hash="bd5a9f1abc937231b9d6a37207a02d25" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/dusjagr_3color_optimized_preview.png" alt="dusjagr_3color_optimized.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/dusjagr_3color_optimized.gcode" class="file-name" target="_blank">dusjagr_3color_optimized.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>508.7 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/dusjagr_3color_optimized.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/dusjagr_3color_optimized.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="tuak-batak.gcode" data-size="12116" data-date="1782206263.5482264" data-author="dusjagr" data-hash="acc59d8f2ca9137c5585e2b9c3c94222" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/tuak-batak_preview.png" alt="tuak-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/tuak-batak.gcode" class="file-name" target="_blank">tuak-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>11.8 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/tuak-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/tuak-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_tag.gcode" data-size="55931" data-date="1782206263.5481834" data-author="dusjagr" data-hash="3da6823eb7ade7611176c4b76b11c1af" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_tag_preview.png" alt="optimized_tag.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_tag.gcode" class="file-name" target="_blank">optimized_tag.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>54.6 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_tag.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_tag.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_valiranden.gcode" data-size="2646596" data-date="1782206263.5481615" data-author="dusjagr" data-hash="09c213a76b1680683719ed01276da00d" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_ValiRanden_preview.png" alt="optimized_ValiRanden.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_ValiRanden.gcode" class="file-name" target="_blank">optimized_ValiRanden.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>2.5 MB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_ValiRanden.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_ValiRanden.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="test2_brush_optimized.gcode" data-size="17397" data-date="1782206263.5481145" data-author="dusjagr" data-hash="9e678eeadd2105246790399c98d24930" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/test2_brush_optimized_preview.png" alt="test2_brush_optimized.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/test2_brush_optimized.gcode" class="file-name" target="_blank">test2_brush_optimized.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>17.0 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/test2_brush_optimized.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/test2_brush_optimized.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="melody.gcode" data-size="936" data-date="1782206263.5480645" data-author="dusjagr" data-hash="e0f4dee317090f16bf0276b97a3afd5f" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/melody_preview.png" alt="melody.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/melody.gcode" class="file-name" target="_blank">melody.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>936 B</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/melody.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/melody.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_nonblokcolour (1).gcode" data-size="677061" data-date="1782206263.5477066" data-author="dusjagr" data-hash="b0f9e3c31ae68e5737dcb38fb6488488" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_nonblokColour (1)_preview.png" alt="optimized_nonblokColour (1).gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_nonblokColour (1).gcode" class="file-name" target="_blank">optimized_nonblokColour (1).gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>661.2 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_nonblokColour (1).gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_nonblokColour (1).gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="a_a-batak.gcode" data-size="8071" data-date="1782206263.5475376" data-author="dusjagr" data-hash="deae89c96d2bca4e819740064d0896b3" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/a_a-batak_preview.png" alt="a_a-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/a_a-batak.gcode" class="file-name" target="_blank">a_a-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>7.9 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/a_a-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/a_a-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="test1_pen_fixed.gcode" data-size="12159" data-date="1782206263.5473323" data-author="dusjagr" data-hash="07f62b16ab6bdf175f92b72ec260a06d" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/test1_pen_fixed_preview.png" alt="test1_pen_fixed.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/test1_pen_fixed.gcode" class="file-name" target="_blank">test1_pen_fixed.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>11.9 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/test1_pen_fixed.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/test1_pen_fixed.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_fluidnc-logo (2).gcode" data-size="41666" data-date="1782206263.5470977" data-author="dusjagr" data-hash="4c4d4c2b30e5c9559d3f8ca8a6be3b6e" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_FluidNC-logo (2)_preview.png" alt="optimized_FluidNC-logo (2).gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_FluidNC-logo (2).gcode" class="file-name" target="_blank">optimized_FluidNC-logo (2).gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>40.7 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_FluidNC-logo (2).gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_FluidNC-logo (2).gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="tuak_batak_batak.gcode" data-size="15994" data-date="1782206263.5470703" data-author="dusjagr" data-hash="04686b76dfae62e4e5c315a5e9cc0dba" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/tuak_batak_batak_preview.png" alt="tuak_batak_batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/tuak_batak_batak.gcode" class="file-name" target="_blank">tuak_batak_batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>15.6 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/tuak_batak_batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/tuak_batak_batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="b-batak.gcode" data-size="5322" data-date="1782206263.5469637" data-author="dusjagr" data-hash="0af7b6a7aaaa41a0ba188e402ef79d1c" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/b-batak_preview.png" alt="b-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/b-batak.gcode" class="file-name" target="_blank">b-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>5.2 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/b-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/b-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="dots_halftone (2).gcode" data-size="1721277" data-date="1782206263.546831" data-author="dusjagr" data-hash="dfe64ac6fa357af3674cf789a5234ac3" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/dots_halftone (2)_preview.png" alt="dots_halftone (2).gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/dots_halftone (2).gcode" class="file-name" target="_blank">dots_halftone (2).gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>1.6 MB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/dots_halftone (2).gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/dots_halftone (2).gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="drawing-batak.gcode" data-size="41483" data-date="1782206263.5467825" data-author="dusjagr" data-hash="438ff5887b5a8d00797e7f3f5ff28eee" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/drawing-batak_preview.png" alt="drawing-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/drawing-batak.gcode" class="file-name" target="_blank">drawing-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>40.5 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/drawing-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/drawing-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="techdraw2.gcode" data-size="262298" data-date="1782206263.5467246" data-author="dusjagr" data-hash="8ad5096d1b5bc8b45b35b52d186f33b1" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/techDraw2_preview.png" alt="techDraw2.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/techDraw2.gcode" class="file-name" target="_blank">techDraw2.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>256.2 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/techDraw2.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/techDraw2.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="marcjono-batak.gcode" data-size="14406" data-date="1782206263.546659" data-author="dusjagr" data-hash="0cda4ad5e358ca5ff096f1ae9951f790" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/marcjono-batak_preview.png" alt="marcjono-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/marcjono-batak.gcode" class="file-name" target="_blank">marcjono-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>14.1 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/marcjono-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/marcjono-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="iyok_batak.gcode" data-size="137088" data-date="1782206263.5465767" data-author="dusjagr" data-hash="39db6669bcbec1e2dbc8b0fe1f64524c" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/iyok_batak_preview.png" alt="iyok_batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/iyok_batak.gcode" class="file-name" target="_blank">iyok_batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>133.9 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/iyok_batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/iyok_batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_brushograph_benchy.gcode" data-size="134432" data-date="1782206263.5464427" data-author="dusjagr" data-hash="a877983c812c587f8fbfb563c48be54d" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_brushograph_benchy_preview.png" alt="optimized_brushograph_benchy.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_brushograph_benchy.gcode" class="file-name" target="_blank">optimized_brushograph_benchy.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>131.3 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_brushograph_benchy.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_brushograph_benchy.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="d-batak.gcode" data-size="6450" data-date="1782206263.5463974" data-author="dusjagr" data-hash="ebcb23bc1cef043928c12944ea4f1d9e" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/d-batak_preview.png" alt="d-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/d-batak.gcode" class="file-name" target="_blank">d-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>6.3 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/d-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/d-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="becek-batak.gcode" data-size="9639" data-date="1782206263.5461206" data-author="dusjagr" data-hash="7ddcee4b2121c1d746088f9f82a15da3" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/becek-batak_preview.png" alt="becek-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/becek-batak.gcode" class="file-name" target="_blank">becek-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>9.4 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/becek-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/becek-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="rasterz_backlash_pakde (1).gcode" data-size="97343" data-date="1782206263.5457604" data-author="dusjagr" data-hash="1b537c748163f0bea5ec39c2028fa7b4" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/rasterZ_backlash_pakde (1)_preview.png" alt="rasterZ_backlash_pakde (1).gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/rasterZ_backlash_pakde (1).gcode" class="file-name" target="_blank">rasterZ_backlash_pakde (1).gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>95.1 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/rasterZ_backlash_pakde (1).gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/rasterZ_backlash_pakde (1).gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="chabis.gcode" data-size="573311" data-date="1782206263.545525" data-author="dusjagr" data-hash="057329249e413f341685764fb2e87701" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/chabis_preview.png" alt="chabis.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/chabis.gcode" class="file-name" target="_blank">chabis.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>559.9 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/chabis.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/chabis.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="cnc_pike (1).gcode" data-size="2587" data-date="1782206263.5454173" data-author="dusjagr" data-hash="a600d65690278f21f6aab1c4d0ea5d0e" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/cnc_pike (1)_preview.png" alt="cnc_pike (1).gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/cnc_pike (1).gcode" class="file-name" target="_blank">cnc_pike (1).gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>2.5 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/cnc_pike (1).gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/cnc_pike (1).gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="randentreesmall_optimized.gcode" data-size="224182" data-date="1782206263.54524" data-author="dusjagr" data-hash="7308326f3106d95925267e14cc2c5804" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/RandenTreeSmall_optimized_preview.png" alt="RandenTreeSmall_optimized.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/RandenTreeSmall_optimized.gcode" class="file-name" target="_blank">RandenTreeSmall_optimized.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>218.9 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/RandenTreeSmall_optimized.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/RandenTreeSmall_optimized.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_dusjagr_3color.gcode" data-size="683633" data-date="1782206263.545024" data-author="dusjagr" data-hash="dcef1671dfe3a5855280e1512981d60f" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_dusjagr_3color_preview.png" alt="optimized_dusjagr_3color.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_dusjagr_3color.gcode" class="file-name" target="_blank">optimized_dusjagr_3color.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>667.6 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_dusjagr_3color.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_dusjagr_3color.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="a_tuak-batak.gcode" data-size="13116" data-date="1782206263.544993" data-author="dusjagr" data-hash="ac3e0102a494c36b91a420f34c20f8e9" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/a_tuak-batak_preview.png" alt="a_tuak-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/a_tuak-batak.gcode" class="file-name" target="_blank">a_tuak-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>12.8 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/a_tuak-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/a_tuak-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="marc-batak.gcode" data-size="11262" data-date="1782206263.5448356" data-author="dusjagr" data-hash="65a94333ed557bdc684b67a77d7db47b" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/marc-batak_preview.png" alt="marc-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/marc-batak.gcode" class="file-name" target="_blank">marc-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>11.0 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/marc-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/marc-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="brushographlogo_optimized.gcode" data-size="91368" data-date="1782206263.5443277" data-author="dusjagr" data-hash="acf9a2030111d2f82df1a57e4d62532f" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/brushographLogo_optimized_preview.png" alt="brushographLogo_optimized.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/brushographLogo_optimized.gcode" class="file-name" target="_blank">brushographLogo_optimized.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>89.2 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/brushographLogo_optimized.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/brushographLogo_optimized.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_dusjagr_3color (3).gcode" data-size="763339" data-date="1782206263.544305" data-author="dusjagr" data-hash="37f98fd34dfbbe09da4c35b4a390ea84" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_dusjagr_3color (3)_preview.png" alt="optimized_dusjagr_3color (3).gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_dusjagr_3color (3).gcode" class="file-name" target="_blank">optimized_dusjagr_3color (3).gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>745.4 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_dusjagr_3color (3).gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_dusjagr_3color (3).gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_fluidnc-logo-raster (1).gcode" data-size="21817" data-date="1782206263.5442631" data-author="dusjagr" data-hash="f4f937cab0fb8da03cc1087d46ec562e" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_FluidNC-logo-raster (1)_preview.png" alt="optimized_FluidNC-logo-raster (1).gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_FluidNC-logo-raster (1).gcode" class="file-name" target="_blank">optimized_FluidNC-logo-raster (1).gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>21.3 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_FluidNC-logo-raster (1).gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_FluidNC-logo-raster (1).gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_brushograph_benchy_var.gcode" data-size="147305" data-date="1782206263.5441236" data-author="dusjagr" data-hash="06ab7aafbedba1c9dd1ac7204d46d181" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_brushograph_benchy_var_preview.png" alt="optimized_brushograph_benchy_var.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_brushograph_benchy_var.gcode" class="file-name" target="_blank">optimized_brushograph_benchy_var.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>143.9 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_brushograph_benchy_var.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_brushograph_benchy_var.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="bacterial_painter (6).gcode" data-size="1705253" data-date="1782206263.5436726" data-author="dusjagr" data-hash="ae48705ba4e887c63e6fc5395adfab9d" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/bacterial_painter (6)_preview.png" alt="bacterial_painter (6).gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/bacterial_painter (6).gcode" class="file-name" target="_blank">bacterial_painter (6).gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>1.6 MB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/bacterial_painter (6).gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/bacterial_painter (6).gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="e-batak.gcode" data-size="7257" data-date="1782206263.5434804" data-author="dusjagr" data-hash="60c5a9af543cd359404d97fc98226b7b" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/e-batak_preview.png" alt="e-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/e-batak.gcode" class="file-name" target="_blank">e-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>7.1 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/e-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/e-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="a-batak.gcode" data-size="5013" data-date="1782206263.5434139" data-author="dusjagr" data-hash="efe8a8f17b0a1a27c6eddedaf1605c06" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/a-batak_preview.png" alt="a-batak.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/a-batak.gcode" class="file-name" target="_blank">a-batak.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>4.9 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/a-batak.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/a-batak.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_brushograph_benchy (4).gcode" data-size="142763" data-date="1782206263.5428383" data-author="dusjagr" data-hash="2e745d91efc26383f198304c1e4eb349" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_brushograph_benchy (4)_preview.png" alt="optimized_brushograph_benchy (4).gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_brushograph_benchy (4).gcode" class="file-name" target="_blank">optimized_brushograph_benchy (4).gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>139.4 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_brushograph_benchy (4).gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_brushograph_benchy (4).gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_techdraw.gcode" data-size="262890" data-date="1782206263.5425034" data-author="dusjagr" data-hash="6e06a59c881d758bf408d1003c546d50" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_techDraw_preview.png" alt="optimized_techDraw.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_techDraw.gcode" class="file-name" target="_blank">optimized_techDraw.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>256.7 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_techDraw.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_techDraw.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-name="optimized_nonblok.gcode" data-size="225497" data-date="1782206263.5424092" data-author="dusjagr" data-hash="847e69dd70eff7e16943dc1de265d0c8" data-duplicate-group="false" data-duplicate-copy="false">
+            <div class="preview-container">
+                <img src="previews/optimized_nonblok_preview.png" alt="optimized_nonblok.gcode preview" class="preview-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <a href="gcodes/optimized_nonblok.gcode" class="file-name" target="_blank">optimized_nonblok.gcode</a>
+                <div class="meta">
+                    
+                    <span class="author-badge">dusjagr</span>
+                    <span>220.2 KB</span>
+                    <span>2026-06-23</span>
+                </div>
+                <div class="actions">
+                    <a href="gcodes/optimized_nonblok.gcode" class="btn btn-primary" download>DL</a>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_nonblok.gcode')">URL</button>
+                </div>
+            </div>
+        </div>
+        
         <div class="card" data-name="output_roland_doms4.gcode" data-size="900653" data-date="1782201211.829227" data-author="dusjagr" data-hash="fcf79910c085bf986cab45f3b105706d" data-duplicate-group="false" data-duplicate-copy="false">
             <div class="preview-container">
                 <img src="previews/output_roland_doms4_preview.png" alt="output_roland_doms4.gcode preview" class="preview-img" loading="lazy">
@@ -20643,861 +21504,6 @@
             </div>
         </div>
         
-        <div class="card" data-name="test1_pen_fixed.gcode" data-size="12159" data-date="315542274.0" data-author="dusjagr" data-hash="07f62b16ab6bdf175f92b72ec260a06d" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/test1_pen_fixed_preview.png" alt="test1_pen_fixed.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/test1_pen_fixed.gcode" class="file-name" target="_blank">test1_pen_fixed.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>11.9 KB</span>
-                    <span>1980-01-01</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/test1_pen_fixed.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/test1_pen_fixed.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="test2_brush_optimized.gcode" data-size="17397" data-date="315542206.0" data-author="dusjagr" data-hash="9e678eeadd2105246790399c98d24930" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/test2_brush_optimized_preview.png" alt="test2_brush_optimized.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/test2_brush_optimized.gcode" class="file-name" target="_blank">test2_brush_optimized.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>17.0 KB</span>
-                    <span>1980-01-01</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/test2_brush_optimized.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/test2_brush_optimized.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="a_a-batak.gcode" data-size="8071" data-date="315536748.0" data-author="dusjagr" data-hash="deae89c96d2bca4e819740064d0896b3" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/a_a-batak_preview.png" alt="a_a-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/a_a-batak.gcode" class="file-name" target="_blank">a_a-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>7.9 KB</span>
-                    <span>1980-01-01</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/a_a-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/a_a-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="gg-batak.gcode" data-size="7510" data-date="315536648.0" data-author="dusjagr" data-hash="c0552a9a894693e6d6acbf4cd534d5fb" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/gg-batak_preview.png" alt="gg-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/gg-batak.gcode" class="file-name" target="_blank">gg-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>7.3 KB</span>
-                    <span>1980-01-01</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/gg-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/gg-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="c-batak.gcode" data-size="6744" data-date="315536628.0" data-author="dusjagr" data-hash="61f6f8c368adc88fb127ec90f427a509" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/c-batak_preview.png" alt="c-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/c-batak.gcode" class="file-name" target="_blank">c-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>6.6 KB</span>
-                    <span>1980-01-01</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/c-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/c-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="g-batak.gcode" data-size="6629" data-date="315536120.0" data-author="dusjagr" data-hash="8d8f198b11e8624ff8e48f49e87666b0" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/g-batak_preview.png" alt="g-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/g-batak.gcode" class="file-name" target="_blank">g-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>6.5 KB</span>
-                    <span>1980-01-01</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/g-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/g-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="e-batak.gcode" data-size="7257" data-date="315535940.0" data-author="dusjagr" data-hash="60c5a9af543cd359404d97fc98226b7b" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/e-batak_preview.png" alt="e-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/e-batak.gcode" class="file-name" target="_blank">e-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>7.1 KB</span>
-                    <span>1980-01-01</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/e-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/e-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="d-batak.gcode" data-size="6450" data-date="315535138.0" data-author="dusjagr" data-hash="ebcb23bc1cef043928c12944ea4f1d9e" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/d-batak_preview.png" alt="d-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/d-batak.gcode" class="file-name" target="_blank">d-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>6.3 KB</span>
-                    <span>1980-01-01</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/d-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/d-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="b-batak.gcode" data-size="5322" data-date="315534880.0" data-author="dusjagr" data-hash="0af7b6a7aaaa41a0ba188e402ef79d1c" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/b-batak_preview.png" alt="b-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/b-batak.gcode" class="file-name" target="_blank">b-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>5.2 KB</span>
-                    <span>1980-01-01</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/b-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/b-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="a-batak.gcode" data-size="5013" data-date="315534726.0" data-author="dusjagr" data-hash="efe8a8f17b0a1a27c6eddedaf1605c06" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/a-batak_preview.png" alt="a-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/a-batak.gcode" class="file-name" target="_blank">a-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>4.9 KB</span>
-                    <span>1980-01-01</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/a-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/a-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="a_tuak-batak.gcode" data-size="13116" data-date="315534572.0" data-author="dusjagr" data-hash="ac3e0102a494c36b91a420f34c20f8e9" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/a_tuak-batak_preview.png" alt="a_tuak-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/a_tuak-batak.gcode" class="file-name" target="_blank">a_tuak-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>12.8 KB</span>
-                    <span>1980-01-01</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/a_tuak-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/a_tuak-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="becek-batak.gcode" data-size="9639" data-date="315523066.0" data-author="dusjagr" data-hash="7ddcee4b2121c1d746088f9f82a15da3" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/becek-batak_preview.png" alt="becek-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/becek-batak.gcode" class="file-name" target="_blank">becek-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>9.4 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/becek-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/becek-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="brushograph_benchy_invert_backlash.gcode" data-size="153567" data-date="315522046.0" data-author="dusjagr" data-hash="10d385dd20bb54457f54b26eb15af301" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/brushograph_benchy_invert_backlash_preview.png" alt="brushograph_benchy_invert_backlash.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/brushograph_benchy_invert_backlash.gcode" class="file-name" target="_blank">brushograph_benchy_invert_backlash.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>150.0 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/brushograph_benchy_invert_backlash.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/brushograph_benchy_invert_backlash.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_brushograph_benchy_var.gcode" data-size="147305" data-date="315521052.0" data-author="dusjagr" data-hash="06ab7aafbedba1c9dd1ac7204d46d181" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_brushograph_benchy_var_preview.png" alt="optimized_brushograph_benchy_var.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_brushograph_benchy_var.gcode" class="file-name" target="_blank">optimized_brushograph_benchy_var.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>143.9 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_brushograph_benchy_var.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_brushograph_benchy_var.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_brushograph_benchy.gcode" data-size="134432" data-date="315520934.0" data-author="dusjagr" data-hash="a877983c812c587f8fbfb563c48be54d" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_brushograph_benchy_preview.png" alt="optimized_brushograph_benchy.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_brushograph_benchy.gcode" class="file-name" target="_blank">optimized_brushograph_benchy.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>131.3 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_brushograph_benchy.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_brushograph_benchy.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="cnc_pike (1).gcode" data-size="2587" data-date="315517284.0" data-author="dusjagr" data-hash="a600d65690278f21f6aab1c4d0ea5d0e" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/cnc_pike (1)_preview.png" alt="cnc_pike (1).gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/cnc_pike (1).gcode" class="file-name" target="_blank">cnc_pike (1).gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>2.5 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/cnc_pike (1).gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/cnc_pike (1).gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_nonblokcolour (1).gcode" data-size="677061" data-date="315516696.0" data-author="dusjagr" data-hash="b0f9e3c31ae68e5737dcb38fb6488488" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_nonblokColour (1)_preview.png" alt="optimized_nonblokColour (1).gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_nonblokColour (1).gcode" class="file-name" target="_blank">optimized_nonblokColour (1).gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>661.2 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_nonblokColour (1).gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_nonblokColour (1).gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="bacterial_painter (6).gcode" data-size="1705253" data-date="315515604.0" data-author="dusjagr" data-hash="ae48705ba4e887c63e6fc5395adfab9d" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/bacterial_painter (6)_preview.png" alt="bacterial_painter (6).gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/bacterial_painter (6).gcode" class="file-name" target="_blank">bacterial_painter (6).gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>1.6 MB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/bacterial_painter (6).gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/bacterial_painter (6).gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="randentreesmall_optimized.gcode" data-size="224182" data-date="315515412.0" data-author="dusjagr" data-hash="7308326f3106d95925267e14cc2c5804" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/RandenTreeSmall_optimized_preview.png" alt="RandenTreeSmall_optimized.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/RandenTreeSmall_optimized.gcode" class="file-name" target="_blank">RandenTreeSmall_optimized.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>218.9 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/RandenTreeSmall_optimized.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/RandenTreeSmall_optimized.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_dusjagr_3color.gcode" data-size="683633" data-date="315514402.0" data-author="dusjagr" data-hash="dcef1671dfe3a5855280e1512981d60f" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_dusjagr_3color_preview.png" alt="optimized_dusjagr_3color.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_dusjagr_3color.gcode" class="file-name" target="_blank">optimized_dusjagr_3color.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>667.6 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_dusjagr_3color.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_dusjagr_3color.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="bacterial_painter (5).gcode" data-size="873281" data-date="315513062.0" data-author="dusjagr" data-hash="1d27ab6dd9369d0490bf8901ed638245" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/bacterial_painter (5)_preview.png" alt="bacterial_painter (5).gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/bacterial_painter (5).gcode" class="file-name" target="_blank">bacterial_painter (5).gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>852.8 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/bacterial_painter (5).gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/bacterial_painter (5).gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="brushographlogo_optimized.gcode" data-size="91368" data-date="315512668.0" data-author="dusjagr" data-hash="acf9a2030111d2f82df1a57e4d62532f" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/brushographLogo_optimized_preview.png" alt="brushographLogo_optimized.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/brushographLogo_optimized.gcode" class="file-name" target="_blank">brushographLogo_optimized.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>89.2 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/brushographLogo_optimized.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/brushographLogo_optimized.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="rasterz_backlash_pakde (1).gcode" data-size="97343" data-date="315512452.0" data-author="dusjagr" data-hash="1b537c748163f0bea5ec39c2028fa7b4" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/rasterZ_backlash_pakde (1)_preview.png" alt="rasterZ_backlash_pakde (1).gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/rasterZ_backlash_pakde (1).gcode" class="file-name" target="_blank">rasterZ_backlash_pakde (1).gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>95.1 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/rasterZ_backlash_pakde (1).gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/rasterZ_backlash_pakde (1).gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_nonblok.gcode" data-size="225497" data-date="315511710.0" data-author="dusjagr" data-hash="847e69dd70eff7e16943dc1de265d0c8" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_nonblok_preview.png" alt="optimized_nonblok.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_nonblok.gcode" class="file-name" target="_blank">optimized_nonblok.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>220.2 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_nonblok.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_nonblok.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="marc-batak.gcode" data-size="11262" data-date="315511522.0" data-author="dusjagr" data-hash="65a94333ed557bdc684b67a77d7db47b" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/marc-batak_preview.png" alt="marc-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/marc-batak.gcode" class="file-name" target="_blank">marc-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>11.0 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/marc-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/marc-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_dusjagr_3color (3).gcode" data-size="763339" data-date="315510656.0" data-author="dusjagr" data-hash="37f98fd34dfbbe09da4c35b4a390ea84" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_dusjagr_3color (3)_preview.png" alt="optimized_dusjagr_3color (3).gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_dusjagr_3color (3).gcode" class="file-name" target="_blank">optimized_dusjagr_3color (3).gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>745.4 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_dusjagr_3color (3).gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_dusjagr_3color (3).gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_tag.gcode" data-size="55931" data-date="315510500.0" data-author="dusjagr" data-hash="3da6823eb7ade7611176c4b76b11c1af" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_tag_preview.png" alt="optimized_tag.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_tag.gcode" class="file-name" target="_blank">optimized_tag.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>54.6 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_tag.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_tag.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_techdraw.gcode" data-size="262890" data-date="315509128.0" data-author="dusjagr" data-hash="6e06a59c881d758bf408d1003c546d50" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_techDraw_preview.png" alt="optimized_techDraw.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_techDraw.gcode" class="file-name" target="_blank">optimized_techDraw.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>256.7 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_techDraw.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_techDraw.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="tuak-batak.gcode" data-size="12116" data-date="315509004.0" data-author="dusjagr" data-hash="acc59d8f2ca9137c5585e2b9c3c94222" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/tuak-batak_preview.png" alt="tuak-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/tuak-batak.gcode" class="file-name" target="_blank">tuak-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>11.8 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/tuak-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/tuak-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="rasterz_backlash_sausageflag_new_optimized.gcode" data-size="202238" data-date="315508990.0" data-author="dusjagr" data-hash="a085cedbb3576b7aee8aa3738b51ff2e" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/rasterZ_backlash_sausageFlag_new_optimized_preview.png" alt="rasterZ_backlash_sausageFlag_new_optimized.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/rasterZ_backlash_sausageFlag_new_optimized.gcode" class="file-name" target="_blank">rasterZ_backlash_sausageFlag_new_optimized.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>197.5 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/rasterZ_backlash_sausageFlag_new_optimized.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/rasterZ_backlash_sausageFlag_new_optimized.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="iyok_batak.gcode" data-size="137088" data-date="315508568.0" data-author="dusjagr" data-hash="39db6669bcbec1e2dbc8b0fe1f64524c" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/iyok_batak_preview.png" alt="iyok_batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/iyok_batak.gcode" class="file-name" target="_blank">iyok_batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>133.9 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/iyok_batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/iyok_batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="drawing-batak.gcode" data-size="41483" data-date="315508194.0" data-author="dusjagr" data-hash="438ff5887b5a8d00797e7f3f5ff28eee" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/drawing-batak_preview.png" alt="drawing-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/drawing-batak.gcode" class="file-name" target="_blank">drawing-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>40.5 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/drawing-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/drawing-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_valiranden.gcode" data-size="2646596" data-date="315507982.0" data-author="dusjagr" data-hash="09c213a76b1680683719ed01276da00d" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_ValiRanden_preview.png" alt="optimized_ValiRanden.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_ValiRanden.gcode" class="file-name" target="_blank">optimized_ValiRanden.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>2.5 MB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_ValiRanden.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_ValiRanden.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="techdraw2.gcode" data-size="262298" data-date="315507950.0" data-author="dusjagr" data-hash="8ad5096d1b5bc8b45b35b52d186f33b1" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/techDraw2_preview.png" alt="techDraw2.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/techDraw2.gcode" class="file-name" target="_blank">techDraw2.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>256.2 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/techDraw2.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/techDraw2.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="chabis.gcode" data-size="573311" data-date="315507918.0" data-author="dusjagr" data-hash="057329249e413f341685764fb2e87701" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/chabis_preview.png" alt="chabis.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/chabis.gcode" class="file-name" target="_blank">chabis.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>559.9 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/chabis.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/chabis.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="joebiden.gcode" data-size="277369" data-date="315507918.0" data-author="dusjagr" data-hash="ac63d5494717a033145b51dd4a7341eb" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/joebiden_preview.png" alt="joebiden.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/joebiden.gcode" class="file-name" target="_blank">joebiden.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>270.9 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/joebiden.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/joebiden.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="tomato-batak.gcode" data-size="93859" data-date="315507876.0" data-author="dusjagr" data-hash="76c22b5beff5be163e4bb1d6e92f3fed" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/tomato-batak_preview.png" alt="tomato-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/tomato-batak.gcode" class="file-name" target="_blank">tomato-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>91.7 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/tomato-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/tomato-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_brushograph_benchy (4).gcode" data-size="142763" data-date="315507846.0" data-author="dusjagr" data-hash="2e745d91efc26383f198304c1e4eb349" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_brushograph_benchy (4)_preview.png" alt="optimized_brushograph_benchy (4).gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_brushograph_benchy (4).gcode" class="file-name" target="_blank">optimized_brushograph_benchy (4).gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>139.4 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_brushograph_benchy (4).gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_brushograph_benchy (4).gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="dusjagr_3color_optimized.gcode" data-size="520916" data-date="315507790.0" data-author="dusjagr" data-hash="bd5a9f1abc937231b9d6a37207a02d25" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/dusjagr_3color_optimized_preview.png" alt="dusjagr_3color_optimized.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/dusjagr_3color_optimized.gcode" class="file-name" target="_blank">dusjagr_3color_optimized.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>508.7 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/dusjagr_3color_optimized.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/dusjagr_3color_optimized.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="marcjono-batak.gcode" data-size="14406" data-date="315507732.0" data-author="dusjagr" data-hash="0cda4ad5e358ca5ff096f1ae9951f790" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/marcjono-batak_preview.png" alt="marcjono-batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/marcjono-batak.gcode" class="file-name" target="_blank">marcjono-batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>14.1 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/marcjono-batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/marcjono-batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="tuak_batak_batak.gcode" data-size="15994" data-date="315507694.0" data-author="dusjagr" data-hash="04686b76dfae62e4e5c315a5e9cc0dba" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/tuak_batak_batak_preview.png" alt="tuak_batak_batak.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/tuak_batak_batak.gcode" class="file-name" target="_blank">tuak_batak_batak.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>15.6 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/tuak_batak_batak.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/tuak_batak_batak.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="dots_halftone (2).gcode" data-size="1721277" data-date="315507640.0" data-author="dusjagr" data-hash="dfe64ac6fa357af3674cf789a5234ac3" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/dots_halftone (2)_preview.png" alt="dots_halftone (2).gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/dots_halftone (2).gcode" class="file-name" target="_blank">dots_halftone (2).gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>1.6 MB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/dots_halftone (2).gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/dots_halftone (2).gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_fluidnc-logo-raster (1).gcode" data-size="21817" data-date="315507622.0" data-author="dusjagr" data-hash="f4f937cab0fb8da03cc1087d46ec562e" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_FluidNC-logo-raster (1)_preview.png" alt="optimized_FluidNC-logo-raster (1).gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_FluidNC-logo-raster (1).gcode" class="file-name" target="_blank">optimized_FluidNC-logo-raster (1).gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>21.3 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_FluidNC-logo-raster (1).gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_FluidNC-logo-raster (1).gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="melody.gcode" data-size="936" data-date="315507620.0" data-author="dusjagr" data-hash="e0f4dee317090f16bf0276b97a3afd5f" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/melody_preview.png" alt="melody.gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/melody.gcode" class="file-name" target="_blank">melody.gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>936 B</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/melody.gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/melody.gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" data-name="optimized_fluidnc-logo (2).gcode" data-size="41666" data-date="315507614.0" data-author="dusjagr" data-hash="4c4d4c2b30e5c9559d3f8ca8a6be3b6e" data-duplicate-group="false" data-duplicate-copy="false">
-            <div class="preview-container">
-                <img src="previews/optimized_FluidNC-logo (2)_preview.png" alt="optimized_FluidNC-logo (2).gcode preview" class="preview-img" loading="lazy">
-            </div>
-            <div class="card-body">
-                <a href="gcodes/optimized_FluidNC-logo (2).gcode" class="file-name" target="_blank">optimized_FluidNC-logo (2).gcode</a>
-                <div class="meta">
-                    
-                    <span class="author-badge">dusjagr</span>
-                    <span>40.7 KB</span>
-                    <span>1979-12-31</span>
-                </div>
-                <div class="actions">
-                    <a href="gcodes/optimized_FluidNC-logo (2).gcode" class="btn btn-primary" download>DL</a>
-                    <button class="btn btn-secondary" onclick="copyToClipboard('gcodes/optimized_FluidNC-logo (2).gcode')">URL</button>
-                </div>
-            </div>
-        </div>
-        
         <div class="empty-state" id="emptyState">
             No matching files found.
         </div>
@@ -21508,11 +21514,15 @@
         const duplicateSelect = document.getElementById('duplicateSelect');
         const searchInput = document.getElementById('searchInput');
         const sortSelect = document.getElementById('sortSelect');
+        const timeRangeSelect = document.getElementById('timeRangeSelect');
         const viewToggle = document.getElementById('viewToggle');
         const gallery = document.getElementById('gallery');
         const cards = Array.from(gallery.getElementsByClassName('card'));
         const emptyState = document.getElementById('emptyState');
         const fileCountEl = document.getElementById('fileCount');
+        const clearWeekBtn = document.getElementById('clearWeekBtn');
+        
+        let selectedWeekTime = null;
         
         // Initialize Chart.js
         const ctx = document.getElementById('weeklyChart').getContext('2d');
@@ -21535,6 +21545,18 @@
                 }]
             },
             options: {
+                onClick: (e, elements) => {
+                    if (elements.length > 0) {
+                        const idx = elements[0].index;
+                        const clickedTime = weeklyChart.data.weekTimes[idx];
+                        if (selectedWeekTime === clickedTime) {
+                            selectedWeekTime = null; // Toggle off if clicked again
+                        } else {
+                            selectedWeekTime = clickedTime;
+                        }
+                        filterAndSort();
+                    }
+                },
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
@@ -21607,28 +21629,29 @@
                 }
             });
 
-            const visibleCards = cards.filter(card => card.style.display !== 'none');
+            const baseVisibleCards = cards.filter(card => card.style.display !== 'none');
             
             // --- Chart Update Logic ---
             const weeksMap = new Map();
             let maxTime = -Infinity;
             
-            visibleCards.forEach(card => {
+            baseVisibleCards.forEach(card => {
                 const dateVal = parseFloat(card.dataset.date);
                 const info = getMondayInfo(dateVal);
                 if (info.time > maxTime) maxTime = info.time;
             });
             
             if (maxTime !== -Infinity) {
-                // Limit to last 52 weeks (approx 12 months) from the newest visible file
+                // Determine time range limit
+                const isAllTime = timeRangeSelect.value === 'alltime';
                 const oneYearAgoTime = maxTime - (52 * 7 * 24 * 60 * 60 * 1000);
                 let minTime = maxTime;
                 
-                visibleCards.forEach(card => {
+                baseVisibleCards.forEach(card => {
                     const dateVal = parseFloat(card.dataset.date);
                     const info = getMondayInfo(dateVal);
                     
-                    if (info.time >= oneYearAgoTime) {
+                    if (isAllTime || info.time >= oneYearAgoTime) {
                         if (!weeksMap.has(info.time)) {
                             weeksMap.set(info.time, { label: info.label, count: 0 });
                         }
@@ -21652,9 +21675,32 @@
             const sortedWeeks = Array.from(weeksMap.entries()).sort((a, b) => a[0] - b[0]);
             
             weeklyChart.data.labels = sortedWeeks.map(w => w[1].label);
+            weeklyChart.data.weekTimes = sortedWeeks.map(w => w[0]);
             weeklyChart.data.datasets[0].data = sortedWeeks.map(w => w[1].count);
+            
+            // Highlight selected week bar
+            const bgColors = sortedWeeks.map(w => w[0] === selectedWeekTime ? 'rgba(255, 45, 172, 0.8)' : 'rgba(41, 224, 255, 0.5)');
+            weeklyChart.data.datasets[0].backgroundColor = bgColors;
+            
             weeklyChart.update();
-            visibleCards.sort((a, b) => {
+
+            // --- Final Gallery Filter Logic ---
+            let finalCards = baseVisibleCards;
+            if (selectedWeekTime !== null) {
+                clearWeekBtn.style.display = 'block';
+                finalCards = baseVisibleCards.filter(card => {
+                    const dateVal = parseFloat(card.dataset.date);
+                    return getMondayInfo(dateVal).time === selectedWeekTime;
+                });
+            } else {
+                clearWeekBtn.style.display = 'none';
+            }
+            
+            cards.forEach(card => card.style.display = 'none');
+            finalCards.forEach(card => card.style.display = 'flex');
+            visibleCount = finalCards.length;
+
+            finalCards.sort((a, b) => {
                 let valA = a.dataset[sortBy];
                 let valB = b.dataset[sortBy];
                 if (sortBy === 'size' || sortBy === 'date') {
@@ -21666,16 +21712,23 @@
                 return 0;
             });
 
-            visibleCards.forEach(card => gallery.appendChild(card));
+            finalCards.forEach(card => gallery.appendChild(card));
             gallery.appendChild(emptyState); 
             emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
             fileCountEl.textContent = visibleCount;
         }
 
-        searchInput.addEventListener('input', filterAndSort);
-        sortSelect.addEventListener('change', filterAndSort);
-        authorSelect.addEventListener('change', filterAndSort);
-        duplicateSelect.addEventListener('change', filterAndSort);
+        function clearWeekAndFilter() {
+            selectedWeekTime = null;
+            filterAndSort();
+        }
+
+        searchInput.addEventListener('input', clearWeekAndFilter);
+        sortSelect.addEventListener('change', clearWeekAndFilter);
+        authorSelect.addEventListener('change', clearWeekAndFilter);
+        duplicateSelect.addEventListener('change', clearWeekAndFilter);
+        timeRangeSelect.addEventListener('change', clearWeekAndFilter);
+        clearWeekBtn.addEventListener('click', clearWeekAndFilter);
 
         // Initial render
         filterAndSort();
