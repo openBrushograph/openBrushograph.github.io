@@ -246,7 +246,7 @@
         <div style="flex-grow: 1;">
             <h1>openBrushograph G-Code Gallery</h1>
             <p style="margin: 0.5rem 0 0 0; color: var(--text-muted); font-size: 0.95rem;">
-                Browsing <strong>993</strong> files. Want to add your own G-Code? Drop it into our <a href="https://sgmkcloud.ocloud.de/index.php/s/ZipWfoj7Krtskxw" target="_blank" style="color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent);">public cloud folder</a>!
+                Browsing <strong id="fileCount">993</strong> files. Want to add your own G-Code? Drop it into our <a href="https://sgmkcloud.ocloud.de/index.php/s/ZipWfoj7Krtskxw" target="_blank" style="color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent);">public cloud folder</a>!
             </p>
         </div>
         <div class="controls">
@@ -18156,6 +18156,7 @@
         const gallery = document.getElementById('gallery');
         const cards = Array.from(gallery.getElementsByClassName('card'));
         const emptyState = document.getElementById('emptyState');
+        const fileCountEl = document.getElementById('fileCount');
         
         viewToggle.addEventListener('click', () => {
             gallery.classList.toggle('dense');
@@ -18202,6 +18203,7 @@
             visibleCards.forEach(card => gallery.appendChild(card));
             gallery.appendChild(emptyState); 
             emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+            fileCountEl.textContent = visibleCount;
         }
 
         searchInput.addEventListener('input', filterAndSort);
