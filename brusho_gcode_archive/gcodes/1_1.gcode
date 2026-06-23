@@ -1,8 +1,6 @@
-
 G90 ; sets absolute positioning
 G21 ; set units to millimeters
 G00 Z3
-
 G0 F1000
 G00 Z3
 G00 X65 Y4
