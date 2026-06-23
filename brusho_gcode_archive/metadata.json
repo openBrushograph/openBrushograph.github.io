@@ -5,9 +5,6 @@
   "gcode (71).gcode": {
     "author": "dusjagr"
   },
-  "rasterZ_backlash_pin_optimized.gcode": {
-    "author": "dusjagr"
-  },
   "watercolor (3).gcode": {
     "author": "doms"
   },
@@ -48,9 +45,6 @@
     "author": "dusjagr"
   },
   "tilo_optimized.gcode": {
-    "author": "dusjagr"
-  },
-  "dusjagr_3color_optimized (2).gcode": {
     "author": "dusjagr"
   },
   "wurst_pin.gcode": {
@@ -194,9 +188,6 @@
   "smallCoco.gcode": {
     "author": "dusjagr"
   },
-  "brushograph_benchy_0backlash (1).gcode": {
-    "author": "dusjagr"
-  },
   "DIWO_fast_optimized.gcode": {
     "author": "dusjagr"
   },
@@ -216,9 +207,6 @@
     "author": "dusjagr"
   },
   "optimized_fixed_spiral.gcode": {
-    "author": "dusjagr"
-  },
-  "e9846188-6847-4ff4-9cdb-d0ed427c2d17.gcode": {
     "author": "dusjagr"
   },
   "CocoLogoSM.gcode": {
@@ -308,9 +296,6 @@
   "logo_rastertest.gcode": {
     "author": "dusjagr"
   },
-  "c8bd4092-ce69-4381-abc3-f1abfe36bfd8.gcode": {
-    "author": "dusjagr"
-  },
   "optimized_logo_brushograph_2 (11).gcode": {
     "author": "dusjagr"
   },
@@ -350,13 +335,7 @@
   "pakde.gcode": {
     "author": "dusjagr"
   },
-  "optimized_brushographLogo (2).gcode": {
-    "author": "dusjagr"
-  },
   "brusho_riksha3.gcode": {
-    "author": "dusjagr"
-  },
-  "dusjagr_3color_optimized (7).gcode": {
     "author": "dusjagr"
   },
   "optimized_brushograph_benchy_var.gcode": {
@@ -387,9 +366,6 @@
     "author": "dusjagr"
   },
   "rasterfix_logo_brushograph_raster (1).gcode": {
-    "author": "dusjagr"
-  },
-  "optimized_brushograph_benchy (1).gcode": {
     "author": "dusjagr"
   },
   "gcode (42).gcode": {
@@ -437,12 +413,6 @@
   "brushograph_drawing (1).gcode": {
     "author": "dusjagr"
   },
-  "rasterfix_logo_brushograph_raster (7).gcode": {
-    "author": "dusjagr"
-  },
-  "gcode (62).gcode": {
-    "author": "dusjagr"
-  },
   "optimized_micronoise_corner.gcode": {
     "author": "dusjagr"
   },
@@ -455,31 +425,19 @@
   "output (1).gcode": {
     "author": "doms"
   },
-  "optimized_RandenTreeSmall (1).gcode": {
-    "author": "dusjagr"
-  },
   "rasterZ_test1.gcode": {
     "author": "dusjagr"
   },
   "peace_optimized.gcode": {
     "author": "dusjagr"
   },
-  "MAG_new_optimized (5).gcode": {
-    "author": "dusjagr"
-  },
   "batak_assembled (1).gcode": {
-    "author": "dusjagr"
-  },
-  "optimized_micronoise_new_riksha (1).gcode": {
     "author": "dusjagr"
   },
   "wide2depth_20251207_193753.gcode": {
     "author": "dusjagr"
   },
   "optimized_logo_brushograph_4 (2).gcode": {
-    "author": "dusjagr"
-  },
-  "rasterfix_logo_brushograph_raster (10).gcode": {
     "author": "dusjagr"
   },
   "watercolor (4).gcode": {
@@ -504,9 +462,6 @@
     "author": "dusjagr"
   },
   "rasterZ_backlash_test1.gcode": {
-    "author": "dusjagr"
-  },
-  "lightburn_logo_raster (1).gcode": {
     "author": "dusjagr"
   },
   "rasterfix_logo_brushograph_raster (2).gcode": {
@@ -534,9 +489,6 @@
     "author": "dusjagr"
   },
   "FluidNC-logo.gcode": {
-    "author": "dusjagr"
-  },
-  "fdbda387-5891-4378-a033-c16ad1fba276.gcode": {
     "author": "dusjagr"
   },
   "1_1.gcode": {
@@ -573,9 +525,6 @@
     "author": "dusjagr"
   },
   "saava.gcode": {
-    "author": "dusjagr"
-  },
-  "gcode (73).gcode": {
     "author": "dusjagr"
   },
   "optimized_pin (1).gcode": {
@@ -623,9 +572,6 @@
   "brushograph_drawing (16).gcode": {
     "author": "dusjagr"
   },
-  "rasterfix_logo_brushograph_raster (4).gcode": {
-    "author": "dusjagr"
-  },
   "rasterZ_backlash_logo_brushograph_raster.gcode": {
     "author": "dusjagr"
   },
@@ -648,9 +594,6 @@
     "author": "dusjagr"
   },
   "optimized_testPattern (2).gcode": {
-    "author": "dusjagr"
-  },
-  "lightburn_logo_raster (4).gcode": {
     "author": "dusjagr"
   },
   "output_dusjagr3.gcode": {
@@ -680,9 +623,6 @@
   "RandenTreeSmall_Volcano.gcode": {
     "author": "dusjagr"
   },
-  "optimized_dusjagr_3color (3) (1).gcode": {
-    "author": "dusjagr"
-  },
   "gcode (13).gcode": {
     "author": "dusjagr"
   },
@@ -693,9 +633,6 @@
     "author": "dusjagr"
   },
   "brusho_shard2.gcode": {
-    "author": "dusjagr"
-  },
-  "gcode (61).gcode": {
     "author": "dusjagr"
   },
   "gcode (65).gcode": {
@@ -731,9 +668,6 @@
   "p22g_20251205_133052.gcode": {
     "author": "dusjagr"
   },
-  "94b8407f-45fc-4b7f-80e4-b7060654ff89.gcode": {
-    "author": "dusjagr"
-  },
   "optimized_logo_brushograph.gcode": {
     "author": "dusjagr"
   },
@@ -742,9 +676,6 @@
   },
   "9.gcode": {
     "author": "doms"
-  },
-  "brushograph_drawing (26).gcode": {
-    "author": "dusjagr"
   },
   "optimized_dusjagr_3color.gcode": {
     "author": "dusjagr"
@@ -783,9 +714,6 @@
     "author": "dusjagr"
   },
   "homing_sequence.gcode": {
-    "author": "dusjagr"
-  },
-  "a21fe84c-a8d9-420b-b2f8-cf177360e116.gcode": {
     "author": "dusjagr"
   },
   "doms-batak.gcode": {
@@ -830,13 +758,7 @@
   "output (2).gcode": {
     "author": "doms"
   },
-  "rasterZ_Logo_rasterTest (1).gcode": {
-    "author": "dusjagr"
-  },
   "4093.gcode": {
-    "author": "dusjagr"
-  },
-  "rasterfix_logo_brushograph_raster (11).gcode": {
     "author": "dusjagr"
   },
   "lightburn_logo_raster (6).gcode": {
@@ -848,9 +770,6 @@
   "dots.gcode": {
     "author": "dusjagr"
   },
-  "rasterfix_logo_brushograph_raster (6).gcode": {
-    "author": "dusjagr"
-  },
   "logo_brushograph_raster_G90_Z.gcode": {
     "author": "dusjagr"
   },
@@ -858,9 +777,6 @@
     "author": "dusjagr"
   },
   "coconut_optimized.gcode": {
-    "author": "dusjagr"
-  },
-  "brushograph_drawing (2).gcode": {
     "author": "dusjagr"
   },
   "SimpleCatSlower.gcode": {
@@ -911,16 +827,7 @@
   "BitsnBrushes.gcode": {
     "author": "dusjagr"
   },
-  "87c2346a-b52a-474f-8237-e9e84ed32a38.gcode": {
-    "author": "dusjagr"
-  },
   "dusjagr_batak.gcode": {
-    "author": "dusjagr"
-  },
-  "rasterZ_backlash_fluidNC-logo3 (1).gcode": {
-    "author": "dusjagr"
-  },
-  "hello_world_performance.gcode": {
     "author": "dusjagr"
   },
   "rasterZ_test2.gcode": {
@@ -962,9 +869,6 @@
   "dBm.gcode": {
     "author": "dusjagr"
   },
-  "gcode (63).gcode": {
-    "author": "dusjagr"
-  },
   "coconutLogo.gcode": {
     "author": "dusjagr"
   },
@@ -995,9 +899,6 @@
   "tuak_batak (4).gcode": {
     "author": "dusjagr"
   },
-  "brushograph_drawing (5).gcode": {
-    "author": "dusjagr"
-  },
   "tuak_batak (6).gcode": {
     "author": "dusjagr"
   },
@@ -1009,9 +910,6 @@
   },
   "test3.gcode": {
     "author": "doms"
-  },
-  "gcode (14).gcode": {
-    "author": "dusjagr"
   },
   "rasterZ_Logo_rasterTest.gcode": {
     "author": "dusjagr"
@@ -1025,17 +923,8 @@
   "test_c.gcode": {
     "author": "dusjagr"
   },
-  "rasterfix_logo_brushograph_raster (5).gcode": {
-    "author": "dusjagr"
-  },
   "bacterial_painter (2).gcode": {
     "author": "doms"
-  },
-  "optimized_CocoLogoNew (1).gcode": {
-    "author": "dusjagr"
-  },
-  "rasterZ_backlash_pakde (1).gcode": {
-    "author": "dusjagr"
   },
   "marcjono_batak (3).gcode": {
     "author": "dusjagr"
@@ -1044,9 +933,6 @@
     "author": "dusjagr"
   },
   "gabs-batak.gcode": {
-    "author": "dusjagr"
-  },
-  "d75602eb-6027-4021-91dc-b58a0186ab31.gcode": {
     "author": "dusjagr"
   },
   "marcjono_batak (2).gcode": {
@@ -1070,9 +956,6 @@
   "optimized_logo_brushograph_raster.gcode": {
     "author": "dusjagr"
   },
-  "optimized_optimized_brushograph_benchy_var (1).gcode": {
-    "author": "dusjagr"
-  },
   "rasterZ_backlash_pakde.gcode": {
     "author": "dusjagr"
   },
@@ -1088,9 +971,6 @@
   "optimized_nonblokColour.gcode": {
     "author": "dusjagr"
   },
-  "optimized_BitsnBrushes (1).gcode": {
-    "author": "dusjagr"
-  },
   "tuak_batak-batak (4).gcode": {
     "author": "dusjagr"
   },
@@ -1101,12 +981,6 @@
     "author": "dusjagr"
   },
   "piezoAmp_offset.gcode": {
-    "author": "dusjagr"
-  },
-  "optimized_brushographLogo (1).gcode": {
-    "author": "dusjagr"
-  },
-  "rasterfix_logo_brushograph_raster (13).gcode": {
     "author": "dusjagr"
   },
   "gcode (23).gcode": {
@@ -1157,9 +1031,6 @@
   "piezoAmp_brusho.gcode": {
     "author": "dusjagr"
   },
-  "continuous_line_paint (2).gcode": {
-    "author": "doms"
-  },
   "optimized_brusho_riksha3.gcode": {
     "author": "dusjagr"
   },
@@ -1193,9 +1064,6 @@
   "marcjono-batak.gcode": {
     "author": "dusjagr"
   },
-  "b95a548c-1d27-4b75-b72b-5ea4220a3a65.gcode": {
-    "author": "dusjagr"
-  },
   "test1_pen.gcode": {
     "author": "dusjagr"
   },
@@ -1208,9 +1076,6 @@
   "gcode (29).gcode": {
     "author": "dusjagr"
   },
-  "optimized_logo_brushograph_2 (2).gcode": {
-    "author": "dusjagr"
-  },
   "optimized_horas_single_stroke (3).gcode": {
     "author": "dusjagr"
   },
@@ -1221,9 +1086,6 @@
     "author": "dusjagr"
   },
   "optimized_fixed_RandenTreeSmall_New (1).gcode": {
-    "author": "dusjagr"
-  },
-  "brushograph_drawing (9).gcode": {
     "author": "dusjagr"
   },
   "optimized_piezoAmp_brusho.gcode": {
@@ -1249,9 +1111,6 @@
   },
   "bacterial_painter (1).gcode": {
     "author": "doms"
-  },
-  "optimized_logo_brushograph_raster (4).gcode": {
-    "author": "dusjagr"
   },
   "coconutLogoPink_optimized.gcode": {
     "author": "dusjagr"
@@ -1343,28 +1202,13 @@
   "brushograph_20250904_160755.gcode": {
     "author": "dusjagr"
   },
-  "rasterZ_backlash_test1 (1).gcode": {
-    "author": "dusjagr"
-  },
   "nonblokColour.gcode": {
-    "author": "dusjagr"
-  },
-  "p22g_20251205_134247.gcode": {
     "author": "dusjagr"
   },
   "gcode (24).gcode": {
     "author": "dusjagr"
   },
   "tuak_batak (7).gcode": {
-    "author": "dusjagr"
-  },
-  "rasterZ_backlash_techDraw2 (1).gcode": {
-    "author": "dusjagr"
-  },
-  "gcode (41).gcode": {
-    "author": "dusjagr"
-  },
-  "e78250c7-6048-46f2-a6d8-21155a06a1ca.gcode": {
     "author": "dusjagr"
   },
   "continuous_line_paint.gcode": {
@@ -1421,9 +1265,6 @@
   "gcode (36).gcode": {
     "author": "dusjagr"
   },
-  "optimized_logo_brushograph_3 (1).gcode": {
-    "author": "dusjagr"
-  },
   "gcode (68).gcode": {
     "author": "dusjagr"
   },
@@ -1437,9 +1278,6 @@
     "author": "dusjagr"
   },
   "p22g_20251205_133909.gcode": {
-    "author": "dusjagr"
-  },
-  "optimized_logo_brushograph_2 (1).gcode": {
     "author": "dusjagr"
   },
   "batak_assembled.gcode": {
@@ -1458,9 +1296,6 @@
     "author": "dusjagr"
   },
   "optimized_sausageFlag_new.gcode": {
-    "author": "dusjagr"
-  },
-  "tuak_batak_batak.gcode": {
     "author": "dusjagr"
   },
   "grid.gcode": {
@@ -1514,9 +1349,6 @@
   "bial3.gcode": {
     "author": "dusjagr"
   },
-  "brushograph_benchy (1).gcode": {
-    "author": "dusjagr"
-  },
   "gcode (8).gcode": {
     "author": "dusjagr"
   },
@@ -1548,9 +1380,6 @@
     "author": "doms"
   },
   "gcodeview.gcode": {
-    "author": "dusjagr"
-  },
-  "rasterZ_Logo_rasterTest (2).gcode": {
     "author": "dusjagr"
   },
   "optimized_brusho_shard4_line.gcode": {
@@ -1592,9 +1421,6 @@
   "sausageFlag_new_optimized.gcode": {
     "author": "dusjagr"
   },
-  "gcode (11).gcode": {
-    "author": "dusjagr"
-  },
   "bial2_optimized.gcode": {
     "author": "dusjagr"
   },
@@ -1602,9 +1428,6 @@
     "author": "dusjagr"
   },
   "optimized_brusho_riksha2.gcode": {
-    "author": "dusjagr"
-  },
-  "lightburn_logo_raster (5).gcode": {
     "author": "dusjagr"
   },
   "gcode (5).gcode": {
@@ -1649,19 +1472,10 @@
   "optimized_fluidNC-logo3 (2).gcode": {
     "author": "dusjagr"
   },
-  "rasterfix_logo_brushograph_raster (15).gcode": {
-    "author": "dusjagr"
-  },
   "optimized_brushographLogo_optimized.gcode": {
     "author": "dusjagr"
   },
   "output_roland_hair.gcode": {
-    "author": "dusjagr"
-  },
-  "c3651306-0779-4bc4-b05f-165aa3f521b0.gcode": {
-    "author": "dusjagr"
-  },
-  "gcode (51).gcode": {
     "author": "dusjagr"
   },
   "dBm_all.gcode": {
@@ -1694,9 +1508,6 @@
   "gcode (56).gcode": {
     "author": "dusjagr"
   },
-  "brushograph_drawing (13).gcode": {
-    "author": "dusjagr"
-  },
   "optimized_micronoise_hindiriksha.gcode": {
     "author": "dusjagr"
   },
@@ -1724,13 +1535,7 @@
   "batak_assembled (2).gcode": {
     "author": "dusjagr"
   },
-  "brushograph_drawing (8).gcode": {
-    "author": "dusjagr"
-  },
   "optimized_brusho_shard3_line.gcode": {
-    "author": "dusjagr"
-  },
-  "marcjono_batak (6).gcode": {
     "author": "dusjagr"
   },
   "melody.gcode": {
@@ -1751,13 +1556,7 @@
   "RandenTreeSmall.gcode": {
     "author": "dusjagr"
   },
-  "MAG_new_optimized (2).gcode": {
-    "author": "dusjagr"
-  },
   "tuak_batak-batak (6).gcode": {
-    "author": "dusjagr"
-  },
-  "duseeiller (1).gcode": {
     "author": "dusjagr"
   },
   "optimized_ValiRanden.gcode": {
@@ -1787,9 +1586,6 @@
   "lightburn_logo_raster.gcode": {
     "author": "dusjagr"
   },
-  "rasterZ_backlash_pakde (1) (1).gcode": {
-    "author": "dusjagr"
-  },
   "tuak-batak.gcode": {
     "author": "dusjagr"
   },
@@ -1814,13 +1610,7 @@
   "optimized_sausageFlag_new (1).gcode": {
     "author": "dusjagr"
   },
-  "CocoLogoNew_optimized.gcode": {
-    "author": "dusjagr"
-  },
   "dots4.gcode": {
-    "author": "dusjagr"
-  },
-  "analyzed_gaggi100.gcode": {
     "author": "dusjagr"
   },
   "tuak_batak (3).gcode": {
@@ -1925,9 +1715,6 @@
   "out.gcode": {
     "author": "dusjagr"
   },
-  "dusjagr_3color_optimized (4).gcode": {
-    "author": "dusjagr"
-  },
   "rasterZ_backlash_test4.gcode": {
     "author": "dusjagr"
   },
@@ -1944,9 +1731,6 @@
     "author": "dusjagr"
   },
   "gaggi100.gcode": {
-    "author": "dusjagr"
-  },
-  "MAG_new_optimized (1).gcode": {
     "author": "dusjagr"
   },
   "output_haku.gcode": {
@@ -1970,13 +1754,7 @@
   "gcode (19).gcode": {
     "author": "dusjagr"
   },
-  "gcode (58).gcode": {
-    "author": "dusjagr"
-  },
   "brushograph_benchy_var.gcode": {
-    "author": "dusjagr"
-  },
-  "optimized_RandenTreeSmall (3).gcode": {
     "author": "dusjagr"
   },
   "coconutLogo2_optimized.gcode": {
@@ -1991,28 +1769,16 @@
   "optimized_logo_brushograph (1).gcode": {
     "author": "dusjagr"
   },
-  "c362affc-9ecd-4476-b6c3-cdba08355f4d.gcode": {
-    "author": "dusjagr"
-  },
   "marcjono_tuak_batak.gcode": {
     "author": "dusjagr"
   },
-  "output (5).gcode": {
-    "author": "doms"
-  },
   "output_dusjagr1.gcode": {
-    "author": "dusjagr"
-  },
-  "optimized_RandenTreeSmall (4).gcode": {
     "author": "dusjagr"
   },
   "g-batak.gcode": {
     "author": "dusjagr"
   },
   "RandenTree_small_optimized.gcode": {
-    "author": "dusjagr"
-  },
-  "brushograph_drawing (10).gcode": {
     "author": "dusjagr"
   },
   "MAG_new_optimized.gcode": {
@@ -2060,9 +1826,6 @@
   "watercolor (5).gcode": {
     "author": "dusjagr"
   },
-  "gcode (18).gcode": {
-    "author": "dusjagr"
-  },
   "amangboru-batak.gcode": {
     "author": "dusjagr"
   },
@@ -2085,12 +1848,6 @@
     "author": "dusjagr"
   },
   "optimized_fluidNC-logo3 (1).gcode": {
-    "author": "dusjagr"
-  },
-  "test_raster (5).gcode": {
-    "author": "dusjagr"
-  },
-  "tuak_batak (5).gcode": {
     "author": "dusjagr"
   },
   "gaggi100_optimized.gcode": {
@@ -2126,13 +1883,7 @@
   "SnailPorn_optimized.gcode": {
     "author": "dusjagr"
   },
-  "logo_brushograph_raster_G90_Z (3).gcode": {
-    "author": "dusjagr"
-  },
   "optimized_fluidNC-logo3.gcode": {
-    "author": "dusjagr"
-  },
-  "28bfb84b-5a11-4bf9-9b24-9be736c873ac.gcode": {
     "author": "dusjagr"
   },
   "horas_batak (2).gcode": {
@@ -2147,12 +1898,6 @@
   "tuak_bagot-batak.gcode": {
     "author": "dusjagr"
   },
-  "959bfa77-4481-4cb5-949c-a5310b76e682.gcode": {
-    "author": "dusjagr"
-  },
-  "optimized_dusjagr_3color (1).gcode": {
-    "author": "dusjagr"
-  },
   "optimized_logo_brushograph_2 (7).gcode": {
     "author": "dusjagr"
   },
@@ -2160,9 +1905,6 @@
     "author": "dusjagr"
   },
   "marcjono_batak (4).gcode": {
-    "author": "dusjagr"
-  },
-  "rasterZ_backlash_techDraw_new.gcode": {
     "author": "dusjagr"
   },
   "coconutLogo_optimized.gcode": {
@@ -2186,16 +1928,10 @@
   "piezoAmp_offset2.gcode": {
     "author": "dusjagr"
   },
-  "gcode (57).gcode": {
-    "author": "dusjagr"
-  },
   "a_test.gcode": {
     "author": "dusjagr"
   },
   "optimized_micronoise_riksha.gcode": {
-    "author": "dusjagr"
-  },
-  "fixed_logo_brushograph_g (1).gcode": {
     "author": "dusjagr"
   },
   "tilo.gcode": {
@@ -2212,9 +1948,6 @@
   },
   "optimized_horas_single_stroke (1).gcode": {
     "author": "dusjagr"
-  },
-  "dots_halftone (3).gcode": {
-    "author": "doms"
   },
   "brushograph_20251117_105552.gcode": {
     "author": "doms"
@@ -2378,9 +2111,6 @@
   "cnc_pike (4).gcode": {
     "author": "doms"
   },
-  "plot (4).gcode": {
-    "author": "doms"
-  },
   "bacterial_painter_grbl (6).gcode": {
     "author": "doms"
   },
@@ -2406,9 +2136,6 @@
     "author": "doms"
   },
   "multicolor_paint (50).gcode": {
-    "author": "doms"
-  },
-  "custom_cmyk_multidish (2).gcode": {
     "author": "doms"
   },
   "cmyk_plot (10).gcode": {
@@ -2457,9 +2184,6 @@
     "author": "doms"
   },
   "stipple_1769270165862.gcode": {
-    "author": "doms"
-  },
-  "bacterial_painter (10).gcode": {
     "author": "doms"
   },
   "cmyk_plot_V25_multi.gcode": {
@@ -2591,16 +2315,10 @@
   "cmyk_pro_V09_dual_mode (1).gcode": {
     "author": "doms"
   },
-  "bacterial_painter_grbl (1).gcode": {
-    "author": "doms"
-  },
   "cmyk_interleaved_safe (1).gcode": {
     "author": "doms"
   },
   "copicograf_852_pik.gcode": {
-    "author": "doms"
-  },
-  "brushograph_drawing(1).gcode": {
     "author": "doms"
   },
   "stamp_v5.gcode": {
@@ -2765,12 +2483,6 @@
   "fluid_painting (2).gcode": {
     "author": "doms"
   },
-  "cmyk_plot (4).gcode": {
-    "author": "doms"
-  },
-  "bacterial_painter (9).gcode": {
-    "author": "doms"
-  },
   "text3.gcode": {
     "author": "doms"
   },
@@ -2814,9 +2526,6 @@
     "author": "doms"
   },
   "bacterial_painter (24).gcode": {
-    "author": "doms"
-  },
-  "multicolor_paint (14).gcode": {
     "author": "doms"
   },
   "risba (2).gcode": {
@@ -2888,9 +2597,6 @@
   "cmyk_plot (2).gcode": {
     "author": "doms"
   },
-  "krog (1).gcode": {
-    "author": "doms"
-  },
   "bacterial_painter (12).gcode": {
     "author": "doms"
   },
@@ -2921,9 +2627,6 @@
   "fixed_brushograph_20251122_120013.gcode": {
     "author": "doms"
   },
-  "bacterial_painter (28).gcode": {
-    "author": "doms"
-  },
   "multicolor_paint (48).gcode": {
     "author": "doms"
   },
@@ -2940,9 +2643,6 @@
     "author": "doms"
   },
   "cat(1).gcode": {
-    "author": "doms"
-  },
-  "brushograph_drawing(2).gcode": {
     "author": "doms"
   },
   "bacterial_painter_grbl (3).gcode": {
