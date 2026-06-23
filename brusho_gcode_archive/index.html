@@ -320,7 +320,8 @@
                 <option value="gandalf">gandalf</option>
                 <option value="salome">salome</option>
             </select>
-            <button id="favToggle" class="fav-toggle" onclick="toggleFavFilter()">⭐ Favorites</button>
+            <button id="curatedToggle" class="fav-toggle" onclick="toggleCuratedFilter()" style="border-color: #ff2dac; color: #ff2dac;">💎 Dusjagr's Best</button>
+            <button id="favToggle" class="fav-toggle" onclick="toggleFavFilter()">⭐ Personal Favs</button>
             <button class="btn btn-primary" id="downloadFavsBtn" onclick="downloadFavorites()" style="display: none; padding: 0.5rem 1rem;">📥 DL Favorites</button>
             <select id="duplicateSelect">
                 <option value="all">All Files</option>
@@ -23418,6 +23419,8 @@
     </div>
 
     <script>
+        const curatedFavorites = ["stikka_bw_c1_c3.gcode", "wurst_pin.gcode", "SimpleCatSlowerZ.gcode", "backlash_text_fixed.gcode", "joebiden2.gcode", "kro.gcode", "vali_pose_c2_110mm.gcode", "brushograph_heart.gcode", "brushograph_drawing (15).gcode", "optimized_logo_brushograph_4 (1).gcode", "DIWO_fast_optimized.gcode", "pin_optimized.gcode", "brushograph_drawing (20)_processed.gcode", "brusho_PCB_micro.gcode", "PCB_optimized.gcode", "logo_brushograph_colour_optimized.gcode", "bacterial_painter (6).gcode", "rasterZ_continuous_line_paint.gcode", "brushographLogo_optimized.gcode", "optimized_micronoise_corner.gcode", "peace_optimized.gcode", "Hello_World_AIgenerated.gcode", "Gentechnik.gcode", "bial4.gcode", "sea_wave_palm_c1.gcode", "doms.gcode", "OsterBitHack.gcode", "domsSelfportretWithSignature.gcode", "vali_pose_edge_c1-opti.gcode", "brushograph_drawing (24).gcode", "motor_c1.gcode", "optimized_brushograph_benchy_var (1).gcode", "optimized_dusjagr_3color.gcode", "optimized_micronoise_brushodabbel.gcode", "OsterBitHack_fast.gcode", "lightburn_logo_raster (6).gcode", "RandenTreeSmall_optimized.gcode", "optimized_brushograph_benchy (3).gcode", "brushograph_20251118_093217.gcode", "techDraw_new.gcode", "chickenfoot_c1.gcode", "backlash_text.gcode", "starry_night_c1.gcode", "brusho_PCB_riksha2.gcode", "DIWO_optimized.gcode", "optimized_arai-eek_logo_text.gcode", "optimized_nonblokColour.gcode", "techDraw2.gcode", "coconutLogoPink_optimized.gcode", "RandenTreeSmall_new_optimized.gcode", "fixed_optimized_RandenTreeSmall.gcode", "brushograph_drawing (25).gcode", "coconuts_c1.gcode", "brushograph_Arai.gcode", "text5.gcode", "dBm_optimized.gcode", "gcode (59).gcode", "RandenTree_colors_updated_with_pickups.gcode", "optimized_brusho_shard4_line.gcode", "brushograph_20251121_213943.gcode", "sausageFlag_new_optimized.gcode", "optimized_fluidNC-logo3 (2).gcode", "optimized_piezoAmp_offset3.gcode", "optimized_nonblokColour (1).gcode", "test2_brush_optimized.gcode", "pinup_spark_c1.gcode", "RandenTree_with_colors.gcode", "Schmitt_optimized.gcode", "optimized_sausageFlag_new (1).gcode", "MAG_new_optimized (4).gcode", "bacterial_painter (5).gcode", "PalmLeaveNew.gcode", "brushi_c1_nofill.gcode", "19fce046-e143-46c5-8d9c-b6751b73f516.gcode", "SnailPorn.gcode", "optimized_araieek_logo.gcode", "optimized_araieek_logo (1).gcode", "House-red-black.gcode", "output (5).gcode", "brushograph_drawing (10).gcode", "brushograph_benchy_invert_backlash.gcode", "lenin_c1.gcode", "signatur_letters.gcode", "waves_c1.gcode", "dusjagr_3color_optimized (3).gcode", "brushograph_20250904_161033.gcode", "brushograph_pinkBlue_slow.gcode", "tomato-batak.gcode", "rose_c1.gcode"];
+
         const authorSelect = document.getElementById('authorSelect');
         const duplicateSelect = document.getElementById('duplicateSelect');
         const searchInput = document.getElementById('searchInput');
@@ -23432,6 +23435,7 @@
         
         let selectedWeekTime = null;
         let showFavoritesOnly = false;
+        let showCuratedOnly = false;
         
         function toggleStar(btn, filename) {
             let favorites = JSON.parse(localStorage.getItem('brusho_favorites') || '[]');
@@ -23451,6 +23455,21 @@
             }
         }
         
+        function toggleCuratedFilter() {
+            showCuratedOnly = !showCuratedOnly;
+            const btn = document.getElementById('curatedToggle');
+            if (showCuratedOnly) {
+                btn.classList.add('active');
+                btn.style.background = 'rgba(255, 45, 172, 0.2)';
+            } else {
+                btn.classList.remove('active');
+                btn.style.background = 'transparent';
+            }
+            selectedWeekTime = null;
+            clearWeekBtn.style.display = 'none';
+            filterAndSort();
+        }
+
         function toggleFavFilter() {
             showFavoritesOnly = !showFavoritesOnly;
             const btn = document.getElementById('favToggle');
@@ -23483,7 +23502,8 @@
             try {
                 // Check if running locally (fetch will fail due to CORS on file://)
                 if (window.location.protocol === 'file:') {
-                    const bashCommand = `mkdir -p brusho_favorites && cp ` + favorites.map(f => `'gcodes/${f.replace(/'/g, "'\''")}'`).join(' ') + ` brusho_favorites/`;
+                    const dirPath = decodeURI(window.location.pathname).replace('/index.html', '');
+                    const bashCommand = `cd '${dirPath}' && mkdir -p brusho_favorites && cp ` + favorites.map(f => `'gcodes/${f.replace(/'/g, "'\''")}'`).join(' ') + ` brusho_favorites/`;
                     
                     try {
                         await navigator.clipboard.writeText(bashCommand);
@@ -23646,7 +23666,13 @@ Just paste it into your terminal (in the brusho_gcode_archive directory) and it 
                     matchFav = favorites.includes(originalName);
                 }
                 
-                if (matchName && matchAuthor && matchDup && matchFav) {
+                let matchCurated = true;
+                if (showCuratedOnly) {
+                    const originalName = card.dataset.originalName;
+                    matchCurated = curatedFavorites.includes(originalName);
+                }
+                
+                if (matchName && matchAuthor && matchDup && matchFav && matchCurated) {
                     card.style.display = 'flex';
                     visibleCount++;
                 } else {
