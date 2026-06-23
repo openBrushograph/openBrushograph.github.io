@@ -2977,5 +2977,587 @@
   },
   "multicolor_paint (51).gcode": {
     "author": "doms"
+  },
+  "stikka_bw_c1_c3.gcode": {
+    "author": "doms"
+  },
+  "totenkopf.gcode": {
+    "author": "doms"
+  },
+  "elb_bw_c3.gcode": {
+    "author": "doms"
+  },
+  "davinci_c1.gcode": {
+    "author": "doms"
+  },
+  "ak47_c1_infill.gcode": {
+    "author": "doms"
+  },
+  "mosq_c1.gcode": {
+    "author": "doms"
+  },
+  "pinup_rocket_c1.gcode": {
+    "author": "doms"
+  },
+  "korny_gpt-c1.gcode": {
+    "author": "doms"
+  },
+  "dragonfly_c1_infill.gcode": {
+    "author": "doms"
+  },
+  "dammtor_linocut_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_toolow.gcode": {
+    "author": "doms"
+  },
+  "ml_rgb.gcode": {
+    "author": "doms"
+  },
+  "vali_pose_c2_110mm.gcode": {
+    "author": "doms"
+  },
+  "human_heart_c1.gcode": {
+    "author": "doms"
+  },
+  "dollar_bill_c2.gcode": {
+    "author": "doms"
+  },
+  "campbell_c1.gcode": {
+    "author": "doms"
+  },
+  "tv_test_c1_90mm.gcode": {
+    "author": "doms"
+  },
+  "woman_c1.gcode": {
+    "author": "doms"
+  },
+  "cocacola_c3.gcode": {
+    "author": "doms"
+  },
+  "bakkie2_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_test.gcode": {
+    "author": "doms"
+  },
+  "windhoek_c1.gcode": {
+    "author": "doms"
+  },
+  "skull_c1.gcode": {
+    "author": "doms"
+  },
+  "valig_exbib_c1.gcode": {
+    "author": "doms"
+  },
+  "korn2_c1.gcode": {
+    "author": "doms"
+  },
+  "zeppelin_c1.gcode": {
+    "author": "doms"
+  },
+  "chf_100_c1-infill.gcode": {
+    "author": "doms"
+  },
+  "pinup_beer_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_betta_c3_110mm_infill.gcode": {
+    "author": "doms"
+  },
+  "crow_sunset_c3.gcode": {
+    "author": "doms"
+  },
+  "surfgirl_c1.gcode": {
+    "author": "doms"
+  },
+  "cathedral_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_isol_c1_100mm.gcode": {
+    "author": "doms"
+  },
+  "pinup_dress_infill_c1.gcode": {
+    "author": "doms"
+  },
+  "stikka_bw_c1.gcode": {
+    "author": "doms"
+  },
+  "ju52_c1.gcode": {
+    "author": "doms"
+  },
+  "sgmk_c3_110mm.gcode": {
+    "author": "doms"
+  },
+  "cch_bw_c3.gcode": {
+    "author": "doms"
+  },
+  "fairy_siso_rgb_infill.gcode": {
+    "author": "doms"
+  },
+  "cch_bw_c2.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_pendant.gcode": {
+    "author": "doms"
+  },
+  "fernsehturm_c1_c2_c3.gcode": {
+    "author": "doms"
+  },
+  "nirmana_c1.gcode": {
+    "author": "doms"
+  },
+  "fairydust_rgb.gcode": {
+    "author": "doms"
+  },
+  "st_basil_plot.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_new_c1.gcode": {
+    "author": "doms"
+  },
+  "ant2_c1.gcode": {
+    "author": "doms"
+  },
+  "pinup_vintage_c1.gcode": {
+    "author": "doms"
+  },
+  "chf_100_c3_140mm.gcode": {
+    "author": "doms"
+  },
+  "chrysler_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_betta_c3_110mm.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_c1_110mm_nobacklash.gcode": {
+    "author": "doms"
+  },
+  "sea_wave_palm_c1.gcode": {
+    "author": "doms"
+  },
+  "pinup_c1.gcode": {
+    "author": "doms"
+  },
+  "pinup_sword_c1.gcode": {
+    "author": "doms"
+  },
+  "chrysler_bw_c1.gcode": {
+    "author": "doms"
+  },
+  "brushi_c1.gcode": {
+    "author": "doms"
+  },
+  "vali_pose_edge_c1-opti.gcode": {
+    "author": "doms"
+  },
+  "starry_night_c3.gcode": {
+    "author": "doms"
+  },
+  "motor_c1.gcode": {
+    "author": "doms"
+  },
+  "castle_c1_infill.gcode": {
+    "author": "doms"
+  },
+  "pinup_dirndl_c1.gcode": {
+    "author": "doms"
+  },
+  "eagle_c1.gcode": {
+    "author": "doms"
+  },
+  "waves_c3.gcode": {
+    "author": "doms"
+  },
+  "valig_doms_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_doms2.gcode": {
+    "author": "doms"
+  },
+  "chrysler_gpt_c1.gcode": {
+    "author": "doms"
+  },
+  "dollar_melt_c1.gcode": {
+    "author": "doms"
+  },
+  "ml_c1_c2.gcode": {
+    "author": "doms"
+  },
+  "pinup_holy_c1.gcode": {
+    "author": "doms"
+  },
+  "holy_mackrel_c1.gcode": {
+    "author": "doms"
+  },
+  "a2_rgb_infill.gcode": {
+    "author": "doms"
+  },
+  "korny_c1.gcode": {
+    "author": "doms"
+  },
+  "valirock_c3.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_doms.gcode": {
+    "author": "doms"
+  },
+  "monkey_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_c1_110mm.gcode": {
+    "author": "doms"
+  },
+  "goilet_clean_c1.gcode": {
+    "author": "doms"
+  },
+  "ft-hh_c3.gcode": {
+    "author": "doms"
+  },
+  "femboy_sausage_c3.gcode": {
+    "author": "doms"
+  },
+  "chf_100_c1.gcode": {
+    "author": "doms"
+  },
+  "chickenfoot_c1.gcode": {
+    "author": "doms"
+  },
+  "woman2_c1.gcode": {
+    "author": "doms"
+  },
+  "hotrod_c1.gcode": {
+    "author": "doms"
+  },
+  "starry_night_c1.gcode": {
+    "author": "doms"
+  },
+  "gogh_fields_c1.gcode": {
+    "author": "doms"
+  },
+  "shakaloha_c1.gcode": {
+    "author": "doms"
+  },
+  "surfer_van_c1.gcode": {
+    "author": "doms"
+  },
+  "scorpion_c1_infill.gcode": {
+    "author": "doms"
+  },
+  "whalebottle_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_infill.gcode": {
+    "author": "doms"
+  },
+  "fly2_c1_infill.gcode": {
+    "author": "doms"
+  },
+  "dollar_bill_c1.gcode": {
+    "author": "doms"
+  },
+  "valig_c1.gcode": {
+    "author": "doms"
+  },
+  "fist_c1.gcode": {
+    "author": "doms"
+  },
+  "fairydust_iso_c1.gcode": {
+    "author": "doms"
+  },
+  "raised_fist_c1.gcode": {
+    "author": "doms"
+  },
+  "grid2_c1.gcode": {
+    "author": "doms"
+  },
+  "tank_c1.gcode": {
+    "author": "doms"
+  },
+  "birdfoot_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_simple_c3_111mm.gcode": {
+    "author": "doms"
+  },
+  "flamingo_c1.gcode": {
+    "author": "doms"
+  },
+  "castle_c1.gcode": {
+    "author": "doms"
+  },
+  "cocacola_c1.gcode": {
+    "author": "doms"
+  },
+  "surf_muizenberg_c1.gcode": {
+    "author": "doms"
+  },
+  "scream_rgb.gcode": {
+    "author": "doms"
+  },
+  "blocher_c1.gcode": {
+    "author": "doms"
+  },
+  "kitti_u_c1.gcode": {
+    "author": "doms"
+  },
+  "coconuts_c1.gcode": {
+    "author": "doms"
+  },
+  "vali_pose_edge_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_comfy.gcode": {
+    "author": "doms"
+  },
+  "elb_rgb.gcode": {
+    "author": "doms"
+  },
+  "tablemountain_c1.gcode": {
+    "author": "doms"
+  },
+  "elb_bw_c1.gcode": {
+    "author": "doms"
+  },
+  "tattoo_tribal_c3.gcode": {
+    "author": "doms"
+  },
+  "crow_lower_c3.gcode": {
+    "author": "doms"
+  },
+  "911_c1.gcode": {
+    "author": "doms"
+  },
+  "tablemount2_c1.gcode": {
+    "author": "doms"
+  },
+  "fernsehturm_c1_140mm.gcode": {
+    "author": "doms"
+  },
+  "sgmk_c1_90mm.gcode": {
+    "author": "doms"
+  },
+  "apple_rgb.gcode": {
+    "author": "doms"
+  },
+  "fly_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_strokes_c2_110mm_optimized.gcode": {
+    "author": "doms"
+  },
+  "brain2_c1.gcode": {
+    "author": "doms"
+  },
+  "cch_c3.gcode": {
+    "author": "doms"
+  },
+  "castle_ai_c1.gcode": {
+    "author": "doms"
+  },
+  "vali_painting_c2_80mm.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_woodcut_c3_110mm.gcode": {
+    "author": "doms"
+  },
+  "protea_c1.gcode": {
+    "author": "doms"
+  },
+  "st_augustine_c1.gcode": {
+    "author": "doms"
+  },
+  "church_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_simple.gcode": {
+    "author": "doms"
+  },
+  "valig_ai_c1.gcode": {
+    "author": "doms"
+  },
+  "fairys_rgb-infill.gcode": {
+    "author": "doms"
+  },
+  "che_infill_c1.gcode": {
+    "author": "doms"
+  },
+  "pinup_floral_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_minimal.gcode": {
+    "author": "doms"
+  },
+  "fairy_siso_rgb.gcode": {
+    "author": "doms"
+  },
+  "3d_c1_c2.gcode": {
+    "author": "doms"
+  },
+  "scream_c1_c2.gcode": {
+    "author": "doms"
+  },
+  "touchgod_c1.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_adjusted.gcode": {
+    "author": "doms"
+  },
+  "picasso_c1.gcode": {
+    "author": "doms"
+  },
+  "fingerprint_c1.gcode": {
+    "author": "doms"
+  },
+  "clocktower_c1.gcode": {
+    "author": "doms"
+  },
+  "family76_woodcut_c3_140mm.gcode": {
+    "author": "doms"
+  },
+  "tattoo_tribal_c1.gcode": {
+    "author": "doms"
+  },
+  "dollar_melt_c2_offset.gcode": {
+    "author": "doms"
+  },
+  "dragon_c1.gcode": {
+    "author": "doms"
+  },
+  "che_c1.gcode": {
+    "author": "doms"
+  },
+  "pinup_spark_c1.gcode": {
+    "author": "doms"
+  },
+  "bakkie_c1.gcode": {
+    "author": "doms"
+  },
+  "surf_barrel_c1.gcode": {
+    "author": "doms"
+  },
+  "pinup_dress_c1.gcode": {
+    "author": "doms"
+  },
+  "gogh_selfportrait_c1.gcode": {
+    "author": "doms"
+  },
+  "cocacola_logo_c1.gcode": {
+    "author": "doms"
+  },
+  "oebb_c1.gcode": {
+    "author": "doms"
+  },
+  "castle2_c1.gcode": {
+    "author": "doms"
+  },
+  "amanita_c1.gcode": {
+    "author": "doms"
+  },
+  "kitti_c1.gcode": {
+    "author": "doms"
+  },
+  "chickenfoot2_c1.gcode": {
+    "author": "doms"
+  },
+  "ft-hh_c2.gcode": {
+    "author": "doms"
+  },
+  "brushi_c1_nofill.gcode": {
+    "author": "doms"
+  },
+  "ant_c1.gcode": {
+    "author": "doms"
+  },
+  "sgmk_c2_c3_90mm.gcode": {
+    "author": "doms"
+  },
+  "monroe_c1.gcode": {
+    "author": "doms"
+  },
+  "st_basil_c1.gcode": {
+    "author": "doms"
+  },
+  "grid_c1.gcode": {
+    "author": "doms"
+  },
+  "vali_pose_speedmod.gcode": {
+    "author": "doms"
+  },
+  "g_anyma_strokes_c2_110mm_backlash.gcode": {
+    "author": "doms"
+  },
+  "maria_c1.gcode": {
+    "author": "doms"
+  },
+  "goilet_c1.gcode": {
+    "author": "doms"
+  },
+  "eiffel_c3.gcode": {
+    "author": "doms"
+  },
+  "dollar_melt_c2.gcode": {
+    "author": "doms"
+  },
+  "lenin_c1.gcode": {
+    "author": "doms"
+  },
+  "mona_rgb.gcode": {
+    "author": "doms"
+  },
+  "waves_c1.gcode": {
+    "author": "doms"
+  },
+  "fairys_rgb.gcode": {
+    "author": "doms"
+  },
+  "russia_c1.gcode": {
+    "author": "doms"
+  },
+  "vali_painting_c2_110mm.gcode": {
+    "author": "doms"
+  },
+  "salo_c1.gcode": {
+    "author": "doms"
+  },
+  "davinci_nopenis_c1.gcode": {
+    "author": "doms"
+  },
+  "pinup_dance_c1.gcode": {
+    "author": "doms"
+  },
+  "owl_c2.gcode": {
+    "author": "doms"
+  },
+  "apple-rgb.gcode": {
+    "author": "doms"
+  },
+  "picasso_c3.gcode": {
+    "author": "doms"
+  },
+  "fernsehturm_c1_c3.gcode": {
+    "author": "doms"
+  },
+  "brain_c1.gcode": {
+    "author": "doms"
+  },
+  "mrsbrown_c1.gcode": {
+    "author": "doms"
+  },
+  "rose_c1.gcode": {
+    "author": "doms"
+  },
+  "fairydust_iso_c2.gcode": {
+    "author": "doms"
+  },
+  "schrei_rgb.gcode": {
+    "author": "doms"
+  },
+  "chf_100_chatgpt_c1_140mm.gcode": {
+    "author": "doms"
+  },
+  "surf_savannah_c1.gcode": {
+    "author": "doms"
   }
 }
