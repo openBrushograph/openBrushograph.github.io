@@ -681,6 +681,66 @@
                         </div>
                     </div>
 
+                    <div style="border-top: 1px dotted var(--border); margin-top: 10px; padding-top: 10px;">
+                        <label
+                            style="display:flex; align-items:center; gap:5px; font-size:0.75rem; color:var(--text-main); font-weight:bold;">
+                            <input type="checkbox" id="apply-transform"
+                                onchange="document.getElementById('transform-options').style.display = this.checked ? 'flex' : 'none'; window.processStreamLines && window.processStreamLines();">
+                            Apply Transformations (Scale/Offset)
+                        </label>
+                        <div id="transform-options"
+                            style="display:none; flex-direction:column; gap:5px; margin-top:5px; padding-left:20px;">
+                            <div class="input-group" style="padding:0;">
+                                <label style="font-size:0.7rem; flex:1;">Preset:</label>
+                                <select id="transform-preset" style="font-size:0.7rem; padding:2px; flex:2.5; background:var(--input-bg); color:var(--input-text); border:1px solid var(--border);"
+                                    onchange="
+                                        if(this.value === 'large-to-pcb') {
+                                            document.getElementById('transform-scale').value = (50/140).toFixed(3);
+                                            document.getElementById('transform-offset-x').value = 0;
+                                            document.getElementById('transform-offset-y').value = 0;
+                                            document.getElementById('apply-transform').checked = true;
+                                            document.getElementById('transform-options').style.display = 'flex';
+                                        } else if(this.value === 'pcb-to-large') {
+                                            document.getElementById('transform-scale').value = (140/50).toFixed(3);
+                                            document.getElementById('transform-offset-x').value = 0;
+                                            document.getElementById('transform-offset-y').value = 0;
+                                            document.getElementById('apply-transform').checked = true;
+                                            document.getElementById('transform-options').style.display = 'flex';
+                                        } else if(this.value === 'reset') {
+                                            document.getElementById('transform-scale').value = '1.0';
+                                            document.getElementById('transform-offset-x').value = '0';
+                                            document.getElementById('transform-offset-y').value = '0';
+                                            document.getElementById('apply-transform').checked = false;
+                                            document.getElementById('transform-options').style.display = 'none';
+                                        }
+                                        this.value = 'none';
+                                        window.processStreamLines && window.processStreamLines();
+                                    ">
+                                    <option value="none">-- Select Preset --</option>
+                                    <option value="large-to-pcb">150x140 &rarr; 70x50 (Scale 0.357)</option>
+                                    <option value="pcb-to-large">70x50 &rarr; 150x140 (Scale 2.800)</option>
+                                    <option value="reset">Reset (Scale 1.0)</option>
+                                </select>
+                            </div>
+                            <div class="input-group" style="padding:0;">
+                                <label style="font-size:0.7rem; flex:1;">Scale X/Y:</label>
+                                <input type="number" id="transform-scale" value="1.0" step="0.1"
+                                    style="width:50px; font-size:0.7rem; padding:2px;"
+                                    onchange="window.processStreamLines && window.processStreamLines()">
+                            </div>
+                            <div class="input-group" style="padding:0;">
+                                <label style="font-size:0.7rem; flex:1;">Offset X:</label>
+                                <input type="number" id="transform-offset-x" value="0" step="1"
+                                    style="width:50px; font-size:0.7rem; padding:2px;"
+                                    onchange="window.processStreamLines && window.processStreamLines()">
+                                <label style="font-size:0.7rem; flex:1; margin-left:5px;">Offset Y:</label>
+                                <input type="number" id="transform-offset-y" value="0" step="1"
+                                    style="width:50px; font-size:0.7rem; padding:2px;"
+                                    onchange="window.processStreamLines && window.processStreamLines()">
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="display:flex; gap: 10px; margin-top: 10px;">
                         <button id="btn-start-stream" class="btn-green" style="flex-grow: 1;" disabled>Stream
                             G-Code</button>
@@ -2531,6 +2591,75 @@
             return out;
         }
 
+        function applyGCodeTransform(lines, scale, offsetX, offsetY, maxX, maxY) {
+            let out = [];
+            let isRelative = false;
+            let currentX = 0, currentY = 0;
+            for (let line of lines) {
+                let trimmed = line.trim();
+                if (!trimmed) { out.push(""); continue; }
+                let content = trimmed, comment = "";
+                let semiIdx = trimmed.indexOf(';');
+                if (semiIdx >= 0) { content = trimmed.substring(0, semiIdx).trim(); comment = trimmed.substring(semiIdx); }
+
+                if (!content) { out.push(comment); continue; }
+                if (/\bG90\b/i.test(content)) isRelative = false;
+                if (/\bG91\b/i.test(content)) isRelative = true;
+
+                let isMove = /\bG0?[0-3]\b/i.test(content) || /^[XYZIJ]\s*[-\d.]+/i.test(content);
+                if (isMove) {
+                    let xm = content.match(/X([-\d.]+)/i), ym = content.match(/Y([-\d.]+)/i);
+                    let im = content.match(/I([-\d.]+)/i), jm = content.match(/J([-\d.]+)/i);
+                    
+                    if (xm || ym || im || jm) {
+                        let newLine = content;
+                        if (xm) {
+                            let x = parseFloat(xm[1]);
+                            if (isRelative) {
+                                let targetX = currentX + (x * scale);
+                                targetX = Math.max(0, Math.min(targetX, maxX));
+                                x = targetX - currentX;
+                                currentX = targetX;
+                            } else {
+                                x = (x * scale) + offsetX;
+                                x = Math.max(0, Math.min(x, maxX));
+                                currentX = x;
+                            }
+                            newLine = newLine.replace(/X\s*[-\d.]+/i, `X${fmt(x)}`);
+                        }
+                        if (ym) {
+                            let y = parseFloat(ym[1]);
+                            if (isRelative) {
+                                let targetY = currentY + (y * scale);
+                                targetY = Math.max(0, Math.min(targetY, maxY));
+                                y = targetY - currentY;
+                                currentY = targetY;
+                            } else {
+                                y = (y * scale) + offsetY;
+                                y = Math.max(0, Math.min(y, maxY));
+                                currentY = y;
+                            }
+                            newLine = newLine.replace(/Y\s*[-\d.]+/i, `Y${fmt(y)}`);
+                        }
+                        if (im) {
+                            let i = parseFloat(im[1]) * scale;
+                            newLine = newLine.replace(/I\s*[-\d.]+/i, `I${fmt(i)}`);
+                        }
+                        if (jm) {
+                            let j = parseFloat(jm[1]) * scale;
+                            newLine = newLine.replace(/J\s*[-\d.]+/i, `J${fmt(j)}`);
+                        }
+                        out.push(newLine + (comment ? " " + comment : ""));
+                    } else {
+                        out.push(line);
+                    }
+                } else {
+                    out.push(line);
+                }
+            }
+            return out;
+        }
+
         window.processStreamLines = function () {
             if (!originalStreamLines || originalStreamLines.length === 0) return;
 
@@ -2570,6 +2699,21 @@
                     processed.push(...res.lines);
                 });
                 processingLines = processed;
+            }
+
+            const applyTransform = document.getElementById('apply-transform').checked;
+            if (applyTransform) {
+                const scale = parseFloat(document.getElementById('transform-scale').value);
+                const offsetX = parseFloat(document.getElementById('transform-offset-x').value);
+                const offsetY = parseFloat(document.getElementById('transform-offset-y').value);
+                const sc = isNaN(scale) ? 1.0 : scale;
+                const ox = isNaN(offsetX) ? 0 : offsetX;
+                const oy = isNaN(offsetY) ? 0 : offsetY;
+                const canvasMaxX = parseFloat(document.getElementById('max-x').value) || 70;
+                const canvasMaxY = parseFloat(document.getElementById('max-y').value) || 50;
+                if (sc !== 1.0 || ox !== 0 || oy !== 0) {
+                    processingLines = applyGCodeTransform(processingLines, sc, ox, oy, canvasMaxX, canvasMaxY);
+                }
             }
 
             streamLines = processingLines;
