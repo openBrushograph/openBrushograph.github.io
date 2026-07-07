@@ -721,6 +721,15 @@
                  Mechatronic web interfaces &amp; sonic experiments &mdash; stepper-motor synths, drawing pads, drone engines and G-code sequencers.
                </div>
              </a>
+             <a class="extension-tile" href="brusho_gcode_archive/" style="background: #0b0f19; border-color: #29e0ff; color: #e5e7eb;">
+               <div class="extension-name">
+                 <span style="color: #29e0ff;">G-Code Archive</span>
+                 <span class="extension-chip" style="background: rgba(41,224,255,0.12); color: #29e0ff; border-color: rgba(41,224,255,0.4);">gallery</span>
+               </div>
+               <div class="extension-desc" style="color: #94a3b8;">
+                 Browse the global collection of over 1100 curated Brushograph G-codes. Search, preview, download, and sync your favorites.
+               </div>
+             </a>
              <a class="extension-tile" href="extensions/Ultra_Painter_WebApp.html" style="background: linear-gradient(135deg, #86007D 0%, #0000F9 50%, #008018 100%); border-color: #ffd166; color: #fff;">
                <div class="extension-name">
                  <span style="color: #fff;">Ultra Painter</span>
@@ -749,6 +758,15 @@
               </div>
              </a>
            </div>
+           
+           <div style="margin-top: 24px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); display: flex; justify-content: space-between; align-items: center;">
+             <span>Studio Curated G-Codes</span>
+             <a href="brusho_gcode_archive/" style="color: #29e0ff; text-decoration: none; font-weight: bold; text-transform: none; letter-spacing: normal;">View Full Archive &rarr;</a>
+           </div>
+           <div id="mini-archive-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 10px; margin-bottom: 24px;">
+               <div style="color: var(--muted); grid-column: 1 / -1; text-align: center; padding: 20px;">Loading archive...</div>
+           </div>
+           
            <div style="margin-top: 14px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted);">Generative art</div>
            <div class="extension-grid">
              <a class="extension-tile" href="https://nirmanaflow.netlify.app/" target="_blank" rel="noreferrer" style="border-color: var(--accent); box-shadow: 0 0 15px var(--accent-soft);">
@@ -950,4 +968,75 @@
   })();
  </script>
 
+ <script src="brusho_gcode_archive/dusjagr_favorites_data.js"></script>
+ <script>
+   (function() {
+     const listEl = document.getElementById('mini-archive-grid');
+     if (!listEl) return;
+     if (!window.DUSJAGR_FAVORITES) {
+       listEl.innerHTML = '<div style="color: var(--accent-pink); text-align: center; padding: 20px; grid-column: 1 / -1;">Archive payload missing! Please run update_manual_archive.py</div>';
+       return;
+     }
+     
+     listEl.innerHTML = '';
+     // Take first 5 items
+     const favorites = window.DUSJAGR_FAVORITES.slice(0, 5);
+     
+     favorites.forEach(filename => {
+         const baseName = filename.replace(/\.gcode$/i, '');
+         const previewName = baseName + '_preview.png';
+         
+         const itemDiv = document.createElement('a');
+         itemDiv.href = 'brusho_gcode_archive/';
+         itemDiv.style.textDecoration = 'none';
+         itemDiv.style.display = 'flex';
+         itemDiv.style.flexDirection = 'column';
+         itemDiv.style.alignItems = 'center';
+         itemDiv.style.background = '#0b0f19';
+         itemDiv.style.border = '1px solid #1e293b';
+         itemDiv.style.borderRadius = '8px';
+         itemDiv.style.padding = '8px';
+         itemDiv.style.cursor = 'pointer';
+         itemDiv.style.transition = 'all 0.2s ease';
+         
+         itemDiv.onmouseover = () => {
+             itemDiv.style.borderColor = '#29e0ff';
+             itemDiv.style.transform = 'translateY(-2px)';
+             itemDiv.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+         };
+         itemDiv.onmouseout = () => {
+             itemDiv.style.borderColor = '#1e293b';
+             itemDiv.style.transform = 'none';
+             itemDiv.style.boxShadow = 'none';
+         };
+         
+         const img = document.createElement('img');
+         img.src = 'brusho_gcode_archive/dusjagr_favorites/' + encodeURIComponent(previewName);
+         img.style.width = '100%';
+         img.style.height = 'auto';
+         img.style.aspectRatio = '1 / 1';
+         img.style.objectFit = 'contain';
+         img.style.background = '#fff';
+         img.style.borderRadius = '4px';
+         img.style.marginBottom = '8px';
+         img.onerror = () => { img.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iIGZpbGw9IiM5OTkiPk5vIFByZXZpZXc8L3RleHQ+PC9zdmc+'; };
+         
+         const title = document.createElement('div');
+         title.textContent = baseName.replace(/_/g, ' ').substring(0, 30);
+         title.style.fontSize = '0.65rem';
+         title.style.color = '#e5e7eb';
+         title.style.textAlign = 'center';
+         title.style.wordBreak = 'break-word';
+         title.style.display = '-webkit-box';
+         title.style.webkitLineClamp = '2';
+         title.style.webkitBoxOrient = 'vertical';
+         title.style.overflow = 'hidden';
+         
+         itemDiv.appendChild(img);
+         itemDiv.appendChild(title);
+         listEl.appendChild(itemDiv);
+     });
+   })();
+ </script>
+ 
  </html>
