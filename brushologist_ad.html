@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +28,7 @@
             background-color: #fffaf0;
             padding: 40px;
             border: 2px solid var(--border-color);
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.05), 5px 5px 15px rgba(0,0,0,0.2);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.2);
             position: relative;
         }
 
@@ -35,12 +36,17 @@
         .container::before {
             content: '';
             position: absolute;
-            top: 5px; left: 5px; right: 5px; bottom: 5px;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
             border: 1px solid var(--border-color);
             pointer-events: none;
         }
 
-        h1, h2, h3 {
+        h1,
+        h2,
+        h3 {
             text-align: center;
             font-weight: normal;
             margin-top: 2em;
@@ -64,7 +70,7 @@
             padding: 10px 0;
             display: inline-block;
         }
-        
+
         .center-wrapper {
             text-align: center;
         }
@@ -130,7 +136,7 @@
         a:hover {
             text-decoration: underline;
         }
-        
+
         .return-link {
             display: block;
             text-align: center;
@@ -140,68 +146,127 @@
         }
 
         @media (max-width: 600px) {
-            .container { padding: 20px; }
-            h1 { font-size: 1.8rem; }
-            p { font-size: 1rem; text-align: left; }
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+                text-align: left;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h1>Full Revelations of a Professional Brushologist</h1>
-    <div class="subtitle">Or, The Art of Mechatronic Painting &amp; G-Code Taming.</div>
+    <div class="container">
+        <h1>Full Revelations of a Professional Brushologist</h1>
+        <div class="subtitle">Or, The Art of Mechatronic Painting &amp; G-Code Taming.</div>
 
-    <p><span class="drop-cap">I</span>n placing before my readers the results of my extensive experience in Mechatronic Tinkering, G-Code Assembly, and the Taming of the Wild Brush, I may say that I have always done my best to accomplish every workshop task that I have undertaken. I have, in consequence, received excellent testimonials from many Art Academies, Design Schools, and FabLabs.</p>
+        <p><span class="drop-cap">I</span>n placing before my readers the results of my extensive experience in
+            Mechatronic Tinkering, G-Code Assembly, and the Taming of the Wild Brush, I may say that I have always done
+            my best to accomplish every workshop task that I have undertaken. I have, in consequence, received excellent
+            testimonials from many Art Academies, Design Schools, and FabLabs.</p>
 
-    <p>I have not only made it my study to discover the best methods of capturing a digital image upon a canvas, but I have also taken great interest in watching the ways and habits of the Stepper Motor and the Microcontroller. I have come to the conclusion that there is no sure way of completely mastering these Machines without proper, disciplined instruction.</p>
+        <p>I have not only made it my study to discover the best methods of capturing a digital image upon a canvas, but
+            I have also taken great interest in watching the ways and habits of the Stepper Motor and the
+            Microcontroller. I have come to the conclusion that there is no sure way of completely mastering these
+            Machines without proper, disciplined instruction.</p>
 
-    <p>It is for this reason I title this tract <em>Full Revelations</em>. In the true spirit of Open Source hardware and software, I hold no secrets back from the public. The schemas, the firmware, and the physical mechanisms of our machines are laid completely bare for all to study, modify, and improve upon, just as an honest tradesman shares the tools of his craft without gatekeeping or locked black-boxes.</p>
+        <p>It is for this reason I title this tract <em>Full Revelations</em>. In the true spirit of Open Source
+            hardware and software, I hold no secrets back from the public. The schemas, the firmware, and the physical
+            mechanisms of our machines are laid completely bare for all to study, modify, and improve upon, just as an
+            honest tradesman shares the tools of his craft without gatekeeping or locked black-boxes.</p>
 
-    <div class="center-wrapper">
-        <h2>PART I. THE LIFE OF A BRUSHOLOGIST</h2>
-    </div>
+        <p>In doing so, we proudly place ourselves within the long, storied tradition of Swiss anarchists and
+            horological artisans—such as the creators of the magnificent <a
+                href="https://en.wikipedia.org/wiki/Jaquet-Droz_automata" target="_blank" rel="noreferrer">Jaquet-Droz
+                automata</a>. Just as those early watchmakers combined intricate mechanics with radical philosophy, we
+            seek to liberate the art of automation from closed systems, putting the power of the machine back into the
+            hands of the people.</p>
 
-    <p>This work will not be complete if I do not deal with the Brushologist’s life. The profession is a peculiar and exciting one, but all right if pursued in the right way. Although the calling takes one into dirty and obnoxious places—often finding oneself covered in stray solder flux, tangled dupont wires, and rogue splashes of Indian Ink—there is no reason why the Brushologist should not always appear respectable.</p>
-
-    <p>Of course, there are inconveniences that the Brushologist has to put up with. On one occasion, when going round with my open laptop to examine the G-code streams in the dark of a school's basement, I was taken for a network hacker by the security guard, and he doubted me so much that he would not release me until I had shown him my Brushograph with the Steppers running and my SVG files set all over the place. Then he took almost as much interest in the drawing of concentric circles as myself.</p>
-
-    <p>I can assure my readers that the Brushologist is well remunerated by the sheer joy of the Scholars when they first see a machine of their own making drag ink across a canvas. This, I can assure my readers, makes all the "roughing it" worthwhile.</p>
-
-    <div class="center-wrapper">
-        <h2>PART II. ENGAGING THE SCHOLARS</h2>
-    </div>
-
-    <p>In the first place, my advice is—never introduce a student to a CNC Machine without first letting them feel the Brush. Why? Simply because the G-Codes that you generate are but numbers, and you can depend upon it that the student who only looks at a screen will not understand the physical drag of the Ink, and the consequence is that the resulting artwork will be most obnoxious.</p>
-
-    <p>To teach your students to trap and organize these codes, we provide our fully open-source <strong>Brushograph Studio App</strong> and <strong>G-Code Archive</strong>. Here, the student learns to hunt the wild algorithms, trapping them safely in the browser without the need for cumbersome installations.</p>
-
-
-    <div class="authors-notes">
-        <h3>AUTHOR’S NOTES</h3>
-        
-        <p>Dusjagr, along with his esteemed fellow brushologists from SGMK and the Machine Arts Group (MAG), are prepared to go out Tinkering with parties of gentlemen, students, or their professors at their private academies or schools, supplying Steppers, Microcontrollers, and Web-Interfaces, at moderate charges. Arrangements may be made by post.</p>
-
-        <p>The team is also willing to go out building openBrushographs with scholars. To reach sufficient depth and allow for proper experimentation, a minimum of 2 days is suggested, though ideally the work requires a full week or several sessions with independent work in between. We are prepared to break students and beginners to coding and mechatronics on reasonable terms.</p>
-        
-        <p>Special instruction is available from Dominik Mahnič (Ljubljana, Slovenia), an emblematic figure nestled between the realms of academic painting, video mastery, and street art insurgency. His expertise in the perpetual dialectics between classical artistry and contemporary technological modalities brings an unparalleled depth to our Brushology workshops.</p>
-
-        <p>Any number of Stepper configurations and G-Code interfaces supplied at a few days’ notice.</p>
-        
-        <p>All orders promptly attended to.</p>
-        
-        <p>Undeniable References.</p>
-        
-        <div class="signature">
-            Yours truly,<br>
-            <strong>MARC DUSSEILLER ("dusjagr") &amp; FELLOW BRUSHOLOGISTS</strong>
-            <em>Professional Brushologists &amp; Mechatronic Artists</em><br><br>
-            Contact: <a href="mailto:marc@dusseiller.ch">marc@dusseiller.ch</a>
+        <div class="center-wrapper">
+            <h2>PART I. THE LIFE OF A BRUSHOLOGIST</h2>
         </div>
+
+        <p>This work will not be complete if I do not deal with the Brushologist’s life. The profession is a peculiar
+            and exciting one, but all right if pursued in the right way. Although the calling takes one into dirty and
+            obnoxious places—often finding oneself covered in stray solder flux, tangled dupont wires, and rogue
+            splashes of Indian Ink—there is no reason why the Brushologist should not always appear respectable.</p>
+
+        <p>Of course, there are inconveniences that the Brushologist has to put up with. On one occasion, when going
+            round with my open laptop to examine the G-code streams in the dark of a school's basement, I was taken for
+            a network hacker by the security guard, and he doubted me so much that he would not release me until I had
+            shown him my Brushograph with the Steppers running and my SVG files set all over the place. Then he took
+            almost as much interest in the drawing of concentric circles as myself.</p>
+
+        <p>I can assure my readers that the Brushologist is well remunerated by the sheer joy of the Scholars when they
+            first see a machine of their own making drag ink across a canvas. This, I can assure my readers, makes all
+            the "roughing it" worthwhile.</p>
+
+        <div class="center-wrapper">
+            <h2>PART II. ENGAGING THE SCHOLARS</h2>
+        </div>
+
+        <p>In the first place, my advice is—never introduce a student to a CNC Machine without first letting them feel
+            the Brush. Why? Simply because the G-Codes that you generate are but numbers, and you can depend upon it
+            that the student who only looks at a screen will not understand the physical drag of the Ink, and the
+            consequence is that the resulting artwork will be most obnoxious.</p>
+
+        <p>To teach your students to trap and organize these codes, we provide our fully open-source <strong>Brushograph
+                Studio App</strong> and <strong>G-Code Archive</strong>. Here, the student learns to hunt the wild
+            algorithms, trapping them safely in the browser without the need for cumbersome installations.</p>
+
+
+        <div class="authors-notes">
+            <h3>AUTHOR’S NOTES</h3>
+
+            <p>Dusjagr, along with his esteemed fellow brushologists from SGMK and other friends accross the globe, are
+                prepared to go out Tinkering with parties of gentlemen, students, or their professors at their private
+                academies or schools, supplying Steppers, Microcontrollers, and Web-Interfaces, at moderate charges.
+                Arrangements may be made by post.</p>
+
+            <p>The team is also willing to go out building openBrushographs with scholars. To reach sufficient depth and
+                allow for proper experimentation, a minimum of 2 days is suggested, though ideally the work requires a
+                full week or several sessions with independent work in between. We are prepared to break students and
+                beginners to coding and mechatronics on reasonable terms.</p>
+
+            <p>Special instruction is available from Dominik Mahnič (Ljubljana, Slovenia), an emblematic figure nestled
+                between the realms of academic painting, video mastery, and street art insurgency. His expertise in the
+                perpetual dialectics between classical artistry and contemporary technological modalities brings an
+                unparalleled depth to our Brushology workshops.</p>
+
+            <p>Any number of Stepper configurations and G-Code interfaces supplied at a few days’ notice.</p>
+
+            <p>All orders promptly attended to.</p>
+
+            <p>Undeniable References:</p>
+            <ul style="list-style-type: none; padding: 0; margin-bottom: 2em; line-height: 1.8;">
+                <li>&mdash; <a href="https://wiki.sgmk-ssam.ch/wiki/Brushograph" target="_blank" rel="noreferrer">The
+                        SGMK Brushograph Wiki</a></li>
+                <li>&mdash; <a href="https://github.com/openBrushograph" target="_blank"
+                        rel="noreferrer">OpenBrushograph on GitHub</a></li>
+                <li>&mdash; <a href="https://openBrushograph.github.io" target="_blank" rel="noreferrer">OpenBrushograph
+                        Web Studio</a></li>
+                <li>&mdash; <a href="https://mechatronicart.ch/werkschau-g-code/" target="_blank" rel="noreferrer">Werkschau G-code, G-code Not Yet</a></li>
+            </ul>
+
+            <div class="signature">
+                Yours truly,<br>
+                <strong>MARC DUSSEILLER ("dusjagr") &amp; FELLOW BRUSHOLOGISTS</strong>
+                <em>Professional Brushologists &amp; Mechatronic Artists</em><br><br>
+                Contact: <a href="mailto:marc@dusseiller.ch">marc@dusseiller.ch</a>
+            </div>
+        </div>
+
+        <a href="index.html" class="return-link">&larr; Return to openBrushograph</a>
     </div>
-    
-    <a href="index.html" class="return-link">&larr; Return to openBrushograph</a>
-</div>
 
 </body>
+
 </html>
