@@ -146,8 +146,8 @@
             --accent-orange: #FF3860;
             --input-bg: #22064A;
             --input-text: #FFEAF4;
-            --shadow: 0 0 10px rgba(255, 107, 181, 0.4), inset 0 0 10px rgba(255, 107, 181, 0.4);
-            --shadow-hover: 0 0 15px rgba(255, 107, 181, 0.8), inset 0 0 15px rgba(255, 107, 181, 0.8);
+            --shadow: 0 0 15px rgba(255, 107, 181, 0.8), inset 0 0 15px rgba(255, 107, 181, 0.6);
+            --shadow-hover: 0 0 25px rgba(255, 107, 181, 1), inset 0 0 20px rgba(255, 107, 181, 0.8);
             --font-main: inherit;
             --font-head: inherit;
             --font-title: inherit;
@@ -174,14 +174,14 @@
 
         body.theme-pinkograph .btn:hover {
             box-shadow: var(--shadow-hover);
-            text-shadow: 0 0 12px rgba(255, 107, 181, 1);
+            text-shadow: 0 0 15px rgba(255, 107, 181, 1), 0 0 25px rgba(255, 107, 181, 0.8);
         }
 
         body.theme-pinkograph h1,
         body.theme-pinkograph h2,
         body.theme-pinkograph label,
         body.theme-pinkograph .btn {
-            text-shadow: 0 0 6px rgba(255, 107, 181, 0.95), 0 0 18px rgba(255, 107, 181, 0.55);
+            text-shadow: 0 0 10px rgba(255, 107, 181, 1), 0 0 20px rgba(255, 107, 181, 0.8), 0 0 30px rgba(255, 107, 181, 0.6);
         }
 
         body.theme-uwu {
@@ -751,7 +751,7 @@
     </style>
 </head>
 
-<body>
+<body class="theme-pinkograph" onload="setTheme('pinkograph')">
 
     <div class="header-container">
         <a href="https://openbrushograph.github.io/" target="_blank">
@@ -760,9 +760,9 @@
         <div style="display: flex; align-items: center; gap: 20px;">
             <h1 style="margin:0; text-shadow:none;">Mikro-Brushografia</h1>
             <select id="theme-selector" onchange="setTheme(this.value)" style="padding: 5px; border-radius: 4px; font-family: var(--font-main); border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-color);">
+                <option value="pinkograph" selected>Pinkograph</option>
                 <option value="esp3d">ESP3D Classic</option>
                 <option value="randen">Randen</option>
-                <option value="pinkograph">Pinkograph</option>
                 <option value="uwu">UwU</option>
                 <option value="coconut">Coconut</option>
                 <option value="light">Arai-eek Light</option>
