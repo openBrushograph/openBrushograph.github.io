@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mikro-Brushografia</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Bungee&family=UnifrakturCook:wght@700&family=Noto+Sans+SC:wght@400;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=UnifrakturCook:wght@700&family=Noto+Sans+SC:wght@400;700;900&family=Noto+Sans+TC:wght@400;700;900&family=Noto+Sans+Kannada:wght@400;700&display=swap');
 
         :root {
             /* ESP3D Classic Theme */
@@ -37,6 +37,194 @@
             --font-main: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
             --font-head: inherit;
             --font-title: inherit;
+        }
+
+        body.theme-bengaluru {
+            /* Bengaluru Fair Theme */
+            --bg-color: #f7e6d2;       /* Sandalwood cream */
+            --panel-bg: #800020;       /* Deep Burgundy / Kumkum */
+            --text-color: #fceea7;     /* Turmeric Yellow */
+            --text-muted: #f3d596;
+            --border: #fca311;         /* Bright Orange/Gold border */
+            
+            --accent-pink: #d90429;
+            --accent-green: #2a9d8f;
+            --accent-blue: #0077b6;
+            --accent-yellow: #e9c46a;
+            --accent-orange: #f4a261;
+            
+            --input-bg: #5a0016;
+            --input-text: #ffffff;
+            
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+            --shadow-hover: 0 8px 12px rgba(0, 0, 0, 0.4), 0 4px 6px rgba(0, 0, 0, 0.2);
+            --border-width: 2px;
+            --border-radius: 8px;
+            
+            --font-main: 'Noto Sans Kannada', sans-serif;
+            --font-head: 'Noto Sans Kannada', sans-serif;
+            --font-title: 'Noto Sans Kannada', sans-serif;
+        }
+
+        body.theme-bengaluru .btn,
+        body.theme-bengaluru input,
+        body.theme-bengaluru select,
+        body.theme-bengaluru canvas {
+            border: var(--border-width) solid var(--border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            background-color: var(--panel-bg);
+            color: var(--text-color);
+        }
+
+        body.theme-bengaluru .panel {
+            border: 4px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            background-color: var(--panel-bg);
+            color: var(--text-color);
+            position: relative;
+            background-image: 
+                radial-gradient(circle at top left, rgba(252, 163, 17, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at bottom right, rgba(42, 157, 143, 0.15) 0%, transparent 40%);
+        }
+
+        /* Decorative top border for panels (like a festival garland) */
+        body.theme-bengaluru .panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 8px;
+            background: linear-gradient(90deg, #fca311 25%, #2a9d8f 25%, #2a9d8f 50%, #fca311 50%, #fca311 75%, #2a9d8f 75%);
+            background-size: 40px 10px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            pointer-events: none;
+        }
+
+        body.theme-bengaluru .btn {
+            background-color: #d90429;
+            color: #ffffff;
+            font-weight: bold;
+            border: 2px solid #fca311;
+            border-radius: 20px;
+        }
+
+        body.theme-bengaluru .btn:hover {
+            box-shadow: var(--shadow-hover);
+            background-color: #fca311;
+            color: #5a0016;
+            transform: translateY(-2px);
+            transition: all 0.2s;
+        }
+
+        body.theme-bengaluru h1,
+        body.theme-bengaluru h2 {
+            font-size: 1.8em;
+            color: #fca311;
+            margin-bottom: 10px;
+            border-bottom: 2px dashed #fca311;
+            padding-bottom: 5px;
+            text-align: center;
+        }
+
+        body.theme-bengaluru h1::before,
+        body.theme-bengaluru h1::after {
+            content: ' 🌺 ';
+        }
+
+        body.theme-bengaluru h2::before {
+            content: '🪔 ';
+        }
+
+        body.theme-usa-maga {
+            /* USA MAGA Theme */
+            --bg-color: #0A3161;       /* Navy Blue */
+            --panel-bg: #FFFFFF;       /* White */
+            --text-color: #0A3161;     /* Navy Blue */
+            --text-muted: #B31942;     /* Red */
+            --border: #B31942;         /* Patriot Red */
+            
+            --accent-pink: #B31942;
+            --accent-green: #0A3161;
+            --accent-blue: #0A3161;
+            --accent-yellow: #FFD700;
+            --accent-orange: #FFD700;
+            
+            --input-bg: #F0F0F0;
+            --input-text: #0A3161;
+            
+            --shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.6);
+            --border-width: 4px;
+            --border-radius: 0px; /* Sharp corners */
+            
+            --font-main: 'Archivo Black', sans-serif;
+            --font-head: 'Archivo Black', sans-serif;
+            --font-title: 'Archivo Black', sans-serif;
+        }
+
+        body.theme-usa-maga .btn,
+        body.theme-usa-maga input,
+        body.theme-usa-maga select,
+        body.theme-usa-maga canvas {
+            border: var(--border-width) solid var(--border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            background-color: var(--panel-bg);
+            color: var(--text-color);
+            text-transform: uppercase;
+        }
+
+        body.theme-usa-maga .panel {
+            border: 6px solid #B31942;
+            box-shadow: var(--shadow);
+            background-color: var(--panel-bg);
+            color: var(--text-color);
+            position: relative;
+            background-image: repeating-linear-gradient(
+                45deg,
+                rgba(179, 25, 66, 0.05),
+                rgba(179, 25, 66, 0.05) 10px,
+                rgba(10, 49, 97, 0.05) 10px,
+                rgba(10, 49, 97, 0.05) 20px
+            );
+        }
+
+        body.theme-usa-maga .btn {
+            background-color: #B31942;
+            color: #FFFFFF;
+            border: 4px solid #0A3161;
+            border-radius: 0;
+            letter-spacing: 1px;
+        }
+
+        body.theme-usa-maga .btn:hover {
+            box-shadow: var(--shadow-hover);
+            background-color: #FFD700; /* Gold */
+            color: #0A3161;
+            border-color: #B31942;
+            transform: scale(1.05);
+            transition: all 0.2s;
+        }
+
+        body.theme-usa-maga h1,
+        body.theme-usa-maga h2 {
+            font-size: 2em;
+            color: #B31942;
+            margin-bottom: 15px;
+            border-bottom: 4px solid #0A3161;
+            padding-bottom: 5px;
+            text-align: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        body.theme-usa-maga h1::before,
+        body.theme-usa-maga h1::after,
+        body.theme-usa-maga h2::before,
+        body.theme-usa-maga h2::after {
+            content: ' ★ ';
+            color: #0A3161;
         }
 
         body.theme-light {
@@ -1163,7 +1351,7 @@
     </style>
 </head>
 
-<body class="theme-dresden-dark" onload="setTheme('dresden-dark')">
+<body class="theme-uwu" onload="setTheme('uwu')">
 
     <div class="header-container">
         <a href="https://openbrushograph.github.io/" target="_blank">
@@ -1184,6 +1372,8 @@
                 <option value="dresden-extreme">Kongress Dresden (Extrem)</option>
                 <option value="china">China (CCP)</option>
                 <option value="taipei">China (Taipei)</option>
+                <option value="bengaluru">Bengaluru Fair (Kannada)</option>
+                <option value="usa-maga">USA (MAGA)</option>
             </select>
         </div>
     </div>
@@ -1541,6 +1731,10 @@
                     C3</button>
                 <button id="macro-wash"
                     style="font-size:0.7rem; padding:8px 4px; border-color:#888; color:#888;">Wash</button>
+                <button id="macro-trump-sig"
+                    style="grid-column: span 2; font-size:0.8rem; padding:10px; border: 2px solid #0A3161; background-color:#B31942; color:#FFFFFF; font-weight:bold; letter-spacing:1px; cursor:pointer;">DRAW TRUMP SIGNATURE</button>
+                <button id="macro-test2"
+                    style="grid-column: span 2; font-size:0.8rem; padding:10px; border: 2px solid var(--accent-pink); background-color:transparent; color:var(--accent-pink); font-weight:bold; letter-spacing:1px; cursor:pointer;">DRAW TEST2</button>
             </div>
 
             <div class="console-output" id="console"
@@ -2360,6 +2554,165 @@
                         document.body.appendChild(modal);
                     }
                 }, 500);
+            } else if (mode === 'bengaluru') {
+                document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
+                c1 = '#e9c46a'; c2 = '#f4a261'; c3 = '#2a9d8f'; c4 = '#d90429';
+                titleText = 'ಮೈಕ್ರೋ ಬ್ರಶೋಗ್ರಾಫಿಯಾ (Mikro-Brushografia)';
+                
+                // Show quote popup
+                setTimeout(() => {
+                    if (document.body.classList.contains('theme-bengaluru') && !document.getElementById('ind-quote-modal')) {
+                        const quotes = [
+                            { kn: "ನೀವು ಜಗತ್ತಿನಲ್ಲಿ ನೋಡಬಯಸುವ ಬದಲಾವಣೆಯಾಗಿರಿ.", en: "Be the change that you wish to see in the world." },
+                            { kn: "ಕಣ್ಣಿಗೆ ಕಣ್ಣು ಎಂಬ ನಿಯಮವು ಇಡೀ ಜಗತ್ತನ್ನೇ ಕುರುಡಾಗಿಸುತ್ತದೆ.", en: "An eye for an eye will only make the whole world blind." },
+                            { kn: "ದುರ್ಬಲರು ಎಂದಿಗೂ ಕ್ಷಮಿಸಲಾರರು. ಕ್ಷಮೆಯು ಬಲಿಷ್ಠರ ಗುಣಲಕ್ಷಣವಾಗಿದೆ.", en: "The weak can never forgive. Forgiveness is the attribute of the strong." },
+                            { kn: "ನೀವು ನಾಳೆ ಸಾಯುವಂತೆ ಬದುಕಿ. ನೀವು ಶಾಶ್ವತವಾಗಿ ಬದುಕುವಂತೆ ಕಲಿಯಿರಿ.", en: "Live as if you were to die tomorrow. Learn as if you were to live forever." },
+                            { kn: "ನೀವು ಏನು ಯೋಚಿಸುತ್ತೀರಿ, ಏನು ಹೇಳುತ್ತೀರಿ ಮತ್ತು ಏನು ಮಾಡುತ್ತೀರಿ ಎಂಬುದು ಸಾಮರಸ್ಯದಲ್ಲಿರುವಾಗ ಅದೇ ಸಂತೋಷ.", en: "Happiness is when what you think, what you say, and what you do are in harmony." },
+                            { kn: "ಮೃದುವಾದ ರೀತಿಯಲ್ಲಿ, ನೀವು ಜಗತ್ತನ್ನು ಅಲುಗಾಡಿಸಬಹುದು.", en: "In a gentle way, you can shake the world." },
+                            { kn: "ಪ್ರೀತಿ ಇರುವಲ್ಲಿ ಜೀವನವಿದೆ.", en: "Where there is love there is life." },
+                            { kn: "ಮನುಷ್ಯನು ತನ್ನ ಆಲೋಚನೆಗಳ ಉತ್ಪನ್ನ ಮಾತ್ರ. ಅವನು ಏನು ಯೋಚಿಸುತ್ತಾನೋ, ಅದೇ ಆಗುತ್ತಾನೆ.", en: "A man is but the product of his thoughts. What he thinks, he becomes." },
+                            { kn: "ಬಲವು ದೈಹಿಕ ಸಾಮರ್ಥ್ಯದಿಂದ ಬರುವುದಿಲ್ಲ. ಅದು ಅದಮ್ಯ ಇಚ್ಛಾಶಕ್ತಿಯಿಂದ ಬರುತ್ತದೆ.", en: "Strength does not come from physical capacity. It comes from an indomitable will." },
+                            { kn: "ಮೊದಲು ಅವರು ನಿಮ್ಮನ್ನು ನಿರ್ಲಕ್ಷಿಸುತ್ತಾರೆ, ನಂತರ ಅವರು ನಿಮ್ಮನ್ನು ನೋಡಿ ನಗುತ್ತಾರೆ, ನಂತರ ಅವರು ನಿಮ್ಮೊಂದಿಗೆ ಹೋರಾಡುತ್ತಾರೆ, ನಂತರ ನೀವು ಗೆಲ್ಲುತ್ತೀರಿ.", en: "First they ignore you, then they laugh at you, then they fight you, then you win." }
+                        ];
+                        const quote = quotes[Math.floor(Math.random() * quotes.length)];
+                        
+                        const modal = document.createElement('div');
+                        modal.id = 'ind-quote-modal';
+                        modal.style.position = 'fixed';
+                        modal.style.top = '50%';
+                        modal.style.left = '50%';
+                        modal.style.transform = 'translate(-50%, -50%)';
+                        modal.style.backgroundColor = '#800020'; // Deep burgundy
+                        modal.style.border = '4px solid #fca311'; // Bright orange
+                        modal.style.boxShadow = '0 0 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(252,163,17,0.3)'; 
+                        modal.style.padding = '40px';
+                        modal.style.zIndex = '9999';
+                        modal.style.textAlign = 'center';
+                        modal.style.maxWidth = '80%';
+                        modal.style.borderRadius = '12px';
+                        modal.style.color = '#fceea7'; // Turmeric yellow
+                        
+                        modal.innerHTML = `
+                            <div style="font-size: 2.5em; margin-bottom: 20px; text-shadow: 0 0 15px rgba(252,163,17,0.8);">🪔 🪔 🪔</div>
+                            <h2 style="color:#fceea7; border:none; margin:0; padding:0; font-size:1.6em; margin-bottom:20px; text-shadow: 2px 2px 0px #5a0016;">${quote.kn}</h2>
+                            <p style="font-family: monospace; color: #f3d596; font-size: 1.1em; line-height: 1.6; margin-bottom: 30px;">
+                                "${quote.en}"<br><br>- Mahatma Gandhi (ಮಹಾತ್ಮ ಗಾಂಧಿ)
+                            </p>
+                            <button class="btn" onclick="document.getElementById('ind-quote-modal').remove()" style="padding: 10px 30px; background-color: #d90429; border: 2px solid #fca311; color: #ffffff; font-size: 1.1em; border-radius: 20px; font-weight: bold;">ಮುಂದುವರಿಸು (CONTINUE)</button>
+                        `;
+                        document.body.appendChild(modal);
+                    }
+                }, 500);
+            } else if (mode === 'usa-maga') {
+                document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
+                c1 = '#B31942'; c2 = '#0A3161'; c3 = '#FFD700'; c4 = '#FFFFFF';
+                titleText = 'TREMENDOUS BRUSHOGRAFIA';
+                
+                // Show quote popup
+                setTimeout(() => {
+                    
+                const uwu_quotes = [
+                    "S-Senpai noticed my G-Code! (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄",
+                    "Hewwo! I'm weady to dwaw fow yew~ OwO",
+                    "Bwushograph is wowking supew dupew hawd! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧",
+                    "Pwease don't fowget to wash my bwush! ( ╥ω╥ )",
+                    "Yayyy! W-we made a mastewpiece! 🌸✨",
+                    "UwU... is my z-axis okay? 👉👈",
+                    "I-it's not like I wanted to dwaw this fow you... baka! ( ￣^￣ )",
+                    "Gwaphics so smooth, vewy kawaii! 💖",
+                    "Nyoom! Wobot goes fast! 🚗💨",
+                    "W-what awe we gonna dwaw today? (◕‿◕✿)"
+                ];
+
+                if (document.body.classList.contains('theme-uwu') && !document.getElementById('uwu-quote-modal')) {
+                    const quote = uwu_quotes[Math.floor(Math.random() * uwu_quotes.length)];
+                    const modal = document.createElement('div');
+                    modal.id = 'uwu-quote-modal';
+                    modal.style.position = 'fixed';
+                    modal.style.top = '50%';
+                    modal.style.left = '50%';
+                    modal.style.transform = 'translate(-50%, -50%)';
+                    modal.style.backgroundColor = '#FFF5F8';
+                    modal.style.color = '#FF9CEE';
+                    modal.style.border = '4px solid #FFB7B2';
+                    modal.style.borderRadius = '20px';
+                    modal.style.padding = '30px';
+                    modal.style.boxShadow = '0 10px 30px rgba(255, 156, 238, 0.4)';
+                    modal.style.zIndex = '10000';
+                    modal.style.fontFamily = "'Quicksand', 'Comic Sans MS', sans-serif";
+                    modal.style.fontSize = '1.2rem';
+                    modal.style.textAlign = 'center';
+                    modal.style.maxWidth = '400px';
+                    
+                    const title = document.createElement('h3');
+                    title.textContent = "🌸 Wobot says... 🌸";
+                    title.style.margin = '0 0 15px 0';
+                    title.style.color = '#FF9CEE';
+                    modal.appendChild(title);
+                    
+                    const text = document.createElement('p');
+                    text.textContent = `"${quote}"`;
+                    text.style.fontStyle = 'italic';
+                    modal.appendChild(text);
+
+                    const closeBtn = document.createElement('button');
+                    closeBtn.textContent = "Yaaaay! ✨";
+                    closeBtn.style.marginTop = '20px';
+                    closeBtn.style.padding = '10px 20px';
+                    closeBtn.style.backgroundColor = '#FFB7B2';
+                    closeBtn.style.color = 'white';
+                    closeBtn.style.border = 'none';
+                    closeBtn.style.borderRadius = '20px';
+                    closeBtn.style.cursor = 'pointer';
+                    closeBtn.style.fontWeight = 'bold';
+                    closeBtn.onclick = () => document.body.removeChild(modal);
+                    
+                    modal.appendChild(closeBtn);
+                    document.body.appendChild(modal);
+                }
+
+                    if (document.body.classList.contains('theme-usa-maga') && !document.getElementById('maga-quote-modal')) {
+                        const quotes = [
+                            "We will make America great again!",
+                            "Sometimes by losing a battle you find a new way to win the war.",
+                            "I will be the greatest jobs president that God ever created.",
+                            "We will have so much winning if I get elected that you may get bored with winning.",
+                            "As long as you are going to be thinking anyway, think big.",
+                            "No dream is too big. No challenge is too great. Nothing we want for our future is beyond our reach.",
+                            "I like thinking big. If you're going to be thinking anything, you might as well think big.",
+                            "When somebody challenges you, fight back. Be brutal, be tough.",
+                            "Part of being a winner is knowing when enough is enough.",
+                            "Together, we are going to make our country stronger and greater than ever before."
+                        ];
+                        const quote = quotes[Math.floor(Math.random() * quotes.length)];
+                        
+                        const modal = document.createElement('div');
+                        modal.id = 'maga-quote-modal';
+                        modal.style.position = 'fixed';
+                        modal.style.top = '50%';
+                        modal.style.left = '50%';
+                        modal.style.transform = 'translate(-50%, -50%)';
+                        modal.style.backgroundColor = '#0A3161'; // Navy blue
+                        modal.style.border = '8px solid #FFD700'; // Gold border
+                        modal.style.boxShadow = '0 0 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,215,0,0.3)'; 
+                        modal.style.padding = '40px';
+                        modal.style.zIndex = '9999';
+                        modal.style.textAlign = 'center';
+                        modal.style.maxWidth = '80%';
+                        modal.style.color = '#FFFFFF'; 
+                        modal.style.fontFamily = "'Archivo Black', sans-serif";
+                        
+                        modal.innerHTML = `
+                            <div style="font-size: 3em; margin-bottom: 20px; color: #B31942; text-shadow: 0 0 15px rgba(255,255,255,0.8);">🇺🇸 ★ 🇺🇸</div>
+                            <h2 style="color:#FFFFFF; border:none; margin:0; padding:0; font-size:2em; margin-bottom:20px; text-shadow: 2px 2px 0px #000000; text-transform: uppercase;">"${quote}"</h2>
+                            <p style="color: #FFD700; font-size: 1.5em; margin-bottom: 30px;">
+                                - Donald J. Trump
+                            </p>
+                            <button class="btn" onclick="document.getElementById('maga-quote-modal').remove()" style="padding: 15px 40px; background-color: #B31942; border: 4px solid #FFFFFF; color: #FFFFFF; font-size: 1.5em; font-weight: bold; text-transform: uppercase; cursor: pointer;">WINNING (CONTINUE)</button>
+                        `;
+                        document.body.appendChild(modal);
+                    }
+                }, 500);
             } else {
                 document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
                 c1 = '#005b96'; c2 = '#56bdff'; c3 = '#32b643'; c4 = '#ffb700';
@@ -2675,9 +3028,168 @@
                 'Dry': '乾燥'
             };
 
+            const kn_translations = {
+                'Play Drawing': 'ಡ್ರಾಯಿಂಗ್ ಪ್ಲೇ ಮಾಡಿ',
+                'Download G-Code': 'ಜಿ-ಕೋಡ್ ಡೌನ್‌ಲೋಡ್',
+                'Upload SD': 'ಎಸ್ಡಿ ಅಪ್‌ಲೋಡ್',
+                'Load G-Code': 'ಜಿ-ಕೋಡ್ ಲೋಡ್',
+                'Clear': 'ಅಳಿಸು',
+                'Loop': 'ಲೂಪ್',
+                'Connect': 'ಸಂಪರ್ಕಿಸಿ',
+                'Send': 'ಕಳುಹಿಸಿ',
+                'Home XYZ': 'ಹೋಮ್ (XYZ)',
+                'Panic Stop (Reset)': 'ತುರ್ತು ನಿಲುಗಡೆ',
+                'Resume': 'ಮುಂದುವರಿಸು',
+                'Flush / Soft Reset': 'ಫ್ಲಶ್ / ರಿಸೆಟ್',
+                'Refresh': 'ರಿಫ್ರೆಶ್',
+                'Undo': 'ಹಿಂದಕ್ಕೆ',
+                'Redo': 'ಮುಂದಕ್ಕೆ',
+                'Draw (F):': 'ಡ್ರಾ (F):',
+                'Fast (F):': 'ವೇಗ (F):',
+                'Max Path before Re-dip (mm):': 'ಗರಿಷ್ಠ ಮಾರ್ಗ (mm):',
+                'Z Pick:': 'Z ಪಿಕ್:',
+                'Z Lift:': 'Z ಲಿಫ್ಟ್:',
+                'Z Down:': 'Z ಡೌನ್:',
+                'Canvas Size:': 'ಕ್ಯಾನ್ವಾಸ್ ಗಾತ್ರ:',
+                'Scale X/Y:': 'ಸ್ಕೇಲ್ X/Y:',
+                'Offset X:': 'ಆಫ್‌ಸೆಟ್ X:',
+                'Offset Y:': 'ಆಫ್‌ಸೆಟ್ Y:',
+                'SD Card Files': 'SD ಕಾರ್ಡ್ ಫೈಲ್‌ಗಳು',
+                'Color Pots': 'ಬಣ್ಣದ ಮಡಿಕೆಗಳು',
+                'Generate & Preview': 'ರಚಿಸಿ ಮತ್ತು ಪೂರ್ವವೀಕ್ಷಣೆ',
+                'Distance:': 'ದೂರ:',
+                'Speed:': 'ವೇಗ:',
+                'Move': 'ಚಲಿಸು',
+                'Z Lift (Up):': 'Z ಲಿಫ್ಟ್ (ಮೇಲೆ):',
+                'Z Paint (Down):': 'Z ಪೇಂಟ್ (ಕೆಳಗೆ):',
+                'Z Feedrate (F):': 'Z ಫೀಡ್‌ರೇಟ್ (F):',
+                'Global Feed (Scan):': 'ಗ್ಲೋಬಲ್ ಫೀಡ್:',
+                'Safe Feed (F):': 'ಸುರಕ್ಷಿತ ಫೀಡ್ (F):',
+                'Preset:': 'ಮೊದಲೇ ಸಿದ್ಧಪಡಿಸಿದ:',
+                'Initialize': 'ಪ್ರಾರಂಭಿಸಿ',
+                'Settings': 'ಸೆಟ್ಟಿಂಗ್‌ಗಳು',
+                'Calibration': 'ಕ್ಯಾಲಿಬ್ರೇಶನ್',
+                'Run': 'ರನ್',
+                'Save': 'ಉಳಿಸು',
+                'Control': 'ನಿಯಂತ್ರಣ',
+                'Dusjagr\'s Favorites': 'Dusjagr ಅವರ ಮೆಚ್ಚಿನವುಗಳು',
+                'Custom G-Code Commands': 'ಕಸ್ಟಮ್ ಜಿ-ಕೋಡ್',
+                'Stream File': 'ಸ್ಟ್ರೀಮ್ ಫೈಲ್',
+                'Start Stream': 'ಸ್ಟ್ರೀಮ್ ಪ್ರಾರಂಭಿಸಿ',
+                'Save Stream': 'ಸ್ಟ್ರೀಮ್ ಉಳಿಸಿ',
+                'Disconnect': 'ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ',
+                'X (mm):': 'X (mm):',
+                'Y (mm):': 'Y (mm):',
+                'Brushograph Settings': 'ಬ್ರಶೋಗ್ರಾಫ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು',
+                'Surface Calibration Z-Map': 'ಮೇಲ್ಮೈ ಮಾಪನ (Z-Map)',
+                'G-Code Streamer': 'ಜಿ-ಕೋಡ್ ಸ್ಟ್ರೀಮರ್',
+                'Select File': 'ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ',
+                'No file selected': 'ಯಾವುದೇ ಫೈಲ್ ಆಯ್ಕೆ ಮಾಡಿಲ್ಲ',
+                'Ready': 'ಸಿದ್ಧವಾಗಿದೆ',
+                '0 lines': '0 ಸಾಲುಗಳು',
+                'Live Preview on Drawing Pad': 'ಡ್ರಾಯಿಂಗ್ ಪ್ಯಾಡ್ ಲೈವ್ ಪೂರ್ವವೀಕ್ಷಣೆ',
+                'Apply Raster Fix (G91 → G90) & Z-Lift': 'ರಾಸ್ಟರ್ ಫಿಕ್ಸ್ ಮತ್ತು Z-ಲಿಫ್ಟ್ ಅನ್ವಯಿಸಿ',
+                'Use G0 for Z': 'Z ಗೆ G0 ಬಳಸಿ',
+                'Remove S': 'S ತೆಗೆದುಹಾಕಿ',
+                'Apply Backlash Compensation': 'ಬ್ಯಾಕ್‌ಲಾಷ್ ಪರಿಹಾರ ಅನ್ವಯಿಸಿ',
+                'Apply Transformations (Scale/Offset)': 'ರೂಪಾಂತರಗಳನ್ನು ಅನ್ವಯಿಸಿ (ಸ್ಕೇಲ್/ಆಫ್‌ಸೆಟ್)',
+                'Stream G-Code': 'ಜಿ-ಕೋಡ್ ಸ್ಟ್ರೀಮ್',
+                'Save G-Code': 'ಜಿ-ಕೋಡ್ ಉಳಿಸಿ',
+                'Loading archive...': 'ಆರ್ಕೈವ್ ಲೋಡ್ ಆಗುತ್ತಿದೆ...',
+                'Click Refresh to load SD card...': 'SD ಕಾರ್ಡ್ ಲೋಡ್ ಮಾಡಲು ರಿಫ್ರೆಶ್ ಮಾಡಿ...',
+                'Connection': 'ಸಂಪರ್ಕ',
+                'STATUS:': 'ಸ್ಥಿತಿ:',
+                'OFFLINE': 'ಆಫ್‌ಲೈನ್',
+                'Initialize & Home Robot': 'ರೋಬೋಟ್ ಪ್ರಾರಂಭಿಸಿ ಮತ್ತು ಹೋಮ್ ಮಾಡಿ',
+                'Emergency Stop (!)': 'ತುರ್ತು ನಿಲುಗಡೆ (!)',
+                'Resume (~)': 'ಮುಂದುವರಿಸು (~)',
+                'Flush / Reset': 'ಫ್ಲಶ್ / ರಿಸೆಟ್',
+                'Manual Jog Control': 'ಹಸ್ತಚಾಲಿತ ಜೋಗ್ ನಿಯಂತ್ರಣ',
+                'Set Work Coordinates (Zero)': 'ಕೆಲಸದ ನಿರ್ದೇಶಾಂಕಗಳನ್ನು ಹೊಂದಿಸಿ (ಸೊನ್ನೆ)',
+                'Zero X': 'X ಸೊನ್ನೆ',
+                'Zero Y': 'Y ಸೊನ್ನೆ',
+                'Zero Z': 'Z ಸೊನ್ನೆ',
+                'Manual Macros': 'ಮ್ಯಾನುಯಲ್ ಮ್ಯಾಕ್ರೋಗಳು',
+                'Dip C1': 'C1 ಅದ್ದು',
+                'Dip C2': 'C2 ಅದ್ದು',
+                'Dip C3': 'C3 ಅದ್ದು',
+                'Wash': 'ತೊಳೆ',
+                '3. Brushograph Drawing Pad': '3. ಬ್ರಶೋಗ್ರಾಫ್ ಡ್ರಾಯಿಂಗ್ ಪ್ಯಾಡ್',
+                'Pure Pen': 'ಶುದ್ಧ ಪೆನ್',
+                'Auto-Wash': 'ಆಟೋ-ವಾಶ್',
+                'Custom': 'ಕಸ್ಟಮ್',
+                'Z-Axis Plane Leveling': 'Z-ಆಕ್ಸಿಸ್ ಲೆವೆಲಿಂಗ್',
+                'Enable': 'ಸಕ್ರಿಯಗೊಳಿಸಿ',
+                'Diy-CAD Components': 'DIY-CAD ಘಟಕಗಳು',
+                'Draw': 'ಡ್ರಾ',
+                'Move Parts': 'ಭಾಗಗಳನ್ನು ಚಲಿಸಿ',
+                'Eraser': 'ಅಳಿಸುವಿಕೆ',
+                'Delete Selected': 'ಆಯ್ಕೆಮಾಡಿದನ್ನು ಅಳಿಸಿ',
+                'Color Palette': 'ಬಣ್ಣದ ಪ್ಯಾಲೆಟ್',
+                'WASH': 'ತೊಳೆ',
+                'Dry': 'ಒಣಗಿಸು'
+            };
+
+            
+            const uwu_translations = {
+                "Robot Painter Matic": "Wobot Paintew Matic OwO",
+                "Machine Setup": "Setup Timew~",
+                "Brushograph Drawing Pad": "Bwushograph W-Drawing Pad!!",
+                "Manual Macros": "Manuwaw Macwos UwU",
+                "System Status": "System Status... (>_<)",
+                "Diy-CAD Components": "Diy-CAD Cuties!!",
+                "Play Drawing": "Pway Dwaawing~",
+                "Loop": "Woop-de-woop!",
+                "Emergency Stop": "Pwease Stahp! 🛑",
+                "Send Command": "Send it! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧",
+                "G-Code Macros": "G-Cwode Macwos",
+                "Patriot Palette": "Kawaii Pawette 🎨",
+                "Wash": "Spwish Splash!",
+                "Dip C1": "Dippity C1!",
+                "Dip C2": "Dippity C2!",
+                "Dip C3": "Dippity C3!",
+                "Draw Trump Signature": "Dwaw Signatuwe 🌸",
+                "Draw Test2": "Dwaw TestyWesty~",
+                "Draw Custom Sequence": "Dwaw Cwustom~",
+                "Clear Path": "Cwean Up! 🧹",
+                "Clear Canvas": "Bwank Canvas! ☁️",
+                "Run File": "Wun Fiw! 🏃‍♂️",
+                "G-Code File:": "G-Cwode Fiw:",
+                "Save Drawing": "Save Pwecious Art! ✨"
+            };
+
+            const maga_translations = {
+                'Play Drawing': 'MAKE ART GREAT AGAIN',
+                'Download G-Code': 'DOWNLOAD TREMENDOUS G-CODE',
+                'Upload SD': 'UPLOAD PATRIOT SD',
+                'Load G-Code': 'LOAD BEAUTIFUL G-CODE',
+                'Clear': 'DRAIN THE SWAMP',
+                'Loop': 'WINNING LOOP',
+                'Connect': 'BUILD THE WALL (CONNECT)',
+                'Send': 'SEND IT (HUGE)',
+                'Home XYZ': 'HOME (AMERICA FIRST)',
+                'Panic Stop (Reset)': 'STOP THE STEAL (RESET)',
+                'Resume': 'KEEP WINNING',
+                'Flush / Soft Reset': 'FLUSH FAKE NEWS',
+                'Refresh': 'REFRESH (TREMENDOUS)',
+                'Undo': 'FAKE NEWS (UNDO)',
+                'Redo': 'TRUTH (REDO)',
+                'Initialize': 'AMERICA FIRST',
+                'Ready': 'WINNING',
+                'Emergency Stop (!)': 'STOP THE STEAL (!)',
+                'Manual Jog Control': 'BEAUTIFUL JOG CONTROL',
+                '3. Brushograph Drawing Pad': '3. TREMENDOUS DRAWING PAD',
+                'Color Palette': 'PATRIOT PALETTE',
+                'WASH': 'CLEAN COAL',
+                'Dry': 'AMERICA DRY'
+            };
+
             const isGerman = (mode === 'dresden' || mode === 'dresden-dark' || mode === 'dresden-extreme');
             const isChinese = (mode === 'china');
             const isTaipei = (mode === 'taipei');
+            const isKannada = (mode === 'bengaluru');
+            const isMaga = (mode === 'usa-maga');
+            const isUwU = (mode === 'uwu');
             const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
             let node;
             while (node = walker.nextNode()) {
@@ -2700,6 +3212,18 @@
                     const leading = text.match(/^\s*/)[0];
                     const trailing = text.match(/\s*$/)[0];
                     text = leading + tw_translations[normalized] + trailing;
+                } else if (isKannada && kn_translations[normalized]) {
+                    const leading = text.match(/^\s*/)[0];
+                    const trailing = text.match(/\s*$/)[0];
+                    text = leading + kn_translations[normalized] + trailing;
+                } else if (isUwU && uwu_translations[normalized]) {
+                    const leading = text.match(/^\s*/)[0];
+                    const trailing = text.match(/\s*$/)[0];
+                    text = leading + uwu_translations[normalized] + trailing;
+                } else if (isMaga && maga_translations[normalized]) {
+                    const leading = text.match(/^\s*/)[0];
+                    const trailing = text.match(/\s*$/)[0];
+                    text = leading + maga_translations[normalized] + trailing;
                 }
                 
                 if (node.nodeValue !== text) {
@@ -3943,7 +4467,1649 @@
             return seq;
         }
 
+        async function getTrumpSignatureSequence(zUp, zDown, fastSpeed = 1500) {
+            let seq = [];
+            const pts = [];
+            
+            try {
+                const gcodeText = `\n;LightBurn 1.6.04
+;Custom GCode device profile, absolute coords
+;Bounds: X24.16 Y11.09 to X86.7 Y36.8
+G00 G17 G40 G21 G54
+G90
+M3
+G1 Z1F500
+;Cut @ 15 mm/sec, 90% power
+
+M8
+G0 Z0.8F500
+G0 X24.158Y17.788Z0.8F1000
+G1 Z0F500
+;Layer C00
+G1 X25.044Y18.979Z0S900F800
+G1 X25.888Y20.134Z0F800
+G1 X26.245Y20.724Z0F800
+G1 X26.532Y21.337Z0F800
+G1 X26.642Y21.656Z0F800
+G1 X26.728Y21.984Z0F800
+G1 X26.785Y22.323Z0F800
+G1 X26.813Y22.675Z0F800
+G1 X27.074Y23.612Z0F800
+G1 X27.319Y24.521Z0F800
+G1 X27.551Y25.407Z0F800
+G1 X27.773Y26.276Z0F800
+G1 X28.197Y27.979Z0F800
+G1 X28.61Y29.669Z0F800
+G1 X28.589Y29.867Z0F800
+G1 X28.584Y30.095Z0F800
+G1 X28.59Y30.347Z0F800
+G1 X28.605Y30.616Z0F800
+G1 X28.647Y31.184Z0F800
+G1 X28.681Y31.749Z0F800
+G1 X28.686Y32.015Z0F800
+G1 X28.679Y32.262Z0F800
+G1 X28.656Y32.483Z0F800
+G1 X28.614Y32.673Z0F800
+G1 X28.548Y32.825Z0F800
+G1 X28.456Y32.933Z0F800
+G1 X28.334Y32.991Z0F800
+G1 X28.179Z0F800
+G1 X28.117Y32.008Z0F800
+G1 X28.09Y31.022Z0F800
+G1 X28.101Y30.036Z0F800
+G1 X28.157Y29.053Z0F800
+G1 X28.261Y28.072Z0F800
+G1 X28.42Y27.095Z0F800
+G1 X28.637Y26.123Z0F800
+G1 X28.918Y25.155Z0F800
+G1 X29.457Y23.753Z0F800
+G1 X29.997Y22.331Z0F800
+G1 X30.199Y21.613Z0F800
+G1 X30.318Y20.892Z0F800
+G1 X30.338Y20.53Z0F800
+G1 X30.327Y20.167Z0F800
+G1 X30.282Y19.804Z0F800
+G1 X30.199Y19.439Z0F800
+G1 X30.116Y19.236Z0F800
+G1 X30.014Y19.055Z0F800
+G1 X29.893Y18.896Z0F800
+G1 X29.755Y18.756Z0F800
+G1 X29.437Y18.537Z0F800
+G1 X29.071Y18.391Z0F800
+G1 X28.67Y18.315Z0F800
+G1 X28.248Y18.303Z0F800
+G1 X27.816Y18.349Z0F800
+G1 X27.388Y18.449Z0F800
+G1 X26.976Y18.597Z0F800
+G1 X26.593Y18.787Z0F800
+G1 X26.252Y19.016Z0F800
+G1 X25.966Y19.276Z0F800
+G1 X25.746Y19.564Z0F800
+G1 X25.607Y19.874Z0F800
+G1 X25.572Y20.036Z0F800
+G1 X25.561Y20.201Z0F800
+G1 X25.577Y20.369Z0F800
+G1 X25.62Y20.539Z0F800
+G1 X25.589Y20.695Z0F800
+G1 X25.569Y20.881Z0F800
+G1 X25.558Y21.091Z0F800
+G1 Y21.32Z0F800
+G1 X25.571Y21.808Z0F800
+G1 X25.604Y22.301Z0F800
+G1 X25.643Y22.753Z0F800
+G1 X25.678Y23.118Z0F800
+G1 X25.698Y23.351Z0F800
+G1 Y23.404Z0F800
+G1 X25.692Y23.407Z0F800
+G1 X25.687Y22.799Z0F800
+G1 X25.713Y22.168Z0F800
+G1 X25.789Y21.527Z0F800
+G1 X25.929Y20.887Z0F800
+G1 X26.149Y20.259Z0F800
+G1 X26.467Y19.656Z0F800
+G1 X26.667Y19.367Z0F800
+G1 X26.897Y19.089Z0F800
+G1 X27.16Y18.822Z0F800
+G1 X27.457Y18.57Z0F800
+G1 X27.735Y18.419Z0F800
+G1 X28.01Y18.299Z0F800
+G1 X28.283Y18.207Z0F800
+G1 X28.553Y18.142Z0F800
+G1 X29.081Y18.089Z0F800
+G1 X29.591Y18.129Z0F800
+G1 X30.079Y18.253Z0F800
+G1 X30.542Y18.45Z0F800
+G1 X30.975Y18.71Z0F800
+G1 X31.376Y19.022Z0F800
+G1 X31.74Y19.376Z0F800
+G1 X32.064Y19.761Z0F800
+G1 X32.344Y20.168Z0F800
+G1 X32.577Y20.586Z0F800
+G1 X32.758Y21.005Z0F800
+G1 X32.886Y21.414Z0F800
+G1 X32.954Y21.803Z0F800
+G1 X32.961Y22.162Z0F800
+G1 X32.958Y22.331Z0F800
+G1 X32.943Y22.539Z0F800
+G1 X32.918Y22.774Z0F800
+G1 X32.883Y23.026Z0F800
+G1 X32.778Y23.542Z0F800
+G1 X32.631Y24.003Z0F800
+G1 X32.54Y24.187Z0F800
+G1 X32.439Y24.326Z0F800
+G1 X32.326Y24.41Z0F800
+G1 X32.203Y24.428Z0F800
+G1 X32.068Y24.37Z0F800
+G1 X31.922Y24.226Z0F800
+G1 X31.844Y24.118Z0F800
+G1 X31.764Y23.985Z0F800
+G1 X31.681Y23.825Z0F800
+G1 X31.596Y23.637Z0F800
+G1 X31.485Y23.078Z0F800
+G1 X31.355Y22.435Z0F800
+G1 X31.253Y21.751Z0F800
+G1 X31.23Y21.07Z0F800
+G1 X31.262Y20.743Z0F800
+G1 X31.332Y20.433Z0F800
+G1 X31.446Y20.145Z0F800
+G1 X31.609Y19.885Z0F800
+G1 X31.829Y19.656Z0F800
+G1 X32.11Y19.466Z0F800
+G1 X32.46Y19.319Z0F800
+G1 X32.883Y19.221Z0F800
+G1 X33.704Y20.298Z0F800
+G1 X34.488Y21.435Z0F800
+G1 X34.843Y22.004Z0F800
+G1 X35.162Y22.563Z0F800
+G1 X35.436Y23.102Z0F800
+G1 X35.655Y23.612Z0F800
+G1 X35.497Y23.446Z0F800
+G1 X35.362Y23.253Z0F800
+G1 X35.248Y23.035Z0F800
+G1 X35.156Y22.797Z0F800
+G1 X35.036Y22.269Z0F800
+G1 X34.997Y21.696Z0F800
+G1 X35.037Y21.105Z0F800
+G1 X35.153Y20.52Z0F800
+G1 X35.34Y19.969Z0F800
+G1 X35.596Y19.478Z0F800
+G1 X35.792Y19.422Z0F800
+G1 X35.974Y19.392Z0F800
+G1 X36.142Y19.387Z0F800
+G1 X36.298Y19.406Z0F800
+G1 X36.574Y19.506Z0F800
+G1 X36.806Y19.68Z0F800
+G1 X37.001Y19.915Z0F800
+G1 X37.163Y20.198Z0F800
+G1 X37.297Y20.516Z0F800
+G1 X37.408Y20.855Z0F800
+G1 X37.582Y21.547Z0F800
+G1 X37.727Y22.171Z0F800
+G1 X37.8Y22.424Z0F800
+G1 X37.881Y22.622Z0F800
+G1 X37.975Y22.75Z0F800
+G1 X38.087Y22.796Z0F800
+G1 X38.122Y22.567Z0F800
+G1 X38.116Y22.302Z0F800
+G1 X38.08Y22.008Z0F800
+G1 X38.024Y21.694Z0F800
+G1 X37.889Y21.03Z0F800
+G1 X37.79Y20.372Z0F800
+G1 X37.777Y20.064Z0F800
+G1 X37.802Y19.779Z0F800
+G1 X37.875Y19.526Z0F800
+G1 X38.004Y19.311Z0F800
+G1 X38.201Y19.143Z0F800
+G1 X38.474Y19.029Z0F800
+G1 X38.642Y18.994Z0F800
+G1 X38.834Y18.976Z0F800
+G1 X39.049Z0F800
+G1 X39.289Y18.991Z0F800
+G1 X39.526Y19.205Z0F800
+G1 X39.739Y19.475Z0F800
+G1 X39.929Y19.789Z0F800
+G1 X40.097Y20.14Z0F800
+G1 X40.377Y20.909Z0F800
+G1 X40.591Y21.704Z0F800
+G1 X40.677Y22.087Z0F800
+G1 X40.75Y22.447Z0F800
+G1 X40.868Y23.06Z0F800
+G1 X40.914Y23.294Z0F800
+G1 X40.955Y23.467Z0F800
+G1 X40.992Y23.568Z0F800
+G1 X41.025Y23.588Z0F800
+G1 X41.015Y22.932Z0F800
+G1 X40.93Y22.25Z0F800
+G1 X40.82Y21.555Z0F800
+G1 X40.736Y20.862Z0F800
+G1 X40.72Y20.52Z0F800
+G1 X40.729Y20.183Z0F800
+G1 X40.769Y19.854Z0F800
+G1 X40.847Y19.533Z0F800
+G1 X40.97Y19.224Z0F800
+G1 X41.143Y18.926Z0F800
+G1 X41.373Y18.643Z0F800
+G1 X41.667Y18.375Z0F800
+G1 X41.884Y18.299Z0F800
+G1 X42.082Y18.247Z0F800
+G1 X42.263Y18.218Z0F800
+G1 X42.427Y18.212Z0F800
+G1 X42.706Y18.262Z0F800
+G1 X42.926Y18.386Z0F800
+G1 X43.092Y18.573Z0F800
+G1 X43.209Y18.814Z0F800
+G1 X43.283Y19.097Z0F800
+G1 X43.32Y19.414Z0F800
+G1 X43.304Y20.105Z0F800
+G1 X43.206Y20.805Z0F800
+G1 X43.139Y21.132Z0F800
+G1 X43.069Y21.431Z0F800
+G1 X43Y21.691Z0F800
+G1 X42.938Y21.902Z0F800
+G1 X42.852Y22.131Z0F800
+G1 X42.761Y22.325Z0F800
+G1 X42.666Y22.486Z0F800
+G1 X42.567Y22.616Z0F800
+G1 X42.465Y22.717Z0F800
+G1 X42.361Y22.789Z0F800
+G1 X42.255Y22.835Z0F800
+G1 X42.149Y22.855Z0F800
+G1 X41.935Y22.827Z0F800
+G1 X41.726Y22.717Z0F800
+G1 X41.527Y22.538Z0F800
+G1 X41.343Y22.302Z0F800
+G1 X41.18Y22.021Z0F800
+G1 X41.043Y21.708Z0F800
+G1 X40.938Y21.375Z0F800
+G1 X40.871Y21.034Z0F800
+G1 X40.846Y20.698Z0F800
+G1 X40.869Y20.38Z0F800
+G1 X40.946Y20.091Z0F800
+G1 X41.082Y19.844Z0F800
+G1 X41.101Y19.621Z0F800
+G1 X41.139Y19.423Z0F800
+G1 X41.195Y19.248Z0F800
+G1 X41.268Y19.095Z0F800
+G1 X41.459Y18.854Z0F800
+G1 X41.702Y18.695Z0F800
+G1 X41.987Y18.611Z0F800
+G1 X42.304Y18.597Z0F800
+G1 X42.642Y18.646Z0F800
+G1 X42.992Y18.753Z0F800
+G1 X43.344Y18.911Z0F800
+G1 X43.688Y19.115Z0F800
+G1 X44.013Y19.359Z0F800
+G1 X44.309Y19.637Z0F800
+G1 X44.566Y19.943Z0F800
+G1 X44.775Y20.271Z0F800
+G1 X44.925Y20.614Z0F800
+G1 X45.006Y20.969Z0F800
+G1 X45.344Y22.078Z0F800
+G1 X45.452Y22.588Z0F800
+G1 X45.476Y23.12Z0F800
+G1 X45.741Y23.796Z0F800
+G1 X45.954Y24.504Z0F800
+G1 X46.127Y25.235Z0F800
+G1 X46.273Y25.978Z0F800
+G1 X46.534Y27.47Z0F800
+G1 X46.835Y28.906Z0F800
+G1 X46.945Y29.173Z0F800
+G1 X47.022Y29.427Z0F800
+G1 X47.067Y29.664Z0F800
+G1 X47.083Y29.88Z0F800
+G1 X47.075Y30.07Z0F800
+G1 X47.045Y30.231Z0F800
+G1 X46.995Y30.357Z0F800
+G1 X46.929Y30.444Z0F800
+G1 X46.851Y30.489Z0F800
+G1 X46.762Y30.486Z0F800
+G1 X46.666Y30.433Z0F800
+G1 X46.567Y30.323Z0F800
+G1 X46.466Y30.153Z0F800
+G1 X46.368Y29.919Z0F800
+G1 X46.274Y29.616Z0F800
+G1 X46.189Y29.241Z0F800
+G1 X45.999Y28.759Z0F800
+G1 X45.867Y28.275Z0F800
+G1 X45.783Y27.789Z0F800
+G1 X45.741Y27.3Z0F800
+G1 X45.752Y26.318Z0F800
+G1 X45.839Y25.331Z0F800
+G1 X45.942Y24.342Z0F800
+G1 X45.999Y23.355Z0F800
+G1 X45.992Y22.863Z0F800
+G1 X45.95Y22.372Z0F800
+G1 X45.867Y21.883Z0F800
+G1 X45.735Y21.395Z0F800
+G1 X45.554Y21.078Z0F800
+G1 X45.459Y20.759Z0F800
+G1 X45.442Y20.446Z0F800
+G1 X45.492Y20.146Z0F800
+G1 X45.602Y19.866Z0F800
+G1 X45.761Y19.614Z0F800
+G1 X45.962Y19.396Z0F800
+G1 X46.195Y19.219Z0F800
+G1 X46.452Y19.091Z0F800
+G1 X46.723Y19.019Z0F800
+G1 X46.999Y19.01Z0F800
+G1 X47.272Y19.071Z0F800
+G1 X47.532Y19.209Z0F800
+G1 X47.77Y19.431Z0F800
+G1 X47.879Y19.576Z0F800
+G1 X47.979Y19.745Z0F800
+G1 X48.068Y19.938Z0F800
+G1 X48.147Y20.157Z0F800
+G1 X48.262Y20.549Z0F800
+G1 X48.445Y21Z0F800
+G1 X48.649Y21.483Z0F800
+G1 X48.829Y21.97Z0F800
+G1 X48.895Y22.206Z0F800
+G1 X48.939Y22.432Z0F800
+G1 X48.953Y22.645Z0F800
+G1 X48.932Y22.842Z0F800
+G1 X48.871Y23.019Z0F800
+G1 X48.763Y23.172Z0F800
+G1 X48.604Y23.298Z0F800
+G1 X48.386Y23.393Z0F800
+G1 X48.11Y22.825Z0F800
+G1 X47.9Y22.219Z0F800
+G1 X47.762Y21.587Z0F800
+G1 X47.702Y20.942Z0F800
+G1 X47.722Y20.296Z0F800
+G1 X47.829Y19.66Z0F800
+G1 X47.916Y19.35Z0F800
+G1 X48.027Y19.047Z0F800
+G1 X48.162Y18.753Z0F800
+G1 X48.321Y18.469Z0F800
+G1 X48.705Y18.631Z0F800
+G1 X49.047Y18.834Z0F800
+G1 X49.349Y19.074Z0F800
+G1 X49.613Y19.346Z0F800
+G1 X49.844Y19.646Z0F800
+G1 X50.042Y19.97Z0F800
+G1 X50.212Y20.314Z0F800
+G1 X50.357Y20.673Z0F800
+G1 X50.579Y21.422Z0F800
+G1 X50.731Y22.182Z0F800
+G1 X50.837Y22.921Z0F800
+G1 X50.917Y23.604Z0F800
+G1 X50.922Y23.774Z0F800
+G1 X50.93Y24.735Z0F800
+G1 X50.941Y25.616Z0F800
+G1 X50.97Y26.561Z0F800
+G1 X50.995Y27.024Z0F800
+G1 X51.027Y27.461Z0F800
+G1 X51.069Y27.86Z0F800
+G1 X51.121Y28.207Z0F800
+G1 X51.185Y28.487Z0F800
+G1 X51.263Y28.687Z0F800
+G1 X51.307Y28.753Z0F800
+G1 X51.355Y28.794Z0F800
+G1 X51.407Y28.808Z0F800
+G1 X51.463Y28.794Z0F800
+G1 X51.482Y28.372Z0F800
+G1 X51.535Y27.903Z0F800
+G1 X51.62Y27.394Z0F800
+G1 X51.735Y26.853Z0F800
+G1 X51.877Y26.287Z0F800
+G1 X52.045Y25.703Z0F800
+G1 X52.235Y25.11Z0F800
+G1 X52.446Y24.514Z0F800
+G1 X52.922Y23.344Z0F800
+G1 X53.454Y22.253Z0F800
+G1 X53.735Y21.755Z0F800
+G1 X54.024Y21.3Z0F800
+G1 X54.318Y20.895Z0F800
+G1 X54.615Y20.546Z0F800
+G1 X54.92Y20.307Z0F800
+G1 X55.144Y20.083Z0F800
+G1 X55.293Y19.876Z0F800
+G1 X55.372Y19.688Z0F800
+G1 X55.385Y19.519Z0F800
+G1 X55.34Y19.372Z0F800
+G1 X55.241Y19.247Z0F800
+G1 X55.093Y19.146Z0F800
+G1 X54.902Y19.07Z0F800
+G1 X54.674Y19.02Z0F800
+G1 X54.413Y18.999Z0F800
+G1 X54.126Y19.007Z0F800
+G1 X53.817Y19.046Z0F800
+G1 X53.493Y19.117Z0F800
+G1 X53.158Y19.221Z0F800
+G1 X52.818Y19.36Z0F800
+G1 X52.275Y19.379Z0F800
+G1 X51.759Y19.444Z0F800
+G1 X51.278Y19.547Z0F800
+G1 X50.839Y19.681Z0F800
+G1 X50.452Y19.837Z0F800
+G1 X50.124Y20.009Z0F800
+G1 X49.865Y20.187Z0F800
+G1 X49.681Y20.365Z0F800
+G1 X49.583Y20.535Z0F800
+G1 X49.577Y20.688Z0F800
+G1 X49.612Y20.756Z0F800
+G1 X49.673Y20.817Z0F800
+G1 X49.762Y20.871Z0F800
+G1 X49.879Y20.915Z0F800
+G1 X50.025Y20.949Z0F800
+G1 X50.202Y20.973Z0F800
+G1 X50.411Y20.984Z0F800
+G1 X50.653Z0F800
+G1 X50.928Y20.968Z0F800
+G1 X51.238Y20.938Z0F800
+G1 X51.583Y20.893Z0F800
+G1 X51.966Y20.83Z0F800
+G1 X52.506Y20.967Z0F800
+G1 X52.987Y21.161Z0F800
+G1 X53.414Y21.407Z0F800
+G1 X53.79Y21.697Z0F800
+G1 X54.119Y22.027Z0F800
+G1 X54.407Y22.391Z0F800
+G1 X54.657Y22.782Z0F800
+G1 X54.874Y23.194Z0F800
+G1 X55.224Y24.061Z0F800
+G1 X55.492Y24.942Z0F800
+G1 X55.712Y25.792Z0F800
+G1 X55.919Y26.561Z0F800
+G1 X56.261Y27.222Z0F800
+G1 X56.53Y27.873Z0F800
+G1 X56.741Y28.52Z0F800
+G1 X56.912Y29.168Z0F800
+G1 X57.196Y30.492Z0F800
+G1 X57.516Y31.892Z0F800
+G1 X57.845Y32.481Z0F800
+G1 X58.114Y33.081Z0F800
+G1 X58.333Y33.69Z0F800
+G1 X58.513Y34.307Z0F800
+G1 X58.798Y35.552Z0F800
+G1 X59.053Y36.802Z0F800
+G1 X58.965Y35.135Z0F800
+G1 X58.789Y33.483Z0F800
+G1 X58.675Y32.633Z0F800
+G1 X58.549Y31.752Z0F800
+G1 X58.269Y29.85Z0F800
+G1 X58.145Y29.469Z0F800
+G1 X58.062Y29.08Z0F800
+G1 X58.014Y28.685Z0F800
+G1 X57.995Y28.285Z0F800
+G1 X58.021Y27.473Z0F800
+G1 X58.161Y25.835Z0F800
+G1 X58.181Y25.025Z0F800
+G1 X58.158Y24.625Z0F800
+G1 X58.105Y24.231Z0F800
+G1 X58.017Y23.843Z0F800
+G1 X57.886Y23.462Z0F800
+G1 X57.654Y22.267Z0F800
+G1 X57.374Y21.059Z0F800
+G1 X57.3Y20.456Z0F800
+G1 X57.313Y19.858Z0F800
+G1 X57.362Y19.561Z0F800
+G1 X57.446Y19.267Z0F800
+G1 X57.569Y18.974Z0F800
+G1 X57.734Y18.685Z0F800
+G1 X58.045Y19.95Z0F800
+G1 X58.352Y21.214Z0F800
+G1 X58.546Y21.837Z0F800
+G1 X58.788Y22.451Z0F800
+G1 X59.097Y23.053Z0F800
+G1 X59.487Y23.639Z0F800
+G1 X59.66Y24.017Z0F800
+G1 X59.729Y24.16Z0F800
+G1 X59.786Y24.275Z0F800
+G1 X59.833Y24.363Z0F800
+G1 X59.87Y24.425Z0F800
+G1 X59.896Y24.464Z0F800
+G1 X59.914Y24.48Z0F800
+G1 X59.924Y24.45Z0F800
+G1 X59.903Y24.348Z0F800
+G1 X59.855Y24.186Z0F800
+G1 X59.786Y23.976Z0F800
+G1 X59.596Y23.457Z0F800
+G1 X59.366Y22.887Z0F800
+G1 X59.247Y22.612Z0F800
+G1 X59.13Y22.359Z0F800
+G1 X59.019Y22.142Z0F800
+G1 X58.919Y21.97Z0F800
+G1 X58.692Y21.673Z0F800
+G1 X58.527Y21.37Z0F800
+G1 X58.418Y21.071Z0F800
+G1 X58.364Y20.78Z0F800
+G1 X58.361Y20.505Z0F800
+G1 X58.406Y20.252Z0F800
+G1 X58.496Y20.029Z0F800
+G1 X58.628Y19.843Z0F800
+G1 X58.798Y19.698Z0F800
+G1 X59.003Y19.604Z0F800
+G1 X59.24Y19.566Z0F800
+G1 X59.506Y19.591Z0F800
+G1 X59.798Y19.686Z0F800
+G1 X60.113Y19.858Z0F800
+G1 X60.447Y20.113Z0F800
+G1 X60.797Y20.459Z0F800
+G1 X61.016Y20.599Z0F800
+G1 X61.238Y20.78Z0F800
+G1 X61.46Y20.993Z0F800
+G1 X61.678Y21.232Z0F800
+G1 X62.092Y21.763Z0F800
+G1 X62.452Y22.316Z0F800
+G1 X62.605Y22.585Z0F800
+G1 X62.735Y22.839Z0F800
+G1 X62.838Y23.071Z0F800
+G1 X62.913Y23.276Z0F800
+G1 X62.955Y23.445Z0F800
+G1 X62.961Y23.572Z0F800
+G1 X62.928Y23.651Z0F800
+G1 X62.854Y23.675Z0F800
+G1 X62.698Y23.359Z0F800
+G1 X62.504Y23.043Z0F800
+G1 X62.28Y22.728Z0F800
+G1 X62.035Y22.413Z0F800
+G1 X61.517Y21.78Z0F800
+G1 X61.021Y21.143Z0F800
+G1 X60.804Y20.822Z0F800
+G1 X60.618Y20.499Z0F800
+G1 X60.473Y20.173Z0F800
+G1 X60.378Y19.845Z0F800
+G1 X60.341Y19.513Z0F800
+G1 X60.371Y19.178Z0F800
+G1 X60.478Y18.839Z0F800
+G1 X60.67Y18.496Z0F800
+G1 X61.11Y18.618Z0F800
+G1 X61.514Y18.776Z0F800
+G1 X61.882Y18.965Z0F800
+G1 X62.216Y19.183Z0F800
+G1 X62.519Y19.426Z0F800
+G1 X62.792Y19.691Z0F800
+G1 X63.036Y19.976Z0F800
+G1 X63.253Y20.277Z0F800
+G1 X63.615Y20.916Z0F800
+G1 X63.892Y21.582Z0F800
+G1 X64.096Y22.25Z0F800
+G1 X64.243Y22.897Z0F800
+G1 X64.356Y23.224Z0F800
+G1 X64.497Y23.544Z0F800
+G1 X64.644Y23.822Z0F800
+G1 X64.773Y24.022Z0F800
+G1 X64.823Y24.082Z0F800
+G1 X64.86Y24.109Z0F800
+G1 X64.881Y24.099Z0F800
+G1 Y24.048Z0F800
+G1 X64.862Y23.95Z0F800
+G1 X64.817Y23.802Z0F800
+G1 X64.744Y23.599Z0F800
+G1 X64.64Y23.336Z0F800
+G1 X64.58Y23.067Z0F800
+G1 X64.481Y22.779Z0F800
+G1 X64.354Y22.476Z0F800
+G1 X64.206Y22.162Z0F800
+G1 X63.884Y21.513Z0F800
+G1 X63.586Y20.862Z0F800
+G1 X63.467Y20.545Z0F800
+G1 X63.38Y20.238Z0F800
+G1 X63.334Y19.945Z0F800
+G1 X63.337Y19.67Z0F800
+G1 X63.398Y19.416Z0F800
+G1 X63.526Y19.186Z0F800
+G1 X63.729Y18.986Z0F800
+G1 X64.017Y18.817Z0F800
+G1 X64.505Y18.965Z0F800
+G1 X64.919Y19.154Z0F800
+G1 X65.266Y19.379Z0F800
+G1 X65.554Y19.635Z0F800
+G1 X65.79Y19.918Z0F800
+G1 X65.983Y20.224Z0F800
+G1 X66.139Y20.548Z0F800
+G1 X66.268Y20.885Z0F800
+G1 X66.471Y21.584Z0F800
+G1 X66.655Y22.286Z0F800
+G1 X66.759Y22.626Z0F800
+G1 X66.881Y22.954Z0F800
+G1 X67.03Y23.265Z0F800
+G1 X67.212Y23.554Z0F800
+G1 X67.45Y23.826Z0F800
+G1 X67.681Y24.082Z0F800
+G1 X67.889Y24.297Z0F800
+G1 X68.055Y24.44Z0F800
+G1 X68.116Y24.477Z0F800
+G1 X68.16Y24.486Z0F800
+G1 X68.184Y24.464Z0F800
+G1 X68.187Y24.406Z0F800
+G1 X68.165Y24.31Z0F800
+G1 X68.116Y24.173Z0F800
+G1 X68.039Y23.99Z0F800
+G1 X67.93Y23.759Z0F800
+G1 X67.881Y23.499Z0F800
+G1 X67.794Y23.214Z0F800
+G1 X67.679Y22.91Z0F800
+G1 X67.542Y22.591Z0F800
+G1 X67.243Y21.924Z0F800
+G1 X66.964Y21.251Z0F800
+G1 X66.853Y20.923Z0F800
+G1 X66.773Y20.607Z0F800
+G1 X66.732Y20.307Z0F800
+G1 X66.739Y20.027Z0F800
+G1 X66.801Y19.773Z0F800
+G1 X66.928Y19.549Z0F800
+G1 X67.128Y19.36Z0F800
+G1 X67.41Y19.209Z0F800
+G1 X67.789Y19.361Z0F800
+G1 X68.145Y19.528Z0F800
+G1 X68.48Y19.71Z0F800
+G1 X68.794Y19.906Z0F800
+G1 X69.367Y20.335Z0F800
+G1 X69.873Y20.807Z0F800
+G1 X70.32Y21.313Z0F800
+G1 X70.718Y21.847Z0F800
+G1 X71.075Y22.4Z0F800
+G1 X71.4Y22.964Z0F800
+G1 X71.544Y23.274Z0F800
+G1 X71.618Y23.565Z0F800
+G1 X71.634Y23.81Z0F800
+G1 X71.602Y23.979Z0F800
+G1 X71.572Y24.026Z0F800
+G1 X71.534Y24.044Z0F800
+G1 X71.49Y24.028Z0F800
+G1 X71.441Y23.974Z0F800
+G1 X71.389Y23.88Z0F800
+G1 X71.334Y23.742Z0F800
+G1 X71.279Y23.556Z0F800
+G1 X71.225Y23.318Z0F800
+G1 X71.032Y22.849Z0F800
+G1 X70.799Y22.297Z0F800
+G1 X70.566Y21.699Z0F800
+G1 X70.371Y21.095Z0F800
+G1 X70.3Y20.804Z0F800
+G1 X70.253Y20.525Z0F800
+G1 X70.235Y20.264Z0F800
+G1 X70.251Y20.026Z0F800
+G1 X70.305Y19.816Z0F800
+G1 X70.403Y19.639Z0F800
+G1 X70.55Y19.499Z0F800
+G1 X70.75Y19.402Z0F800
+G1 X71.116Y19.577Z0F800
+G1 X71.468Y19.78Z0F800
+G1 X71.804Y20.01Z0F800
+G1 X72.122Y20.261Z0F800
+G1 X72.705Y20.816Z0F800
+G1 X73.208Y21.414Z0F800
+G1 X73.623Y22.028Z0F800
+G1 X73.942Y22.629Z0F800
+G1 X74.062Y22.915Z0F800
+G1 X74.155Y23.187Z0F800
+G1 X74.22Y23.441Z0F800
+G1 X74.256Y23.673Z0F800
+G1 X74.134Y23.095Z0F800
+G1 X73.943Y22.491Z0F800
+G1 X73.722Y21.873Z0F800
+G1 X73.51Y21.253Z0F800
+G1 X73.345Y20.644Z0F800
+G1 X73.267Y20.057Z0F800
+G1 X73.272Y19.776Z0F800
+G1 X73.314Y19.505Z0F800
+G1 X73.397Y19.245Z0F800
+G1 X73.525Y18.999Z0F800
+G1 X73.955Y19.183Z0F800
+G1 X74.367Y19.394Z0F800
+G1 X74.756Y19.629Z0F800
+G1 X75.121Y19.887Z0F800
+G1 X75.458Y20.165Z0F800
+G1 X75.764Y20.461Z0F800
+G1 X76.036Y20.774Z0F800
+G1 X76.271Y21.1Z0F800
+G1 X76.466Y21.437Z0F800
+G1 X76.619Y21.784Z0F800
+G1 X76.726Y22.138Z0F800
+G1 X76.784Y22.497Z0F800
+G1 X76.791Y22.859Z0F800
+G1 X76.743Y23.221Z0F800
+G1 X76.637Y23.582Z0F800
+G1 X76.471Y23.939Z0F800
+G1 X76.388Y23.318Z0F800
+G1 X76.241Y22.707Z0F800
+G1 X76.053Y22.101Z0F800
+G1 X75.847Y21.498Z0F800
+G1 X75.643Y20.895Z0F800
+G1 X75.466Y20.288Z0F800
+G1 X75.337Y19.675Z0F800
+G1 X75.279Y19.052Z0F800
+G1 X75.407Y18.865Z0F800
+G1 X75.56Y18.754Z0F800
+G1 X75.737Y18.711Z0F800
+G1 X75.932Y18.728Z0F800
+G1 X76.143Y18.796Z0F800
+G1 X76.365Y18.908Z0F800
+G1 X76.596Y19.057Z0F800
+G1 X76.831Y19.233Z0F800
+G1 X77.303Y19.637Z0F800
+G1 X77.751Y20.058Z0F800
+G1 X77.957Y20.255Z0F800
+G1 X78.147Y20.432Z0F800
+G1 X78.317Y20.582Z0F800
+G1 X78.463Y20.695Z0F800
+G1 X78.614Y20.838Z0F800
+G1 X78.757Y21.023Z0F800
+G1 X78.892Y21.242Z0F800
+G1 X79.017Y21.488Z0F800
+G1 X79.227Y22.03Z0F800
+G1 X79.374Y22.588Z0F800
+G1 X79.42Y22.854Z0F800
+G1 X79.444Y23.101Z0F800
+G1 Y23.322Z0F800
+G1 X79.421Y23.509Z0F800
+G1 X79.371Y23.655Z0F800
+G1 X79.292Y23.752Z0F800
+G1 X79.184Y23.792Z0F800
+G1 X79.043Y23.769Z0F800
+G1 X78.636Y22.652Z0F800
+G1 X78.424Y22.003Z0F800
+G1 X78.264Y21.351Z0F800
+G1 X78.216Y21.038Z0F800
+G1 X78.196Y20.741Z0F800
+G1 X78.211Y20.466Z0F800
+G1 X78.264Y20.217Z0F800
+G1 X78.361Y20Z0F800
+G1 X78.508Y19.821Z0F800
+G1 X78.709Y19.685Z0F800
+G1 X78.971Y19.597Z0F800
+G1 X79.664Y20.011Z0F800
+G1 X80.344Y20.515Z0F800
+G1 X80.666Y20.793Z0F800
+G1 X80.97Y21.085Z0F800
+G1 X81.251Y21.389Z0F800
+G1 X81.502Y21.702Z0F800
+G1 X81.72Y22.02Z0F800
+G1 X81.899Y22.342Z0F800
+G1 X82.034Y22.665Z0F800
+G1 X82.12Y22.986Z0F800
+G1 X82.151Y23.301Z0F800
+G1 X82.123Y23.61Z0F800
+G1 X82.031Y23.908Z0F800
+G1 X81.869Y24.193Z0F800
+G1 X81.725Y23.947Z0F800
+G1 X81.602Y23.665Z0F800
+G1 X81.502Y23.353Z0F800
+G1 X81.427Y23.019Z0F800
+G1 X81.378Y22.669Z0F800
+G1 X81.359Y22.312Z0F800
+G1 X81.37Y21.954Z0F800
+G1 X81.414Y21.603Z0F800
+G1 X81.492Y21.265Z0F800
+G1 X81.607Y20.949Z0F800
+G1 X81.76Y20.661Z0F800
+G1 X81.953Y20.409Z0F800
+G1 X82.189Y20.199Z0F800
+G1 X82.468Y20.04Z0F800
+G1 X82.794Y19.938Z0F800
+G1 X83.167Y19.901Z0F800
+G1 X83.399Y20.07Z0F800
+G1 X83.588Y20.284Z0F800
+G1 X83.741Y20.537Z0F800
+G1 X83.861Y20.819Z0F800
+G1 X84.024Y21.442Z0F800
+G1 X84.116Y22.09Z0F800
+G1 X84.176Y22.698Z0F800
+G1 X84.205Y22.967Z0F800
+G1 X84.241Y23.202Z0F800
+G1 X84.289Y23.396Z0F800
+G1 X84.352Y23.54Z0F800
+G1 X84.436Y23.627Z0F800
+G1 X84.546Y23.648Z0F800
+G1 X84.613Y22.145Z0F800
+G1 X84.6Y20.643Z0F800
+G1 X84.654Y19.901Z0F800
+G1 X84.797Y19.169Z0F800
+G1 X84.912Y18.808Z0F800
+G1 X85.064Y18.45Z0F800
+G1 X85.256Y18.097Z0F800
+G1 X85.492Y17.748Z0F800
+G1 X85.736Y17.809Z0F800
+G1 X85.937Y17.93Z0F800
+G1 X86.101Y18.105Z0F800
+G1 X86.23Y18.326Z0F800
+G1 X86.328Y18.587Z0F800
+G1 X86.399Y18.881Z0F800
+G1 X86.448Y19.2Z0F800
+G1 X86.477Y19.537Z0F800
+G1 X86.492Y20.241Z0F800
+G1 X86.475Y20.936Z0F800
+G1 X86.463Y21.263Z0F800
+G1 X86.455Y21.566Z0F800
+G1 Y21.84Z0F800
+G1 X86.464Y22.077Z0F800
+G1 X86.571Y23.201Z0F800
+G1 X86.65Y24.241Z0F800
+G1 X86.695Y25.222Z0F800
+G1 X86.704Y26.169Z0F800
+G1 X86.67Y27.107Z0F800
+G1 X86.591Y28.059Z0F800
+G1 X86.461Y29.051Z0F800
+G1 X86.276Y30.108Z0F800
+G1 X86.38Y30.713Z0F800
+G1 X86.469Y31.292Z0F800
+G1 X86.542Y31.844Z0F800
+G1 X86.6Y32.368Z0F800
+G1 X86.645Y32.863Z0F800
+G1 X86.677Y33.328Z0F800
+G1 X86.696Y33.762Z0F800
+G1 X86.704Y34.164Z0F800
+G1 X86.701Y34.532Z0F800
+G1 X86.687Y34.867Z0F800
+G1 X86.664Y35.166Z0F800
+G1 X86.633Y35.428Z0F800
+G1 X86.593Y35.654Z0F800
+G1 X86.547Y35.84Z0F800
+G1 X86.494Y35.988Z0F800
+G1 X86.435Y36.094Z0F800
+G1 X86.371Y36.159Z0F800
+G1 X86.302Y36.182Z0F800
+G1 X86.23Y36.16Z0F800
+G1 X86.155Y36.094Z0F800
+G1 X86.079Y35.982Z0F800
+G1 X86Y35.822Z0F800
+G1 X85.921Y35.615Z0F800
+G1 X85.842Y35.359Z0F800
+G1 X85.764Y35.053Z0F800
+G1 X85.688Y34.695Z0F800
+G1 X85.613Y34.285Z0F800
+G1 X85.542Y33.822Z0F800
+G1 X85.474Y33.305Z0F800
+G1 X85.411Y32.732Z0F800
+G1 X85.353Y32.103Z0F800
+G1 X85.301Y31.416Z0F800
+G1 X85.038Y30.893Z0F800
+G1 X84.816Y30.355Z0F800
+G1 X84.631Y29.803Z0F800
+G1 X84.477Y29.24Z0F800
+G1 X84.245Y28.087Z0F800
+G1 X84.079Y26.914Z0F800
+G1 X83.938Y25.736Z0F800
+G1 X83.782Y24.57Z0F800
+G1 X83.686Y23.997Z0F800
+G1 X83.571Y23.432Z0F800
+G1 X83.432Y22.879Z0F800
+G1 X83.264Y22.339Z0F800
+G1 X83.218Y21.814Z0F800
+G1 X83.149Y21.305Z0F800
+G1 X83.059Y20.81Z0F800
+G1 X82.948Y20.328Z0F800
+G1 X82.664Y19.395Z0F800
+G1 X82.299Y18.496Z0F800
+G1 X81.855Y17.617Z0F800
+G1 X81.335Y16.747Z0F800
+G1 X80.74Y15.874Z0F800
+G1 X80.074Y14.988Z0F800
+G1 X79.567Y14.415Z0F800
+G1 X79.042Y13.874Z0F800
+G1 X78.505Y13.362Z0F800
+G1 X77.968Y12.873Z0F800
+G1 X76.926Y11.954Z0F800
+G1 X76.441Y11.515Z0F800
+G1 X75.991Y11.086Z0F800
+M5
+G1 Z1F500
+M9
+G90
+G1 Z1F500
+G1 Z2 F500;         ; Raise brush slightly
+G0 X22 Y0 F1000;     ; Move across cleaning area
+G1 Z5 F500;         ; Raise brush completely
+G0 X20 Y110 Z10 F1000;; Move to parking position with Z at safe height
+M2;                 ; End program
+\n`;
+
+                const lines = gcodeText.split('\n');
+                let origX = 24.16, origY = 11.09;
+                
+                const maxX_val = parseFloat(document.getElementById('max-x').value) || 297;
+                const S = 0.5; // Scale factor (makes it 50% smaller)
+                const offsetX = (maxX_val / 2) - ((62.54 * S) / 2);
+                const offsetY = 5; // 5mm from bottom
+
+                for (let line of lines) {
+                    line = line.trim();
+                    if (!line || line.startsWith(';')) continue;
+                    
+                    // Remap Z heights from file to UI values
+                    if (line.includes('Z')) {
+                        let match = line.match(/Z([-\d.]+)/);
+                        if (match) {
+                            let zVal = parseFloat(match[1]);
+                            // In this gcode Z0 is down, Z>0 is up
+                            if (zVal <= 0.1) {
+                                line = line.replace(/Z[-\d.]+/, `Z${zDown}`);
+                            } else {
+                                line = line.replace(/Z[-\d.]+/, `Z${zUp}`);
+                            }
+                        }
+                    }
+
+                    let matchX = line.match(/X([-\d.]+)/);
+                    let matchY = line.match(/Y([-\d.]+)/);
+
+                    if (matchX) origX = parseFloat(matchX[1]);
+                    if (matchY) origY = parseFloat(matchY[1]);
+
+                    let scaledX = (origX - 24.16) * S + offsetX;
+                    let scaledY = (origY - 11.09) * S + offsetY;
+
+                    if (matchX) {
+                        line = line.replace(/X[-\d.]+/, `X${scaledX.toFixed(3)}`);
+                    }
+                    if (matchY) {
+                        line = line.replace(/Y[-\d.]+/, `Y${scaledY.toFixed(3)}`);
+                    }
+
+                    seq.push(line);
+
+                    if (line.startsWith('G1') || line.startsWith('G0')) {
+                        pts.push({ mx: scaledX, my: scaledY });
+                    }
+                }
+            } catch (err) {
+                log('Failed to load TrumpSignature.gcode', 'error');
+                return [];
+            }
+
+            // Add the real path to the visual preview canvas
+            const maxX = parseFloat(document.getElementById('max-x').value) || 297;
+            const maxY = parseFloat(document.getElementById('max-y').value) || 210;
+            const cw = canvas.width;
+            const ch = canvas.height;
+
+            const strokePts = pts.map(p => ({
+                mx: p.mx,
+                my: p.my,
+                cx: (p.mx / maxX) * cw,
+                cy: ch - (p.my / maxY) * ch
+            }));
+
+            if (typeof paths !== 'undefined' && strokePts.length > 0) {
+                paths.push({
+                    color: typeof currentColor !== 'undefined' ? currentColor : '#000000',
+                    brushSize: 5,
+                    points: strokePts
+                });
+                if (typeof saveState === 'function') saveState();
+                if (typeof redrawCanvas === 'function') redrawCanvas();
+            }
+
+            return seq;
+        }
+
         // --- Manual Macro Triggers ---
+        
+        async function getTest2Sequence(zUp, zDown, fastSpeed = 1500) {
+            let seq = [];
+            const pts = [];
+            
+            try {
+                const gcodeText = `\n
+G0 Z10 F500;      ; Move to clearance level - Z motion limited to 500
+; G0 X-10 Y-10 F1200; Homing
+; G0 X-5 Y-5 F1200; go in
+; G10 P0 L20 X0 Y0; set to zero
+G1 F1200;           ; Set feed rate to 1000
+;LightBurn 1.6.04
+;Custom GCode device profile, absolute coords
+;Bounds: X22.66 Y37.34 to X67.34 Y52.66
+G00 G17 G40 G21 G54
+G90
+M4
+;Cut @ 1500 mm/min, 80% power
+
+M8
+
+; Washing sequence (no color)
+G1 Z10 F1000;        ; Raise brush to safe height
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X10 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G1 Z8 F800;         ; Maintain brush height - controlled movement
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X15 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G1 Z10 F800;         ; Maintain brush height - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+
+; Color picking sequence
+G1 Z10 F1000;         ; Raise brush to safe height
+G0 X41 Y5 F1200;    ; Rapid move to color 1 position
+G1 Z0 F1000;         ; Lower into color - controlled movement
+G1 X40.102Y7.295Z0S800F1200
+G1 X40.026Y7.642Z0F1200
+G1 X40Y8Z0F1200
+G1 X40.026Y8.358Z0F1200
+G1 X40.102Y8.705Z0F1200
+G1 X40.225Y9.041Z0F1200
+G1 X40.393Y9.362Z0F1200
+G1 X40.603Y9.668Z0F1200
+G1 X40.854Y9.957Z0F1200
+G1 X41.142Y10.226Z0F1200
+G1 X41.464Y10.475Z0F1200
+G1 X41.82Y10.701Z0F1200
+G1 X42.204Y10.902Z0F1200
+G1 X42.617Y11.078Z0F1200
+G1 X43.054Y11.225Z0F1200
+G1 X43.513Y11.343Z0F1200
+G1 X43.992Y11.429Z0F1200
+G1 X44.489Y11.482Z0F1200
+G1 X45Y11.5Z0F1200
+G1 X45.511Y11.482Z0F1200
+G1 X46.008Y11.429Z0F1200
+G1 X46.487Y11.343Z0F1200
+G1 X46.946Y11.225Z0F1200
+G1 X47.383Y11.078Z0F1200
+G1 X47.796Y10.902Z0F1200
+G1 X48.18Y10.701Z0F1200
+G1 X48.536Y10.475Z0F1200
+G1 X48.858Y10.226Z0F1200
+G1 X49.146Y9.957Z0F1200
+G1 X49.397Y9.668Z0F1200
+G1 X49.607Y9.362Z0F1200
+G1 X49.775Y9.041Z0F1200
+G1 X49.898Y8.705Z0F1200
+G1 X49.974Y8.358Z0F1200
+G1 X50Y8Z0F1200
+G1 X49.974Y7.642Z0F1200
+G1 X49.898Y7.295Z0F1200
+G1 X49.775Y6.959Z0F1200
+G1 X49.607Y6.638Z0F1200
+G1 X49.397Y6.332Z0F1200
+G1 X49.146Y6.043Z0F1200
+G1 X48.858Y5.774Z0F1200
+G1 X48.536Y5.525Z0F1200
+G1 X48.18Y5.299Z0F1200
+G1 X47.796Y5.098Z0F1200
+G1 X47.383Y4.922Z0F1200
+G1 X46.946Y4.775Z0F1200
+G1 X46.487Y4.657Z0F1200
+G1 X46.008Y4.571Z0F1200
+G1 X45.511Y4.518Z0F1200
+G1 X45Y4.5Z0F1200
+G1 X44.489Y4.518Z0F1200
+G1 X43.992Y4.571Z0F1200
+G1 X43.513Y4.657Z0F1200
+G1 X43.054Y4.775Z0F1200
+G1 X42.617Y4.922Z0F1200
+G1 X42.204Y5.098Z0F1200
+G1 X41.82Y5.299Z0F1200
+G1 X41.464Y5.525Z0F1200
+G1 X41.142Y5.774Z0F1200
+G1 X40.854Y6.043Z0F1200
+G1 X40.603Y6.332Z0F1200
+G1 X40.393Y6.638Z0F1200
+G1 X40.225Y6.959Z0F1200
+G1 Z7 F800;         ; Raise from color - controlled movement
+G1 X34 Y8 Z1 F1200;     ; Movement in paint - controlled movement
+G1 X24 Y18 Z8 F500;     ; Move in paint - controlled movement
+G1 F1200;           ; Set feed rate to 1000
+G0 Z3.5 F1000
+G0 X26.633 Y39.237 Z3.5 
+G1 Z0 F1000
+;Layer C1
+G1 X26.9 Y39.644 Z0 S800 F1000
+G1 X27.115 Y39.997 Z0 F1000
+G1 X27.293 Y40.307 Z0 F1000
+G1 X27.447 Y40.583 Z0 F1000
+G1 X27.741 Y41.08 Z0 F1000
+G1 X28.109 Y41.573 Z0 F1000
+G1 X28.435 Y42.225 Z0 F1000
+G1 X28.678 Y42.716 Z0 F1000
+G1 X28.864 Y43.112 Z0 F1000
+G1 X29.018 Y43.48 Z0 F1000
+G1 X29.224 Y43.85 Z0 F1000
+G1 X29.504 Y44.281 Z0 F1000
+G1 X29.642 Y44.503 Z0 F1000
+G1 X29.763 Y44.719 Z0 F1000
+G1 X29.854 Y44.924 Z0 F1000
+G1 X29.904 Y45.11 Z0 F1000
+G1 X30.005 Y45.326 Z0 F1000
+G1 X30.095 Y45.511 Z0 F1000
+G1 X30.176 Y45.667 Z0 F1000
+G1 X30.249 Y45.802 Z0 F1000
+G1 X30.377 Y46.021 Z0 F1000
+G1 X30.489 Y46.206 Z0 F1000
+G1 X30.598 Y46.392 Z0 F1000
+G1 X30.713 Y46.617 Z0 F1000
+G1 X30.778 Y46.756 Z0 F1000
+G1 X30.848 Y46.918 Z0 F1000
+G1 X30.926 Y47.109 Z0 F1000
+G1 X31.012 Y47.332 Z0 F1000
+G1 X31.255 Y47.693 Z0 F1000
+G1 X31.478 Y48.125 Z0 F1000
+G1 X31.661 Y48.569 Z0 F1000
+G1 X31.787 Y48.964 Z0 F1000
+G1 X31.984 Y49.359 Z0 F1000
+G1 X32.176 Y49.843 Z0 F1000
+G1 X32.361 Y50.328 Z0 F1000
+G1 X32.536 Y50.726 Z0 F1000
+G0 Z3.5 F1000
+G0 X23.779 Y47.337 Z3.5 F1500
+G1 Z0 F1000
+G1 X23.788 Y47.655 Z0 F1000
+G1 X23.812 Y47.968 Z0 F1000
+G1 X23.879 Y48.272 Z0 F1000
+G1 X24.018 Y48.563 Z0 F1000
+G1 X24.349 Y48.993 Z0 F1000
+G1 X24.706 Y49.394 Z0 F1000
+G1 X25.115 Y49.775 Z0 F1000
+G1 X25.6 Y50.144 Z0 F1000
+G1 X26.121 Y50.358 Z0 F1000
+G1 X26.588 Y50.644 Z0 F1000
+G1 X26.825 Y50.78 Z0 F1000
+G1 X27.076 Y50.892 Z0 F1000
+G1 X27.349 Y50.968 Z0 F1000
+G1 X27.655 Y50.992 Z0 F1000
+G1 X28.375 Y51.223 Z0 F1000
+G1 X29.123 Y51.363 Z0 F1000
+G1 X29.89 Y51.432 Z0 F1000
+G1 X30.666 Y51.453 Z0 F1000
+G1 X31.811 Y51.374 Z0 F1000
+G1 X32.955 Y51.273 Z0 F1000
+G1 X33.645 Y51.258 Z0 F1000
+G1 X34.327 Y51.196 Z0 F1000
+G1 X35.003 Y51.099 Z0 F1000
+G1 X35.676 Y50.984 Z0 F1000
+G1 X36.292 Y50.815 Z0 F1000
+G1 X36.878 Y50.63 Z0 F1000
+G1 X37.481 Y50.429 Z0 F1000
+G1 X38.151 Y50.212 Z0 F1000
+G1 X38.65 Y49.984 Z0 F1000
+G1 X39.086 Y49.745 Z0 F1000
+G1 X40.039 Y49.17 Z0 F1000
+G1 X40.27 Y49.026 Z0 F1000
+G1 X40.493 Y48.85 Z0 F1000
+G1 X40.705 Y48.643 Z0 F1000
+G1 X40.901 Y48.405 Z0 F1000
+G1 X41.076 Y48.135 Z0 F1000
+G1 X41.225 Y47.834 Z0 F1000
+G1 X41.343 Y47.5 Z0 F1000
+G1 X41.428 Y47.135 Z0 F1000
+G1 X41.462 Y46.932 Z0 F1000
+G1 X41.471 Y46.702 Z0 F1000
+G1 X41.451 Y46.454 Z0 F1000
+G1 X41.399 Y46.195 Z0 F1000
+G1 X41.31 Y45.933 Z0 F1000
+G1 X41.181 Y45.676 Z0 F1000
+G1 X41.007 Y45.432 Z0 F1000
+G1 X40.786 Y45.21 Z0 F1000
+G1 X40.08 Y44.551 Z0 F1000
+G1 X39.809 Y44.306 Z0 F1000
+G1 X39.533 Y44.065 Z0 F1000
+G1 X39.258 Y43.84 Z0 F1000
+G1 X38.993 Y43.641 Z0 F1000
+G1 X38.743 Y43.479 Z0 F1000
+G1 X38.231 Y43.086 Z0 F1000
+G1 X37.652 Y42.705 Z0 F1000
+G1 X36.509 Y42.011 Z0 F1000
+G1 X36.168 Y41.809 Z0 F1000
+G1 X35.858 Y41.671 Z0 F1000
+G1 X35.661 Y41.587 Z0 F1000
+G1 X35.406 Y41.47 Z0 F1000
+G1 X35.249 Y41.395 Z0 F1000
+G1 X35.07 Y41.306 Z0 F1000
+G1 X34.866 Y41.201 Z0 F1000
+G1 X34.633 Y41.078 Z0 F1000
+G1 X34.309 Y40.863 Z0 F1000
+G1 X33.931 Y40.639 Z0 F1000
+G1 X33.512 Y40.407 Z0 F1000
+G1 X33.065 Y40.17 Z0 F1000
+G1 X32.135 Y39.695 Z0 F1000
+G1 X31.242 Y39.234 Z0 F1000
+G1 X30.021 Y38.743 Z0 F1000
+G1 X28.813 Y38.263 Z0 F1000
+G1 X27.224 Y37.85 Z0 F1000
+G1 X25.68 Y37.442 Z0 F1000
+G1 X25.515 Y37.367 Z0 F1000
+G1 X25.269 Y37.339 Z0 F1000
+G1 X24.971 Y37.346 Z0 F1000
+G1 X24.653 Y37.373 Z0 F1000
+G1 X24.344 Y37.407 Z0 F1000
+G1 X24.074 Y37.435 Z0 F1000
+G1 X23.962 Y37.441 Z0 F1000
+G1 X23.873 Z0 F1000
+G1 X23.807 Y37.432 Z0 F1000
+G1 X23.707 Y37.379 Z0 F1000
+G1 X23.617 Y37.37 Z0 F1000
+G1 X23.506 Y37.385 Z0 F1000
+G1 X23.382 Y37.42 Z0 F1000
+G1 X23.117 Y37.54 Z0 F1000
+G1 X22.874 Y37.711 Z0 F1000
+G1 X22.776 Y37.81 Z0 F1000
+G1 X22.703 Y37.913 Z0 F1000
+G1 X22.661 Y38.019 Z0 F1000
+G1 X22.655 Y38.125 Z0 F1000
+G1 X22.693 Y38.229 Z0 F1000
+G1 X22.781 Y38.327 Z0 F1000
+G1 X22.926 Y38.417 Z0 F1000
+G1 X23.133 Y38.498 Z0 F1000
+G1 X23.234 Y38.564 Z0 F1000
+G1 X23.324 Y38.633 Z0 F1000
+G0 Z3.5 F1000
+G0 X50.285 Y49.613 Z3.5 
+G1 Z0 F1000
+G1 Y49.705 Z0 F1000
+G1 X50.274 Y49.797 Z0 F1000
+G1 X50.237 Y49.88 Z0 F1000
+G1 X50.17 Y49.948 Z0 F1000
+G1 X50.074 Y50.055 Z0 F1000
+G1 X50.013 Y50.181 Z0 F1000
+G1 X49.892 Y50.271 Z0 F1000
+G0 Z3.5 F1000
+G0 X53.169 Y49.817 Z3.5 
+G1 Z0 F1000
+G1 X53.264 Y49.69 Z0 F1000
+G1 X53.295 Y49.541 Z0 F1000
+G1 X53.276 Y49.456 Z0 F1000
+G1 X53.2 Y49.403 Z0 F1000
+G1 X53.087 Y49.373 Z0 F1000
+G1 X52.979 Y49.333 Z0 F1000
+G1 X52.884 Y49.275 Z0 F1000
+G1 X52.787 Y49.22 Z0 F1000
+G1 X52.698 Y49.156 Z0 F1000
+G1 X52.623 Y49.075 Z0 F1000
+G1 X52.577 Y49.003 Z0 F1000
+G1 X52.533 Y48.928 Z0 F1000
+G1 X52.436 Y48.792 Z0 F1000
+G0 Z3.5 F1000
+G0 X42.006 Y44.534 Z3.5 
+G1 Z0 F1000
+G1 X41.569 Y44.478 Z0 F1000
+G1 X41.109 Y44.394 Z0 F1000
+G1 X40.644 Y44.278 Z0 F1000
+G1 X40.192 Y44.126 Z0 F1000
+G1 X39.771 Y43.934 Z0 F1000
+G1 X39.397 Y43.698 Z0 F1000
+G1 X39.091 Y43.415 Z0 F1000
+G1 X38.868 Y43.079 Z0 F1000
+G1 X38.662 Y42.74 Z0 F1000
+G1 X38.463 Y42.34 Z0 F1000
+G1 X38.295 Y41.904 Z0 F1000
+G1 X38.184 Y41.454 Z0 F1000
+G1 X38.157 Y41.232 Z0 F1000
+G1 X38.154 Y41.015 Z0 F1000
+G1 X38.177 Y40.807 Z0 F1000
+G1 X38.231 Y40.61 Z0 F1000
+G1 X38.317 Y40.427 Z0 F1000
+G1 X38.439 Y40.262 Z0 F1000
+G1 X38.601 Y40.117 Z0 F1000
+G1 X38.804 Y39.996 Z0 F1000
+G1 X39.246 Y40.012 Z0 F1000
+G1 X39.671 Y40.099 Z0 F1000
+G1 X40.077 Y40.246 Z0 F1000
+G1 X40.46 Y40.447 Z0 F1000
+G1 X40.817 Y40.693 Z0 F1000
+G1 X41.145 Y40.976 Z0 F1000
+G1 X41.44 Y41.287 Z0 F1000
+G1 X41.7 Y41.619 Z0 F1000
+G1 X41.872 Y41.892 Z0 F1000
+G1 X42.059 Y42.203 Z0 F1000
+G1 X42.253 Y42.54 Z0 F1000
+G1 X42.449 Y42.89 Z0 F1000
+G1 X42.639 Y43.243 Z0 F1000
+G1 X42.818 Y43.585 Z0 F1000
+G1 X42.979 Y43.906 Z0 F1000
+G1 X43.115 Y44.194 Z0 F1000
+G1 X43.379 Y44.784 Z0 F1000
+G1 X43.689 Y45.385 Z0 F1000
+G1 X43.754 Y45.474 Z0 F1000
+G1 X43.809 Y45.522 Z0 F1000
+G1 X43.851 Z0 F1000
+G1 X43.878 Y45.462 Z0 F1000
+G1 X43.887 Y45.336 Z0 F1000
+G1 X43.875 Y45.137 Z0 F1000
+G1 X43.841 Y44.854 Z0 F1000
+G1 X43.78 Y44.48 Z0 F1000
+G1 X43.68 Y44.151 Z0 F1000
+G1 X43.512 Y43.777 Z0 F1000
+G1 X43.313 Y43.377 Z0 F1000
+G1 X43.122 Y42.969 Z0 F1000
+G1 X42.977 Y42.571 Z0 F1000
+G1 X42.916 Y42.2 Z0 F1000
+G1 X42.929 Y42.03 Z0 F1000
+G1 X42.977 Y41.874 Z0 F1000
+G1 X43.064 Y41.733 Z0 F1000
+G1 X43.197 Y41.61 Z0 F1000
+G1 X43.332 Y41.471 Z0 F1000
+G1 X43.479 Y41.384 Z0 F1000
+G1 X43.634 Y41.343 Z0 F1000
+G1 X43.796 Z0 F1000
+G1 X43.962 Y41.385 Z0 F1000
+G1 X44.129 Y41.458 Z0 F1000
+G1 X44.295 Y41.562 Z0 F1000
+G1 X44.456 Y41.69 Z0 F1000
+G1 X44.755 Y42.005 Z0 F1000
+G1 X45.005 Y42.368 Z0 F1000
+G1 X45.184 Y42.744 Z0 F1000
+G1 X45.272 Y43.098 Z0 F1000
+G1 X45.399 Y43.431 Z0 F1000
+G1 X45.598 Y43.81 Z0 F1000
+G1 X45.837 Y44.193 Z0 F1000
+G1 X46.084 Y44.541 Z0 F1000
+G1 X46.2 Y44.687 Z0 F1000
+G1 X46.305 Y44.81 Z0 F1000
+G1 X46.396 Y44.902 Z0 F1000
+G1 X46.468 Y44.959 Z0 F1000
+G1 X46.518 Y44.976 Z0 F1000
+G1 X46.541 Y44.948 Z0 F1000
+G1 X46.533 Y44.869 Z0 F1000
+G1 X46.491 Y44.734 Z0 F1000
+G1 X46.213 Y44.003 Z0 F1000
+G1 X46.134 Y43.747 Z0 F1000
+G1 X46.108 Y43.542 Z0 F1000
+G1 X46.001 Y43.263 Z0 F1000
+G1 X45.92 Y42.913 Z0 F1000
+G1 X45.883 Y42.536 Z0 F1000
+G1 X45.905 Y42.174 Z0 F1000
+G1 X45.943 Y42.012 Z0 F1000
+G1 X46.003 Y41.87 Z0 F1000
+G1 X46.085 Y41.754 Z0 F1000
+G1 X46.193 Y41.668 Z0 F1000
+G1 X46.328 Y41.617 Z0 F1000
+G1 X46.492 Y41.608 Z0 F1000
+G1 X46.688 Y41.646 Z0 F1000
+G1 X46.916 Y41.736 Z0 F1000
+G1 X47.309 Y42.309 Z0 F1000
+G1 X47.637 Y42.939 Z0 F1000
+G1 X47.773 Y43.253 Z0 F1000
+G1 X47.887 Y43.554 Z0 F1000
+G1 X47.98 Y43.833 Z0 F1000
+G1 X48.05 Y44.083 Z0 F1000
+G1 X48.148 Y44.336 Z0 F1000
+G1 X48.308 Y44.609 Z0 F1000
+G1 X48.498 Y44.866 Z0 F1000
+G1 X48.689 Y45.072 Z0 F1000
+G1 X48.775 Y45.146 Z0 F1000
+G1 X48.85 Y45.193 Z0 F1000
+G1 X48.909 Y45.21 Z0 F1000
+G1 X48.949 Y45.193 Z0 F1000
+G1 X48.967 Y45.136 Z0 F1000
+G1 X48.957 Y45.036 Z0 F1000
+G1 X48.917 Y44.888 Z0 F1000
+G1 X48.521 Y43.83 Z0 F1000
+G1 X48.293 Y42.997 Z0 F1000
+G1 X48.234 Y42.622 Z0 F1000
+G1 X48.223 Y42.29 Z0 F1000
+G1 X48.268 Y42.016 Z0 F1000
+G1 X48.376 Y41.811 Z0 F1000
+G1 X48.496 Y41.86 Z0 F1000
+G1 X48.616 Y41.952 Z0 F1000
+G1 X48.734 Y42.081 Z0 F1000
+G1 X48.852 Y42.241 Z0 F1000
+G1 X49.087 Y42.632 Z0 F1000
+G1 X49.319 Y43.076 Z0 F1000
+G1 X49.549 Y43.527 Z0 F1000
+G1 X49.778 Y43.937 Z0 F1000
+G1 X49.892 Y44.111 Z0 F1000
+G1 X50.005 Y44.258 Z0 F1000
+G1 X50.118 Y44.372 Z0 F1000
+G1 X50.231 Y44.445 Z0 F1000
+G1 X50.427 Y44.577 Z0 F1000
+G1 X50.638 Y44.726 Z0 F1000
+G1 X50.72 Y44.761 Z0 F1000
+G1 X50.77 Y44.743 Z0 F1000
+G1 X50.78 Y44.709 Z0 F1000
+G1 X50.777 Y44.655 Z0 F1000
+G1 X50.762 Y44.579 Z0 F1000
+G1 X50.73 Y44.477 Z0 F1000
+G1 X50.362 Y43.418 Z0 F1000
+G1 X50.218 Y42.964 Z0 F1000
+G1 X50.12 Y42.563 Z0 F1000
+G1 X50.083 Y42.217 Z0 F1000
+G1 X50.121 Y41.926 Z0 F1000
+G1 X50.172 Y41.803 Z0 F1000
+G1 X50.248 Y41.694 Z0 F1000
+G1 X50.349 Y41.6 Z0 F1000
+G1 X50.478 Y41.522 Z0 F1000
+G1 X50.636 Y41.509 Z0 F1000
+G1 X50.794 Y41.54 Z0 F1000
+G1 X50.952 Y41.61 Z0 F1000
+G1 X51.109 Y41.715 Z0 F1000
+G1 X51.418 Y42.007 Z0 F1000
+G1 X51.716 Y42.376 Z0 F1000
+G1 X51.999 Y42.781 Z0 F1000
+G1 X52.495 Y43.545 Z0 F1000
+G1 X52.895 Y44.09 Z0 F1000
+G1 X53.069 Y44.382 Z0 F1000
+G1 X53.339 Y44.888 Z0 F1000
+G1 X53.388 Y44.97 Z0 F1000
+G1 X53.429 Y45.026 Z0 F1000
+G1 X53.461 Y45.051 Z0 F1000
+G1 X53.483 Y45.04 Z0 F1000
+G1 X53.496 Y44.987 Z0 F1000
+G1 X53.499 Y44.89 Z0 F1000
+G1 X53.491 Y44.742 Z0 F1000
+G1 X53.473 Y44.539 Z0 F1000
+G1 X53.324 Y43.814 Z0 F1000
+G1 X53.166 Y43.132 Z0 F1000
+G1 X53.142 Y42.805 Z0 F1000
+G1 X53.187 Y42.488 Z0 F1000
+G1 X53.243 Y42.332 Z0 F1000
+G1 X53.325 Y42.178 Z0 F1000
+G1 X53.436 Y42.026 Z0 F1000
+G1 X53.58 Y41.876 Z0 F1000
+G1 X53.754 Y41.838 Z0 F1000
+G1 X53.898 Y41.845 Z0 F1000
+G1 X54.015 Y41.892 Z0 F1000
+G1 X54.11 Y41.974 Z0 F1000
+G1 X54.249 Y42.22 Z0 F1000
+G1 X54.347 Y42.54 Z0 F1000
+G1 X54.435 Y42.894 Z0 F1000
+G1 X54.545 Y43.238 Z0 F1000
+G1 X54.619 Y43.393 Z0 F1000
+G1 X54.71 Y43.531 Z0 F1000
+G1 X54.824 Y43.644 Z0 F1000
+G1 X54.962 Y43.729 Z0 F1000
+G1 X55.076 Y43.84 Z0 F1000
+G1 X55.173 Y43.915 Z0 F1000
+G1 X55.26 Y43.947 Z0 F1000
+G1 X55.342 Y43.927 Z0 F1000
+G1 X55.422 Y43.848 Z0 F1000
+G1 X55.506 Y43.702 Z0 F1000
+G1 X55.598 Y43.481 Z0 F1000
+G1 X55.703 Y43.178 Z0 F1000
+G1 X55.796 Y42.95 Z0 F1000
+G1 X55.903 Y42.785 Z0 F1000
+G1 X56.021 Y42.678 Z0 F1000
+G1 X56.149 Y42.624 Z0 F1000
+G1 X56.284 Y42.616 Z0 F1000
+G1 X56.426 Y42.649 Z0 F1000
+G1 X56.572 Y42.717 Z0 F1000
+G1 X56.721 Y42.815 Z0 F1000
+G1 X57.017 Y43.078 Z0 F1000
+G1 X57.301 Y43.391 Z0 F1000
+G1 X57.558 Y43.709 Z0 F1000
+G1 X57.773 Y43.987 Z0 F1000
+G1 X58.059 Y44.419 Z0 F1000
+G1 X58.408 Y45.165 Z0 F1000
+G1 X58.509 Y45.349 Z0 F1000
+G1 X58.606 Y45.465 Z0 F1000
+G1 X58.7 Y45.488 Z0 F1000
+G1 X58.809 Y45.273 Z0 F1000
+G1 X58.988 Y45.052 Z0 F1000
+G1 X59.052 Y44.899 Z0 F1000
+G1 X59.15 Y44.65 Z0 F1000
+G1 X59.309 Y44.378 Z0 F1000
+G1 X59.513 Y44.12 Z0 F1000
+G1 X59.745 Y43.91 Z0 F1000
+G1 X59.866 Y43.835 Z0 F1000
+G1 X59.987 Y43.784 Z0 F1000
+G1 X60.107 Y43.764 Z0 F1000
+G1 X60.224 Y43.778 Z0 F1000
+G1 X60.334 Y43.83 Z0 F1000
+G1 X60.437 Y43.925 Z0 F1000
+G1 X60.53 Y44.068 Z0 F1000
+G1 X60.611 Y44.262 Z0 F1000
+G1 X60.681 Y44.63 Z0 F1000
+G1 X60.723 Y45.026 Z0 F1000
+G1 X60.746 Y45.441 Z0 F1000
+G1 X60.765 Y45.864 Z0 F1000
+G1 X60.792 Y46.287 Z0 F1000
+G1 X60.838 Y46.701 Z0 F1000
+G1 X60.917 Y47.096 Z0 F1000
+G1 X61.04 Y47.462 Z0 F1000
+G1 X61.132 Y48.042 Z0 F1000
+G1 X61.153 Y48.598 Z0 F1000
+G1 X61.123 Y49.166 Z0 F1000
+G1 X61.063 Y49.779 Z0 F1000
+G1 X60.964 Y50.377 Z0 F1000
+G1 X60.819 Y50.937 Z0 F1000
+G1 X60.686 Y51.485 Z0 F1000
+G1 X60.62 Y52.048 Z0 F1000
+G1 X60.543 Y52.209 Z0 F1000
+G1 X60.475 Y52.359 Z0 F1000
+G1 X60.432 Y52.487 Z0 F1000
+G1 Y52.587 Z0 F1000
+G1 X60.484 Y52.648 Z0 F1000
+G1 X60.611 Y52.661 Z0 F1000
+G1 X60.707 Y52.647 Z0 F1000
+G1 X60.826 Y52.618 Z0 F1000
+G1 X60.971 Y52.572 Z0 F1000
+G1 X61.144 Y52.509 Z0 F1000
+G1 X61.531 Y52.425 Z0 F1000
+G1 X61.914 Y52.308 Z0 F1000
+G1 X62.286 Y52.161 Z0 F1000
+G1 X62.641 Y51.985 Z0 F1000
+G1 X62.971 Y51.781 Z0 F1000
+G1 X63.27 Y51.55 Z0 F1000
+G1 X63.532 Y51.294 Z0 F1000
+G1 X63.749 Y51.014 Z0 F1000
+G1 X64.076 Y50.43 Z0 F1000
+G1 X64.339 Y49.837 Z0 F1000
+G1 X64.565 Y49.235 Z0 F1000
+G1 X64.781 Y48.626 Z0 F1000
+G1 X64.863 Y48.389 Z0 F1000
+G1 X64.918 Y48.179 Z0 F1000
+G1 X64.949 Y47.985 Z0 F1000
+G1 X64.957 Y47.798 Z0 F1000
+G1 X64.943 Y47.607 Z0 F1000
+G1 X64.911 Y47.403 Z0 F1000
+G1 X64.86 Y47.175 Z0 F1000
+G1 X64.793 Y46.914 Z0 F1000
+G1 X64.715 Y46.572 Z0 F1000
+G1 X64.666 Y46.278 Z0 F1000
+G1 X64.63 Y46.015 Z0 F1000
+G1 X64.59 Y45.767 Z0 F1000
+G1 X64.528 Y45.516 Z0 F1000
+G1 X64.428 Y45.245 Z0 F1000
+G1 X64.273 Y44.938 Z0 F1000
+G1 X64.046 Y44.577 Z0 F1000
+G1 X63.581 Y44.064 Z0 F1000
+G1 X63.125 Y43.57 Z0 F1000
+G1 X62.88 Y43.343 Z0 F1000
+G1 X62.613 Y43.138 Z0 F1000
+G1 X62.314 Y42.96 Z0 F1000
+G1 X61.976 Y42.815 Z0 F1000
+G1 X61.316 Y42.476 Z0 F1000
+G1 X60.649 Y42.176 Z0 F1000
+G1 X59.984 Y41.873 Z0 F1000
+G1 X59.333 Y41.522 Z0 F1000
+G1 X59.261 Y41.438 Z0 F1000
+G1 X59.238 Y41.37 Z0 F1000
+G1 X59.257 Y41.317 Z0 F1000
+G1 X59.314 Y41.276 Z0 F1000
+G1 X59.519 Y41.228 Z0 F1000
+G1 X59.81 Y41.212 Z0 F1000
+G1 X60.145 Y41.215 Z0 F1000
+G1 X60.48 Y41.224 Z0 F1000
+G1 X60.774 Z0 F1000
+G1 X60.983 Y41.205 Z0 F1000
+G1 X61.85 Y41.173 Z0 F1000
+G1 X62.723 Y41.138 Z0 F1000
+G1 X63.585 Y41.058 Z0 F1000
+G1 X64.422 Y40.889 Z0 F1000
+G1 X64.934 Y40.771 Z0 F1000
+G1 X65.433 Y40.624 Z0 F1000
+G1 X65.916 Y40.443 Z0 F1000
+G1 X66.374 Y40.222 Z0 F1000
+G1 X66.544 Y40.114 Z0 F1000
+G1 X66.751 Y39.958 Z0 F1000
+G1 X67.013 Y39.745 Z0 F1000
+G1 X67.345 Y39.468 Z0 F1000
+M9
+
+G90
+G1 Z10 F800
+
+; Return to 2,0 wash and park
+G1 Z10 F1000;        ; Raise brush to safe height
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X10 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G0 X5 Y5 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X15 Y12 Z8 F1200;     ; Rapid move to brush cleaning position
+G1 Z-1 F800;         ; Lower brush for cleaning - controlled movement
+G1 X25 Y14 Z6 F800;     ; Move across cleaning area - controlled movement
+G1 Z10 F800;         ; Maintain brush height - controlled movement
+G0 X20 Y130 Z10 F500;; Move to parking position with Z at safe height
+M2;                 ; End program
+\n`;
+                const lines = gcodeText.split('\n');
+                let currentX = 0, currentY = 0;
+
+                for (let line of lines) {
+                    line = line.trim();
+                    if (!line || line.startsWith(';')) continue;
+                    
+                    if (line.includes('Z')) {
+                        let match = line.match(/Z([-\d.]+)/);
+                        if (match) {
+                            let zVal = parseFloat(match[1]);
+                            if (zVal <= 0.1) {
+                                line = line.replace(/Z[-\d.]+/, `Z${zDown}`);
+                            } else {
+                                line = line.replace(/Z[-\d.]+/, `Z${zUp}`);
+                            }
+                        }
+                    }
+
+                    seq.push(line);
+
+                    let matchX = line.match(/X([-\d.]+)/);
+                    let matchY = line.match(/Y([-\d.]+)/);
+                    if (matchX) currentX = parseFloat(matchX[1]);
+                    if (matchY) currentY = parseFloat(matchY[1]);
+
+                    if (line.startsWith('G1') || line.startsWith('G0')) {
+                        pts.push({ mx: currentX, my: currentY });
+                    }
+                }
+            } catch (err) {
+                return [];
+            }
+
+            const maxX = parseFloat(document.getElementById('max-x').value) || 297;
+            const maxY = parseFloat(document.getElementById('max-y').value) || 210;
+            const cw = canvas.width;
+            const ch = canvas.height;
+
+            const strokePts = pts.map(p => ({
+                mx: p.mx,
+                my: p.my,
+                cx: (p.mx / maxX) * cw,
+                cy: ch - (p.my / maxY) * ch
+            }));
+
+            if (typeof paths !== 'undefined' && strokePts.length > 0) {
+                paths.push({
+                    color: typeof currentColor !== 'undefined' ? currentColor : '#000000',
+                    brushSize: 5,
+                    points: strokePts
+                });
+                if (typeof saveState === 'function') saveState();
+                if (typeof redrawCanvas === 'function') redrawCanvas();
+            }
+
+            return seq;
+        }
+
         async function runMacro(potId) {
             if (isDrawing) return;
             const fastSpeed = document.getElementById('fast-speed').value;
@@ -3953,6 +6119,8 @@
             log(`Running Macro: ${potId.toUpperCase()}...`, 'info');
             let macroSeq = [];
             if (potId === 'wash') macroSeq = getWashSequence(zUp, zDown, fastSpeed);
+            else if (potId === 'trump') macroSeq = await getTrumpSignatureSequence(zUp, zDown, fastSpeed);
+            else if (potId === 'test2') macroSeq = await getTest2Sequence(zUp, zDown, fastSpeed);
             else macroSeq = getDipSequence(potId, zUp, zDown, fastSpeed);
 
             await sendCommand(`G90`);
@@ -3966,6 +6134,8 @@
         document.getElementById('macro-dip-c2').onclick = () => runMacro('c2');
         document.getElementById('macro-dip-c3').onclick = () => runMacro('c3');
         document.getElementById('macro-wash').onclick = () => runMacro('wash');
+                document.getElementById('macro-trump-sig').onclick = () => runMacro('trump');
+        document.getElementById('macro-test2').onclick = () => runMacro('test2');
 
         const btnPing = document.getElementById('btn-ping');
         if (btnPing) btnPing.onclick = () => { log('Ping...', 'info'); sendCommand('?'); };
