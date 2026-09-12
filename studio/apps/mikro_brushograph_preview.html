@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mikro-Brushografia</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Bungee&family=UnifrakturCook:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Bungee&family=UnifrakturCook:wght@700&family=Noto+Sans+SC:wght@400;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap');
 
         :root {
             /* ESP3D Classic Theme */
@@ -346,29 +346,35 @@
 
         body.theme-dresden-dark {
             /* Kongress Dresden Nacht Theme */
-            --bg-color: #1a1a1a;       /* Dark sepia/grey */
-            --panel-bg: #2b2b2b;
-            --text-color: #d1cfc7;
-            --text-muted: #a69f8c;
-            --border: #4f4f4f;
+            --bg-color: #080808;       /* Very dark background */
+            --panel-bg: #151515;       /* Dark panel */
+            --text-color: #ffffff;     /* Pure white text */
+            --text-muted: #aaaaaa;
+            --border: #666666;
             
-            --accent-pink: #d1cfc7;
-            --accent-green: #b3b3b3;
-            --accent-blue: #8c887e;
-            --accent-yellow: #616161;
-            --accent-orange: #d1cfc7;
+            --accent-pink: #ffffff;
+            --accent-green: #eeeeee;
+            --accent-blue: #dddddd;
+            --accent-yellow: #cccccc;
+            --accent-orange: #ffffff;
             
-            --input-bg: #222222;
-            --input-text: #d1cfc7;
+            --input-bg: #000000;
+            --input-text: #ffffff;
             
-            --shadow: 0 0 10px rgba(209, 207, 199, 0.1), inset 1px 1px 2px rgba(255,255,255,0.1);
-            --shadow-hover: 0 0 15px rgba(209, 207, 199, 0.4), inset 1px 1px 2px rgba(255,255,255,0.2);
+            --shadow: 0 0 20px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255,255,255,0.2);
+            --shadow-hover: 0 0 40px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 0.8), inset 0 0 15px rgba(255,255,255,0.6);
             --border-width: 2px;
-            --border-radius: 1px;
+            --border-radius: 2px;
             
             --font-main: 'UnifrakturCook', serif;
             --font-head: 'UnifrakturCook', serif;
             --font-title: 'UnifrakturCook', serif;
+        }
+        
+        body.theme-dresden *,
+        body.theme-dresden-dark *,
+        body.theme-dresden-extreme * {
+            text-transform: none !important;
         }
 
         body.theme-dresden-dark .panel,
@@ -383,23 +389,314 @@
         }
 
         body.theme-dresden-dark .btn {
-            background-color: #3d3d3d;
+            background-color: #2a2a2a;
         }
 
         body.theme-dresden-dark .btn:hover {
             box-shadow: var(--shadow-hover);
-            background-color: #4f4f4f;
-            text-shadow: 0 0 8px rgba(209, 207, 199, 0.8);
+            background-color: #444444;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 30px rgba(255, 255, 255, 0.8);
+            color: #ffffff;
         }
 
         body.theme-dresden-dark h1,
         body.theme-dresden-dark h2 {
             font-size: 1.8em;
             letter-spacing: 1px;
-            text-shadow: 0 0 8px rgba(209, 207, 199, 0.6);
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 35px rgba(255, 255, 255, 0.8), 0 0 50px rgba(255, 255, 255, 0.6);
             margin-bottom: 10px;
             border-bottom: 1px solid var(--border);
             padding-bottom: 5px;
+        }
+
+        body.theme-dresden-extreme {
+            /* Kongress Dresden Extreme Theme */
+            --bg-color: #080808;       
+            --panel-bg: #151515;
+            --text-color: #ffffff;     
+            --text-muted: #aaaaaa;
+            --border: #aa0000;         /* Red borders */
+            
+            --accent-pink: #ffffff;
+            --accent-green: #ffffff;
+            --accent-blue: #ffffff;
+            --accent-yellow: #ffffff;
+            --accent-orange: #ff3333;
+            
+            --input-bg: #000000;
+            --input-text: #ffffff;
+            
+            --shadow: 0 0 12px rgba(255, 255, 255, 0.25), inset 1px 1px 3px rgba(255,0,0,0.2);
+            --shadow-hover: 0 0 25px rgba(255, 255, 255, 0.7), inset 1px 1px 5px rgba(255,0,0,0.5);
+            --border-width: 2px;
+            --border-radius: 2px;
+            
+            --font-main: 'UnifrakturCook', serif;
+            --font-head: 'UnifrakturCook', serif;
+            --font-title: 'UnifrakturCook', serif;
+        }
+
+        body.theme-dresden-extreme .panel,
+        body.theme-dresden-extreme .btn,
+        body.theme-dresden-extreme input,
+        body.theme-dresden-extreme select,
+        body.theme-dresden-extreme canvas {
+            border: var(--border-width) solid var(--border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            background-color: var(--panel-bg);
+        }
+
+        body.theme-dresden-extreme .btn {
+            background-color: #2a2a2a;
+        }
+
+        body.theme-dresden-extreme .btn:hover {
+            box-shadow: var(--shadow-hover);
+            background-color: #444444;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8);
+            color: #ff3333; /* Red text on hover */
+            border-color: #ff3333;
+        }
+
+        body.theme-dresden-extreme h1,
+        body.theme-dresden-extreme h2 {
+            font-size: 1.8em;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 35px rgba(255, 255, 255, 0.8), 0 0 50px rgba(255, 255, 255, 0.6);
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 5px;
+        }
+        
+        body.theme-dresden-extreme h1 {
+            color: #ff3333; /* Main title is red */
+            text-shadow: 0 0 20px rgba(255, 0, 0, 1), 0 0 35px rgba(255, 0, 0, 0.8), 0 0 50px rgba(255, 0, 0, 0.6);
+        }
+        
+        body.theme-china {
+            /* Chinese Communist Theme */
+            --bg-color: #aa0000;       /* Dark Red */
+            --panel-bg: #de0000;       /* Bright Red */
+            --text-color: #ffcc00;     /* Gold */
+            --text-muted: #ffdd66;
+            --border: #ffcc00;         /* Gold border */
+            
+            --accent-pink: #ffcc00;
+            --accent-green: #ffcc00;
+            --accent-blue: #ffcc00;
+            --accent-yellow: #ffffff;
+            --accent-orange: #ffcc00;
+            
+            --input-bg: #aa0000;
+            --input-text: #ffcc00;
+            
+            --shadow: 0 0 10px rgba(255, 204, 0, 0.2), inset 1px 1px 3px rgba(255, 204, 0, 0.3);
+            --shadow-hover: 0 0 25px rgba(255, 204, 0, 0.8), inset 1px 1px 5px rgba(255, 204, 0, 0.6);
+            --border-width: 3px;
+            --border-radius: 4px;
+            
+            --font-main: 'Noto Sans SC', sans-serif;
+            --font-head: 'Noto Sans SC', sans-serif;
+            --font-title: 'Noto Sans SC', sans-serif;
+        }
+
+        body.theme-china .btn,
+        body.theme-china input,
+        body.theme-china select,
+        body.theme-china canvas {
+            border: var(--border-width) solid var(--border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            background-color: var(--panel-bg);
+            color: var(--text-color);
+        }
+
+        body.theme-china .panel {
+            border: 2px solid var(--border);
+            border-radius: 0;
+            box-shadow: var(--shadow);
+            background-color: var(--panel-bg);
+            color: var(--text-color);
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 100% 0%, rgba(255, 204, 0, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 0% 100%, rgba(255, 204, 0, 0.15) 0%, transparent 60%);
+        }
+
+        /* Inner decorative border */
+        body.theme-china .panel::before {
+            content: '';
+            position: absolute;
+            top: 5px; left: 5px; right: 5px; bottom: 5px;
+            border: 1px dashed rgba(255, 204, 0, 0.6);
+            pointer-events: none;
+        }
+
+        /* Golden geometric corner braces */
+        body.theme-china .panel::after {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: 
+                linear-gradient(135deg, var(--border) 14px, transparent 14px) top left,
+                linear-gradient(-135deg, var(--border) 14px, transparent 14px) top right,
+                linear-gradient(45deg, var(--border) 14px, transparent 14px) bottom left,
+                linear-gradient(-45deg, var(--border) 14px, transparent 14px) bottom right;
+            background-size: 50% 50%;
+            background-repeat: no-repeat;
+            pointer-events: none;
+        }
+
+        body.theme-china .btn {
+            background-color: #aa0000;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        body.theme-china .btn:hover {
+            box-shadow: var(--shadow-hover);
+            background-color: #ffcc00;
+            color: #aa0000;
+        }
+
+        body.theme-china h1,
+        body.theme-china h2 {
+            font-size: 1.8em;
+            letter-spacing: 2px;
+            color: #ffcc00;
+            text-shadow: 2px 2px 0px #880000, 0 0 15px rgba(255, 204, 0, 0.8);
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 5px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        body.theme-china h1::before,
+        body.theme-china h1::after {
+            content: ' ★ ';
+            color: #ffcc00;
+            font-size: 1.2em;
+            vertical-align: middle;
+            text-shadow: 0 0 15px rgba(255, 204, 0, 1);
+        }
+
+        body.theme-china h2::before {
+            content: '☭ ';
+            color: #ffcc00;
+            margin-right: 8px;
+        }
+        
+        body.theme-china .btn::before {
+            content: '★ ';
+            color: inherit;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        body.theme-china .panel {
+            background-image: 
+                radial-gradient(circle at 100% 0%, rgba(255, 204, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(255, 204, 0, 0.1) 0%, transparent 50%);
+        }
+
+        body.theme-taipei {
+            /* Republic of China (Taiwan) Theme */
+            --bg-color: #002868;       /* Deep Blue */
+            --panel-bg: #003380;       /* Slightly lighter blue */
+            --text-color: #ffffff;     /* White */
+            --text-muted: #cccccc;
+            --border: #ffffff;         /* White border */
+            
+            --accent-pink: #ce1126;    /* Crimson Red */
+            --accent-green: #ffffff;
+            --accent-blue: #ffffff;
+            --accent-yellow: #ce1126;
+            --accent-orange: #ffffff;
+            
+            --input-bg: #001a4d;
+            --input-text: #ffffff;
+            
+            --shadow: 0 0 10px rgba(255, 255, 255, 0.2), inset 1px 1px 3px rgba(255, 255, 255, 0.3);
+            --shadow-hover: 0 0 25px rgba(255, 255, 255, 0.8), inset 1px 1px 5px rgba(255, 255, 255, 0.6);
+            --border-width: 2px;
+            --border-radius: 8px;
+            
+            --font-main: 'Noto Sans TC', sans-serif;
+            --font-head: 'Noto Sans TC', sans-serif;
+            --font-title: 'Noto Sans TC', sans-serif;
+        }
+
+        body.theme-taipei .btn,
+        body.theme-taipei input,
+        body.theme-taipei select,
+        body.theme-taipei canvas {
+            border: var(--border-width) solid var(--border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            background-color: var(--panel-bg);
+            color: var(--text-color);
+        }
+
+        body.theme-taipei .panel {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            background-color: var(--panel-bg);
+            color: var(--text-color);
+            position: relative;
+        }
+
+        body.theme-taipei .btn {
+            background-color: #ce1126; /* Red buttons */
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-radius: 20px; /* Pill shaped */
+            border-color: #ffffff;
+        }
+
+        body.theme-taipei .btn:hover {
+            box-shadow: 0 0 20px rgba(206, 17, 38, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.5);
+            background-color: #ff1a33;
+            color: #ffffff;
+        }
+
+        body.theme-taipei h1,
+        body.theme-taipei h2 {
+            font-size: 1.8em;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+            padding-bottom: 5px;
+            text-align: center;
+        }
+
+        body.theme-taipei h1::before,
+        body.theme-taipei h1::after {
+            content: ' ❀ '; /* Plum blossom symbol */
+            color: #ffffff;
+            font-size: 1.1em;
+            vertical-align: middle;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 1);
+        }
+
+        body.theme-taipei h2::before {
+            content: '☼ '; /* Sun symbol (White Sun) */
+            color: #ffffff;
+            margin-right: 8px;
+        }
+        
+        body.theme-taipei .btn::before {
+            content: '❀ ';
+            color: inherit;
+            font-size: 0.9em;
+            opacity: 0.9;
         }
 
         body {
@@ -866,7 +1163,7 @@
     </style>
 </head>
 
-<body class="theme-pinkograph" onload="setTheme('pinkograph')">
+<body class="theme-dresden-dark" onload="setTheme('dresden-dark')">
 
     <div class="header-container">
         <a href="https://openbrushograph.github.io/" target="_blank">
@@ -875,7 +1172,7 @@
         <div style="display: flex; align-items: center; gap: 20px;">
             <h1 id="main-title" style="margin:0; text-shadow:none;">Mikro-Brushografia</h1>
             <select id="theme-selector" onchange="setTheme(this.value)" style="padding: 5px; border-radius: 4px; font-family: var(--font-main); border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-color);">
-                <option value="pinkograph" selected>Pinkograph</option>
+                <option value="pinkograph">Pinkograph</option>
                 <option value="esp3d">ESP3D Classic</option>
                 <option value="randen">Randen</option>
                 <option value="uwu">UwU</option>
@@ -884,6 +1181,9 @@
                 <option value="tropical">Deep Jungle Dark</option>
                 <option value="dresden">Kongress Dresden</option>
                 <option value="dresden-dark">Kongress Dresden (Nacht)</option>
+                <option value="dresden-extreme">Kongress Dresden (Extrem)</option>
+                <option value="china">China (CCP)</option>
+                <option value="taipei">China (Taipei)</option>
             </select>
         </div>
     </div>
@@ -1699,9 +1999,9 @@
             if (portEl) portEl.value = savedPort;
             if (pathEl) pathEl.value = savedPath;
 
-            log(`System Ready. Auto-connecting to ${savedIp}...`, 'info');
+            log(`System Ready. Auto-connecting disabled in preview mode.`, 'info');
             setTimeout(() => {
-                machine.connect(savedIp);
+                // [PREVIEW MODE] machine.connect(savedIp);
             }, 1000);
         }
         initAutoConnect();
@@ -1919,8 +2219,10 @@
         };
 
         function setTheme(mode) {
-            document.body.classList.remove('theme-light', 'theme-tropical', 'theme-esp3d', 'theme-randen', 'theme-pinkograph', 'theme-uwu', 'theme-coconut', 'theme-dresden', 'theme-dresden-dark');
+            document.body.className = '';
             document.body.classList.add('theme-' + mode);
+            const themeSelector = document.getElementById('theme-selector');
+            if (themeSelector) themeSelector.value = mode;
             
             let c1, c2, c3, c4, titleText;
             if (mode === 'tropical') {
@@ -1955,6 +2257,109 @@
                 document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
                 c1 = '#ffffff'; c2 = '#cccccc'; c3 = '#999999'; c4 = '#666666';
                 titleText = 'Bruschologischer Kongress';
+            } else if (mode === 'dresden-extreme') {
+                document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
+                c1 = '#ffffff'; c2 = '#ff3333'; c3 = '#cc0000'; c4 = '#660000';
+                titleText = 'Bruschologischer Kongress';
+            } else if (mode === 'china') {
+                document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
+                c1 = '#ffcc00'; c2 = '#ff9900'; c3 = '#ff6600'; c4 = '#ff3300';
+                titleText = '微型刷字仪 (Mikro-Brushografia)';
+                
+                // Show quote popup
+                setTimeout(() => {
+                    if (document.body.classList.contains('theme-china') && !document.getElementById('ccp-quote-modal')) {
+                        const quotes = [
+                            { zh: "必须坚持科技是第一生产力、人才是第一资源、创新是第一动力。", en: "We must uphold that science and technology are the primary productive forces, talent is the primary resource, and innovation is the primary driver of growth." },
+                            { zh: "绿水青山就是金山银山。", en: "Lucid waters and lush mountains are invaluable assets." },
+                            { zh: "不忘初心，牢记使命。", en: "Remain true to our original aspiration and keep our mission firmly in mind." },
+                            { zh: "空谈误国，实干兴邦。", en: "Empty talk harms the country, while hard work makes it flourish." },
+                            { zh: "伟大梦想不是等得来、喊得来的，而是拼出来、干出来的。", en: "Great dreams are not realized by waiting or shouting, but by fighting and doing." },
+                            { zh: "江山就是人民，人民就是江山。", en: "The country is its people; the people are the country." },
+                            { zh: "打铁必须自身硬。", en: "To forge iron, one must be strong." },
+                            { zh: "中华民族伟大复兴，绝不是轻轻松松、敲锣打鼓就能实现的。", en: "The great rejuvenation of the Chinese nation is no walk in the park or achieved by beating drums and gongs." },
+                            { zh: "青年兴则国家兴，青年强则国家强。", en: "A nation will prosper only when its young people thrive; a country will be strong only when its young people are strong." },
+                            { zh: "鞋子合不合脚，自己穿了才知道。", en: "Whether the shoes fit or not, only the wearer knows." }
+                        ];
+                        const quote = quotes[Math.floor(Math.random() * quotes.length)];
+                        
+                        const modal = document.createElement('div');
+                        modal.id = 'ccp-quote-modal';
+                        modal.style.position = 'fixed';
+                        modal.style.top = '50%';
+                        modal.style.left = '50%';
+                        modal.style.transform = 'translate(-50%, -50%)';
+                        modal.style.backgroundColor = '#660000'; // Deep maroon to stand out
+                        modal.style.border = '4px solid #ffcc00'; // Thicker gold border
+                        modal.style.boxShadow = '0 0 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,204,0,0.3)'; // Dark drop shadow, gold inner glow
+                        modal.style.padding = '40px';
+                        modal.style.zIndex = '9999';
+                        modal.style.textAlign = 'center';
+                        modal.style.maxWidth = '80%';
+                        modal.style.borderRadius = '2px';
+                        modal.style.color = '#ffcc00'; // Pure gold text everywhere
+                        
+                        modal.innerHTML = `
+                            <div style="font-size: 2em; color: #ffcc00; margin-bottom: 20px; text-shadow: 0 0 15px rgba(255,204,0,1);">★ ★ ★</div>
+                            <h2 style="color:#ffcc00; border:none; margin:0; padding:0; font-size:1.6em; margin-bottom:20px; text-shadow: 2px 2px 0px #330000;">${quote.zh}</h2>
+                            <p style="font-family: monospace; color: #ffdd66; font-size: 1.1em; line-height: 1.6; margin-bottom: 30px;">
+                                "${quote.en}"<br><br>- Xi Jinping
+                            </p>
+                            <button class="btn" onclick="document.getElementById('ccp-quote-modal').remove()" style="padding: 10px 30px; background-color: #aa0000; border-color: #ffcc00; color: #ffcc00; font-size: 1.1em;">★ 继续 (CONTINUE) ★</button>
+                        `;
+                        document.body.appendChild(modal);
+                    }
+                }, 500);
+                
+            } else if (mode === 'taipei') {
+                document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
+                c1 = '#ffffff'; c2 = '#ccccff'; c3 = '#6666ff'; c4 = '#0000ff';
+                titleText = '微型刷字儀 (Mikro-Brushografia)';
+                
+                // Show quote popup
+                setTimeout(() => {
+                    if (document.body.classList.contains('theme-taipei') && !document.getElementById('roc-quote-modal')) {
+                        const quotes = [
+                            { zh: "生命的意義在創造宇宙繼起之生命；生活的目的在增進人類全體之生活。", en: "The meaning of life is to create the subsequent life of the universe; the purpose of living is to improve the livelihood of all mankind." },
+                            { zh: "和平未到根本絕望時期，決不放棄和平；犧牲未到最後關頭，決不輕言犧牲。", en: "Until peace has reached the point of absolute despair, we shall never give up on peace; until sacrifice has reached the final juncture, we shall not speak lightly of sacrifice." },
+                            { zh: "以國家興亡為己任，置個人死生於度外。", en: "Take the rise and fall of the nation as one's own responsibility, and set aside one's personal life and death." },
+                            { zh: "處變不驚，莊敬自強。", en: "Remain calm in times of crisis, be dignified and strengthen yourselves." },
+                            { zh: "只要我們一息尚存，我們就必須奮鬥到底。", en: "As long as we have a breath left, we must fight to the end." },
+                            { zh: "堅忍不拔，百折不回。", en: "Indomitable and unyielding, never turning back despite a hundred setbacks." },
+                            { zh: "國家的生命，在於民族的獨立；民族的生存，在於文化的發揚。", en: "The life of a nation lies in its national independence; the survival of a nation lies in the promotion of its culture." },
+                            { zh: "今日之教育，應以復興民族為目的。", en: "The education of today should aim at the rejuvenation of the nation." },
+                            { zh: "我們的使命是無比神聖的。", en: "Our mission is incomparably sacred." },
+                            { zh: "反共抗俄，復國建國。", en: "Oppose communism and resist Russia, recover and rebuild the nation." }
+                        ];
+                        const quote = quotes[Math.floor(Math.random() * quotes.length)];
+                        
+                        const modal = document.createElement('div');
+                        modal.id = 'roc-quote-modal';
+                        modal.style.position = 'fixed';
+                        modal.style.top = '50%';
+                        modal.style.left = '50%';
+                        modal.style.transform = 'translate(-50%, -50%)';
+                        modal.style.backgroundColor = '#002868'; // Deep blue
+                        modal.style.border = '4px solid #ffffff'; // White border
+                        modal.style.boxShadow = '0 0 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,255,255,0.3)'; 
+                        modal.style.padding = '40px';
+                        modal.style.zIndex = '9999';
+                        modal.style.textAlign = 'center';
+                        modal.style.maxWidth = '80%';
+                        modal.style.borderRadius = '8px';
+                        modal.style.color = '#ffffff'; 
+                        
+                        modal.innerHTML = `
+                            <div style="font-size: 2em; color: #ce1126; margin-bottom: 20px; text-shadow: 0 0 15px rgba(206,17,38,0.8);">❀ ❀ ❀</div>
+                            <h2 style="color:#ffffff; border:none; margin:0; padding:0; font-size:1.6em; margin-bottom:20px; text-shadow: 2px 2px 0px #001a4d;">${quote.zh}</h2>
+                            <p style="font-family: monospace; color: #cccccc; font-size: 1.1em; line-height: 1.6; margin-bottom: 30px;">
+                                "${quote.en}"<br><br>- Chiang Kai-shek (蔣介石)
+                            </p>
+                            <button class="btn" onclick="document.getElementById('roc-quote-modal').remove()" style="padding: 10px 30px; background-color: #ce1126; border-color: #ffffff; color: #ffffff; font-size: 1.1em; border-radius: 20px;">❀ 繼續 (CONTINUE) ❀</button>
+                        `;
+                        document.body.appendChild(modal);
+                    }
+                }, 500);
             } else {
                 document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
                 c1 = '#005b96'; c2 = '#56bdff'; c3 = '#32b643'; c4 = '#ffb700';
@@ -1964,6 +2369,344 @@
             const titleEl = document.getElementById('main-title');
             if (titleEl) titleEl.textContent = titleText;
             
+            const de_translations = {
+                'Play Drawing': 'Zeichnung abspielen',
+                'Download G-Code': 'Geometrische Steuerbefehle herunterladen',
+                'Upload SD': 'SD hochladen',
+                'Load G-Code': 'Geometrische Steuerbefehle laden',
+                'Clear': 'Löschen',
+                'Loop': 'Schleife',
+                'Connect': 'Verbinden',
+                'Send': 'Senden',
+                'Home XYZ': 'Referenzfahrt (XYZ)',
+                'Panic Stop (Reset)': 'Not-Aus',
+                'Resume': 'Fortsetzen',
+                'Flush / Soft Reset': 'Leeren / Neustart',
+                'Refresh': 'Aktualisieren',
+                'Undo': 'Rückgängig',
+                'Redo': 'Wiederholen',
+                'Draw (F):': 'Zeichnen (F):',
+                'Fast (F):': 'Schnell (F):',
+                'Max Path before Re-dip (mm):': 'Max. Pfad (mm):',
+                'Z Pick:': 'Z Abholen:',
+                'Z Lift:': 'Z Heben:',
+                'Z Down:': 'Z Unten:',
+                'Canvas Size:': 'Leinwand:',
+                'Scale X/Y:': 'Skalierung X/Y:',
+                'Offset X:': 'Versatz X:',
+                'Offset Y:': 'Versatz Y:',
+                'SD Card Files': 'SD-Karten Dateien',
+                'Color Pots': 'Farbtöpfe',
+                'Generate & Preview': 'Generieren & Vorschau',
+                'Distance:': 'Distanz:',
+                'Speed:': 'Geschw.:',
+                'Move': 'Fahren',
+                'Z Lift (Up):': 'Z Heben (Oben):',
+                'Z Paint (Down):': 'Z Malen (Unten):',
+                'Z Feedrate (F):': 'Z Vorschub (F):',
+                'Global Feed (Scan):': 'Globaler Vorschub:',
+                'Safe Feed (F):': 'Sicherer Vorschub (F):',
+                'Preset:': 'Voreinstellung:',
+                'Initialize': 'Initialisieren',
+                'Settings': 'Einstellungen',
+                'Calibration': 'Kalibrierung',
+                'Run': 'Ausführen',
+                'Save': 'Speichern',
+                'Control': 'Steuerung',
+                'Dusjagr\'s Favorites': 'Dusjagrs Favoriten',
+                'Custom G-Code Commands': 'Eigene Geometrische Steuerbefehle',
+                'Stream File': 'Datei streamen',
+                'Start Stream': 'Stream starten',
+                'Save Stream': 'Stream speichern',
+                'Disconnect': 'Trennen',
+                'X (mm):': 'X (mm):',
+                'Y (mm):': 'Y (mm):',
+                'Brushograph Settings': 'Brushograph Einstellungen',
+                'Surface Calibration Z-Map': 'Oberflächenkalibrierung Z-Map',
+                'G-Code Streamer': 'Geometrische Steuerbefehle Streamer',
+                'Select File': 'Datei auswählen',
+                'No file selected': 'Keine Datei ausgewählt',
+                'Ready': 'Bereit',
+                '0 lines': '0 Zeilen',
+                'Live Preview on Drawing Pad': 'Live-Vorschau auf Leinwand',
+                'Apply Raster Fix (G91 → G90) & Z-Lift': 'Raster-Fix anwenden & Z-Heben',
+                'Use G0 for Z': 'G0 für Z verwenden',
+                'Remove S': 'S entfernen',
+                'Apply Backlash Compensation': 'Spielausgleich anwenden',
+                'Apply Transformations (Scale/Offset)': 'Transformationen anwenden',
+                'Stream G-Code': 'Geometrische Steuerbefehle streamen',
+                'Save G-Code': 'Geometrische Steuerbefehle speichern',
+                'Loading archive...': 'Archiv wird geladen...',
+                'Click Refresh to load SD card...': 'Aktualisieren zum Laden...',
+                'Connection': 'Verbindung',
+                'STATUS:': 'STATUS:',
+                'OFFLINE': 'OFFLINE',
+                'Initialize & Home Robot': 'Malautomat referenzieren',
+                'Emergency Stop (!)': 'Not-Aus (!)',
+                'Resume (~)': 'Fortsetzen (~)',
+                'Flush / Reset': 'Leeren / Neustart',
+                'Manual Jog Control': 'Manuelle Steuerung',
+                'Set Work Coordinates (Zero)': 'Arbeitskoordinaten setzen',
+                'Zero X': 'Null X',
+                'Zero Y': 'Null Y',
+                'Zero Z': 'Null Z',
+                'Manual Macros': 'Manuelle Makros',
+                'Dip C1': 'Tauchen C1',
+                'Dip C2': 'Tauchen C2',
+                'Dip C3': 'Tauchen C3',
+                'Wash': 'Waschen',
+                '3. Brushograph Drawing Pad': '3. Brushograph Leinwand',
+                'Pure Pen': 'Nur Stift',
+                'Auto-Wash': 'Auto-Waschen',
+                'Custom': 'Benutzerdefiniert',
+                'Z-Axis Plane Leveling': 'Z-Achsen Nivellierung',
+                'Enable': 'Aktivieren',
+                'Diy-CAD Components': 'Diy-CAD Komponenten',
+                'Draw': 'Zeichnen',
+                'Move Parts': 'Teile bewegen',
+                'Eraser': 'Radiergummi',
+                'Delete Selected': 'Auswahl löschen',
+                'Color Palette': 'Farbpalette',
+                'WASH': 'WASCHEN',
+                'Dry': 'Trocknen'
+            };
+
+            const zh_translations = {
+                'Play Drawing': '播放绘图',
+                'Download G-Code': '下载G代码',
+                'Upload SD': '上传SD卡',
+                'Load G-Code': '加载G代码',
+                'Clear': '清除',
+                'Loop': '循环',
+                'Connect': '连接',
+                'Send': '发送',
+                'Home XYZ': '回原点 (XYZ)',
+                'Panic Stop (Reset)': '紧急停止 (重置)',
+                'Resume': '恢复',
+                'Flush / Soft Reset': '刷新 / 软重置',
+                'Refresh': '刷新',
+                'Undo': '撤销',
+                'Redo': '重做',
+                'Draw (F):': '绘图 (F):',
+                'Fast (F):': '快速 (F):',
+                'Max Path before Re-dip (mm):': '最大路径 (mm):',
+                'Z Pick:': 'Z 拾取:',
+                'Z Lift:': 'Z 抬起:',
+                'Z Down:': 'Z 落下:',
+                'Canvas Size:': '画布尺寸:',
+                'Scale X/Y:': '缩放 X/Y:',
+                'Offset X:': '偏移 X:',
+                'Offset Y:': '偏移 Y:',
+                'SD Card Files': 'SD卡文件',
+                'Color Pots': '颜料罐',
+                'Generate & Preview': '生成与预览',
+                'Distance:': '距离:',
+                'Speed:': '速度:',
+                'Move': '移动',
+                'Z Lift (Up):': 'Z 抬起 (上):',
+                'Z Paint (Down):': 'Z 绘画 (下):',
+                'Z Feedrate (F):': 'Z 进给率 (F):',
+                'Global Feed (Scan):': '全局进给:',
+                'Safe Feed (F):': '安全进给 (F):',
+                'Preset:': '预设:',
+                'Initialize': '初始化',
+                'Settings': '设置',
+                'Calibration': '校准',
+                'Run': '运行',
+                'Save': '保存',
+                'Control': '控制',
+                'Dusjagr\'s Favorites': 'Dusjagr的收藏',
+                'Custom G-Code Commands': '自定义G代码命令',
+                'Stream File': '流式传输文件',
+                'Start Stream': '开始流式传输',
+                'Save Stream': '保存流式传输',
+                'Disconnect': '断开连接',
+                'X (mm):': 'X (mm):',
+                'Y (mm):': 'Y (mm):',
+                'Brushograph Settings': '刷字仪设置',
+                'Surface Calibration Z-Map': '表面校准Z贴图',
+                'G-Code Streamer': 'G代码流媒体',
+                'Select File': '选择文件',
+                'No file selected': '未选择文件',
+                'Ready': '就绪',
+                '0 lines': '0 行',
+                'Live Preview on Drawing Pad': '绘图板实时预览',
+                'Apply Raster Fix (G91 → G90) & Z-Lift': '应用光栅修复及Z抬起',
+                'Use G0 for Z': 'Z轴使用G0',
+                'Remove S': '移除S',
+                'Apply Backlash Compensation': '应用背隙补偿',
+                'Apply Transformations (Scale/Offset)': '应用变换 (缩放/偏移)',
+                'Stream G-Code': '流式传输G代码',
+                'Save G-Code': '保存G代码',
+                'Loading archive...': '正在加载档案...',
+                'Click Refresh to load SD card...': '点击刷新加载SD卡...',
+                'Connection': '连接',
+                'STATUS:': '状态:',
+                'OFFLINE': '离线',
+                'Initialize & Home Robot': '初始化并回原点',
+                'Emergency Stop (!)': '紧急停止 (!)',
+                'Resume (~)': '恢复 (~)',
+                'Flush / Reset': '刷新 / 重置',
+                'Manual Jog Control': '手动微调控制',
+                'Set Work Coordinates (Zero)': '设置工作坐标 (零点)',
+                'Zero X': 'X清零',
+                'Zero Y': 'Y清零',
+                'Zero Z': 'Z清零',
+                'Manual Macros': '手动宏',
+                'Dip C1': '沾 C1',
+                'Dip C2': '沾 C2',
+                'Dip C3': '沾 C3',
+                'Wash': '清洗',
+                '3. Brushograph Drawing Pad': '3. 刷字仪绘图板',
+                'Pure Pen': '纯笔',
+                'Auto-Wash': '自动清洗',
+                'Custom': '自定义',
+                'Z-Axis Plane Leveling': 'Z轴平面找平',
+                'Enable': '启用',
+                'Diy-CAD Components': 'DIY-CAD组件',
+                'Draw': '绘画',
+                'Move Parts': '移动部件',
+                'Eraser': '橡皮擦',
+                'Delete Selected': '删除选中',
+                'Color Palette': '调色板',
+                'WASH': '清洗',
+                'Dry': '干燥'
+            };
+
+            const tw_translations = {
+                'Play Drawing': '播放繪圖',
+                'Download G-Code': '下載G代碼',
+                'Upload SD': '上傳SD卡',
+                'Load G-Code': '載入G代碼',
+                'Clear': '清除',
+                'Loop': '循環',
+                'Connect': '連線',
+                'Send': '發送',
+                'Home XYZ': '回原點 (XYZ)',
+                'Panic Stop (Reset)': '緊急停止 (重設)',
+                'Resume': '恢復',
+                'Flush / Soft Reset': '刷新 / 軟重設',
+                'Refresh': '重新整理',
+                'Undo': '復原',
+                'Redo': '重做',
+                'Draw (F):': '繪圖 (F):',
+                'Fast (F):': '快速 (F):',
+                'Max Path before Re-dip (mm):': '最大路徑 (mm):',
+                'Z Pick:': 'Z 拾取:',
+                'Z Lift:': 'Z 抬起:',
+                'Z Down:': 'Z 落下:',
+                'Canvas Size:': '畫布尺寸:',
+                'Scale X/Y:': '縮放 X/Y:',
+                'Offset X:': '偏移 X:',
+                'Offset Y:': '偏移 Y:',
+                'SD Card Files': 'SD卡檔案',
+                'Color Pots': '顏料罐',
+                'Generate & Preview': '生成與預覽',
+                'Distance:': '距離:',
+                'Speed:': '速度:',
+                'Move': '移動',
+                'Z Lift (Up):': 'Z 抬起 (上):',
+                'Z Paint (Down):': 'Z 繪畫 (下):',
+                'Z Feedrate (F):': 'Z 進給率 (F):',
+                'Global Feed (Scan):': '全局進給:',
+                'Safe Feed (F):': '安全進給 (F):',
+                'Preset:': '預設:',
+                'Initialize': '初始化',
+                'Settings': '設定',
+                'Calibration': '校準',
+                'Run': '執行',
+                'Save': '儲存',
+                'Control': '控制',
+                'Dusjagr\'s Favorites': 'Dusjagr的收藏',
+                'Custom G-Code Commands': '自訂G代碼命令',
+                'Stream File': '串流傳輸檔案',
+                'Start Stream': '開始串流傳輸',
+                'Save Stream': '儲存串流傳輸',
+                'Disconnect': '斷開連線',
+                'X (mm):': 'X (mm):',
+                'Y (mm):': 'Y (mm):',
+                'Brushograph Settings': '刷字儀設定',
+                'Surface Calibration Z-Map': '表面校準Z貼圖',
+                'G-Code Streamer': 'G代碼串流',
+                'Select File': '選擇檔案',
+                'No file selected': '未選擇檔案',
+                'Ready': '準備就緒',
+                '0 lines': '0 行',
+                'Live Preview on Drawing Pad': '繪圖板即時預覽',
+                'Apply Raster Fix (G91 → G90) & Z-Lift': '套用光柵修復及Z抬起',
+                'Use G0 for Z': 'Z軸使用G0',
+                'Remove S': '移除S',
+                'Apply Backlash Compensation': '套用背隙補償',
+                'Apply Transformations (Scale/Offset)': '套用變換 (縮放/偏移)',
+                'Stream G-Code': '串流傳輸G代碼',
+                'Save G-Code': '儲存G代碼',
+                'Loading archive...': '正在載入檔案...',
+                'Click Refresh to load SD card...': '點擊重新整理載入SD卡...',
+                'Connection': '連線狀態',
+                'STATUS:': '狀態:',
+                'OFFLINE': '離線',
+                'Initialize & Home Robot': '初始化並回原點',
+                'Emergency Stop (!)': '緊急停止 (!)',
+                'Resume (~)': '恢復 (~)',
+                'Flush / Reset': '刷新 / 重設',
+                'Manual Jog Control': '手動寸動控制',
+                'Set Work Coordinates (Zero)': '設定工作座標 (零點)',
+                'Zero X': 'X清零',
+                'Zero Y': 'Y清零',
+                'Zero Z': 'Z清零',
+                'Manual Macros': '手動巨集',
+                'Dip C1': '沾 C1',
+                'Dip C2': '沾 C2',
+                'Dip C3': '沾 C3',
+                'Wash': '清洗',
+                '3. Brushograph Drawing Pad': '3. 刷字儀繪圖板',
+                'Pure Pen': '純筆',
+                'Auto-Wash': '自動清洗',
+                'Custom': '自訂',
+                'Z-Axis Plane Leveling': 'Z軸平面找平',
+                'Enable': '啟用',
+                'Diy-CAD Components': 'DIY-CAD組件',
+                'Draw': '繪畫',
+                'Move Parts': '移動部件',
+                'Eraser': '橡皮擦',
+                'Delete Selected': '刪除選取',
+                'Color Palette': '調色盤',
+                'WASH': '清洗',
+                'Dry': '乾燥'
+            };
+
+            const isGerman = (mode === 'dresden' || mode === 'dresden-dark' || mode === 'dresden-extreme');
+            const isChinese = (mode === 'china');
+            const isTaipei = (mode === 'taipei');
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE' || node.parentElement.id === 'main-title')) continue;
+                if (node.originalText === undefined) {
+                    node.originalText = node.nodeValue;
+                }
+                let text = node.originalText;
+                let normalized = text.replace(/\s+/g, ' ').trim();
+                
+                if (isGerman && de_translations[normalized]) {
+                    const leading = text.match(/^\s*/)[0];
+                    const trailing = text.match(/\s*$/)[0];
+                    text = leading + de_translations[normalized] + trailing;
+                } else if (isChinese && zh_translations[normalized]) {
+                    const leading = text.match(/^\s*/)[0];
+                    const trailing = text.match(/\s*$/)[0];
+                    text = leading + zh_translations[normalized] + trailing;
+                } else if (isTaipei && tw_translations[normalized]) {
+                    const leading = text.match(/^\s*/)[0];
+                    const trailing = text.match(/\s*$/)[0];
+                    text = leading + tw_translations[normalized] + trailing;
+                }
+                
+                if (node.nodeValue !== text) {
+                    node.nodeValue = text;
+                }
+            }
+
             // Update POTS and UI
             POTS['c1'].color = c1;
             POTS['c2'].color = c2;
