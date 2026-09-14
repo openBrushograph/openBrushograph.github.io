@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenBrushograph Studio Index</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Bungee&display=swap');
+
+        :root {
+            /* Arai-eek Light Mode */
+            --bg-color: #ffffff;
+            --panel-bg: #ffffff;
+            --text-color: #2e3192;
+            --text-muted: #2e3192;
+            --border: #2e3192;
+            --accent-pink: #ed1b24; /* Red */
+            --accent-green: #2e3192; /* Navy */
+            --accent-blue: #2e3192; /* Navy */
+            --accent-yellow: #ed1b24; /* Red */
+            --accent-orange: #ed1b24; /* Red */
+            --shadow: 4px 4px 0 #2e3192;
+            --shadow-hover: 6px 6px 0 #ed1b24;
+            --font-main: 'Space Mono', monospace;
+            --font-head: 'Archivo Black', sans-serif;
+            --font-title: 'Bungee', sans-serif;
+            --panel-border: 3px solid var(--border);
+            --border-radius: 0px;
+        }
+
+        body.theme-tropical {
+            /* Deep Jungle Dark */
+            --bg-color: #051a05; 
+            --panel-bg: #0a220a; 
+            --text-color: #e0ffe0; 
+            --text-muted: #5ccc5c; 
+            --border: #2e8b57; 
+            --accent-pink: #ff00ff; 
+            --accent-green: #39FF14;
+            --accent-blue: #00f3ff;
+            --accent-yellow: #ffea00;
+            --accent-orange: #ff8800;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 0 10px var(--accent-pink);
+            --font-main: 'Courier New', Courier, monospace;
+            --font-head: 'Courier New', Courier, monospace;
+            --font-title: 'Courier New', Courier, monospace;
+            --panel-border: var(--panel-border);
+            --border-radius: var(--border-radius);
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: var(--font-title);
+            color: var(--accent-pink);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--accent-pink);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            width: 100%;
+            font-family: var(--font-title);
+            transform: skew(-2deg);
+        }
+
+        body.theme-tropical h1 {
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+            transform: none;
+        }
+
+        .subtitle {
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent-green);
+            border-radius: 6px;
+            padding: 25px;
+            box-shadow: var(--shadow); font-family: var(--font-main);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .panel-content {
+            flex: 1;
+        }
+
+        .panel-thumb {
+            width: 220px;
+            height: 150px;
+            object-fit: contain;
+            object-position: center;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            opacity: 0.85;
+            transition: all 0.2s;
+            background-color: var(--bg-color);
+        }
+
+        .panel:hover .panel-thumb {
+            opacity: 1;
+            border-color: var(--accent-pink) !important;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border-left-color: var(--accent-pink) !important;
+        }
+        
+        body.theme-tropical .panel:hover {
+            box-shadow: 0 8px 25px rgba(57, 255, 20, 0.2);
+        }
+
+        .panel h2 {
+            font-family: var(--font-head);
+            color: var(--accent-yellow);
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .tag {
+            font-family: var(--font-main);
+            background-color: rgba(0, 243, 255, 0.1);
+            color: var(--accent-blue);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            border: 1px solid var(--accent-blue);
+        }
+
+        .intro-text {
+            background: var(--panel-bg);
+            border: 1px dashed var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        body.theme-tropical .intro-text {
+            background: rgba(46, 139, 87, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 10px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            gap: 5px;
+        }
+
+        .theme-btn {
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            background: var(--panel-bg);
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent-pink);
+        }
+
+    
+        .logo-img { height: 50px; border: none; }
+        body.theme-tropical .logo-img { filter: drop-shadow(0 0 5px rgba(255,0,127,0.5)); }
+        body:not(.theme-tropical) .logo-img { box-shadow: 4px 4px 0 var(--border); transform: rotate(-3deg); border: 2px solid var(--border); background: #fff; padding: 4px; border-radius: 4px; height: 40px;}
+
+    </style>
+</head>
+<body class="theme-tropical">
+
+    <div class="header-container">
+        <a href="https://openbrushograph.github.io/" target="_blank">
+            <img src="../img/logo.png" alt="Logo" class="logo-img" id="dynamic-logo">
+        </a>
+        <h1>Brushograph Studio</h1>
+        <div class="theme-toggle">
+            <button class="theme-btn" onclick="setTheme('light')" title="Light Mode">☀️</button>
+            <button class="theme-btn" onclick="setTheme('tropical')" title="Tropical Mode" style="color:var(--accent-pink);">🌴</button>
+        </div>
+    </div>
+    
+    <div class="subtitle">Mechatronic Web Interfaces & Sonic Experiments</div>
+
+    <div class="container">
+        
+        <div class="intro-text">
+            <strong>About this Experiment:</strong><br><br>
+            This directory hosts a collection of single-file, portable web interfaces designed to interact with a FluidNC-driven Brushograph. By injecting "blind" G-code over local HTTP or persistent WebSockets, these interfaces turn the machine's stepper motors into dynamic sound generators and professional drawing tools. Built with a unified <em>Cyber-Tropical</em> aesthetic, these tools evolved sequentially from a simple sequencer to a high-performance mechatronic studio.
+        </div>
+
+        <div class="subtitle" style="margin-top: 10px; margin-bottom: 20px; color: var(--accent-pink);">Current Applications</div>
+
+        <a href="apps/mikro_brushograph_preview.html" class="panel" style="border-left-color: var(--accent-pink);">
+            <div class="panel-content">
+                <h2 style="color: var(--accent-pink);">Mikro-Brushografia <span class="tag" style="border-color: var(--accent-pink); color: var(--accent-pink); background: rgba(255,0,127,0.1);">Controller</span></h2>
+                <p><strong>Technical Core:</strong> A highly customizable drawing pad controller equipped with dynamic aesthetics spanning UwU Mode, USA MAGA, and Bengaluru stylings. Features direct XY movement macros and embedded signature rendering optimized for real-time G-Code generation.</p>
+                <div style="margin-top: 10px; font-size: 0.85rem; color: var(--accent-blue); background: rgba(0,243,255,0.05); padding: 8px; border-radius: 4px; border: 1px dashed var(--accent-blue);">
+                    <strong>🛠️ Agentic Dev Stack & Themes:</strong><br>
+                    Developed with <strong>Antigravity IDE</strong>. Leverages a multi-language translation and custom CSS theme engine to instantly modify the entire UI experience and aesthetic feel without changing the mechatronic core.
+                </div>
+            </div>
+        </a>
+
+        <a href="apps/brushograph_sequencer_pro.html" class="panel" style="border-left-color: var(--accent-yellow);">
+            <img src="assets/thumbnails/thumb_sequencer_pro.png" class="panel-thumb" style="border-color: var(--accent-yellow);" alt="Sequencer Pro Thumbnail">
+            <div class="panel-content">
+                <h2 style="color: var(--accent-yellow);">Sequencer Platinum Pro <span class="tag" style="border-color: var(--accent-yellow); color: var(--accent-yellow); background: rgba(255,234,0,0.1);">WebSocket/JS</span></h2>
+                <p><strong>Technical Core:</strong> Migrated to persistent WebSocket streaming for binary-encoded G-code injection. Implemented axis-combining batching in <code>droneLoop</code> for synchronized harmonic motion and a delta-accumulator smoothing layer for gesture-based XY/Z sequencing. Operates in stateful Relative (G91) mode by default to minimize serial buffer overhead.</p>
+                <div style="margin-top: 10px; font-size: 0.85rem; color: var(--accent-blue); background: rgba(0,243,255,0.05); padding: 8px; border-radius: 4px; border: 1px dashed var(--accent-blue);">
+                    <strong>🛠️ Agentic Dev Stack & Performance:</strong><br>
+                    Developed in <strong>Antigravity IDE</strong> using a hybrid-model workflow: <strong>Gemini 1.5 Flash</strong> for rapid mechatronic feedback loops and <strong>DeepSeek V4 (Pro)</strong> via MCP for low-level logic refactoring and stateful mode management. 
+                </div>
+            </div>
+        </a>
+
+        <a href="index_legacy.html" style="color: var(--text-muted); text-align: center; margin-top: 40px; font-size: 0.9rem; text-decoration: none;">View Earlier Prototypes & Legacy Archive &rarr;</a>
+
+    </div>
+
+    <script>
+        function setTheme(mode) {
+            if (mode === 'tropical') {
+                document.body.classList.add('theme-tropical');
+                document.getElementById('dynamic-logo').src = '../img/logo.png';
+            } else {
+                document.body.classList.remove('theme-tropical');
+                document.getElementById('dynamic-logo').src = '../img/arai-icon.svg';
+            }
+        }
+    </script>
+</body>
+</html>
