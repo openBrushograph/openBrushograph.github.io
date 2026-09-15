@@ -469,8 +469,7 @@
         }
         
         body.theme-dresden *,
-        body.theme-dresden-dark *,
-        body.theme-dresden-extreme * {
+        body.theme-dresden-dark * {
             text-transform: none !important;
         }
 
@@ -505,167 +504,6 @@
             margin-bottom: 10px;
             border-bottom: 1px solid var(--border);
             padding-bottom: 5px;
-        }
-
-        body.theme-dresden-extreme {
-            /* Kongress Dresden Extreme Theme */
-            --bg-color: #080808;       
-            --panel-bg: #151515;
-            --text-color: #ffffff;     
-            --text-muted: #aaaaaa;
-            --border: #aa0000;         /* Red borders */
-            
-            --accent-pink: #ffffff;
-            --accent-green: #ffffff;
-            --accent-blue: #ffffff;
-            --accent-yellow: #ffffff;
-            --accent-orange: #ff3333;
-            
-            --input-bg: #000000;
-            --input-text: #ffffff;
-            
-            --shadow: 0 0 12px rgba(255, 255, 255, 0.25), inset 1px 1px 3px rgba(255,0,0,0.2);
-            --shadow-hover: 0 0 25px rgba(255, 255, 255, 0.7), inset 1px 1px 5px rgba(255,0,0,0.5);
-            --border-width: 2px;
-            --border-radius: 2px;
-            
-            --font-main: 'UnifrakturCook', serif;
-            --font-head: 'UnifrakturCook', serif;
-            --font-title: 'UnifrakturCook', serif;
-        }
-
-        body.theme-dresden-extreme .panel,
-        body.theme-dresden-extreme .btn,
-        body.theme-dresden-extreme input,
-        body.theme-dresden-extreme select,
-        body.theme-dresden-extreme canvas {
-            border: var(--border-width) solid var(--border);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            background-color: var(--panel-bg);
-        }
-
-        body.theme-dresden-extreme .btn {
-            background-color: #2a2a2a;
-        }
-
-        body.theme-dresden-extreme .btn:hover {
-            box-shadow: var(--shadow-hover);
-            background-color: #444444;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8);
-            color: #ff3333; /* Red text on hover */
-            border-color: #ff3333;
-        }
-
-        body.theme-dresden-extreme h1,
-        body.theme-dresden-extreme h2 {
-            font-size: 1.8em;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 35px rgba(255, 255, 255, 0.8), 0 0 50px rgba(255, 255, 255, 0.6);
-            margin-bottom: 10px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 5px;
-        }
-        
-        body.theme-dresden-extreme h1 {
-            color: #ff3333; /* Main title is red */
-            text-shadow: 0 0 20px rgba(255, 0, 0, 1), 0 0 35px rgba(255, 0, 0, 0.8), 0 0 50px rgba(255, 0, 0, 0.6);
-        }
-
-        body.theme-taipei {
-            /* Republic of China (Taiwan) Theme */
-            --bg-color: #002868;       /* Deep Blue */
-            --panel-bg: #003380;       /* Slightly lighter blue */
-            --text-color: #ffffff;     /* White */
-            --text-muted: #cccccc;
-            --border: #ffffff;         /* White border */
-            
-            --accent-pink: #ce1126;    /* Crimson Red */
-            --accent-green: #ffffff;
-            --accent-blue: #ffffff;
-            --accent-yellow: #ce1126;
-            --accent-orange: #ffffff;
-            
-            --input-bg: #001a4d;
-            --input-text: #ffffff;
-            
-            --shadow: 0 0 10px rgba(255, 255, 255, 0.2), inset 1px 1px 3px rgba(255, 255, 255, 0.3);
-            --shadow-hover: 0 0 25px rgba(255, 255, 255, 0.8), inset 1px 1px 5px rgba(255, 255, 255, 0.6);
-            --border-width: 2px;
-            --border-radius: 8px;
-            
-            --font-main: 'Noto Sans TC', sans-serif;
-            --font-head: 'Noto Sans TC', sans-serif;
-            --font-title: 'Noto Sans TC', sans-serif;
-        }
-
-        body.theme-taipei .btn,
-        body.theme-taipei input,
-        body.theme-taipei select,
-        body.theme-taipei canvas {
-            border: var(--border-width) solid var(--border);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            background-color: var(--panel-bg);
-            color: var(--text-color);
-        }
-
-        body.theme-taipei .panel {
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            background-color: var(--panel-bg);
-            color: var(--text-color);
-            position: relative;
-        }
-
-        body.theme-taipei .btn {
-            background-color: #ce1126; /* Red buttons */
-            font-weight: bold;
-            letter-spacing: 1px;
-            border-radius: 20px; /* Pill shaped */
-            border-color: #ffffff;
-        }
-
-        body.theme-taipei .btn:hover {
-            box-shadow: 0 0 20px rgba(206, 17, 38, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.5);
-            background-color: #ff1a33;
-            color: #ffffff;
-        }
-
-        body.theme-taipei h1,
-        body.theme-taipei h2 {
-            font-size: 1.8em;
-            letter-spacing: 2px;
-            color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-            margin-bottom: 10px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-            padding-bottom: 5px;
-            text-align: center;
-        }
-
-        body.theme-taipei h1::before,
-        body.theme-taipei h1::after {
-            content: ' ❀ '; /* Plum blossom symbol */
-            color: #ffffff;
-            font-size: 1.1em;
-            vertical-align: middle;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 1);
-        }
-
-        body.theme-taipei h2::before {
-            content: '☼ '; /* Sun symbol (White Sun) */
-            color: #ffffff;
-            margin-right: 8px;
-        }
-        
-        body.theme-taipei .btn::before {
-            content: '❀ ';
-            color: inherit;
-            font-size: 0.9em;
-            opacity: 0.9;
         }
 
         body {
@@ -1132,7 +970,13 @@
     </style>
 </head>
 
-<body class="theme-uwu" onload="setTheme('uwu')">
+<body onload="initTheme()">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('brushograph_theme') || 'uwu';
+            document.body.classList.add('theme-' + savedTheme);
+        })();
+    </script>
 
     <div class="header-container">
         <a href="https://openbrushograph.github.io/" target="_blank">
@@ -1150,7 +994,6 @@
                 <option value="tropical">Deep Jungle Dark</option>
                 <option value="dresden">Kongress Dresden</option>
                 <option value="dresden-dark">Kongress Dresden (Nacht)</option>
-                <option value="dresden-extreme">Kongress Dresden (Extrem)</option>
                 <option value="bengaluru">Bengaluru Fair (Kannada)</option>
             </select>
         </div>
@@ -2188,7 +2031,13 @@
             'dry': { x: 0, y: 0, color: '#3b4351', isWash: false, skipDip: true }
         };
 
+        function initTheme() {
+            const savedTheme = localStorage.getItem('brushograph_theme') || 'uwu';
+            setTheme(savedTheme);
+        }
+
         function setTheme(mode) {
+            localStorage.setItem('brushograph_theme', mode);
             document.body.className = '';
             document.body.classList.add('theme-' + mode);
             const themeSelector = document.getElementById('theme-selector');
@@ -2222,10 +2071,6 @@
             } else if (mode === 'dresden-dark') {
                 document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
                 c1 = '#ffffff'; c2 = '#cccccc'; c3 = '#999999'; c4 = '#666666';
-                titleText = 'Bruschologischer Kongress';
-            } else if (mode === 'dresden-extreme') {
-                document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
-                c1 = '#ffffff'; c2 = '#ff3333'; c3 = '#cc0000'; c4 = '#660000';
                 titleText = 'Bruschologischer Kongress';
             } else if (mode === 'bengaluru') {
                 document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
@@ -2585,7 +2430,7 @@
                 "Save Drawing": "Save Pwecious Art! ✨"
             };
 
-            const isGerman = (mode === 'dresden' || mode === 'dresden-dark' || mode === 'dresden-extreme');
+            const isGerman = (mode === 'dresden' || mode === 'dresden-dark');
             const isKannada = (mode === 'bengaluru');
             const isUwU = (mode === 'uwu');
             const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
