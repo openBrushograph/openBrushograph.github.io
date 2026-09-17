@@ -1305,7 +1305,8 @@ function vizFit() {
 
 // World → canvas
 function w2c(x, y) {
-  return [x * viz.scale + viz.ox, y * viz.scale + viz.oy];
+  const flippedY = (viz.dataMaxY - y); // flip here
+  return [x * viz.scale + viz.ox, flippedY * viz.scale + viz.oy];
 }
 
 function vizDraw() {
