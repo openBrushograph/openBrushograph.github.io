@@ -15,52 +15,61 @@
             --text-color: #3b4351;
             --text-muted: #66758c;
             --border: #dadee4;
-            
+
             /* Map Spectre palette to our color pots */
-            --accent-pink: #005b96;   /* Primary Blue */
-            --accent-green: #32b643;  /* Success Green */
-            --accent-blue: #56bdff;   /* Secondary Blue */
-            --accent-yellow: #ffb700; /* Warning Yellow */
-            --accent-orange: red;     /* Error Red */
-            
+            --accent-pink: #005b96;
+            /* Primary Blue */
+            --accent-green: #32b643;
+            /* Success Green */
+            --accent-blue: #56bdff;
+            /* Secondary Blue */
+            --accent-yellow: #ffb700;
+            /* Warning Yellow */
+            --accent-orange: red;
+            /* Error Red */
+
             --input-bg: #ffffff;
             --input-text: #3b4351;
-            
+
             /* Clean flat UI styling */
             --shadow: none;
-            --shadow-hover: 0 0 0 0.1rem rgba(0,91,150,0.2);
+            --shadow-hover: 0 0 0 0.1rem rgba(0, 91, 150, 0.2);
             --border-width: 1px;
             --border-radius: 0.2rem;
             --btn-transform: none;
-            
+
             /* Map to system fonts like Spectre.css */
-            --font-main: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+            --font-main: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
             --font-head: inherit;
             --font-title: inherit;
         }
 
         body.theme-bengaluru {
             /* Bengaluru Fair Theme */
-            --bg-color: #f7e6d2;       /* Sandalwood cream */
-            --panel-bg: #800020;       /* Deep Burgundy / Kumkum */
-            --text-color: #fceea7;     /* Turmeric Yellow */
+            --bg-color: #f7e6d2;
+            /* Sandalwood cream */
+            --panel-bg: #800020;
+            /* Deep Burgundy / Kumkum */
+            --text-color: #fceea7;
+            /* Turmeric Yellow */
             --text-muted: #f3d596;
-            --border: #fca311;         /* Bright Orange/Gold border */
-            
+            --border: #fca311;
+            /* Bright Orange/Gold border */
+
             --accent-pink: #d90429;
             --accent-green: #2a9d8f;
             --accent-blue: #0077b6;
             --accent-yellow: #e9c46a;
             --accent-orange: #f4a261;
-            
+
             --input-bg: #5a0016;
             --input-text: #ffffff;
-            
+
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
             --shadow-hover: 0 8px 12px rgba(0, 0, 0, 0.4), 0 4px 6px rgba(0, 0, 0, 0.2);
             --border-width: 2px;
             --border-radius: 8px;
-            
+
             --font-main: 'Noto Sans Kannada', sans-serif;
             --font-head: 'Noto Sans Kannada', sans-serif;
             --font-title: 'Noto Sans Kannada', sans-serif;
@@ -84,7 +93,7 @@
             background-color: var(--panel-bg);
             color: var(--text-color);
             position: relative;
-            background-image: 
+            background-image:
                 radial-gradient(circle at top left, rgba(252, 163, 17, 0.15) 0%, transparent 40%),
                 radial-gradient(circle at bottom right, rgba(42, 157, 143, 0.15) 0%, transparent 40%);
         }
@@ -93,7 +102,10 @@
         body.theme-bengaluru .panel::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; height: 8px;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
             background: linear-gradient(90deg, #fca311 25%, #2a9d8f 25%, #2a9d8f 50%, #fca311 50%, #fca311 75%, #2a9d8f 75%);
             background-size: 40px 10px;
             border-top-left-radius: 8px;
@@ -253,7 +265,7 @@
             --border-radius: 4px;
             --btn-transform: none;
         }
-        
+
         body.theme-pinkograph {
             background-image:
                 radial-gradient(circle at 12% -5%, rgba(255, 107, 181, 0.20), transparent 45%),
@@ -383,29 +395,30 @@
         body.theme-coconut .btn {
             text-shadow: 0 0 4px rgba(77, 255, 136, 0.8);
         }
-        
+
         body.theme-dresden {
             /* Kongress Dresden Theme */
-            --bg-color: #d1cfc7;       /* Vintage paper / Sepia light */
+            --bg-color: #d1cfc7;
+            /* Vintage paper / Sepia light */
             --panel-bg: #e6e4df;
             --text-color: #1a1a1a;
             --text-muted: #5a574f;
             --border: #8c887e;
-            
+
             --accent-pink: #2b2b2b;
             --accent-green: #3d3d3d;
             --accent-blue: #4f4f4f;
             --accent-yellow: #616161;
             --accent-orange: #1a1a1a;
-            
+
             --input-bg: #dcd9d1;
             --input-text: #1a1a1a;
-            
-            --shadow: 3px 3px 6px rgba(0,0,0,0.15), inset 1px 1px 2px rgba(255,255,255,0.4);
-            --shadow-hover: 4px 4px 8px rgba(0,0,0,0.25), inset 1px 1px 2px rgba(255,255,255,0.4);
+
+            --shadow: 3px 3px 6px rgba(0, 0, 0, 0.15), inset 1px 1px 2px rgba(255, 255, 255, 0.4);
+            --shadow-hover: 4px 4px 8px rgba(0, 0, 0, 0.25), inset 1px 1px 2px rgba(255, 255, 255, 0.4);
             --border-width: 2px;
             --border-radius: 1px;
-            
+
             --font-main: 'UnifrakturCook', serif;
             --font-head: 'UnifrakturCook', serif;
             --font-title: 'UnifrakturCook', serif;
@@ -435,7 +448,7 @@
         body.theme-dresden h2 {
             font-size: 1.8em;
             letter-spacing: 1px;
-            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
             margin-bottom: 10px;
             border-bottom: 1px solid var(--border);
             padding-bottom: 5px;
@@ -443,31 +456,34 @@
 
         body.theme-dresden-dark {
             /* Kongress Dresden Nacht Theme */
-            --bg-color: #080808;       /* Very dark background */
-            --panel-bg: #151515;       /* Dark panel */
-            --text-color: #ffffff;     /* Pure white text */
+            --bg-color: #080808;
+            /* Very dark background */
+            --panel-bg: #151515;
+            /* Dark panel */
+            --text-color: #ffffff;
+            /* Pure white text */
             --text-muted: #aaaaaa;
             --border: #666666;
-            
+
             --accent-pink: #ffffff;
             --accent-green: #eeeeee;
             --accent-blue: #dddddd;
             --accent-yellow: #cccccc;
             --accent-orange: #ffffff;
-            
+
             --input-bg: #000000;
             --input-text: #ffffff;
-            
-            --shadow: 0 0 20px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255,255,255,0.2);
-            --shadow-hover: 0 0 40px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 0.8), inset 0 0 15px rgba(255,255,255,0.6);
+
+            --shadow: 0 0 20px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
+            --shadow-hover: 0 0 40px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.6);
             --border-width: 2px;
             --border-radius: 2px;
-            
+
             --font-main: 'UnifrakturCook', serif;
             --font-head: 'UnifrakturCook', serif;
             --font-title: 'UnifrakturCook', serif;
         }
-        
+
         body.theme-dresden *,
         body.theme-dresden-dark * {
             text-transform: none !important;
@@ -866,11 +882,11 @@
             border: none;
         }
 
-            border: 2px solid var(--border);
-            background: #fff;
-            padding: 4px;
-            border-radius: 4px;
-            height: 40px;
+        border: 2px solid var(--border);
+        background: #fff;
+        padding: 4px;
+        border-radius: 4px;
+        height: 40px;
         }
 
         .footer-box {
@@ -897,7 +913,7 @@
             max-width: none !important;
             z-index: 9999 !important;
             overflow-y: hidden !important;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8) !important;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8) !important;
             display: flex !important;
             flex-direction: column !important;
         }
@@ -905,28 +921,37 @@
         .panel-body {
             display: grid;
             grid-template-columns: 1fr;
-            grid-template-areas: 
+            grid-template-areas:
                 "top"
                 "canvas"
                 "bottom";
             gap: 10px;
         }
-        .panel-controls-top { grid-area: top; }
-        .canvas-container { grid-area: canvas; }
-        .panel-controls-bottom { grid-area: bottom; }
+
+        .panel-controls-top {
+            grid-area: top;
+        }
+
+        .canvas-container {
+            grid-area: canvas;
+        }
+
+        .panel-controls-bottom {
+            grid-area: bottom;
+        }
 
         .fullscreen-panel .panel-body {
             display: grid !important;
             grid-template-columns: minmax(250px, 30%) 1fr !important;
             grid-template-rows: auto 1fr !important;
-            grid-template-areas: 
+            grid-template-areas:
                 "top canvas"
                 "bottom canvas" !important;
             flex-grow: 1;
             overflow: hidden;
             gap: 20px;
         }
-        
+
         .fullscreen-panel .panel-controls-top,
         .fullscreen-panel .panel-controls-bottom {
             overflow-y: auto;
@@ -958,11 +983,11 @@
             max-width: 1200px !important;
             height: auto !important;
             z-index: 9999 !important;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8) !important;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8) !important;
             cursor: zoom-out !important;
             border-radius: 10px !important;
         }
-        
+
         #webcam-video {
             cursor: zoom-in;
             transition: all 0.2s ease-out;
@@ -972,7 +997,7 @@
 
 <body>
     <script>
-        (function() {
+        (function () {
             const savedTheme = localStorage.getItem('brushograph_theme') || 'uwu';
             document.body.classList.add('theme-' + savedTheme);
         })();
@@ -984,7 +1009,8 @@
         </a>
         <div style="display: flex; align-items: center; gap: 20px;">
             <h1 id="main-title" style="margin:0; text-shadow:none;">Mikro-Brushografia</h1>
-            <select id="theme-selector" autocomplete="off" onchange="setTheme(this.value)" style="padding: 5px; border-radius: 4px; font-family: var(--font-main); border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-color);">
+            <select id="theme-selector" autocomplete="off" onchange="setTheme(this.value)"
+                style="padding: 5px; border-radius: 4px; font-family: var(--font-main); border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-color);">
                 <option value="pinkograph">Pinkograph</option>
                 <option value="esp3d">ESP3D Classic</option>
                 <option value="randen">Randen</option>
@@ -1117,7 +1143,8 @@
                             style="display:none; flex-direction:column; gap:5px; margin-top:5px; padding-left:20px;">
                             <div class="input-group" style="padding:0;">
                                 <label style="font-size:0.7rem; flex:1;">Preset:</label>
-                                <select id="transform-preset" style="font-size:0.7rem; padding:2px; flex:2.5; background:var(--input-bg); color:var(--input-text); border:1px solid var(--border);"
+                                <select id="transform-preset"
+                                    style="font-size:0.7rem; padding:2px; flex:2.5; background:var(--input-bg); color:var(--input-text); border:1px solid var(--border);"
                                     onchange="
                                         if(this.value === 'large-to-pcb') {
                                             document.getElementById('transform-scale').value = (50/140).toFixed(3);
@@ -1179,9 +1206,12 @@
             <div class="panel">
                 <h2 style="color: var(--accent-pink);">Dusjagr's Favorites</h2>
                 <div style="margin-top: 10px;">
-                    <input type="text" id="archive-search" placeholder="Search favorites..." style="width: 100%; box-sizing: border-box; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--border); border-radius: 4px; padding: 8px; margin-bottom: 10px; font-family: monospace;">
-                    <div id="archive-list" style="height: 350px; overflow-y: auto; background: var(--input-bg); border: 1px solid var(--border); border-radius: 4px; padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;">
-                        <div style="color: var(--text-muted); text-align: center; padding: 20px;">Loading archive...</div>
+                    <input type="text" id="archive-search" placeholder="Search favorites..."
+                        style="width: 100%; box-sizing: border-box; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--border); border-radius: 4px; padding: 8px; margin-bottom: 10px; font-family: monospace;">
+                    <div id="archive-list"
+                        style="height: 350px; overflow-y: auto; background: var(--input-bg); border: 1px solid var(--border); border-radius: 4px; padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;">
+                        <div style="color: var(--text-muted); text-align: center; padding: 20px;">Loading archive...
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1190,11 +1220,14 @@
             <div class="panel">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <h2 style="color: var(--accent-orange); margin: 0;">SD Card Files</h2>
-                    <button id="btn-refresh-sd" class="btn-orange" style="padding:4px 8px; font-size:0.8rem; background: var(--accent-orange); color: #000; border: none; border-radius: 3px; cursor: pointer; font-weight: bold;">Refresh</button>
+                    <button id="btn-refresh-sd" class="btn-orange"
+                        style="padding:4px 8px; font-size:0.8rem; background: var(--accent-orange); color: #000; border: none; border-radius: 3px; cursor: pointer; font-weight: bold;">Refresh</button>
                 </div>
                 <div style="margin-top: 10px;">
-                    <div id="sd-list" style="height: 250px; overflow-y: auto; background: var(--input-bg); border: 1px solid var(--border); border-radius: 4px; padding: 10px; display: flex; flex-direction: column; gap: 5px;">
-                        <div style="color: var(--text-muted); text-align: center; padding: 20px;">Click Refresh to load SD card...</div>
+                    <div id="sd-list"
+                        style="height: 250px; overflow-y: auto; background: var(--input-bg); border: 1px solid var(--border); border-radius: 4px; padding: 10px; display: flex; flex-direction: column; gap: 5px;">
+                        <div style="color: var(--text-muted); text-align: center; padding: 20px;">Click Refresh to load
+                            SD card...</div>
                     </div>
                 </div>
             </div>
@@ -1209,7 +1242,8 @@
                 0.00 Z: 0.00
             </div>
             <div class="input-group" style="margin-bottom: 8px;">
-                <input type="text" id="ip-input" value="brushographpro.local" placeholder="Address" style="flex-grow: 1;">
+                <input type="text" id="ip-input" value="brushographpro.local" placeholder="Address"
+                    style="flex-grow: 1;">
                 <input type="number" id="port-input" value="80" style="width: 50px;" title="Port">
                 <input type="text" id="path-input" value="" placeholder="/" style="width: 40px;"
                     title="Path (e.g. /ws)">
@@ -1243,7 +1277,9 @@
                 <button id="btn-home"
                     style="flex: 1; background: var(--accent-blue); color: #000; border: none; font-weight: bold; padding: 10px; cursor: pointer; text-transform: uppercase;">Initialize
                     & Home Robot</button>
-                <select id="home-sequence-type" style="width: 90px; background:var(--input-bg); color:var(--input-text); border:1px solid var(--border); font-family:var(--font-main); font-size: 0.75rem;">
+                <select id="home-sequence-type"
+                    style="width: 90px; background:var(--input-bg); color:var(--input-text); border:1px solid var(--border); font-family:var(--font-main); font-size: 0.75rem;">
+                    <option value="mikro" selected>Mikro</option>
                     <option value="baby">Baby (-4)</option>
                     <option value="large">Large (-10)</option>
                 </select>
@@ -1353,7 +1389,8 @@
                 <button id="macro-wash"
                     style="font-size:0.7rem; padding:8px 4px; border-color:#888; color:#888;">Wash</button>
                 <button id="macro-test2"
-                    style="grid-column: span 2; font-size:0.8rem; padding:10px; border: 2px solid var(--accent-pink); background-color:transparent; color:var(--accent-pink); font-weight:bold; letter-spacing:1px; cursor:pointer;">DRAW TEST2</button>
+                    style="grid-column: span 2; font-size:0.8rem; padding:10px; border: 2px solid var(--accent-pink); background-color:transparent; color:var(--accent-pink); font-weight:bold; letter-spacing:1px; cursor:pointer;">DRAW
+                    TEST2</button>
             </div>
 
             <div class="console-output" id="console"
@@ -1365,7 +1402,11 @@
         <div class="panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <h2 style="margin: 0;">3. Brushograph Drawing Pad</h2>
-                <button onclick="this.closest('.panel').classList.toggle('fullscreen-panel'); setTimeout(() => {if(typeof redrawCanvas==='function') redrawCanvas();}, 50);" class="theme-btn" style="height:35px; font-size:1.2rem; line-height:1; padding: 0 10px; cursor: pointer;" title="Toggle Fullscreen">⛶</button>
+                <button
+                    onclick="this.closest('.panel').classList.toggle('fullscreen-panel'); setTimeout(() => {if(typeof redrawCanvas==='function') redrawCanvas();}, 50);"
+                    class="theme-btn"
+                    style="height:35px; font-size:1.2rem; line-height:1; padding: 0 10px; cursor: pointer;"
+                    title="Toggle Fullscreen">⛶</button>
             </div>
 
             <div class="panel-body">
@@ -1374,17 +1415,21 @@
                     <div class="input-group" style="justify-content: space-between;">
                         <div style="display:flex; align-items:center; gap: 10px;">
                             <button id="draw-play" class="btn-green">Play Drawing</button>
-                            <label style="cursor:pointer; display:flex; align-items:center; gap:4px; font-weight:bold; color:var(--accent-pink);">
+                            <label
+                                style="cursor:pointer; display:flex; align-items:center; gap:4px; font-weight:bold; color:var(--accent-pink);">
                                 <input type="checkbox" id="draw-loop"> Loop
                             </label>
                         </div>
                         <div style="display:flex; gap: 5px;">
                             <button id="draw-download"
-                                style="border-color: var(--accent-blue); color: var(--accent-blue);">Download G-Code</button>
+                                style="border-color: var(--accent-blue); color: var(--accent-blue);">Download
+                                G-Code</button>
                             <button id="draw-upload-sd"
-                                style="border-color: var(--accent-orange); color: var(--accent-orange);">Upload SD</button>
+                                style="border-color: var(--accent-orange); color: var(--accent-orange);">Upload
+                                SD</button>
                             <input type="file" id="upload-gcode" accept=".gcode" style="display:none;">
-                            <button id="draw-upload" style="border-color: var(--accent-pink); color: var(--accent-pink);">Load
+                            <button id="draw-upload"
+                                style="border-color: var(--accent-pink); color: var(--accent-pink);">Load
                                 G-Code</button>
                             <button id="draw-clear" style="border-color: #777; color: #777;">Clear</button>
                         </div>
@@ -1399,16 +1444,18 @@
                     </div>
                     <div class="input-group" style="gap: 5px;">
                         <label style="flex:2;">Max Path before Re-dip (mm):</label>
-                        <input type="number" id="max-path-length" value="100" min="0" step="10" style="flex:1;" title="Set to 0 to disable" onchange="saveZCalibration()">
+                        <input type="number" id="max-path-length" value="100" min="0" step="10" style="flex:1;"
+                            title="Set to 0 to disable" onchange="saveZCalibration()">
                     </div>
                     <div class="input-group">
                         <label>Z Pick:</label><input type="number" id="z-up" value="8.0" step="0.1" style="width:55px;">
-                        <label>Z Lift:</label><input type="number" id="z-lift" value="2.0" step="0.1" style="width:55px;">
+                        <label>Z Lift:</label><input type="number" id="z-lift" value="2.0" step="0.1"
+                            style="width:55px;">
                         <label>Z Down:</label><input type="number" id="z-down" value="0" step="0.1" style="width:55px;">
-                        <label style="margin-left:auto; display:flex; align-items:center; gap:5px;"><input type="checkbox"
-                                id="pure-pen-mode" onchange="redrawCanvas()"> Pure Pen</label>
-                        <label style="margin-left:5px; display:flex; align-items:center; gap:5px;"><input type="checkbox"
-                                id="auto-wash-mode" checked> Auto-Wash</label>
+                        <label style="margin-left:auto; display:flex; align-items:center; gap:5px;"><input
+                                type="checkbox" id="pure-pen-mode" onchange="redrawCanvas()"> Pure Pen</label>
+                        <label style="margin-left:5px; display:flex; align-items:center; gap:5px;"><input
+                                type="checkbox" id="auto-wash-mode" checked> Auto-Wash</label>
                     </div>
 
                     <div class="input-group">
@@ -1416,20 +1463,23 @@
                         <select id="canvas-preset"
                             style="background:var(--input-bg); color:var(--input-text); border:var(--border-width) solid var(--border); padding:3px; font-family:var(--font-main); border-radius:var(--border-radius); flex-grow:1;"
                             onchange="applyCanvasPreset()">
+                            <option value="64x105" selected>64x105 mm (Mikro)</option>
                             <option value="74x56">74x56 mm (Baby)</option>
                             <option value="70x50">70x50 mm (PCB)</option>
                             <option value="150x140">150x140 mm (Large)</option>
                             <option value="custom">Custom</option>
                         </select>
-                        <label style="margin-left:10px;">X:</label><input type="number" id="max-x" value="74"
+                        <label style="margin-left:10px;">X:</label><input type="number" id="max-x" value="64"
                             style="width:50px;"
                             oninput="document.getElementById('canvas-preset').value='custom'; updateCanvasDimensions()">
-                        <label>Y:</label><input type="number" id="max-y" value="56" style="width:50px;"
+                        <label>Y:</label><input type="number" id="max-y" value="105" style="width:50px;"
                             oninput="document.getElementById('canvas-preset').value='custom'; updateCanvasDimensions()">
                     </div>
 
-                    <div style="margin-top: 15px; border: 1px solid var(--border); padding: 10px; border-radius: var(--border-radius); background: rgba(0,0,0,0.05);">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <div
+                        style="margin-top: 15px; border: 1px solid var(--border); padding: 10px; border-radius: var(--border-radius); background: rgba(0,0,0,0.05);">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                             <h3 style="margin:0; font-size:1rem;">Z-Axis Plane Leveling</h3>
                             <label style="display:flex; align-items:center; gap:5px; font-size:0.9rem;">
                                 <input type="checkbox" id="z-leveling-enable" onchange="saveZCalibration()"> Enable
@@ -1440,7 +1490,8 @@
                             <div style="display:flex; flex-direction:column; gap:3px;">
                                 <div><b>TL (X30 Y50)</b></div>
                                 <div style="display:flex; gap:3px;">
-                                    Z: <input type="number" id="z-cal-tl" value="0.0" step="0.1" style="width:45px;" onchange="saveZCalibration()">
+                                    Z: <input type="number" id="z-cal-tl" value="0.0" step="0.1" style="width:45px;"
+                                        onchange="saveZCalibration()">
                                     <button class="cal-move-btn" data-x="30" data-y="50">Move</button>
                                 </div>
                             </div>
@@ -1448,7 +1499,8 @@
                             <div style="display:flex; flex-direction:column; gap:3px;">
                                 <div><b>TR (X70 Y50)</b></div>
                                 <div style="display:flex; gap:3px;">
-                                    Z: <input type="number" id="z-cal-tr" value="0.0" step="0.1" style="width:45px;" onchange="saveZCalibration()">
+                                    Z: <input type="number" id="z-cal-tr" value="0.0" step="0.1" style="width:45px;"
+                                        onchange="saveZCalibration()">
                                     <button class="cal-move-btn" data-x="70" data-y="50">Move</button>
                                 </div>
                             </div>
@@ -1456,7 +1508,8 @@
                             <div style="display:flex; flex-direction:column; gap:3px;">
                                 <div><b>BL (X30 Y5)</b></div>
                                 <div style="display:flex; gap:3px;">
-                                    Z: <input type="number" id="z-cal-bl" value="0.0" step="0.1" style="width:45px;" onchange="saveZCalibration()">
+                                    Z: <input type="number" id="z-cal-bl" value="0.0" step="0.1" style="width:45px;"
+                                        onchange="saveZCalibration()">
                                     <button class="cal-move-btn" data-x="30" data-y="5">Move</button>
                                 </div>
                             </div>
@@ -1464,18 +1517,22 @@
                             <div style="display:flex; flex-direction:column; gap:3px;">
                                 <div><b>BR (X70 Y5)</b></div>
                                 <div style="display:flex; gap:3px;">
-                                    Z: <input type="number" id="z-cal-br" value="0.0" step="0.1" style="width:45px;" onchange="saveZCalibration()">
+                                    Z: <input type="number" id="z-cal-br" value="0.0" step="0.1" style="width:45px;"
+                                        onchange="saveZCalibration()">
                                     <button class="cal-move-btn" data-x="70" data-y="5">Move</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top:20px; margin-bottom:10px; border-bottom:1px solid var(--border); padding-bottom:5px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-end; margin-top:20px; margin-bottom:10px; border-bottom:1px solid var(--border); padding-bottom:5px;">
                         <h3 style="margin:0; font-size:1rem;">Diy-CAD Components</h3>
                         <div style="display:flex; gap:5px;">
-                            <button id="draw-undo" style="border-color: #fca311; color: #fca311; padding: 2px 8px; font-size: 0.8rem; background: transparent; cursor: pointer; border-radius: 4px; border: 1px solid #fca311;">Undo</button>
-                            <button id="draw-redo" style="border-color: #fca311; color: #fca311; padding: 2px 8px; font-size: 0.8rem; background: transparent; cursor: pointer; border-radius: 4px; border: 1px solid #fca311;">Redo</button>
+                            <button id="draw-undo"
+                                style="border-color: #fca311; color: #fca311; padding: 2px 8px; font-size: 0.8rem; background: transparent; cursor: pointer; border-radius: 4px; border: 1px solid #fca311;">Undo</button>
+                            <button id="draw-redo"
+                                style="border-color: #fca311; color: #fca311; padding: 2px 8px; font-size: 0.8rem; background: transparent; cursor: pointer; border-radius: 4px; border: 1px solid #fca311;">Redo</button>
                         </div>
                     </div>
                     <div class="input-group" style="gap:5px; flex-wrap:wrap;">
@@ -1483,7 +1540,8 @@
                             <input type="radio" name="canvas-mode" id="mode-draw" value="draw" checked
                                 onchange="window.updateCanvasMode && window.updateCanvasMode()"> Draw
                         </label>
-                        <label style="display:flex; align-items:center; gap:5px; font-weight:bold; color:var(--accent-pink);">
+                        <label
+                            style="display:flex; align-items:center; gap:5px; font-weight:bold; color:var(--accent-pink);">
                             <input type="radio" name="canvas-mode" id="mode-move" value="move"
                                 onchange="window.updateCanvasMode && window.updateCanvasMode()"> Move Parts
                         </label>
@@ -1512,44 +1570,45 @@
                     <h3
                         style="margin-top:20px; margin-bottom:10px; font-size:1rem; border-bottom:1px solid var(--border); padding-bottom:5px;">
                         Color Palette</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 5px; margin-bottom: 10px;"                        <div style="display:flex; flex-direction:column; gap:5px;">
-                            <button id="sel-wash"
-                                style="background:#dadee4; color:#3b4351; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">WASH</button>
-                            <input type="color" id="picker-wash" value="#dadee4"
-                                style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
-                        </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 5px; margin-bottom: 10px;"
                         <div style="display:flex; flex-direction:column; gap:5px;">
-                            <button id="sel-c1"
-                                style="background:#005b96; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">C1</button>
-                            <input type="color" id="picker-c1" value="#005b96"
-                                style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:5px;">
-                            <button id="sel-c2"
-                                style="background:#56bdff; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">C2</button>
-                            <input type="color" id="picker-c2" value="#56bdff"
-                                style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:5px;">
-                            <button id="sel-c3"
-                                style="background:#32b643; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">C3</button>
-                            <input type="color" id="picker-c3" value="#32b643"
-                                style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:5px;">
-                            <button id="sel-c4"
-                                style="background:#ffb700; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">C4</button>
-                            <input type="color" id="picker-c4" value="#ffb700"
-                                style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:5px;">
-                            <button id="sel-dry"
-                                style="background:#3b4351; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">Dry</button>
-                        </div>v>
+                        <button id="sel-wash"
+                            style="background:#dadee4; color:#3b4351; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">WASH</button>
+                        <input type="color" id="picker-wash" value="#dadee4"
+                            style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
                     </div>
+                    <div style="display:flex; flex-direction:column; gap:5px;">
+                        <button id="sel-c1"
+                            style="background:#005b96; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">C1</button>
+                        <input type="color" id="picker-c1" value="#005b96"
+                            style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:5px;">
+                        <button id="sel-c2"
+                            style="background:#56bdff; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">C2</button>
+                        <input type="color" id="picker-c2" value="#56bdff"
+                            style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:5px;">
+                        <button id="sel-c3"
+                            style="background:#32b643; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">C3</button>
+                        <input type="color" id="picker-c3" value="#32b643"
+                            style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:5px;">
+                        <button id="sel-c4"
+                            style="background:#ffb700; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">C4</button>
+                        <input type="color" id="picker-c4" value="#ffb700"
+                            style="width: 100%; height: 30px; border:none; background:none; cursor:pointer;">
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:5px;">
+                        <button id="sel-dry"
+                            style="background:#3b4351; color:white; border:none; padding:8px 4px; cursor:pointer; font-weight:bold; border-radius:4px; opacity:0.5; transition: opacity 0.2s; font-size: 0.8rem;">Dry</button>
+                    </div>v>
                 </div>
             </div>
         </div>
+    </div>
 
     </div>
 
@@ -1884,6 +1943,8 @@
             let rawSeq = "$X; G10 P0 L20 X0 Y0 Z0; G90; G1 Z10 F1800; G1 X80 Y65 Z32 F1800; G1 X0 Y0 Z22 F1800; G10 P0 L20 X0 Y0 Z10; G1 Z15 F600; G1 Z10 F600; G1 X-4 Y-4 F1000; G1 X-2 Y-2 F1000; G10 P0 L20 X0 Y0 Z10;";
             if (seqType === 'large') {
                 rawSeq = "$X; G10 P0 L20 X0 Y0 Z0; G90; G1 Z10 F1800; G1 X80 Y65 Z32 F1800; G1 X0 Y0 Z22 F1800; G10 P0 L20 X0 Y0 Z10; G1 Z15 F600; G1 Z10 F600; G1 X-10 Y-10 F1000; G1 X-8 Y-8 F1000; G10 P0 L20 X0 Y0 Z10;";
+            } else if (seqType === 'mikro') {
+                rawSeq = "$X; G10 P0 L20 X0 Y0 Z0; G90; G1 Z10 F800; G1 X74 Y115 Z15 F800; G1 X0 Y0 Z14 F800; G10 P0 L20 X0 Y0 Z8; G1 Z6 F600; G1 Z8 F600; G1 X-4 Y-4 F1000; G1 X-2 Y-2 F1000; G10 P0 L20 X0 Y0 Z8;";
             }
             const cmds = rawSeq.split(';').map(c => c.trim()).filter(c => c.length > 0);
 
@@ -2029,7 +2090,7 @@
             'c1': { x: 11.5, y: 41, color: '#005b96', isWash: false, skipDip: false },
             'c2': { x: 11.5, y: 28, color: '#56bdff', isWash: false, skipDip: false },
             'c3': { x: 11.5, y: 15, color: '#32b643', isWash: false, skipDip: false },
-            'c4': { x: 11.5, y: 2, color: '#ffb700', isWash: false, skipDip: false }, 
+            'c4': { x: 11.5, y: 2, color: '#ffb700', isWash: false, skipDip: false },
             'wash': { x: 11.5, y: 54, color: '#dadee4', isWash: true, skipDip: false },
             'dry': { x: 0, y: 0, color: '#3b4351', isWash: false, skipDip: true }
         };
@@ -2037,6 +2098,7 @@
         function initTheme() {
             const savedTheme = localStorage.getItem('brushograph_theme') || 'uwu';
             setTheme(savedTheme);
+            if (typeof applyCanvasPreset === 'function') applyCanvasPreset();
         }
         document.addEventListener('DOMContentLoaded', initTheme);
 
@@ -2046,7 +2108,7 @@
             document.body.classList.add('theme-' + mode);
             const themeSelector = document.getElementById('theme-selector');
             if (themeSelector) themeSelector.value = mode;
-            
+
             let c1, c2, c3, c4, titleText;
             if (mode === 'tropical') {
                 document.getElementById('dynamic-logo').src = '../../img/logo.png';
@@ -2080,7 +2142,7 @@
                 document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
                 c1 = '#e9c46a'; c2 = '#f4a261'; c3 = '#2a9d8f'; c4 = '#d90429';
                 titleText = 'ಮೈಕ್ರೋ ಬ್ರಶೋಗ್ರಾಫಿಯಾ (Mikro-Brushografia)';
-                
+
                 // Show quote popup
                 setTimeout(() => {
                     if (document.body.classList.contains('theme-bengaluru') && !document.getElementById('ind-quote-modal')) {
@@ -2097,7 +2159,7 @@
                             { kn: "ಮೊದಲು ಅವರು ನಿಮ್ಮನ್ನು ನಿರ್ಲಕ್ಷಿಸುತ್ತಾರೆ, ನಂತರ ಅವರು ನಿಮ್ಮನ್ನು ನೋಡಿ ನಗುತ್ತಾರೆ, ನಂತರ ಅವರು ನಿಮ್ಮೊಂದಿಗೆ ಹೋರಾಡುತ್ತಾರೆ, ನಂತರ ನೀವು ಗೆಲ್ಲುತ್ತೀರಿ.", en: "First they ignore you, then they laugh at you, then they fight you, then you win." }
                         ];
                         const quote = quotes[Math.floor(Math.random() * quotes.length)];
-                        
+
                         const modal = document.createElement('div');
                         modal.id = 'ind-quote-modal';
                         modal.style.position = 'fixed';
@@ -2106,14 +2168,14 @@
                         modal.style.transform = 'translate(-50%, -50%)';
                         modal.style.backgroundColor = '#800020'; // Deep burgundy
                         modal.style.border = '4px solid #fca311'; // Bright orange
-                        modal.style.boxShadow = '0 0 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(252,163,17,0.3)'; 
+                        modal.style.boxShadow = '0 0 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(252,163,17,0.3)';
                         modal.style.padding = '40px';
                         modal.style.zIndex = '9999';
                         modal.style.textAlign = 'center';
                         modal.style.maxWidth = '80%';
                         modal.style.borderRadius = '12px';
                         modal.style.color = '#fceea7'; // Turmeric yellow
-                        
+
                         modal.innerHTML = `
                             <div style="font-size: 2.5em; margin-bottom: 20px; text-shadow: 0 0 15px rgba(252,163,17,0.8);">🪔 🪔 🪔</div>
                             <h2 style="color:#fceea7; border:none; margin:0; padding:0; font-size:1.6em; margin-bottom:20px; text-shadow: 2px 2px 0px #5a0016;">${quote.kn}</h2>
@@ -2129,68 +2191,68 @@
                 document.getElementById('dynamic-logo').src = '../../img/arai-icon.svg';
                 c1 = '#FF9CEE'; c2 = '#B5EAD7'; c3 = '#C7CEEA'; c4 = '#FFDAC1';
                 titleText = 'Wobot Paintew Matic OwO';
-                
+
                 // Show quote popup
                 setTimeout(() => {
-                const uwu_quotes = [
-                    "S-Senpai noticed my G-Code! (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄",
-                    "Hewwo! I'm weady to dwaw fow yew~ OwO",
-                    "Bwushograph is wowking supew dupew hawd! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧",
-                    "Pwease don't fowget to wash my bwush! ( ╥ω╥ )",
-                    "Yayyy! W-we made a mastewpiece! 🌸✨",
-                    "UwU... is my z-axis okay? 👉👈",
-                    "I-it's not like I wanted to dwaw this fow you... baka! ( ￣^￣ )",
-                    "Gwaphics so smooth, vewy kawaii! 💖",
-                    "Nyoom! Wobot goes fast! 🚗💨",
-                    "W-what awe we gonna dwaw today? (◕‿◕✿)"
-                ];
+                    const uwu_quotes = [
+                        "S-Senpai noticed my G-Code! (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄",
+                        "Hewwo! I'm weady to dwaw fow yew~ OwO",
+                        "Bwushograph is wowking supew dupew hawd! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧",
+                        "Pwease don't fowget to wash my bwush! ( ╥ω╥ )",
+                        "Yayyy! W-we made a mastewpiece! 🌸✨",
+                        "UwU... is my z-axis okay? 👉👈",
+                        "I-it's not like I wanted to dwaw this fow you... baka! ( ￣^￣ )",
+                        "Gwaphics so smooth, vewy kawaii! 💖",
+                        "Nyoom! Wobot goes fast! 🚗💨",
+                        "W-what awe we gonna dwaw today? (◕‿◕✿)"
+                    ];
 
-                if (document.body.classList.contains('theme-uwu') && !document.getElementById('uwu-quote-modal')) {
-                    const quote = uwu_quotes[Math.floor(Math.random() * uwu_quotes.length)];
-                    const modal = document.createElement('div');
-                    modal.id = 'uwu-quote-modal';
-                    modal.style.position = 'fixed';
-                    modal.style.top = '50%';
-                    modal.style.left = '50%';
-                    modal.style.transform = 'translate(-50%, -50%)';
-                    modal.style.backgroundColor = '#FFF5F8';
-                    modal.style.color = '#FF9CEE';
-                    modal.style.border = '4px solid #FFB7B2';
-                    modal.style.borderRadius = '20px';
-                    modal.style.padding = '30px';
-                    modal.style.boxShadow = '0 10px 30px rgba(255, 156, 238, 0.4)';
-                    modal.style.zIndex = '10000';
-                    modal.style.fontFamily = "'Quicksand', 'Comic Sans MS', sans-serif";
-                    modal.style.fontSize = '1.2rem';
-                    modal.style.textAlign = 'center';
-                    modal.style.maxWidth = '400px';
-                    
-                    const title = document.createElement('h3');
-                    title.textContent = "🌸 Wobot says... 🌸";
-                    title.style.margin = '0 0 15px 0';
-                    title.style.color = '#FF9CEE';
-                    modal.appendChild(title);
-                    
-                    const text = document.createElement('p');
-                    text.textContent = `"${quote}"`;
-                    text.style.fontStyle = 'italic';
-                    modal.appendChild(text);
+                    if (document.body.classList.contains('theme-uwu') && !document.getElementById('uwu-quote-modal')) {
+                        const quote = uwu_quotes[Math.floor(Math.random() * uwu_quotes.length)];
+                        const modal = document.createElement('div');
+                        modal.id = 'uwu-quote-modal';
+                        modal.style.position = 'fixed';
+                        modal.style.top = '50%';
+                        modal.style.left = '50%';
+                        modal.style.transform = 'translate(-50%, -50%)';
+                        modal.style.backgroundColor = '#FFF5F8';
+                        modal.style.color = '#FF9CEE';
+                        modal.style.border = '4px solid #FFB7B2';
+                        modal.style.borderRadius = '20px';
+                        modal.style.padding = '30px';
+                        modal.style.boxShadow = '0 10px 30px rgba(255, 156, 238, 0.4)';
+                        modal.style.zIndex = '10000';
+                        modal.style.fontFamily = "'Quicksand', 'Comic Sans MS', sans-serif";
+                        modal.style.fontSize = '1.2rem';
+                        modal.style.textAlign = 'center';
+                        modal.style.maxWidth = '400px';
 
-                    const closeBtn = document.createElement('button');
-                    closeBtn.textContent = "Yaaaay! ✨";
-                    closeBtn.style.marginTop = '20px';
-                    closeBtn.style.padding = '10px 20px';
-                    closeBtn.style.backgroundColor = '#FFB7B2';
-                    closeBtn.style.color = 'white';
-                    closeBtn.style.border = 'none';
-                    closeBtn.style.borderRadius = '20px';
-                    closeBtn.style.cursor = 'pointer';
-                    closeBtn.style.fontWeight = 'bold';
-                    closeBtn.onclick = () => document.body.removeChild(modal);
-                    
-                    modal.appendChild(closeBtn);
-                    document.body.appendChild(modal);
-                }
+                        const title = document.createElement('h3');
+                        title.textContent = "🌸 Wobot says... 🌸";
+                        title.style.margin = '0 0 15px 0';
+                        title.style.color = '#FF9CEE';
+                        modal.appendChild(title);
+
+                        const text = document.createElement('p');
+                        text.textContent = `"${quote}"`;
+                        text.style.fontStyle = 'italic';
+                        modal.appendChild(text);
+
+                        const closeBtn = document.createElement('button');
+                        closeBtn.textContent = "Yaaaay! ✨";
+                        closeBtn.style.marginTop = '20px';
+                        closeBtn.style.padding = '10px 20px';
+                        closeBtn.style.backgroundColor = '#FFB7B2';
+                        closeBtn.style.color = 'white';
+                        closeBtn.style.border = 'none';
+                        closeBtn.style.borderRadius = '20px';
+                        closeBtn.style.cursor = 'pointer';
+                        closeBtn.style.fontWeight = 'bold';
+                        closeBtn.onclick = () => document.body.removeChild(modal);
+
+                        modal.appendChild(closeBtn);
+                        document.body.appendChild(modal);
+                    }
 
                 }, 500);
             } else {
@@ -2198,10 +2260,10 @@
                 c1 = '#005b96'; c2 = '#56bdff'; c3 = '#32b643'; c4 = '#ffb700';
                 titleText = 'ESP3D Classic';
             }
-            
+
             const titleEl = document.getElementById('main-title');
             if (titleEl) titleEl.textContent = titleText;
-            
+
             const de_translations = {
                 'Play Drawing': 'Zeichnung abspielen',
                 'Download G-Code': 'Geometrische Steuerbefehle herunterladen',
@@ -2406,7 +2468,7 @@
                 'Dry': 'ಒಣಗಿಸು'
             };
 
-            
+
             const uwu_translations = {
                 "Robot Painter Matic": "Wobot Paintew Matic OwO",
                 "Machine Setup": "Setup Timew~",
@@ -2446,7 +2508,7 @@
                 }
                 let text = node.originalText;
                 let normalized = text.replace(/\s+/g, ' ').trim();
-                
+
                 if (isGerman && de_translations[normalized]) {
                     const leading = text.match(/^\s*/)[0];
                     const trailing = text.match(/\s*$/)[0];
@@ -2459,8 +2521,8 @@
                     const leading = text.match(/^\s*/)[0];
                     const trailing = text.match(/\s*$/)[0];
                     text = leading + uwu_translations[normalized] + trailing;
-                                }
-                
+                }
+
                 if (node.nodeValue !== text) {
                     node.nodeValue = text;
                 }
@@ -2471,7 +2533,7 @@
             POTS['c2'].color = c2;
             POTS['c3'].color = c3;
             POTS['c4'].color = c4;
-            
+
             document.getElementById('sel-c1').style.background = c1;
             document.getElementById('picker-c1').value = c1;
             document.getElementById('sel-c2').style.background = c2;
@@ -2480,12 +2542,12 @@
             document.getElementById('picker-c3').value = c3;
             document.getElementById('sel-c4').style.background = c4;
             document.getElementById('picker-c4').value = c4;
-            
+
             // update activeColor if needed
             if (activePotId && POTS[activePotId]) {
                 activeColor = POTS[activePotId].color;
             }
-            
+
             if (typeof redrawCanvas === 'function') redrawCanvas();
         }
 
@@ -2544,8 +2606,15 @@
                 const parts = val.split('x');
                 document.getElementById('max-x').value = parts[0];
                 document.getElementById('max-y').value = parts[1];
-                
-                if (parts[0] === '74') {
+
+                if (parts[0] === '64') {
+                    // Mikro Layout (Bottom edge)
+                    POTS['wash'].x = 0; POTS['wash'].y = 5;
+                    POTS['c1'].x = 17; POTS['c1'].y = 5;
+                    POTS['c2'].x = 33; POTS['c2'].y = 5;
+                    POTS['c3'].x = 49; POTS['c3'].y = 5;
+                    POTS['c4'].x = 64; POTS['c4'].y = 5;
+                } else if (parts[0] === '74') {
                     // Baby Layout
                     POTS['wash'].x = 11.5; POTS['wash'].y = 54;
                     POTS['c1'].x = 11.5; POTS['c1'].y = 41;
@@ -2730,9 +2799,12 @@
 
             if (!isPurePen) {
                 ctx.fillStyle = isTropical ? 'rgba(255, 0, 100, 0.25)' : 'rgba(255, 0, 0, 0.25)';
-                if (maxX < 100) {
+                if (maxX === 74 || maxX === 70) {
                     const warnWidth = (21 / maxX) * canvas.width;
                     ctx.fillRect(0, 0, warnWidth, canvas.height);
+                } else if (maxX === 64) {
+                    const warnHeight = (16 / maxY) * canvas.height;
+                    ctx.fillRect(0, canvas.height - warnHeight, canvas.width, warnHeight);
                 } else {
                     const warnHeight = (20 / maxY) * canvas.height;
                     ctx.fillRect(0, canvas.height - warnHeight, canvas.width, warnHeight);
@@ -2746,17 +2818,24 @@
                 if (!pot) return;
 
                 let cx, cy, startAngle, endAngle, w, h;
-                
-                if (maxX < 100) {
-                    // Draw on the left side for Baby
+
+                if (maxX === 74 || maxX === 70) {
+                    // Draw on the left side for Baby/PCB
                     cx = (pot.x / maxX) * canvas.width;
                     cy = canvas.height - (pot.y / maxY) * canvas.height;
                     w = (15 / maxX) * canvas.width;
                     h = (12 / maxY) * canvas.height;
+                } else if (maxX === 64) {
+                    // Draw on bottom for Mikro (Rectangles rotated 90 deg, wider and taller)
+                    cx = (pot.x / maxX) * canvas.width;
+                    // Visually center at Y=7.5 so the 15mm box perfectly spans Y=0 to Y=15
+                    cy = canvas.height - (7.5 / maxY) * canvas.height;
+                    w = (13 / maxX) * canvas.width;
+                    h = (15 / maxY) * canvas.height;
                 } else {
                     // Draw on the bottom for Large
                     cx = (pot.x / maxX) * canvas.width;
-                    cy = canvas.height; 
+                    cy = canvas.height;
                     startAngle = Math.PI;
                     endAngle = Math.PI * 2;
                 }
@@ -2765,11 +2844,11 @@
                 ctx.fillStyle = pot.color;
                 ctx.globalAlpha = 0.8;
                 ctx.beginPath();
-                if (maxX < 100) {
-                    if (ctx.roundRect) ctx.roundRect(cx - w/2, cy - h/2, w, h, 4);
-                    else ctx.rect(cx - w/2, cy - h/2, w, h);
+                if (maxX === 74 || maxX === 70 || maxX === 64) {
+                    if (ctx.roundRect) ctx.roundRect(cx - w / 2, cy - h / 2, w, h, 4);
+                    else ctx.rect(cx - w / 2, cy - h / 2, w, h);
                 } else {
-                    ctx.arc(cx, cy, r, startAngle, endAngle); 
+                    ctx.arc(cx, cy, r, startAngle, endAngle);
                 }
                 ctx.fill();
                 ctx.globalAlpha = 1.0;
@@ -2778,11 +2857,11 @@
                     ctx.strokeStyle = isTropical ? '#fff' : '#000';
                     ctx.lineWidth = 3;
                     ctx.beginPath();
-                    if (maxX < 100) {
-                        if (ctx.roundRect) ctx.roundRect(cx - w/2, cy - h/2, w, h, 4);
-                        else ctx.rect(cx - w/2, cy - h/2, w, h);
+                    if (maxX === 74 || maxX === 70 || maxX === 64) {
+                        if (ctx.roundRect) ctx.roundRect(cx - w / 2, cy - h / 2, w, h, 4);
+                        else ctx.rect(cx - w / 2, cy - h / 2, w, h);
                     } else {
-                        ctx.arc(cx, cy, r, startAngle, endAngle); 
+                        ctx.arc(cx, cy, r, startAngle, endAngle);
                     }
                     ctx.stroke();
                 }
@@ -2791,7 +2870,9 @@
                 ctx.fillStyle = isTropical ? '#fff' : '#000';
                 ctx.font = '10px monospace';
                 ctx.textAlign = 'center';
-                ctx.fillText(id.toUpperCase(), cx + (maxX < 100 ? 15 : 0), cy - 5);
+                let txtX = cx + ((maxX === 74 || maxX === 70) ? 15 : 0);
+                let txtY = (maxX === 64) ? (cy - h / 2 - 5) : (cy - 5);
+                ctx.fillText(id.toUpperCase(), txtX, txtY);
             };
 
             if (!isPurePen) {
@@ -2881,7 +2962,7 @@
             const r = canvas.getBoundingClientRect();
             const scaleX = canvas.width / r.width;
             const scaleY = canvas.height / r.height;
-            const cx = (e.clientX - r.left) * scaleX; 
+            const cx = (e.clientX - r.left) * scaleX;
             const cy = (e.clientY - r.top) * scaleY;
 
             // Filter points too close together (save hardware buffer)
@@ -3026,12 +3107,12 @@
                     const pot = POTS[id];
                     let hit = false;
 
-                    if (maxX < 100) {
+                    if (maxX === 74 || maxX === 70 || maxX === 64) {
                         const pcx = (pot.x / maxX) * canvas.width;
-                        const pcy = canvas.height - (pot.y / maxY) * canvas.height;
-                        const w = (15 / maxX) * canvas.width;
-                        const h = (12 / maxY) * canvas.height;
-                        if (cx >= pcx - w/2 && cx <= pcx + w/2 && cy >= pcy - h/2 && cy <= pcy + h/2) {
+                        const pcy = canvas.height - ((maxX === 64 ? 7.5 : pot.y) / maxY) * canvas.height;
+                        const w = ((maxX === 64 ? 13 : 15) / maxX) * canvas.width;
+                        const h = ((maxX === 64 ? 15 : 12) / maxY) * canvas.height;
+                        if (cx >= pcx - w / 2 && cx <= pcx + w / 2 && cy >= pcy - h / 2 && cy <= pcy + h / 2) {
                             hit = true;
                         }
                     } else {
@@ -3180,7 +3261,7 @@
         function addSdFileToUI(rawFilename, size) {
             const list = document.getElementById('sd-list');
             if (list.innerHTML.includes('Loading...') || list.innerHTML.includes('Click Refresh')) list.innerHTML = '';
-            
+
             const filename = rawFilename.trim();
             const displayName = filename.replace(/^\//, '');
             const runPath = filename.startsWith('/') ? filename : '/' + filename;
@@ -3191,24 +3272,24 @@
             div.style.padding = '5px';
             div.style.background = 'rgba(255,255,255,0.05)';
             div.style.borderRadius = '3px';
-            
+
             const nameSpan = document.createElement('span');
             nameSpan.textContent = displayName;
             nameSpan.style.cursor = 'pointer';
             nameSpan.style.color = 'var(--accent-orange)';
             nameSpan.onclick = () => {
-                if(confirm(`Run file ${displayName} from SD Card?`)) {
-                    if(machine && machine.isConnected) {
+                if (confirm(`Run file ${displayName} from SD Card?`)) {
+                    if (machine && machine.isConnected) {
                         machine.send(`$SD/Run=${runPath}`);
                     }
                 }
             };
-            
+
             const sizeSpan = document.createElement('span');
-            sizeSpan.textContent = Math.round(size/1024) + ' KB';
+            sizeSpan.textContent = Math.round(size / 1024) + ' KB';
             sizeSpan.style.color = 'var(--text-muted)';
             sizeSpan.style.fontSize = '0.8rem';
-            
+
             div.appendChild(nameSpan);
             div.appendChild(sizeSpan);
             list.appendChild(div);
@@ -3260,7 +3341,7 @@
                                 currentPotId = 'dry';
                             }
                         }
-                        
+
                         if (currentStroke) {
                             currentStroke.potId = currentPotId;
                             currentStroke.color = currentPotId && POTS[currentPotId] ? POTS[currentPotId].color : '#39FF14';
@@ -3273,7 +3354,7 @@
                             points: []
                         };
                         paths.push(currentStroke);
-                        
+
                         if (line.startsWith('G0 X')) {
                             const xMatch = line.match(/X([0-9.]+)/);
                             const yMatch = line.match(/Y([0-9.]+)/);
@@ -3299,7 +3380,7 @@
                                 const my = parseFloat(yMatch[1]);
                                 const cx = (mx / maxX) * canvas.width;
                                 const cy = canvas.height - ((my / maxY) * canvas.height);
-                                
+
                                 const pts = currentStroke.points;
                                 if (pts.length === 0 || pts[pts.length - 1].mx !== mx || pts[pts.length - 1].my !== my) {
                                     currentStroke.points.push({ cx, cy, mx, my });
@@ -3378,9 +3459,9 @@
                 gcode.push(`G1 Z${compZStart.toFixed(3)} F${fastSpeed}`);
 
                 for (let i = 1; i < stroke.points.length; i++) {
-                    const dx = stroke.points[i].mx - stroke.points[i-1].mx;
-                    const dy = stroke.points[i].my - stroke.points[i-1].my;
-                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    const dx = stroke.points[i].mx - stroke.points[i - 1].mx;
+                    const dy = stroke.points[i].my - stroke.points[i - 1].my;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
                     cumulativePathLength += dist;
 
                     if (maxPathLength > 0 && cumulativePathLength >= maxPathLength && stroke.potId && !POTS[stroke.potId]?.skipDip) {
@@ -3391,8 +3472,8 @@
                         } else {
                             gcode = gcode.concat(getDipSequence(stroke.potId, zUp, zDown, fastSpeed));
                         }
-                        gcode.push(`G1 X${stroke.points[i-1].mx.toFixed(3)} Y${stroke.points[i-1].my.toFixed(3)} F${fastSpeed}`);
-                        let compZResume = getCompensatedZ(stroke.points[i-1].mx, stroke.points[i-1].my, zDown);
+                        gcode.push(`G1 X${stroke.points[i - 1].mx.toFixed(3)} Y${stroke.points[i - 1].my.toFixed(3)} F${fastSpeed}`);
+                        let compZResume = getCompensatedZ(stroke.points[i - 1].mx, stroke.points[i - 1].my, zDown);
                         gcode.push(`G1 Z${compZResume.toFixed(3)} F${fastSpeed}`);
                         cumulativePathLength = 0;
                     }
@@ -3401,8 +3482,8 @@
                     let compZ = getCompensatedZ(stroke.points[i].mx, stroke.points[i].my, zDown);
                     gcode.push(`G1 X${stroke.points[i].mx.toFixed(3)} Y${stroke.points[i].my.toFixed(3)} Z${compZ.toFixed(3)} F${strokeSpeed}`);
                 }
-                
-                let compZEnd = getCompensatedZ(stroke.points[stroke.points.length-1].mx, stroke.points[stroke.points.length-1].my, zLift);
+
+                let compZEnd = getCompensatedZ(stroke.points[stroke.points.length - 1].mx, stroke.points[stroke.points.length - 1].my, zLift);
                 gcode.push(`G1 Z${compZEnd.toFixed(3)} F${fastSpeed}`);
             }
 
@@ -3417,7 +3498,7 @@
             log('Generating G-Code...', 'info');
             const blob = generateGCodeBlob();
             if (!blob) return;
-            
+
             const defaultName = window.lastLoadedFilename ? window.lastLoadedFilename.replace(/(\.gcode)?$/i, '_processed.gcode') : 'brushograph_drawing.gcode';
             let filename = prompt("Enter a filename for the G-Code:", defaultName);
             if (!filename) return; // Cancelled
@@ -3446,7 +3527,7 @@
 
             const ip = document.getElementById('ip-input').value.trim() || 'brushographpro.local';
             const baseUrl = `http://${ip}`;
-            
+
             const formData = new FormData();
             formData.append("path", "/");
             formData.append("myfile", blob, filename);
@@ -3537,7 +3618,7 @@
                     } else {
                         log(`Switching Color to ${stroke.potId.toUpperCase()}...`, 'info');
                         let macroSeq = [];
-                        
+
                         // Wash first when changing to a new color (if we aren't already washing and Auto-Wash is on)
                         if (stroke.potId !== 'wash' && lastPotId !== 'wash') {
                             const isAutoWash = document.getElementById('auto-wash-mode')?.checked;
@@ -3569,10 +3650,10 @@
 
                 for (let i = 1; i < stroke.points.length; i++) {
                     if (!isDrawing) break;
-                    
-                    const dx = stroke.points[i].mx - stroke.points[i-1].mx;
-                    const dy = stroke.points[i].my - stroke.points[i-1].my;
-                    const dist = Math.sqrt(dx*dx + dy*dy);
+
+                    const dx = stroke.points[i].mx - stroke.points[i - 1].mx;
+                    const dy = stroke.points[i].my - stroke.points[i - 1].my;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
                     cumulativePathLength += dist;
 
                     if (maxPathLength > 0 && cumulativePathLength >= maxPathLength && stroke.potId && !POTS[stroke.potId]?.skipDip) {
@@ -3587,9 +3668,9 @@
                         }
                         if (!isDrawing) break;
                         // Return to stroke position
-                        await sendCommand(`G1 X${stroke.points[i-1].mx.toFixed(3)} Y${stroke.points[i-1].my.toFixed(3)} F${fastSpeed}`);
+                        await sendCommand(`G1 X${stroke.points[i - 1].mx.toFixed(3)} Y${stroke.points[i - 1].my.toFixed(3)} F${fastSpeed}`);
                         // Drop pen again
-                        let compZResume = getCompensatedZ(stroke.points[i-1].mx, stroke.points[i-1].my, zDown);
+                        let compZResume = getCompensatedZ(stroke.points[i - 1].mx, stroke.points[i - 1].my, zDown);
                         await sendCommand(`G1 Z${compZResume.toFixed(3)} F${fastSpeed}`);
                         cumulativePathLength = 0;
                     }
@@ -3600,7 +3681,7 @@
                 }
 
                 // Lift pen at end of stroke
-                let compZEnd = getCompensatedZ(stroke.points[stroke.points.length-1].mx, stroke.points[stroke.points.length-1].my, zLift);
+                let compZEnd = getCompensatedZ(stroke.points[stroke.points.length - 1].mx, stroke.points[stroke.points.length - 1].my, zLift);
                 await sendCommand(`G1 Z${compZEnd.toFixed(3)} F${fastSpeed}`);
             }
 
@@ -3617,7 +3698,7 @@
             }
 
             await sendCommand('G90'); // Explicitly stay in Absolute mode
-            
+
             if (isDrawing && document.getElementById('draw-loop')?.checked) {
                 log('Looping Drawing... Restarting in 1s', 'info');
                 isDrawing = false;
@@ -3655,7 +3736,7 @@
             // Wipe off towards the left side
             seq.push(`G1 X5 Y${cy} Z${zDown} F800`); // Go closer to the border
             seq.push(`G1 X3 Y${cy} Z7 F400`);        // Slower wipe over the edge
-            
+
             // Lift further to 8mm (or user-defined zUp)
             seq.push(`G1 Z${zUp} F${fastSpeed}`);
             return seq;
@@ -3705,7 +3786,7 @@
         async function getTest2Sequence(zUp, zDown, fastSpeed = 1500) {
             let seq = [];
             const pts = [];
-            
+
             try {
                 const gcodeText = `\n
 G0 Z10 F500;      ; Move to clearance level - Z motion limited to 500
@@ -4321,7 +4402,7 @@ M2;                 ; End program
                 for (let line of lines) {
                     line = line.trim();
                     if (!line || line.startsWith(';')) continue;
-                    
+
                     if (line.includes('Z')) {
                         let match = line.match(/Z([-\d.]+)/);
                         if (match) {
@@ -4620,7 +4701,7 @@ M2;                 ; End program
                 if (isMove) {
                     let xm = content.match(/X([-\d.]+)/i), ym = content.match(/Y([-\d.]+)/i);
                     let im = content.match(/I([-\d.]+)/i), jm = content.match(/J([-\d.]+)/i);
-                    
+
                     if (xm || ym || im || jm) {
                         let newLine = content;
                         if (xm) {
@@ -4959,7 +5040,7 @@ M2;                 ; End program
             const listEl = document.getElementById('archive-list');
             try {
                 const favorites = window.DUSJAGR_FAVORITES;
-                
+
                 listEl.innerHTML = '';
                 if (!favorites || favorites.length === 0) {
                     listEl.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">No favorites found.</div>';
@@ -4979,7 +5060,7 @@ M2;                 ; End program
                     btn.style.flexDirection = 'column';
                     btn.style.alignItems = 'center';
                     btn.style.gap = '5px';
-                    
+
                     const previewName = filename.replace(/\.gcode$/i, '_preview.png');
                     const img = document.createElement('img');
                     img.src = '../../brusho_gcode_archive/dusjagr_favorites/' + encodeURIComponent(previewName);
@@ -4989,7 +5070,7 @@ M2;                 ; End program
                     img.style.background = '#f0f0f0';
                     img.style.borderRadius = '2px';
                     img.onerror = () => { img.style.display = 'none'; };
-                    
+
                     const span = document.createElement('span');
                     span.textContent = filename;
                     span.style.fontSize = '0.65rem';
@@ -4998,20 +5079,20 @@ M2;                 ; End program
                     span.style.overflow = 'hidden';
                     span.style.textOverflow = 'ellipsis';
                     span.style.width = '100%';
-                    
+
                     btn.appendChild(img);
                     btn.appendChild(span);
-                    
+
                     btn.onmouseover = () => btn.style.background = 'rgba(255, 45, 172, 0.2)';
                     btn.onmouseout = () => btn.style.background = 'var(--panel-bg)';
-                    
+
                     btn.onclick = () => {
                         log(`Loading ${filename}...`, 'info');
                         document.getElementById('stream-filename').textContent = filename;
                         try {
                             const contents = window.DUSJAGR_FAVORITES_DATA[filename];
                             if (!contents) throw new Error('G-Code payload missing for this file');
-                            
+
                             originalStreamLines = contents.split(/\r?\n/).filter(line => line.trim().length > 0);
                             window.processStreamLines();
                             log(`Loaded ${filename} from Archive!`, 'info');
@@ -5025,7 +5106,7 @@ M2;                 ; End program
                 });
 
                 // Attach search filter logic
-                document.getElementById('archive-search').addEventListener('input', function(e) {
+                document.getElementById('archive-search').addEventListener('input', function (e) {
                     const term = e.target.value.toLowerCase();
                     const buttons = listEl.querySelectorAll('button');
                     buttons.forEach(btn => {
@@ -5042,7 +5123,7 @@ M2;                 ; End program
                 listEl.innerHTML = '<div style="color: var(--accent-pink); text-align: center; padding: 20px;">Failed to load archive data.</div>';
             }
         }
-        
+
         // Auto-load on startup
         if (window.DUSJAGR_FAVORITES) {
             loadArchive();
@@ -5055,7 +5136,7 @@ M2;                 ; End program
         let currentPathsState = JSON.stringify(paths);
         let currentCompsState = JSON.stringify(window.pcbComponents);
 
-        window.commitState = function(clearRedo = true) {
+        window.commitState = function (clearRedo = true) {
             const newPaths = JSON.stringify(paths);
             const newComps = JSON.stringify(window.pcbComponents);
             if (newPaths !== currentPathsState || newComps !== currentCompsState) {
@@ -5067,17 +5148,17 @@ M2;                 ; End program
             }
         };
 
-        window.performUndo = function() {
+        window.performUndo = function () {
             if (window.undoStack.length > 0) {
                 window.redoStack.push({ paths: currentPathsState, pcbComponents: currentCompsState });
                 const state = window.undoStack.pop();
                 paths = JSON.parse(state.paths);
                 window.pcbComponents = JSON.parse(state.pcbComponents);
                 window.selectedComponentIndex = -1;
-                
+
                 currentPathsState = state.paths;
                 currentCompsState = state.pcbComponents;
-                
+
                 if (typeof redrawCanvas === 'function') redrawCanvas();
                 log('Undo performed', 'info');
             } else {
@@ -5085,17 +5166,17 @@ M2;                 ; End program
             }
         };
 
-        window.performRedo = function() {
+        window.performRedo = function () {
             if (window.redoStack.length > 0) {
                 window.undoStack.push({ paths: currentPathsState, pcbComponents: currentCompsState });
                 const state = window.redoStack.pop();
                 paths = JSON.parse(state.paths);
                 window.pcbComponents = JSON.parse(state.pcbComponents);
                 window.selectedComponentIndex = -1;
-                
+
                 currentPathsState = state.paths;
                 currentCompsState = state.pcbComponents;
-                
+
                 if (typeof redrawCanvas === 'function') redrawCanvas();
                 log('Redo performed', 'info');
             } else {
@@ -5105,13 +5186,13 @@ M2;                 ; End program
 
         const undoBtn = document.getElementById('draw-undo');
         if (undoBtn) undoBtn.addEventListener('click', window.performUndo);
-        
+
         const redoBtn = document.getElementById('draw-redo');
         if (redoBtn) redoBtn.addEventListener('click', window.performRedo);
 
         document.addEventListener('keydown', (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            
+
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
                 e.preventDefault();
                 if (e.shiftKey) {
