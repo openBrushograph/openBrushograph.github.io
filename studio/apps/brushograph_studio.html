@@ -970,7 +970,7 @@
     </style>
 </head>
 
-<body onload="initTheme()">
+<body>
     <script>
         (function() {
             const savedTheme = localStorage.getItem('brushograph_theme') || 'uwu';
@@ -984,7 +984,7 @@
         </a>
         <div style="display: flex; align-items: center; gap: 20px;">
             <h1 id="main-title" style="margin:0; text-shadow:none;">Mikro-Brushografia</h1>
-            <select id="theme-selector" onchange="setTheme(this.value)" style="padding: 5px; border-radius: 4px; font-family: var(--font-main); border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-color);">
+            <select id="theme-selector" autocomplete="off" onchange="setTheme(this.value)" style="padding: 5px; border-radius: 4px; font-family: var(--font-main); border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-color);">
                 <option value="pinkograph">Pinkograph</option>
                 <option value="esp3d">ESP3D Classic</option>
                 <option value="randen">Randen</option>
@@ -1210,7 +1210,7 @@
             </div>
             <div class="input-group" style="margin-bottom: 8px;">
                 <input type="text" id="ip-input" value="brushographpro.local" placeholder="Address" style="flex-grow: 1;">
-                <input type="number" id="port-input" value="81" style="width: 50px;" title="Port">
+                <input type="number" id="port-input" value="80" style="width: 50px;" title="Port">
                 <input type="text" id="path-input" value="" placeholder="/" style="width: 40px;"
                     title="Path (e.g. /ws)">
                 <button id="btn-connect" class="btn-blue">Connect</button>
@@ -1610,7 +1610,7 @@
             connect(ip) {
                 if (this.socket) this.socket.close();
                 this.ip = ip;
-                const port = document.getElementById('port-input').value || 81;
+                const port = document.getElementById('port-input').value || 80;
                 const path = document.getElementById('path-input').value || "";
                 const wsUrl = `ws://${ip}:${port}${path.startsWith('/') ? '' : '/'}${path}`;
                 log(`Connecting to ${wsUrl}...`, 'info');
@@ -1804,7 +1804,7 @@
         // --- AUTO-CONNECT (RESTORED TO WORKING STATE) ---
         function initAutoConnect() {
             const savedIp = localStorage.getItem('obg_ip') || "brushparang.local";
-            const savedPort = localStorage.getItem('obg_port') || "81";
+            const savedPort = localStorage.getItem('obg_port') || "80";
             const savedPath = localStorage.getItem('obg_path') || "";
 
             const ipEl = document.getElementById('ip-input');
@@ -2038,6 +2038,7 @@
             const savedTheme = localStorage.getItem('brushograph_theme') || 'uwu';
             setTheme(savedTheme);
         }
+        document.addEventListener('DOMContentLoaded', initTheme);
 
         function setTheme(mode) {
             localStorage.setItem('brushograph_theme', mode);
