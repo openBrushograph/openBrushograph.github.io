@@ -1648,8 +1648,11 @@
                             msgData = new TextDecoder().decode(msgData);
                         }
 
-                        const data = msgData.trim();
-                        if (data) {
+                        const lines = msgData.split(/\r?\n/);
+                        for (let i = 0; i < lines.length; i++) {
+                            const data = lines[i].trim();
+                            if (!data) continue;
+
                             // Parse Machine State & Work Position
                             const stateMatch = data.match(/^<([a-zA-Z0-9:]+)[|,]/);
                             const posMatch = data.match(/(WPos|MPos):(-?[0-9.]+),(-?[0-9.]+),(-?[0-9.]+)/);
