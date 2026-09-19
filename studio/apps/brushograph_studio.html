@@ -3428,11 +3428,16 @@
                         }
                     } else if (line.startsWith('G1 X') || line.startsWith('G1 Y')) {
                         if (currentStroke) {
+                            let mx = currentStroke.points.length > 0 ? currentStroke.points[currentStroke.points.length - 1].mx : null;
+                            let my = currentStroke.points.length > 0 ? currentStroke.points[currentStroke.points.length - 1].my : null;
+
                             const xMatch = line.match(/X([0-9.]+)/);
                             const yMatch = line.match(/Y([0-9.]+)/);
-                            if (xMatch && yMatch) {
-                                const mx = parseFloat(xMatch[1]);
-                                const my = parseFloat(yMatch[1]);
+
+                            if (xMatch) mx = parseFloat(xMatch[1]);
+                            if (yMatch) my = parseFloat(yMatch[1]);
+
+                            if (mx !== null && my !== null) {
                                 const cx = (mx / maxX) * canvas.width;
                                 const cy = canvas.height - ((my / maxY) * canvas.height);
 
