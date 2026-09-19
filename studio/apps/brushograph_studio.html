@@ -1450,7 +1450,7 @@
                             title="Set to 0 to disable" onchange="saveZCalibration()">
                     </div>
                     <div class="input-group">
-                        <label>Z Pick:</label><input type="number" id="z-up" value="8.0" step="0.1" style="width:55px;">
+                        <label>Z Pick:</label><input type="number" id="z-up" value="10" step="0.1" style="width:55px;">
                         <label>Z Lift:</label><input type="number" id="z-lift" value="2.0" step="0.1"
                             style="width:55px;">
                         <label>Z Down:</label><input type="number" id="z-down" value="0" step="0.1" style="width:55px;">
@@ -1487,41 +1487,45 @@
                                 <input type="checkbox" id="z-leveling-enable" onchange="saveZCalibration()"> Enable
                             </label>
                         </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:0.85rem;">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; font-size:0.85rem; grid-template-areas: 'tl . tr' '. c .' 'bl . br'; justify-items: center;">
                             <!-- Top Left -->
-                            <div style="display:flex; flex-direction:column; gap:3px;">
-                                <div><b>TL (X30 Y50)</b></div>
-                                <div style="display:flex; gap:3px;">
-                                    Z: <input type="number" id="z-cal-tl" value="0.0" step="0.1" style="width:45px;"
-                                        onchange="saveZCalibration()">
-                                    <button class="cal-move-btn" data-x="30" data-y="50">Move</button>
+                            <div style="display:flex; flex-direction:column; align-items:center; gap:3px; grid-area: tl;">
+                                <div id="lbl-cal-tl"><b>TL (X30 Y50)</b></div>
+                                <div style="display:flex; gap:3px; justify-content:center; align-items:center;">
+                                    Z: <input type="number" id="z-cal-tl" value="0.0" step="0.1" style="width:45px;" onchange="saveZCalibration()">
+                                    <button class="cal-move-btn" id="btn-cal-tl" data-x="30" data-y="50">Move</button>
                                 </div>
                             </div>
                             <!-- Top Right -->
-                            <div style="display:flex; flex-direction:column; gap:3px;">
-                                <div><b>TR (X70 Y50)</b></div>
-                                <div style="display:flex; gap:3px;">
-                                    Z: <input type="number" id="z-cal-tr" value="0.0" step="0.1" style="width:45px;"
-                                        onchange="saveZCalibration()">
-                                    <button class="cal-move-btn" data-x="70" data-y="50">Move</button>
+                            <div style="display:flex; flex-direction:column; align-items:center; gap:3px; grid-area: tr;">
+                                <div id="lbl-cal-tr"><b>TR (X70 Y50)</b></div>
+                                <div style="display:flex; gap:3px; justify-content:center; align-items:center;">
+                                    Z: <input type="number" id="z-cal-tr" value="0.0" step="0.1" style="width:45px;" onchange="saveZCalibration()">
+                                    <button class="cal-move-btn" id="btn-cal-tr" data-x="70" data-y="50">Move</button>
+                                </div>
+                            </div>
+                            <!-- Center -->
+                            <div style="display:flex; flex-direction:column; align-items:center; gap:3px; grid-area: c;">
+                                <div id="lbl-cal-c"><b>Center (X50 Y25)</b></div>
+                                <div style="display:flex; gap:3px; justify-content:center; align-items:center;">
+                                    Z: <input type="number" id="z-cal-c" value="0.0" step="0.1" style="width:45px;" onchange="saveZCalibration()">
+                                    <button class="cal-move-btn" id="btn-cal-c" data-x="50" data-y="25">Move</button>
                                 </div>
                             </div>
                             <!-- Bottom Left -->
-                            <div style="display:flex; flex-direction:column; gap:3px;">
-                                <div><b>BL (X30 Y5)</b></div>
-                                <div style="display:flex; gap:3px;">
-                                    Z: <input type="number" id="z-cal-bl" value="0.0" step="0.1" style="width:45px;"
-                                        onchange="saveZCalibration()">
-                                    <button class="cal-move-btn" data-x="30" data-y="5">Move</button>
+                            <div style="display:flex; flex-direction:column; align-items:center; gap:3px; grid-area: bl;">
+                                <div id="lbl-cal-bl"><b>BL (X30 Y5)</b></div>
+                                <div style="display:flex; gap:3px; justify-content:center; align-items:center;">
+                                    Z: <input type="number" id="z-cal-bl" value="0.0" step="0.1" style="width:45px;" onchange="saveZCalibration()">
+                                    <button class="cal-move-btn" id="btn-cal-bl" data-x="30" data-y="5">Move</button>
                                 </div>
                             </div>
                             <!-- Bottom Right -->
-                            <div style="display:flex; flex-direction:column; gap:3px;">
-                                <div><b>BR (X70 Y5)</b></div>
-                                <div style="display:flex; gap:3px;">
-                                    Z: <input type="number" id="z-cal-br" value="0.0" step="0.1" style="width:45px;"
-                                        onchange="saveZCalibration()">
-                                    <button class="cal-move-btn" data-x="70" data-y="5">Move</button>
+                            <div style="display:flex; flex-direction:column; align-items:center; gap:3px; grid-area: br;">
+                                <div id="lbl-cal-br"><b>BR (X70 Y5)</b></div>
+                                <div style="display:flex; gap:3px; justify-content:center; align-items:center;">
+                                    Z: <input type="number" id="z-cal-br" value="0.0" step="0.1" style="width:45px;" onchange="saveZCalibration()">
+                                    <button class="cal-move-btn" id="btn-cal-br" data-x="70" data-y="5">Move</button>
                                 </div>
                             </div>
                         </div>
@@ -1954,7 +1958,7 @@
             if (seqType === 'large') {
                 rawSeq = "$X; G10 P0 L20 X0 Y0 Z0; G90; G1 Z10 F1800; G1 X80 Y65 Z32 F1800; G1 X0 Y0 Z22 F1800; G10 P0 L20 X0 Y0 Z10; G1 Z15 F600; G1 Z10 F600; G1 X-10 Y-10 F1000; G1 X-8 Y-8 F1000; G10 P0 L20 X0 Y0 Z10;";
             } else if (seqType === 'mikro') {
-                rawSeq = "$X; G10 P0 L20 X0 Y0 Z0; G90; G1 Z10 F800; G1 X74 Y115 Z15 F800; G1 X0 Y0 Z14 F800; G10 P0 L20 X0 Y0 Z8; G1 Z6 F600; G1 Z8 F600; G1 X-4 Y-4 F1000; G1 X-2 Y-2 F1000; G10 P0 L20 X0 Y0 Z8;";
+                rawSeq = "$X; G10 P0 L20 X0 Y0 Z0; G90; G1 Z10 F800; G1 X74 Y115 Z17 F800; G1 X0 Y0 Z15 F800; G10 P0 L20 X0 Y0 Z10; G1 Z8 F600; G1 Z10 F600; G1 X-4 Y-4 F1000; G1 X-2 Y-2 F1000; G10 P0 L20 X0 Y0 Z10;";
             }
             const cmds = rawSeq.split(';').map(c => c.trim()).filter(c => c.length > 0);
 
@@ -1975,15 +1979,26 @@
 
         document.querySelectorAll('.cal-move-btn').forEach(btn => {
             btn.onclick = async () => {
-                const x = btn.getAttribute('data-x');
-                const y = btn.getAttribute('data-y');
+                const x = parseFloat(btn.getAttribute('data-x'));
+                const y = parseFloat(btn.getAttribute('data-y'));
+                const inputId = btn.id.replace('btn-', 'z-');
+                const offset = parseFloat(document.getElementById(inputId)?.value || 0);
+
                 if (typeof sendCommand === 'function') {
                     const maxX = parseFloat(document.getElementById('max-x').value);
-                    const safeZ = maxX === 64 ? 8 : 10;
+                    const safeZ = 10;
                     await sendCommand('G90');
                     await sendCommand(`G1 Z${safeZ} F1500`); // safe height
                     await sendCommand(`G0 X${x} Y${y} F1500`);
-                    await sendCommand(`G1 Z5 F800`); // move down closer to paper for measurement
+                    await sendCommand(`G1 Z5 F800`); // fast drop to 5mm
+                    await sendCommand(`G1 Z${offset.toFixed(3)} F300`); // lower slowly to adjusted offset
+                    // Draw 3x3mm square slowly
+                    await sendCommand(`G1 X${x+3} Y${y} F300`);
+                    await sendCommand(`G1 X${x+3} Y${y+3} F300`);
+                    await sendCommand(`G1 X${x} Y${y+3} F300`);
+                    await sendCommand(`G1 X${x} Y${y} F300`);
+                    // Lift to Z2mm above offset
+                    await sendCommand(`G1 Z${(offset + 2).toFixed(3)} F800`);
                 }
             };
         });
@@ -2652,6 +2667,34 @@
                 // Keep width fixed at 490, adjust height to maintain physical ratio
                 canvas.height = 490 * (maxY / maxX);
                 redrawCanvas();
+
+                // Update Plane Leveling safe zones (5mm inside max edges, avoiding red zone by 5mm)
+                let safeMinX = 5, safeMaxX = maxX - 5;
+                let safeMinY = 5, safeMaxY = maxY - 5;
+
+                if (maxX === 64) {
+                    safeMinY = 16 + 5; // Mikro red zone is bottom 16mm
+                } else if (maxX === 74 || maxX === 70) {
+                    safeMinX = 21 + 5; // Baby red zone is left 21mm
+                } else {
+                    safeMinY = 20 + 5; // Large red zone is bottom 20mm
+                }
+
+                const setCal = (id, label, x, y) => {
+                    const lbl = document.getElementById('lbl-cal-' + id);
+                    const btn = document.getElementById('btn-cal-' + id);
+                    if (lbl) lbl.innerHTML = `<b>${label} (X${x} Y${y})</b>`;
+                    if (btn) { btn.setAttribute('data-x', x); btn.setAttribute('data-y', y); }
+                };
+
+                const cX = Math.round((safeMinX + safeMaxX) / 2);
+                const cY = Math.round((safeMinY + safeMaxY) / 2);
+
+                setCal('tl', 'TL', safeMinX, safeMaxY);
+                setCal('tr', 'TR', safeMaxX, safeMaxY);
+                setCal('bl', 'BL', safeMinX, safeMinY);
+                setCal('br', 'BR', safeMaxX, safeMinY);
+                setCal('c', 'Center', cX, cY);
             }
         }
 
@@ -3139,7 +3182,7 @@
                     if (hit) {
                         setActivePot(id);
                         if (typeof sendCommand === 'function') {
-                            const zUp = document.getElementById('z-up')?.value || 8.0;
+                            const zUp = document.getElementById('z-up')?.value || 10.0;
                             const fastSpeed = document.getElementById('fast-speed')?.value || 1500;
                             setTimeout(async () => {
                                 await sendCommand(`G90`);
@@ -3561,17 +3604,43 @@
             const zBR = parseFloat(document.getElementById('z-cal-br')?.value || 0);
             const zTL = parseFloat(document.getElementById('z-cal-tl')?.value || 0);
             const zTR = parseFloat(document.getElementById('z-cal-tr')?.value || 0);
+            const zC = parseFloat(document.getElementById('z-cal-c')?.value || 0);
 
-            // Our 4 corners for calibration:
-            const x1 = 30, x2 = 70;
-            const y1 = 5, y2 = 50;
+            const maxX = parseFloat(document.getElementById('max-x')?.value || 64);
+            const maxY = parseFloat(document.getElementById('max-y')?.value || 105);
 
-            const tx = (x - x1) / (x2 - x1);
-            const ty = (y - y1) / (y2 - y1);
+            let safeMinX = 5, safeMaxX = maxX - 5;
+            let safeMinY = 5, safeMaxY = maxY - 5;
+            if (maxX === 64) { safeMinY = 21; }
+            else if (maxX === 74 || maxX === 70) { safeMinX = 26; }
+            else { safeMinY = 25; }
 
-            const zTop = zTL + tx * (zTR - zTL);
-            const zBottom = zBL + tx * (zBR - zBL);
-            const comp = zBottom + ty * (zTop - zBottom);
+            const cX = (safeMinX + safeMaxX) / 2;
+            const cY = (safeMinY + safeMaxY) / 2;
+
+            const pTL = { x: safeMinX, y: safeMaxY, z: zTL };
+            const pTR = { x: safeMaxX, y: safeMaxY, z: zTR };
+            const pBL = { x: safeMinX, y: safeMinY, z: zBL };
+            const pBR = { x: safeMaxX, y: safeMinY, z: zBR };
+            const pC = { x: cX, y: cY, z: zC };
+
+            // Clamp input (x, y) to bounds for safe interpolation
+            const px = Math.max(safeMinX, Math.min(safeMaxX, x));
+            const py = Math.max(safeMinY, Math.min(safeMaxY, y));
+
+            const getZ = (p1, p2, p3) => {
+                const det = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
+                const w1 = ((p2.y - p3.y) * (px - p3.x) + (p3.x - p2.x) * (py - p3.y)) / det;
+                const w2 = ((p3.y - p1.y) * (px - p3.x) + (p1.x - p3.x) * (py - p3.y)) / det;
+                const w3 = 1.0 - w1 - w2;
+                if (w1 >= -0.01 && w2 >= -0.01 && w3 >= -0.01) {
+                    return w1 * p1.z + w2 * p2.z + w3 * p3.z;
+                }
+                return null;
+            };
+
+            let comp = getZ(pTL, pTR, pC) ?? getZ(pTR, pBR, pC) ?? getZ(pBR, pBL, pC) ?? getZ(pBL, pTL, pC);
+            if (comp == null) comp = zC; // Fallback
 
             return parseFloat(baseZ) + comp;
         }
@@ -3582,6 +3651,7 @@
             localStorage.setItem('obg_z_br', document.getElementById('z-cal-br').value);
             localStorage.setItem('obg_z_tl', document.getElementById('z-cal-tl').value);
             localStorage.setItem('obg_z_tr', document.getElementById('z-cal-tr').value);
+            localStorage.setItem('obg_z_c', document.getElementById('z-cal-c').value);
             localStorage.setItem('obg_z_max_path', document.getElementById('max-path-length').value);
         }
 
@@ -3592,6 +3662,7 @@
                 document.getElementById('z-cal-br').value = localStorage.getItem('obg_z_br') || '0.0';
                 document.getElementById('z-cal-tl').value = localStorage.getItem('obg_z_tl') || '0.0';
                 document.getElementById('z-cal-tr').value = localStorage.getItem('obg_z_tr') || '0.0';
+                document.getElementById('z-cal-c').value = localStorage.getItem('obg_z_c') || '0.0';
                 document.getElementById('max-path-length').value = localStorage.getItem('obg_z_max_path') || '100';
             }
         }
@@ -3733,7 +3804,7 @@
             const cx = pot.x; const cy = pot.y;
             const maxX = parseFloat(document.getElementById('max-x').value);
             if (maxX === 64) {
-                if (parseFloat(zUp) > 8) zUp = 8;
+                if (parseFloat(zUp) > 10) zUp = 10;
                 zDown = 2; // Hardcoded safety depth for Mikro dipping
             }
 
@@ -3748,7 +3819,7 @@
             let stirRadiusY = 3;
             if (maxX === 64 && id === 'c4') {
                 stirRadiusX = 1.0; // Slimmer dip for C4 to avoid hitting X hard limit
-                stirRadiusY = 2.0; 
+                stirRadiusY = 2.0;
             }
 
             for (let i = 0; i <= 720; i += 10) {
@@ -3780,7 +3851,7 @@
             const cx = pot.x; const cy = pot.y;
             const maxX = parseFloat(document.getElementById('max-x').value);
             if (maxX === 64) {
-                if (parseFloat(zUp) > 8) zUp = 8;
+                if (parseFloat(zUp) > 10) zUp = 10;
                 zDown = 1; // Hardcoded safety depth for Mikro washing
             }
 
@@ -3795,23 +3866,23 @@
 
             if (maxX === 64) {
                 // --- MIKRO COOLER WASH SEQUENCE ---
-                
+
                 // 1. Wiggle along Y
                 for (let i = 0; i < 2; i++) {
                     seq.push(`G1 X${cx} Y${cy + 3} F1200`);
                     seq.push(`G1 X${cx} Y${cy - 2} F1200`);
                 }
                 seq.push(`G1 X${cx} Y${cy} F1200`);
-                
+
                 // Wipe once towards Y+
                 seq.push(`G1 X${cx} Y${cy + 8} Z${zDown} F800`);
                 seq.push(`G1 X${cx} Y${cy + 10} Z7 F400`);
-                
+
                 // 2. Back to center
                 seq.push(`G0 Z${zUp} F${fastSpeed}`);
                 seq.push(`G0 X${cx} Y${cy} F${fastSpeed}`);
                 seq.push(`G1 Z${zDown} F800`);
-                
+
                 // Make a circle towards Y+ (avoiding negative X by shifting center +1.5)
                 for (let i = 180; i <= 180 + 360; i += 20) {
                     let rad = i * Math.PI / 180;
@@ -3819,16 +3890,16 @@
                     let py = cy - 1.5 * Math.sin(rad); // -sin to go Y+ first
                     seq.push(`G1 X${px.toFixed(3)} Y${py.toFixed(3)} Z${zDown} F1200`);
                 }
-                
+
                 // Wipe diagonally towards the edge to right
                 seq.push(`G1 X${cx + 3} Y${cy + 8} Z${zDown} F800`);
                 seq.push(`G1 X${cx + 4} Y${cy + 10} Z7 F400`);
-                
+
                 // 3. Go back once more
                 seq.push(`G0 Z${zUp} F${fastSpeed}`);
                 seq.push(`G0 X${cx} Y${cy} F${fastSpeed}`);
                 seq.push(`G1 Z${zDown} F800`);
-                
+
                 // Wiggle circles (2 loops)
                 for (let i = 180; i <= 180 + 720; i += 20) {
                     let rad = i * Math.PI / 180;
@@ -3836,7 +3907,7 @@
                     let py = cy - 1.5 * Math.sin(rad);
                     seq.push(`G1 X${px.toFixed(3)} Y${py.toFixed(3)} Z${zDown} F1200`);
                 }
-                
+
                 // Wipe towards Y+
                 seq.push(`G1 X${cx} Y${cy + 8} Z${zDown} F800`);
                 seq.push(`G1 X${cx} Y${cy + 10} Z7 F400`);
@@ -4595,11 +4666,7 @@ M2;                 ; End program
             if (machine.socket.readyState === WebSocket.OPEN) {
                 machine.socket.send(new Uint8Array([0xB0]));
             }
-            // 2. Persistent Logical Shift
-            const newWcoZ = machine.wco.z + 0.1;
-            machine.wco.z = newWcoZ; // Optimistic update
-            machine.send(`G10 L2 P0 Z${newWcoZ.toFixed(3)}`, true);
-            log(`Live Z+ 0.1mm (Nudge + WCS Shift)`, 'sent');
+            log(`Live Z+ 0.1mm (Realtime Nudge 0xB0)`, 'sent');
         };
         document.getElementById('babystep-z-minus').onclick = () => {
             if (!machine.isConnected) return;
@@ -4607,11 +4674,7 @@ M2;                 ; End program
             if (machine.socket.readyState === WebSocket.OPEN) {
                 machine.socket.send(new Uint8Array([0xB1]));
             }
-            // 2. Persistent Logical Shift
-            const newWcoZ = machine.wco.z - 0.1;
-            machine.wco.z = newWcoZ; // Optimistic update
-            machine.send(`G10 L2 P0 Z${newWcoZ.toFixed(3)}`, true);
-            log(`Live Z- 0.1mm (Nudge + WCS Shift)`, 'sent');
+            log(`Live Z- 0.1mm (Realtime Nudge 0xB1)`, 'sent');
         };
 
         document.getElementById('zero-x').onclick = async () => { if (isDrawing) return; log('Setting X to 0', 'info'); await sendCommand('G10 P0 L20 X0'); };
