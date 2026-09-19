@@ -1104,33 +1104,6 @@
                         </div>
                     </div>
 
-                    <div style="border-top: 1px dotted var(--border); margin-top: 10px; padding-top: 10px;">
-                        <label
-                            style="display:flex; align-items:center; gap:5px; font-size:0.75rem; color:var(--text-main); font-weight:bold;">
-                            <input type="checkbox" id="apply-backlash"
-                                onchange="document.getElementById('backlash-options').style.display = this.checked ? 'flex' : 'none'; window.processStreamLines && window.processStreamLines();">
-                            Apply Backlash Compensation
-                        </label>
-                        <div id="backlash-options"
-                            style="display:none; flex-direction:column; gap:5px; margin-top:5px; padding-left:20px;">
-                            <div class="input-group" style="padding:0;">
-                                <label style="font-size:0.7rem; flex:1;">X (mm):</label>
-                                <input type="number" id="backlash-x" value="0.30" step="0.05"
-                                    style="width:50px; font-size:0.7rem; padding:2px;"
-                                    onchange="window.processStreamLines && window.processStreamLines()">
-                                <label style="font-size:0.7rem; flex:1; margin-left:5px;">Y (mm):</label>
-                                <input type="number" id="backlash-y" value="0.30" step="0.05"
-                                    style="width:50px; font-size:0.7rem; padding:2px;"
-                                    onchange="window.processStreamLines && window.processStreamLines()">
-                            </div>
-                            <div class="input-group" style="padding:0;">
-                                <label style="font-size:0.7rem; flex:1;">Safe Feed (F):</label>
-                                <input type="number" id="backlash-f" value="500" step="100"
-                                    style="width:60px; font-size:0.7rem; padding:2px;"
-                                    onchange="window.processStreamLines && window.processStreamLines()">
-                            </div>
-                        </div>
-                    </div>
 
                     <div style="border-top: 1px dotted var(--border); margin-top: 10px; padding-top: 10px;">
                         <label
@@ -1532,6 +1505,26 @@
                     </div>
 
                     <div
+                        style="margin-top: 15px; border: 1px solid var(--border); padding: 10px; border-radius: var(--border-radius); background: rgba(0,0,0,0.05);">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <h3 style="margin:0; font-size:1rem;">Backlash Compensation</h3>
+                            <label style="display:flex; align-items:center; gap:5px; font-size:0.9rem;">
+                                <input type="checkbox" id="apply-backlash"
+                                    onchange="document.getElementById('backlash-options').style.display = this.checked ? 'flex' : 'none'; window.processStreamLines && window.processStreamLines(); saveBacklash();"> Enable
+                            </label>
+                        </div>
+                        <div id="backlash-options"
+                            style="display:none; flex-direction:column; gap:10px;">
+                            <div style="display:flex; justify-content:space-between; gap:10px;">
+                                <label style="font-size:0.85rem; flex:1;">X Backlash (mm): <input type="number" id="backlash-x" value="0.80" step="0.05" style="width:50px;" onchange="window.processStreamLines && window.processStreamLines(); saveBacklash();"></label>
+                                <label style="font-size:0.85rem; flex:1;">Y Backlash (mm): <input type="number" id="backlash-y" value="0.80" step="0.05" style="width:50px;" onchange="window.processStreamLines && window.processStreamLines(); saveBacklash();"></label>
+                                <label style="font-size:0.85rem; flex:1;">Safe Feed: <input type="number" id="backlash-f" value="500" step="100" style="width:50px;" onchange="window.processStreamLines && window.processStreamLines(); saveBacklash();"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
                         style="display: flex; justify-content: space-between; align-items: flex-end; margin-top:20px; margin-bottom:10px; border-bottom:1px solid var(--border); padding-bottom:5px;">
                         <h3 style="margin:0; font-size:1rem;">Diy-CAD Components</h3>
                         <div style="display:flex; gap:5px;">
@@ -1888,9 +1881,9 @@
             if (portEl) portEl.value = savedPort;
             if (pathEl) pathEl.value = savedPath;
 
-            log(`System Ready. Auto-connecting disabled in preview mode.`, 'info');
+            log(`System Ready. Auto-connecting to ${savedIp}...`, 'info');
             setTimeout(() => {
-                // [PREVIEW MODE] machine.connect(savedIp);
+                machine.connect(savedIp);
             }, 1000);
         }
         initAutoConnect();
@@ -3107,19 +3100,6 @@
                         bodyWidth = (fp.width / maxX) * canvas.width;
                         bodyHeight = (fp.height / maxY) * canvas.height;
                     } else {
-                        const pinsPerCol = fp.pins / 2;
-                        bodyWidth = (fp.rowSpacing / maxX) * canvas.width;
-                        bodyHeight = ((pinsPerCol * fp.pitch) / maxY) * canvas.height;
-                    }
-
-                    if (window.selectedComponentIndex === i) {
-                        const dx = cx - compCx;
-                        const dy = cy - compCy;
-                        const rotRad = -comp.rotation * Math.PI / 180;
-                        const localX = dx * Math.cos(-rotRad) - dy * Math.sin(-rotRad);
-                        const localY = dx * Math.sin(-rotRad) + dy * Math.cos(-rotRad);
-                        const imgHeightPx = fp.image ? (fp.height / maxY) * canvas.height : 0;
-                        const handleY = -(fp.image ? imgHeightPx / 2 : bodyHeight / 2) - 25;
                         if (Math.hypot(localX, localY - handleY) <= 12) {
                             window.isRotatingComponent = true;
                             clickedIdx = i;
@@ -3401,7 +3381,7 @@
                             currentStroke.potId = currentPotId;
                             currentStroke.color = currentPotId && POTS[currentPotId] ? POTS[currentPotId].color : '#39FF14';
                         }
-                    } else if (line.startsWith('; Stroke') || (line.startsWith('G0 X') && !line.includes('X0 Y0'))) {
+                    } else if (line.startsWith('; Stroke') || ((line.startsWith('G0 X') || line.startsWith('G0 Y')) && !line.includes('X0 Y0'))) {
                         currentStroke = {
                             color: currentPotId && POTS[currentPotId] ? POTS[currentPotId].color : '#39FF14',
                             potId: currentPotId,
@@ -3410,12 +3390,24 @@
                         };
                         paths.push(currentStroke);
 
-                        if (line.startsWith('G0 X')) {
+                        if (line.startsWith('G0 X') || line.startsWith('G0 Y')) {
+                            let mx = null;
+                            let my = null;
+                            if (paths.length > 1) {
+                                const prevStroke = paths[paths.length - 2];
+                                if (prevStroke.points.length > 0) {
+                                    mx = prevStroke.points[prevStroke.points.length - 1].mx;
+                                    my = prevStroke.points[prevStroke.points.length - 1].my;
+                                }
+                            }
+
                             const xMatch = line.match(/X([0-9.]+)/);
                             const yMatch = line.match(/Y([0-9.]+)/);
-                            if (xMatch && yMatch) {
-                                const mx = parseFloat(xMatch[1]);
-                                const my = parseFloat(yMatch[1]);
+                            
+                            if (xMatch) mx = parseFloat(xMatch[1]);
+                            if (yMatch) my = parseFloat(yMatch[1]);
+
+                            if (mx !== null && my !== null) {
                                 const cx = (mx / maxX) * canvas.width;
                                 const cy = canvas.height - ((my / maxY) * canvas.height);
                                 currentStroke.points.push({ cx, cy, mx, my });
@@ -3499,7 +3491,7 @@
                         gcode.push(`; --- Tool Change to ${stroke.potId.toUpperCase()} ---`);
                         let macroSeq = [];
 
-                        if (stroke.potId !== 'wash' && lastPotId !== 'wash' && lastPotId !== null) {
+                        if (stroke.potId !== 'wash' && lastPotId !== 'wash') {
                             const isAutoWash = document.getElementById('auto-wash-mode')?.checked;
                             if (isAutoWash) {
                                 macroSeq = macroSeq.concat(getWashSequence(zUp, zDown, fastSpeed));
@@ -3673,6 +3665,24 @@
         }
         loadZCalibration();
 
+        function saveBacklash() {
+            localStorage.setItem('obg_backlash_enable', document.getElementById('apply-backlash').checked);
+            localStorage.setItem('obg_backlash_x', document.getElementById('backlash-x').value);
+            localStorage.setItem('obg_backlash_y', document.getElementById('backlash-y').value);
+            localStorage.setItem('obg_backlash_f', document.getElementById('backlash-f').value);
+        }
+
+        function loadBacklash() {
+            if (localStorage.getItem('obg_backlash_enable') !== null) {
+                document.getElementById('apply-backlash').checked = localStorage.getItem('obg_backlash_enable') === 'true';
+                document.getElementById('backlash-options').style.display = document.getElementById('apply-backlash').checked ? 'flex' : 'none';
+                document.getElementById('backlash-x').value = localStorage.getItem('obg_backlash_x') || '0.80';
+                document.getElementById('backlash-y').value = localStorage.getItem('obg_backlash_y') || '0.80';
+                document.getElementById('backlash-f').value = localStorage.getItem('obg_backlash_f') || '500';
+            }
+        }
+        loadBacklash();
+
         document.getElementById('draw-play').onclick = async () => {
             if (paths.length === 0 || isDrawing) return;
             isDrawing = true;
@@ -3686,8 +3696,32 @@
             const zDown = document.getElementById('z-down').value;
             const maxPathLength = parseFloat(document.getElementById('max-path-length')?.value || 100);
 
-            await sendCommand(`G90`);
-            await sendCommand(`G1 Z${zUp} F${fastSpeed}`);
+            const applyBacklash = document.getElementById('apply-backlash')?.checked;
+            let fixer = null;
+            let currentFeed = parseFloat(speed) || 1500;
+            if (applyBacklash) {
+                const bx = parseFloat(document.getElementById('backlash-x').value) || 0;
+                const by = parseFloat(document.getElementById('backlash-y').value) || 0;
+                const safeFeed = parseFloat(document.getElementById('backlash-f').value) || 500;
+                fixer = new RF_FluidNCSafeBacklash(bx, by, 0.05, safeFeed);
+            }
+
+            async function sendFixed(cmd) {
+                if (!isDrawing) return;
+                if (!fixer) {
+                    await sendCommand(cmd);
+                    return;
+                }
+                const res = fixer.processLine(cmd, currentFeed);
+                currentFeed = res.newFeed;
+                for (let l of res.lines) {
+                    if (!isDrawing) break;
+                    await sendCommand(l);
+                }
+            }
+
+            await sendFixed(`G90`);
+            await sendFixed(`G1 Z${zUp} F${fastSpeed}`);
 
             let lastPotId = null;
             let cumulativePathLength = 0;
@@ -3723,18 +3757,18 @@
 
                         for (let cmd of macroSeq) {
                             if (!isDrawing) break;
-                            await sendCommand(cmd);
+                            await sendFixed(cmd);
                         }
                         lastPotId = stroke.potId;
                     }
                 }
 
                 // Move to start of stroke
-                await sendCommand(`G1 X${stroke.points[0].mx.toFixed(3)} Y${stroke.points[0].my.toFixed(3)} F${fastSpeed}`);
+                await sendFixed(`G1 X${stroke.points[0].mx.toFixed(3)} Y${stroke.points[0].my.toFixed(3)} F${fastSpeed}`);
 
                 // Drop pen (apply Z compensation)
                 let compZStart = getCompensatedZ(stroke.points[0].mx, stroke.points[0].my, zDown);
-                await sendCommand(`G1 Z${compZStart.toFixed(3)} F${fastSpeed}`);
+                await sendFixed(`G1 Z${compZStart.toFixed(3)} F${fastSpeed}`);
 
                 for (let i = 1; i < stroke.points.length; i++) {
                     if (!isDrawing) break;
@@ -3747,30 +3781,30 @@
                     if (maxPathLength > 0 && cumulativePathLength >= maxPathLength && stroke.potId && !POTS[stroke.potId]?.skipDip) {
                         log(`Max path length (${maxPathLength}mm) reached. Re-dipping...`, 'info');
                         // Lift pen
-                        await sendCommand(`G1 Z${zUp} F${fastSpeed}`);
+                        await sendFixed(`G1 Z${zUp} F${fastSpeed}`);
                         // Dip sequence (wash or dip)
                         const macroSeq = stroke.potId === 'wash' ? getWashSequence(zUp, zDown, fastSpeed) : getDipSequence(stroke.potId, zUp, zDown, fastSpeed);
                         for (let cmd of macroSeq) {
                             if (!isDrawing) break;
-                            await sendCommand(cmd);
+                            await sendFixed(cmd);
                         }
                         if (!isDrawing) break;
                         // Return to stroke position
-                        await sendCommand(`G1 X${stroke.points[i - 1].mx.toFixed(3)} Y${stroke.points[i - 1].my.toFixed(3)} F${fastSpeed}`);
+                        await sendFixed(`G1 X${stroke.points[i - 1].mx.toFixed(3)} Y${stroke.points[i - 1].my.toFixed(3)} F${fastSpeed}`);
                         // Drop pen again
                         let compZResume = getCompensatedZ(stroke.points[i - 1].mx, stroke.points[i - 1].my, zDown);
-                        await sendCommand(`G1 Z${compZResume.toFixed(3)} F${fastSpeed}`);
+                        await sendFixed(`G1 Z${compZResume.toFixed(3)} F${fastSpeed}`);
                         cumulativePathLength = 0;
                     }
 
                     const strokeSpeed = stroke.feedrate || speed;
                     let compZ = getCompensatedZ(stroke.points[i].mx, stroke.points[i].my, zDown);
-                    await sendCommand(`G1 X${stroke.points[i].mx.toFixed(3)} Y${stroke.points[i].my.toFixed(3)} Z${compZ.toFixed(3)} F${strokeSpeed}`);
+                    await sendFixed(`G1 X${stroke.points[i].mx.toFixed(3)} Y${stroke.points[i].my.toFixed(3)} Z${compZ.toFixed(3)} F${strokeSpeed}`);
                 }
 
                 // Lift pen at end of stroke
                 let compZEnd = getCompensatedZ(stroke.points[stroke.points.length - 1].mx, stroke.points[stroke.points.length - 1].my, zLift);
-                await sendCommand(`G1 Z${compZEnd.toFixed(3)} F${fastSpeed}`);
+                await sendFixed(`G1 Z${compZEnd.toFixed(3)} F${fastSpeed}`);
             }
 
             if (isDrawing && POTS['wash']) {
@@ -4667,19 +4701,27 @@ M2;                 ; End program
 
         document.getElementById('babystep-z-plus').onclick = () => {
             if (!machine.isConnected) return;
-            // 1. Instant Physical Nudge (Zero Latency)
-            if (machine.socket.readyState === WebSocket.OPEN) {
-                machine.socket.send(new Uint8Array([0xB0]));
+            if (isStreaming) {
+                window.pendingBabystep = (window.pendingBabystep || 0) + 0.1;
+                log(`Live Z+ 0.1mm (Pending Offset: ${window.pendingBabystep.toFixed(1)}mm)`, 'sent');
+            } else {
+                if (machine.socket.readyState === WebSocket.OPEN) {
+                    machine.socket.send(new Uint8Array([0xB0]));
+                }
+                log(`Live Z+ 0.1mm (Realtime Nudge 0xB0)`, 'sent');
             }
-            log(`Live Z+ 0.1mm (Realtime Nudge 0xB0)`, 'sent');
         };
         document.getElementById('babystep-z-minus').onclick = () => {
             if (!machine.isConnected) return;
-            // 1. Instant Physical Nudge (Zero Latency)
-            if (machine.socket.readyState === WebSocket.OPEN) {
-                machine.socket.send(new Uint8Array([0xB1]));
+            if (isStreaming) {
+                window.pendingBabystep = (window.pendingBabystep || 0) - 0.1;
+                log(`Live Z- 0.1mm (Pending Offset: ${window.pendingBabystep.toFixed(1)}mm)`, 'sent');
+            } else {
+                if (machine.socket.readyState === WebSocket.OPEN) {
+                    machine.socket.send(new Uint8Array([0xB1]));
+                }
+                log(`Live Z- 0.1mm (Realtime Nudge 0xB1)`, 'sent');
             }
-            log(`Live Z- 0.1mm (Realtime Nudge 0xB1)`, 'sent');
         };
 
         document.getElementById('zero-x').onclick = async () => { if (isDrawing) return; log('Setting X to 0', 'info'); await sendCommand('G10 P0 L20 X0'); };
@@ -5139,13 +5181,36 @@ M2;                 ; End program
 
             log(`Streaming ${streamLines.length} lines...`, 'info');
 
+            window.liveZOffset = 0;
+            window.pendingBabystep = 0;
+
             for (let i = 0; i < streamLines.length; i++) {
                 if (!isStreaming) break;
-                const line = streamLines[i].trim();
+                
+                if (window.pendingBabystep !== 0) {
+                    const step = window.pendingBabystep;
+                    window.pendingBabystep = 0;
+                    window.liveZOffset += step;
+                    
+                    // Immediately nudge the Z axis physically so the current stroke adjusts
+                    await sendCommand('G91');
+                    await sendCommand(`G0 Z${step.toFixed(3)}`);
+                    await sendCommand('G90');
+                }
+
+                let line = streamLines[i].trim();
 
                 if (line.startsWith(';')) {
                     document.getElementById('stream-progress').value = i + 1;
                     continue; // Skip comments entirely
+                }
+                
+                if (window.liveZOffset !== 0) {
+                    if (line.startsWith('G0') || line.startsWith('G1')) {
+                        line = line.replace(/Z([-\d.]+)/i, (match, zVal) => {
+                            return `Z${(parseFloat(zVal) + window.liveZOffset).toFixed(3)}`;
+                        });
+                    }
                 }
 
                 document.getElementById('stream-status').textContent = `Sending line ${i + 1} of ${streamLines.length}`;
