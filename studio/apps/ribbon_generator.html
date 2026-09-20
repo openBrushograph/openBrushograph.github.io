@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ribbon Track Generator - OpenBrushograph</title>
+    <style>
+        :root {
+            --bg: #1e1e24;
+            --panel-bg: #2b2b36;
+            --text: #f5f5f5;
+            --accent: #ff4081;
+            --border: #444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-weight: 300;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .controls {
+            background: var(--panel-bg);
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .preview {
+            flex: 1;
+            background: #fff;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        canvas {
+            background: #fdfdfd;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            max-width: 100%;
+            max-height: 80vh;
+        }
+
+        label {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.9rem;
+            color: #ccc;
+            gap: 5px;
+        }
+
+        input[type="range"], input[type="number"] {
+            width: 100%;
+        }
+
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #e91e63;
+        }
+
+        .color-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .color-swatch {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+        }
+
+        .color-box {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ribbon Track Generator</h1>
+
+    <div class="container">
+        <div class="controls">
+            <label>
+                Drawing Width (mm)
+                <input type="number" id="width" value="60">
+            </label>
+            <label>
+                Drawing Height (mm)
+                <input type="number" id="height" value="80">
+            </label>
+            <label>
+                Bottom Margin (Safe zone for pots, mm)
+                <input type="number" id="margin-y" value="20">
+            </label>
+            <label>
+                Number of Parallel Lines
+                <input type="range" id="num-lines" min="2" max="40" value="10">
+            </label>
+            <label>
+                Line Spacing (mm)
+                <input type="range" id="spacing" min="0.5" max="5" value="1.5" step="0.1">
+            </label>
+            <label>
+                Corner Radius (mm)
+                <input type="range" id="radius" min="2" max="60" value="10">
+            </label>
+            <label>
+                Number of Turns (Path Length)
+                <input type="range" id="turns" min="1" max="50" value="10">
+            </label>
+            <label>
+                Segment Length Range (mm)
+                <input type="range" id="seg-len" min="5" max="80" value="30">
+            </label>
+            <label style="flex-direction:row; align-items:center; margin-top:5px;">
+                <input type="checkbox" id="sequential-colors" checked>
+                Sequential Colors (Uncheck for Random)
+            </label>
+            
+            <button id="btn-generate">Generate Pattern</button>
+            <button id="btn-download" style="background: #005b96;">Download G-Code</button>
+
+            <div class="color-legend">
+                <div class="color-swatch"><div class="color-box" style="background: #005b96;"></div> C1</div>
+                <div class="color-swatch"><div class="color-box" style="background: #56bdff;"></div> C2</div>
+                <div class="color-swatch"><div class="color-box" style="background: #32b643;"></div> C3</div>
+                <div class="color-swatch"><div class="color-box" style="background: #ffb700;"></div> C4</div>
+            </div>
+        </div>
+
+        <div class="preview">
+            <canvas id="canvas" width="800" height="800"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let generatedPaths = []; // Array of { potId, points: [{x, y}] }
+
+        const POTS = {
+            'c1': '#005b96', // Dark Blue
+            'c2': '#56bdff', // Light Blue
+            'c3': '#32b643', // Green
+            'c4': '#ffb700'  // Orange
+        };
+
+        const potKeys = Object.keys(POTS);
+
+        function generatePattern() {
+            const widthMm = parseFloat(document.getElementById('width').value);
+            const heightMm = parseFloat(document.getElementById('height').value);
+            const marginYMm = parseFloat(document.getElementById('margin-y').value);
+            
+            const numLines = parseInt(document.getElementById('num-lines').value);
+            const spacing = parseFloat(document.getElementById('spacing').value);
+            let cornerRadius = parseFloat(document.getElementById('radius').value);
+            const numTurns = parseInt(document.getElementById('turns').value);
+            const maxSegLen = parseFloat(document.getElementById('seg-len').value);
+            const useSequential = document.getElementById('sequential-colors').checked;
+
+            // Ensure corner radius is at least half the track width so inner curves don't cross
+            const trackWidth = (numLines - 1) * spacing;
+            let minRadius = trackWidth / 2 + 2;
+            let maxRadiusCanvas = Math.min(widthMm - trackWidth, heightMm - marginYMm - trackWidth) / 2;
+            
+            if (cornerRadius < minRadius) {
+                cornerRadius = minRadius;
+                document.getElementById('radius').value = cornerRadius;
+            }
+            if (cornerRadius > maxRadiusCanvas) {
+                cornerRadius = Math.max(minRadius, maxRadiusCanvas);
+                document.getElementById('radius').value = cornerRadius;
+            }
+
+            const mmToPx = canvas.width / widthMm;
+            canvas.height = canvas.width * (heightMm / widthMm);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.05)';
+            ctx.fillRect(0, canvas.height - (marginYMm * mmToPx), canvas.width, marginYMm * mmToPx);
+
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = 2.5;
+
+            generatedPaths = [];
+
+            // 1. Generate Core Path (Discrete points)
+            let corePath = [];
+            let cx = widthMm / 2;
+            let cy = marginYMm + trackWidth/2 + cornerRadius + 5;
+            let currentAngleDeg = 0; // 0, 90, 180, 270
+            
+            corePath.push({ x: cx, y: cy });
+
+            // Random walk with arcs
+            for (let t = 0; t < numTurns; t++) {
+                // Determine maximum safe straight length
+                let maxSafeLen = 999;
+                let angleMod = ((currentAngleDeg % 360) + 360) % 360; // Normalize to 0, 90, 180, 270
+                
+                if (angleMod === 0) maxSafeLen = (widthMm - trackWidth/2 - cornerRadius) - cx;
+                if (angleMod === 90) maxSafeLen = (heightMm - trackWidth/2 - cornerRadius) - cy;
+                if (angleMod === 180) maxSafeLen = cx - (trackWidth/2 + cornerRadius);
+                if (angleMod === 270) maxSafeLen = cy - (marginYMm + trackWidth/2 + cornerRadius);
+
+                maxSafeLen = Math.max(0, maxSafeLen);
+
+                // Straight segment
+                let len = Math.min(10 + Math.random() * maxSegLen, maxSafeLen);
+
+                // Add straight line points
+                let straightSteps = Math.ceil(len / 1.0); // 1mm steps
+                let startX = cx;
+                let startY = cy;
+                for (let s = 1; s <= straightSteps; s++) {
+                    let stepLen = Math.min(len, s * 1.0);
+                    let px = startX + Math.cos(currentAngleDeg * Math.PI / 180) * stepLen;
+                    let py = startY + Math.sin(currentAngleDeg * Math.PI / 180) * stepLen;
+                    corePath.push({ x: px, y: py });
+                }
+                cx = startX + Math.cos(currentAngleDeg * Math.PI / 180) * len;
+                cy = startY + Math.sin(currentAngleDeg * Math.PI / 180) * len;
+
+                // Turn 90 degrees
+                let isSafeTurn = (dir) => {
+                    let nextAngle = currentAngleDeg + dir;
+                    let nextX = cx + Math.cos(currentAngleDeg * Math.PI / 180) * cornerRadius + Math.cos(nextAngle * Math.PI / 180) * cornerRadius;
+                    let nextY = cy + Math.sin(currentAngleDeg * Math.PI / 180) * cornerRadius + Math.sin(nextAngle * Math.PI / 180) * cornerRadius;
+                    
+                    return nextX >= trackWidth/2 && nextX <= widthMm - trackWidth/2 && 
+                           nextY >= marginYMm + trackWidth/2 && nextY <= heightMm - trackWidth/2;
+                };
+
+                let turnDir = Math.random() < 0.5 ? 90 : -90;
+                
+                if (!isSafeTurn(turnDir)) {
+                    turnDir = -turnDir; // Swap direction
+                    if (!isSafeTurn(turnDir)) {
+                        break; // If both directions hit walls, end path generation
+                    }
+                }
+
+                let arcCenterAngle = currentAngleDeg + (turnDir > 0 ? 90 : -90);
+                let arcCenterX = cx + Math.cos(arcCenterAngle * Math.PI / 180) * cornerRadius;
+                let arcCenterY = cy + Math.sin(arcCenterAngle * Math.PI / 180) * cornerRadius;
+                
+                let startArcAngle = currentAngleDeg + (turnDir > 0 ? -90 : 90);
+                
+                let arcSteps = Math.ceil((Math.PI * cornerRadius / 2) / 1.0); // 1mm steps along arc
+                
+                for (let s = 1; s <= arcSteps; s++) {
+                    let a = startArcAngle + (turnDir * (s / arcSteps));
+                    let rad = a * Math.PI / 180;
+                    let px = arcCenterX + Math.cos(rad) * cornerRadius;
+                    let py = arcCenterY + Math.sin(rad) * cornerRadius;
+                    corePath.push({ x: px, y: py });
+                }
+
+                cx = corePath[corePath.length-1].x;
+                cy = corePath[corePath.length-1].y;
+                currentAngleDeg += turnDir;
+            }
+
+            if (corePath.length < 2) {
+                console.error("Could not generate a valid path within the constraints.");
+                return;
+            }
+
+            // 2. Compute Normals and Generate Parallel Paths
+            for (let i = 0; i < numLines; i++) {
+                let offset = (i - (numLines - 1) / 2) * spacing;
+                
+                let strokePoints = [];
+                for (let j = 0; j < corePath.length; j++) {
+                    let pt = corePath[j];
+                    let nx = 0, ny = 0;
+                    
+                    if (j === 0) {
+                        let dx = corePath[1].x - corePath[0].x;
+                        let dy = corePath[1].y - corePath[0].y;
+                        let len = Math.sqrt(dx*dx + dy*dy);
+                        nx = -dy/len; ny = dx/len;
+                    } else if (j === corePath.length - 1) {
+                        let dx = corePath[j].x - corePath[j-1].x;
+                        let dy = corePath[j].y - corePath[j-1].y;
+                        let len = Math.sqrt(dx*dx + dy*dy);
+                        nx = -dy/len; ny = dx/len;
+                    } else {
+                        // Average normal of adjacent segments for smooth corners
+                        let dx1 = corePath[j].x - corePath[j-1].x;
+                        let dy1 = corePath[j].y - corePath[j-1].y;
+                        let l1 = Math.sqrt(dx1*dx1 + dy1*dy1);
+                        let nx1 = -dy1/l1; let ny1 = dx1/l1;
+                        
+                        let dx2 = corePath[j+1].x - corePath[j].x;
+                        let dy2 = corePath[j+1].y - corePath[j].y;
+                        let l2 = Math.sqrt(dx2*dx2 + dy2*dy2);
+                        let nx2 = -dy2/l2; let ny2 = dx2/l2;
+                        
+                        nx = (nx1 + nx2) / 2;
+                        ny = (ny1 + ny2) / 2;
+                        let ln = Math.sqrt(nx*nx + ny*ny);
+                        nx /= ln; ny /= ln;
+                    }
+                    
+                    let ox = pt.x + nx * offset;
+                    let oy = pt.y + ny * offset;
+                    
+                    // Constrain
+                    if (oy < marginYMm) oy = marginYMm;
+                    strokePoints.push({ x: ox, y: oy });
+                }
+
+                let potIndex = useSequential ? Math.floor((i * potKeys.length) / numLines) : Math.floor(Math.random() * potKeys.length);
+                
+                generatedPaths.push({
+                    potId: potKeys[potIndex],
+                    points: strokePoints
+                });
+            }
+
+            // Draw on canvas
+            for (let stroke of generatedPaths) {
+                ctx.beginPath();
+                ctx.strokeStyle = POTS[stroke.potId];
+                for (let p = 0; p < stroke.points.length; p++) {
+                    let px = stroke.points[p].x * mmToPx;
+                    let py = canvas.height - (stroke.points[p].y * mmToPx);
+                    if (p === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+            }
+        }
+
+        document.getElementById('btn-generate').onclick = generatePattern;
+
+        document.getElementById('btn-download').onclick = () => {
+            if (generatedPaths.length === 0) {
+                alert("Please generate a pattern first!");
+                return;
+            }
+
+            let gcode = [];
+            gcode.push("; Brushograph Ribbon Generative Art");
+            gcode.push("; Generated by HTML Generator");
+            gcode.push("G90");
+            gcode.push("");
+
+            // Group by Pot ID to minimize tool changes
+            const groupedPaths = {};
+            for (let p of generatedPaths) {
+                if (!groupedPaths[p.potId]) groupedPaths[p.potId] = [];
+                groupedPaths[p.potId].push(p);
+            }
+
+            let strokeCount = 1;
+
+            for (let potId of potKeys) {
+                if (!groupedPaths[potId]) continue;
+                
+                gcode.push(`;Layer ${potId}`);
+                
+                for (let stroke of groupedPaths[potId]) {
+                    if (stroke.points.length === 0) continue;
+                    
+                    gcode.push(`; Stroke ${strokeCount++}`);
+                    // Fast travel to start
+                    gcode.push(`G0 X${stroke.points[0].x.toFixed(3)} Y${stroke.points[0].y.toFixed(3)}`);
+                    
+                    // Draw path
+                    for (let i = 1; i < stroke.points.length; i++) {
+                        gcode.push(`G1 X${stroke.points[i].x.toFixed(3)} Y${stroke.points[i].y.toFixed(3)}`);
+                    }
+                    gcode.push(""); // Empty line between strokes
+                }
+            }
+
+            const blob = new Blob([gcode.join('\n')], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'generative_waves.gcode';
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+
+        // Generate an initial pattern
+        generatePattern();
+    </script>
+</body>
+</html>

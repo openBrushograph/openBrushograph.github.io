@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Spiral Generator - OpenBrushograph</title>
+    <style>
+        :root {
+            --bg: #1e1e24;
+            --panel-bg: #2b2b36;
+            --text: #f5f5f5;
+            --accent: #ff4081;
+            --border: #444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-weight: 300;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .controls {
+            background: var(--panel-bg);
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .preview {
+            flex: 1;
+            background: #fff;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        canvas {
+            background: #fdfdfd;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            max-width: 100%;
+            max-height: 80vh;
+        }
+
+        label {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.9rem;
+            color: #ccc;
+            gap: 5px;
+        }
+
+        input[type="range"], input[type="number"] {
+            width: 100%;
+        }
+
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #e91e63;
+        }
+
+        .color-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .color-swatch {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+        }
+
+        .color-box {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Machine Spiral Generator</h1>
+
+    <div class="container">
+        <div class="controls">
+            <label>
+                Drawing Width (mm)
+                <input type="number" id="width" value="60">
+            </label>
+            <label>
+                Drawing Height (mm)
+                <input type="number" id="height" value="80">
+            </label>
+            <label>
+                Bottom Margin (Safe zone for pots, mm)
+                <input type="number" id="margin-y" value="20">
+            </label>
+            <label>
+                Center X (mm)
+                <input type="number" id="center-x" value="30">
+            </label>
+            <label>
+                Center Y (mm)
+                <input type="number" id="center-y" value="40">
+            </label>
+            <label>
+                Number of Arms
+                <input type="range" id="arms" min="1" max="20" value="4">
+            </label>
+            <label>
+                Spiral Spacing (mm)
+                <input type="range" id="spacing" min="1" max="20" value="5" step="0.5">
+            </label>
+            <label>
+                Vertices per Rotation (Resolution)
+                <input type="range" id="resolution" min="3" max="100" value="4">
+                <small style="color:var(--text-muted); font-size:0.75rem;">Set to 4 for squares, 6 for hexagons, 100 for circles</small>
+            </label>
+            <label>
+                Dash Length (mm)
+                <input type="range" id="length" min="2" max="50" value="10" step="1">
+            </label>
+            <label>
+                Dash Gap (mm)
+                <input type="range" id="gap" min="0" max="20" value="2" step="0.5">
+            </label>
+            <label style="flex-direction:row; align-items:center; margin-top:5px;">
+                <input type="checkbox" id="sequential-colors" checked>
+                Sequential Colors (Uncheck for Random)
+            </label>
+            
+            <button id="btn-generate">Generate Pattern</button>
+            <button id="btn-download" style="background: #005b96;">Download G-Code</button>
+
+            <div class="color-legend">
+                <div class="color-swatch"><div class="color-box" style="background: #005b96;"></div> C1</div>
+                <div class="color-swatch"><div class="color-box" style="background: #56bdff;"></div> C2</div>
+                <div class="color-swatch"><div class="color-box" style="background: #32b643;"></div> C3</div>
+                <div class="color-swatch"><div class="color-box" style="background: #ffb700;"></div> C4</div>
+            </div>
+        </div>
+
+        <div class="preview">
+            <canvas id="canvas" width="800" height="800"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let generatedPaths = []; // Array of { potId, points: [{x, y}] }
+
+        const POTS = {
+            'c1': '#005b96', // Dark Blue
+            'c2': '#56bdff', // Light Blue
+            'c3': '#32b643', // Green
+            'c4': '#ffb700'  // Orange
+        };
+
+        const potKeys = Object.keys(POTS);
+
+        function generatePattern() {
+            const widthMm = parseFloat(document.getElementById('width').value);
+            const heightMm = parseFloat(document.getElementById('height').value);
+            const marginYMm = parseFloat(document.getElementById('margin-y').value);
+            
+            const centerX = parseFloat(document.getElementById('center-x').value);
+            const centerY = parseFloat(document.getElementById('center-y').value);
+            const arms = parseInt(document.getElementById('arms').value);
+            const spacing = parseFloat(document.getElementById('spacing').value);
+            const resolution = parseInt(document.getElementById('resolution').value);
+            const dashLen = parseFloat(document.getElementById('length').value);
+            const dashGap = parseFloat(document.getElementById('gap').value);
+            const useSequential = document.getElementById('sequential-colors').checked;
+
+            const mmToPx = canvas.width / widthMm;
+            canvas.height = canvas.width * (heightMm / widthMm);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.05)';
+            ctx.fillRect(0, canvas.height - (marginYMm * mmToPx), canvas.width, marginYMm * mmToPx);
+
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'miter';
+            ctx.lineWidth = 2.5;
+
+            generatedPaths = [];
+            let globalColorCounter = 0;
+
+            const maxRadius = Math.max(widthMm, heightMm) * 0.8;
+            const angleStep = (Math.PI * 2) / resolution;
+
+            for (let arm = 0; arm < arms; arm++) {
+                let currentAngle = (Math.PI * 2 / arms) * arm;
+                let currentRadius = 0;
+                
+                let distSinceLastBreak = 0;
+                let isDrawing = true;
+                
+                let currentStroke = null;
+                let lastPt = { x: centerX, y: centerY };
+                
+                while (currentRadius < maxRadius) {
+                    currentAngle += angleStep;
+                    // r = a + b * theta. To get 'spacing' per 2PI rotation:
+                    // newRadius - oldRadius = (spacing / 2PI) * dTheta
+                    // since we rotate multiple times, let's keep track of total rotation for this arm
+                    currentRadius += (spacing / (Math.PI * 2)) * angleStep;
+                    
+                    let nextX = centerX + Math.cos(currentAngle) * currentRadius;
+                    let nextY = centerY + Math.sin(currentAngle) * currentRadius;
+                    
+                    // Segment length
+                    let dx = nextX - lastPt.x;
+                    let dy = nextY - lastPt.y;
+                    let segLen = Math.sqrt(dx*dx + dy*dy);
+                    let segLeft = segLen;
+                    
+                    let ptX = lastPt.x;
+                    let ptY = lastPt.y;
+                    
+                    while (segLeft > 0) {
+                        let targetDist = isDrawing ? (dashLen - distSinceLastBreak) : (dashGap - distSinceLastBreak);
+                        let stepDist = Math.min(segLeft, targetDist);
+                        
+                        let stepRatio = stepDist / segLen;
+                        ptX += dx * stepRatio;
+                        ptY += dy * stepRatio;
+                        
+                        if (isDrawing) {
+                            if (!currentStroke) {
+                                let potId = useSequential ? potKeys[globalColorCounter % potKeys.length] : potKeys[Math.floor(Math.random() * potKeys.length)];
+                                if (dashGap > 0) globalColorCounter++; // Only increment color if we are actually dashing
+                                currentStroke = { potId: potId, points: [] };
+                                // Start point of this chunk
+                                let sx = ptX - (dx * stepRatio);
+                                let sy = ptY - (dy * stepRatio);
+                                if (sy >= marginYMm) currentStroke.points.push({ x: sx, y: sy });
+                            }
+                            if (ptY >= marginYMm) currentStroke.points.push({ x: ptX, y: ptY });
+                        }
+                        
+                        distSinceLastBreak += stepDist;
+                        segLeft -= stepDist;
+                        
+                        if (distSinceLastBreak + 0.001 >= (isDrawing ? dashLen : dashGap)) {
+                            distSinceLastBreak = 0;
+                            if (isDrawing && currentStroke && currentStroke.points.length > 1) {
+                                generatedPaths.push(currentStroke);
+                            }
+                            currentStroke = null;
+                            if (dashGap > 0) {
+                                isDrawing = !isDrawing;
+                            } else {
+                                // If gap is 0, just change color/stroke immediately
+                                isDrawing = true;
+                            }
+                        }
+                    }
+                    lastPt = { x: nextX, y: nextY };
+                }
+                if (currentStroke && currentStroke.points.length > 1) {
+                    generatedPaths.push(currentStroke);
+                }
+            }
+
+            // Draw on canvas
+            for (let stroke of generatedPaths) {
+                ctx.beginPath();
+                ctx.strokeStyle = POTS[stroke.potId];
+                for (let p = 0; p < stroke.points.length; p++) {
+                    let px = stroke.points[p].x * mmToPx;
+                    let py = canvas.height - (stroke.points[p].y * mmToPx);
+                    if (p === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+            }
+        }
+
+        document.getElementById('btn-generate').onclick = generatePattern;
+
+        document.getElementById('btn-download').onclick = () => {
+            if (generatedPaths.length === 0) {
+                alert("Please generate a pattern first!");
+                return;
+            }
+
+            let gcode = [];
+            gcode.push("; Brushograph Machine Spiral Generative Art");
+            gcode.push("; Generated by HTML Generator");
+            gcode.push("G90");
+            gcode.push("");
+
+            // Group by Pot ID to minimize tool changes
+            const groupedPaths = {};
+            for (let p of generatedPaths) {
+                if (!groupedPaths[p.potId]) groupedPaths[p.potId] = [];
+                groupedPaths[p.potId].push(p);
+            }
+
+            let strokeCount = 1;
+
+            for (let potId of potKeys) {
+                if (!groupedPaths[potId]) continue;
+                
+                gcode.push(`;Layer ${potId}`);
+                
+                for (let stroke of groupedPaths[potId]) {
+                    if (stroke.points.length === 0) continue;
+                    
+                    gcode.push(`; Stroke ${strokeCount++}`);
+                    // Fast travel to start
+                    gcode.push(`G0 X${stroke.points[0].x.toFixed(3)} Y${stroke.points[0].y.toFixed(3)}`);
+                    
+                    // Draw path
+                    for (let i = 1; i < stroke.points.length; i++) {
+                        gcode.push(`G1 X${stroke.points[i].x.toFixed(3)} Y${stroke.points[i].y.toFixed(3)}`);
+                    }
+                    gcode.push(""); // Empty line between strokes
+                }
+            }
+
+            const blob = new Blob([gcode.join('\n')], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'generative_waves.gcode';
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+
+        // Generate an initial pattern
+        generatePattern();
+    </script>
+</body>
+</html>

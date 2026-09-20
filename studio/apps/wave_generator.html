@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wavy Generative Art - OpenBrushograph</title>
+    <style>
+        :root {
+            --bg: #1e1e24;
+            --panel-bg: #2b2b36;
+            --text: #f5f5f5;
+            --accent: #ff4081;
+            --border: #444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-weight: 300;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .controls {
+            background: var(--panel-bg);
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .preview {
+            flex: 1;
+            background: #fff;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        canvas {
+            background: #fdfdfd;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            max-width: 100%;
+            max-height: 80vh;
+        }
+
+        label {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.9rem;
+            color: #ccc;
+            gap: 5px;
+        }
+
+        input[type="range"], input[type="number"] {
+            width: 100%;
+        }
+
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #e91e63;
+        }
+
+        .color-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .color-swatch {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+        }
+
+        .color-box {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Wavey Generative Art Creator</h1>
+
+    <div class="container">
+        <div class="controls">
+            <label>
+                Drawing Width (mm)
+                <input type="number" id="width" value="60">
+            </label>
+            <label>
+                Drawing Height (mm)
+                <input type="number" id="height" value="80">
+            </label>
+            <label>
+                Bottom Margin (Safe zone for pots, mm)
+                <input type="number" id="margin-y" value="20">
+            </label>
+            <label>
+                Line Spacing (mm)
+                <input type="range" id="spacing" min="2" max="30" value="6" step="0.5">
+            </label>
+            <label>
+                Dash Length (mm)
+                <input type="range" id="length" min="2" max="50" value="8" step="1">
+            </label>
+            <label>
+                Wave Amplitude
+                <input type="range" id="wave-amp" min="0" max="50" value="15">
+            </label>
+            <label>
+                Wave Frequency
+                <input type="range" id="wave-freq" min="1" max="100" value="20">
+            </label>
+            <label>
+                Squiggle Amplitude
+                <input type="range" id="squiggle-amp" min="0" max="10" value="2" step="0.5">
+            </label>
+            <label>
+                Squiggle Frequency
+                <input type="range" id="squiggle-freq" min="1" max="100" value="50">
+            </label>
+            <label style="flex-direction:row; align-items:center; margin-top:5px;">
+                <input type="checkbox" id="sequential-colors" checked>
+                Sequential Colors (Uncheck for Random)
+            </label>
+            
+            <button id="btn-generate">Generate Pattern</button>
+            <button id="btn-download" style="background: #005b96;">Download G-Code</button>
+
+            <div class="color-legend">
+                <div class="color-swatch"><div class="color-box" style="background: #005b96;"></div> C1</div>
+                <div class="color-swatch"><div class="color-box" style="background: #56bdff;"></div> C2</div>
+                <div class="color-swatch"><div class="color-box" style="background: #32b643;"></div> C3</div>
+                <div class="color-swatch"><div class="color-box" style="background: #ffb700;"></div> C4</div>
+            </div>
+        </div>
+
+        <div class="preview">
+            <canvas id="canvas" width="800" height="800"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let generatedPaths = []; // Array of { potId, points: [{x, y}] }
+
+        const POTS = {
+            'c1': '#005b96', // Dark Blue
+            'c2': '#56bdff', // Light Blue
+            'c3': '#32b643', // Green
+            'c4': '#ffb700'  // Orange
+        };
+
+        const potKeys = Object.keys(POTS);
+
+        function generatePattern() {
+            const widthMm = parseFloat(document.getElementById('width').value);
+            const heightMm = parseFloat(document.getElementById('height').value);
+            const marginYMm = parseFloat(document.getElementById('margin-y').value);
+            
+            const spacingY = parseFloat(document.getElementById('spacing').value);
+            const dashLen = parseFloat(document.getElementById('length').value);
+            const waveAmp = parseFloat(document.getElementById('wave-amp').value);
+            const waveFreq = parseFloat(document.getElementById('wave-freq').value) / 1000;
+            const sqAmp = parseFloat(document.getElementById('squiggle-amp').value);
+            const sqFreq = parseFloat(document.getElementById('squiggle-freq').value) / 10;
+            const useSequential = document.getElementById('sequential-colors').checked;
+
+            const mmToPx = canvas.width / widthMm;
+            
+            // Adjust canvas aspect ratio
+            canvas.height = canvas.width * (heightMm / widthMm);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Draw a safe zone indicator for the pots
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.05)';
+            ctx.fillRect(0, canvas.height - (marginYMm * mmToPx), canvas.width, marginYMm * mmToPx);
+
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = 2.5;
+
+            generatedPaths = [];
+            
+            let globalColorCounter = 0;
+
+            // Generate parallel wavy lines from top to bottom
+            // We start slightly above margin to allow for wave amplitude
+            for (let yBase = marginYMm + waveAmp + 5; yBase < heightMm - waveAmp; yBase += spacingY) {
+                let currentX = 0;
+                let dashGap = 2; // Fixed gap between dashes
+                
+                while (currentX < widthMm) {
+                    let potId;
+                    if (useSequential) {
+                        potId = potKeys[globalColorCounter % potKeys.length];
+                        globalColorCounter++;
+                    } else {
+                        potId = potKeys[Math.floor(Math.random() * potKeys.length)];
+                    }
+
+                    let stroke = {
+                        potId: potId,
+                        points: []
+                    };
+
+                    let steps = Math.floor(dashLen / 0.5); // 0.5mm resolution
+                    
+                    for (let s = 0; s <= steps; s++) {
+                        let cx = currentX + (s * 0.5);
+                        if (cx > widthMm) break; // Don't draw past edge
+                        
+                        // Base sine wave (offset phase by yBase so waves aren't perfectly parallel if desired, 
+                        // but here we keep them parallel-ish by reducing yBase influence)
+                        let mainWave = Math.sin((cx * waveFreq * 2 * Math.PI) + (yBase * 0.02)) * waveAmp;
+                        
+                        // High frequency squiggle
+                        let squiggle = Math.sin(cx * sqFreq) * sqAmp;
+                        
+                        let cy = yBase + mainWave + squiggle;
+                        
+                        // Constrain to safe zone
+                        if (cy < marginYMm) cy = marginYMm;
+                        
+                        stroke.points.push({ x: cx, y: cy });
+                    }
+
+                    if (stroke.points.length > 1) {
+                        generatedPaths.push(stroke);
+                    }
+
+                    currentX += dashLen + dashGap;
+                }
+            }
+
+            // Draw on canvas
+            for (let stroke of generatedPaths) {
+                ctx.beginPath();
+                ctx.strokeStyle = POTS[stroke.potId];
+                for (let p = 0; p < stroke.points.length; p++) {
+                    let px = stroke.points[p].x * mmToPx;
+                    let py = canvas.height - (stroke.points[p].y * mmToPx);
+                    if (p === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+            }
+        }
+
+        document.getElementById('btn-generate').onclick = generatePattern;
+
+        document.getElementById('btn-download').onclick = () => {
+            if (generatedPaths.length === 0) {
+                alert("Please generate a pattern first!");
+                return;
+            }
+
+            let gcode = [];
+            gcode.push("; Brushograph Wavey Generative Art");
+            gcode.push("; Generated by HTML Generator");
+            gcode.push("G90");
+            gcode.push("");
+
+            // Group by Pot ID to minimize tool changes
+            const groupedPaths = {};
+            for (let p of generatedPaths) {
+                if (!groupedPaths[p.potId]) groupedPaths[p.potId] = [];
+                groupedPaths[p.potId].push(p);
+            }
+
+            let strokeCount = 1;
+
+            for (let potId of potKeys) {
+                if (!groupedPaths[potId]) continue;
+                
+                gcode.push(`;Layer ${potId}`);
+                
+                for (let stroke of groupedPaths[potId]) {
+                    if (stroke.points.length === 0) continue;
+                    
+                    gcode.push(`; Stroke ${strokeCount++}`);
+                    // Fast travel to start
+                    gcode.push(`G0 X${stroke.points[0].x.toFixed(3)} Y${stroke.points[0].y.toFixed(3)}`);
+                    
+                    // Draw path
+                    for (let i = 1; i < stroke.points.length; i++) {
+                        gcode.push(`G1 X${stroke.points[i].x.toFixed(3)} Y${stroke.points[i].y.toFixed(3)}`);
+                    }
+                    gcode.push(""); // Empty line between strokes
+                }
+            }
+
+            const blob = new Blob([gcode.join('\n')], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'generative_waves.gcode';
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+
+        // Generate an initial pattern
+        generatePattern();
+    </script>
+</body>
+</html>
